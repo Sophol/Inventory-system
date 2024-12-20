@@ -7,7 +7,7 @@ export interface IPurchase {
   description: string;
   purchaseDate: any;
   discount: number;
-  tax: number;
+  // tax: number;
   subtotal: number;
   grandtoal: number;
   paid: number;
@@ -25,7 +25,7 @@ const PurchaseSchema = new Schema<IPurchase>(
     purchaseDate: { type: Date, default: Date.now() },
     description: { type: String },
     discount: { type: Number, default: 0 },
-    tax: { type: Number, default: 0 },
+    //tax: { type: Number, default: 0 },
     subtotal: { type: Number, default: 0 },
     grandtoal: { type: Number, default: 0 },
     paid: { type: Number, default: 0 },
