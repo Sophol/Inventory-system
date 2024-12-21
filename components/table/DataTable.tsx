@@ -1,5 +1,4 @@
 "use client";
-
 import {
   ColumnDef,
   flexRender,
@@ -8,7 +7,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
-  ColumnFiltersState,
   getFilteredRowModel,
 } from "@tanstack/react-table";
 
@@ -21,20 +19,22 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import { Input } from "../ui/input";
 import { DataTablePagination } from "./DataTablePagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isNext: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isNext,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState<any>([]);
+  const [pageSize, setPageSize] = useState(10);
+  const [pageIndex, setPageIndex] = useState(0);
   const table = useReactTable({
     data,
     columns,
@@ -42,24 +42,16 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onGlobalFilterChange: setGlobalFilter,
-    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
-      globalFilter,
+      pagination: { pageIndex, pageSize },
     },
+    manualPagination: true,
+    pageCount: isNext ? pageIndex + 2 : pageIndex + 1, // Adjust page count based on `isNext` onPaginationChange: ({ pageIndex, pageSize }) => { setPageIndex(pageIndex); setPageSize(pageSize); },
   });
 
   return (
     <>
-      <div className="flex items-center py-4">
-        <Input
-          value=""
-          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-          placeholder="Search..."
-          className="max-w-sm"
-        />
-      </div>
       <div className="rounded-md border light-border-3 shadow">
         <Table>
           <TableHeader>
@@ -110,7 +102,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination table={table} isNext={isNext} />
     </>
   );
 }

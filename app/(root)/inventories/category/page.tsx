@@ -7,6 +7,7 @@ import { getCategories } from "@/lib/actions/category.action";
 import DataRenderer from "@/components/DataRenderer";
 import { CATEGORY_EMPTY } from "@/constants/states";
 import ROUTES from "@/constants/routes";
+import LocalSearch from "@/components/search/LocalSearch";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -20,7 +21,7 @@ const Category = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
-  const { categories } = data || {};
+  const { categories, isNext } = data || {};
   return (
     <CardContainer
       title="Category"
@@ -29,13 +30,24 @@ const Category = async ({ searchParams }: SearchParams) => {
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"
     >
-      <DataRenderer
-        success={success}
-        error={error}
-        data={categories}
-        empty={CATEGORY_EMPTY}
-        render={() => <DataTable columns={CategoryColumn} data={categories!} />}
-      />
+      <>
+        <div className="py-4">
+          <LocalSearch route={ROUTES.CATEGORIES} placeholder="Search..." />
+        </div>
+        <DataRenderer
+          success={success}
+          error={error}
+          data={categories}
+          empty={CATEGORY_EMPTY}
+          render={() => (
+            <DataTable
+              columns={CategoryColumn}
+              data={categories!}
+              isNext={isNext}
+            />
+          )}
+        />
+      </>
     </CardContainer>
   );
 };

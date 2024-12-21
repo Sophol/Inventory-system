@@ -29,3 +29,12 @@ interface PaginatedSearchParams {
 interface GlobalFilter {
   globalFilter: any;
 }
+interface SelectData {
+  _id: string;
+  title: string;
+}
+interface Category {
+  _id: string;
+  title: string;
+  status: string;
+}

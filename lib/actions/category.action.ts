@@ -1,3 +1,4 @@
+"use server";
 import { Category } from "@/database";
 import { ICategoryDoc } from "@/database/category.model";
 import { FilterQuery } from "mongoose";
@@ -13,13 +14,15 @@ import {
 export async function createCategory(
   params: CreateCategoryParams
 ): Promise<ActionResponse<ICategoryDoc>> {
+  console.log(params);
   const validatedData = await action({
     params,
     schema: CategorySchema,
     authorize: true,
   });
+  console.log(validatedData);
   if (validatedData instanceof Error) {
-    return handleError(validatedData) as ErrorResponse;
+    return handleError(validatedData.message) as ErrorResponse;
   }
   try {
     const category = await Category.create(validatedData.params);
@@ -57,7 +60,7 @@ export async function editCategory(
 }
 export async function getCategory(
   params: GetCategoryParams
-): Promise<ActionResponse<ICategoryDoc>> {
+): Promise<ActionResponse<Category>> {
   const validatedData = await action({
     params,
     schema: GetCategorySchema,

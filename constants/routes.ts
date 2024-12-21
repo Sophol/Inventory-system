@@ -5,5 +5,6 @@ const ROUTES = {
   CATEGORIES: "/inventories/category",
   ADDCATEGORY: "/inventories/category/form",
   PROFILE: (_id: string) => `/profile/${_id}`,
+  CATEGORY: (_id: string) => `/inventories/category/${_id}`,
 };
 export default ROUTES;

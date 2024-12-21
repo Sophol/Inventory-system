@@ -17,6 +17,7 @@ const ProductUnitSchema = new Schema<IProductUnit>(
     qty: { type: Number, default: 0 },
     cost: { type: Number, default: 0 },
     price: { type: Number, default: 0 },
+    wholeSalePrice: { type: Number, default: 0 },
     level: { type: Number, default: 1 },
   },
   { timestamps: true }

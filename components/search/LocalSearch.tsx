@@ -1,18 +1,16 @@
 "use client";
 import { formUrlQuery, removeKeyFromUrlQuery } from "@/lib/url";
-import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 
 interface Props {
   route: string;
-  imageSrc: string;
   placeholder: string;
   otherClasses?: string;
 }
 
-const LocalSearch = ({ route, imageSrc, placeholder, otherClasses }: Props) => {
+const LocalSearch = ({ route, placeholder, otherClasses }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
@@ -40,17 +38,7 @@ const LocalSearch = ({ route, imageSrc, placeholder, otherClasses }: Props) => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, route, router, searchParams, pathname]);
   return (
-    <div
-      className={`background-light800_darkgradient flex min-h-[56px] 
-    grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
-    >
-      <Image
-        src={imageSrc}
-        width={24}
-        height={24}
-        alt="Search"
-        className="cursor-pointer"
-      />
+    <div className={`flex min-h-[36px] rounded-[10px] w-64 ${otherClasses}`}>
       <Input
         type="text"
         placeholder={placeholder}
