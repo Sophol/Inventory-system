@@ -32,9 +32,35 @@ interface GlobalFilter {
 interface SelectData {
   _id: string;
   title: string;
+  status: string;
 }
 interface Category {
   _id: string;
   title: string;
   status: string;
+}
+interface Unit {
+  _id: string;
+  title: string;
+  status: string;
+}
+interface ProductUnit {
+  unit: Unit;
+  qty: number;
+  cost: number;
+  price: number;
+  wholeSalePrice: number;
+  level: number;
+}
+interface Product {
+  _id: string;
+  code: string;
+  title: string;
+  description?: string;
+  image?: string;
+  units: ProductUnit[];
+  category: string;
+  qtyOnHand: number;
+  alertQty: number;
+  status: "active" | "inactive";
 }

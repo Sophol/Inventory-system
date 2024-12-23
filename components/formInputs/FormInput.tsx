@@ -11,9 +11,9 @@ import { Control } from "react-hook-form";
 
 type FormInputProps = {
   name: string;
-  type?: string;
   label?: string;
   message?: string;
+  type?: string;
   control: Control<any, any>;
   isRequired?: boolean;
 };
@@ -23,6 +23,7 @@ function FormInput({
   name,
   message,
   control,
+  type = "text",
   isRequired = true,
 }: FormInputProps) {
   return (
@@ -36,6 +37,7 @@ function FormInput({
           </FormLabel>
           <FormControl>
             <Input
+              type={type}
               className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[36px] border"
               {...field}
             />

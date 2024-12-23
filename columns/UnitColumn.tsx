@@ -6,15 +6,13 @@ import ROUTES from "@/constants/routes";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import { FaRegEdit } from "react-icons/fa";
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Category = {
+export type Unit = {
   _id: string;
   title: string;
   status: string;
 };
 
-export const CategoryColumn: ColumnDef<Category>[] = [
+export const UnitColumn: ColumnDef<Unit>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
@@ -42,7 +40,7 @@ export const CategoryColumn: ColumnDef<Category>[] = [
       return (
         <RedirectButton
           Icon={FaRegEdit}
-          href={ROUTES.CATEGORY(category._id)}
+          href={ROUTES.UNIT(category._id)}
           isIcon
           className="text-primary-500"
         />

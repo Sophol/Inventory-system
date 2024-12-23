@@ -7,7 +7,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
-  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -24,7 +23,7 @@ import { DataTablePagination } from "./DataTablePagination";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  isNext: boolean;
+  isNext: boolean | undefined;
 }
 
 export function DataTable<TData, TValue>({

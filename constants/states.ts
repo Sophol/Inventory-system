@@ -27,3 +27,21 @@ export const CATEGORY_EMPTY = {
     href: ROUTES.ADDCATEGORY,
   },
 };
+export const UNIT_EMPTY = {
+  title: "No Unit Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add Unit",
+    href: ROUTES.ADDUNIT,
+  },
+};
+export const UNIT_PRODUCT = {
+  title: "No Product Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add Product",
+    href: ROUTES.ADDPRODUCT,
+  },
+};

@@ -14,6 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useRouter, useSearchParams } from "next/navigation";
+import { formUrlQuery } from "@/lib/url";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -24,13 +26,32 @@ export function DataTablePagination<TData>({
   table,
   isNext,
 }: DataTablePaginationProps<TData>) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const page = searchParams.get("page");
+  const currentPage = page ? parseInt(page) : 1;
+
+  const handleNavigation = (type: string) => {
+    const nextPageNumber = type === "prev" ? currentPage - 1 : currentPage + 1;
+
+    const value = nextPageNumber > 1 ? nextPageNumber.toString() : "";
+
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: "page",
+      value: value,
+    });
+
+    router.push(newUrl);
+  };
   return (
     <div className="flex items-center justify-between px-2 mt-5">
       <div className="flex-1 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
-      {isNext && (
+      {(isNext || currentPage > 1) && (
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">Rows per page</p>
@@ -71,7 +92,7 @@ export function DataTablePagination<TData>({
             <Button
               variant="outline"
               className="h-8 w-8 p-0"
-              onClick={() => table.previousPage()}
+              onClick={() => handleNavigation("prev")}
               disabled={!table.getCanPreviousPage()}
             >
               <span className="sr-only">Go to previous page</span>
@@ -80,7 +101,7 @@ export function DataTablePagination<TData>({
             <Button
               variant="outline"
               className="h-8 w-8 p-0"
-              onClick={() => table.nextPage()}
+              onClick={() => handleNavigation("next")}
               disabled={!table.getCanNextPage()}
             >
               <span className="sr-only">Go to next page</span>

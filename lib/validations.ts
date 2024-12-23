@@ -1,5 +1,18 @@
+import { Types } from "mongoose";
 import { z } from "zod";
 
+export const ObjectIdSchema = z
+  .string()
+  .refine((val) => Types.ObjectId.isValid(val), {
+    message: "Invalid ObjectId",
+  });
+export const PaginatedSearchParamsSchema = z.object({
+  page: z.number().int().positive().default(1),
+  pageNumber: z.number().int().positive().default(10),
+  query: z.string().optional(),
+  filter: z.string().optional(),
+  sort: z.string().optional(),
+});
 export const SignInSchema = z.object({
   email: z
     .string()
@@ -99,21 +112,51 @@ export const SignInWithOAuthSchema = z.object({
     image: z.string().url("Invalid Image url").optional(),
   }),
 });
-export const CategorySchema = z.object({
+export const CreateCategorySchema = z.object({
   title: z.string().min(1, { message: "Title ID is required." }),
   status: z.string().min(1, { message: "Status is required." }),
 });
-export const EditCategorySchema = CategorySchema.extend({
+export const EditCategorySchema = CreateCategorySchema.extend({
   categoryId: z.string().min(1, { message: "Category ID is required." }),
 });
 export const GetCategorySchema = z.object({
   categoryId: z.string().min(1, { message: "Category ID is required." }),
 });
-
-export const PaginatedSearchParamsSchema = z.object({
-  page: z.number().int().positive().default(1),
-  pageNumber: z.number().int().positive().default(10),
-  query: z.string().optional(),
-  filter: z.string().optional(),
-  sort: z.string().optional(),
+export const CreateUnitSchema = z.object({
+  title: z.string().min(1, { message: "Title ID is required." }),
+  status: z.string().min(1, { message: "Status is required." }),
+});
+export const EditUnitSchema = CreateUnitSchema.extend({
+  unitId: z.string().min(1, { message: "Unit ID is required." }),
+});
+export const GetUnitSchema = z.object({
+  unitId: z.string().min(1, { message: "Unit ID is required." }),
+});
+const ProductUnitSchema = z.object({
+  unit: z.string().min(1, { message: "Unit ID is required." }),
+  qty: z.number().default(0),
+  cost: z.number().default(0),
+  price: z.number().default(0),
+  wholeSalePrice: z.number().default(0),
+  level: z.number().int().positive().default(1),
+});
+export const CreateProductSchema = z.object({
+  code: z.string().min(1, { message: "Code is required" }),
+  title: z.string().min(1, { message: "Title is required" }),
+  description: z.string().optional(),
+  image: z.string().optional(),
+  units: z
+    .array(ProductUnitSchema)
+    .min(1, { message: "At least one Unit is required." })
+    .max(3, { message: "Cannot add more than 3 Units." }),
+  category: ObjectIdSchema,
+  qtyOnHand: z.number().default(0),
+  alertQty: z.number().default(0),
+  status: z.enum(["active", "inactive"]).default("active"),
+});
+export const EditProductSchema = CreateProductSchema.extend({
+  productId: z.string().min(1, { message: "Unit ID is required." }),
+});
+export const GetProductSchema = z.object({
+  productId: z.string().min(1, { message: "Unit ID is required." }),
 });

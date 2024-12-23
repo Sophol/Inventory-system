@@ -8,13 +8,13 @@ import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader
 import { FaRegEdit } from "react-icons/fa";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Category = {
+export type Product = {
   _id: string;
   title: string;
   status: string;
 };
 
-export const CategoryColumn: ColumnDef<Category>[] = [
+export const ProductColumn: ColumnDef<Product>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (

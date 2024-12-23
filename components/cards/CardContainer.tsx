@@ -1,4 +1,4 @@
-import RedirectButton from "../forms/RedirectButton";
+import RedirectButton from "../formInputs/RedirectButton";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 interface CardContainerProps {

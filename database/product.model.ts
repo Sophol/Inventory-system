@@ -6,7 +6,6 @@ export interface IProduct {
   description?: string;
   image?: string;
   units: Types.ObjectId[];
-  //defaultUnit: Types.ObjectId;
   category: Types.ObjectId;
   qtyOnHand: number;
   alertQty: number;
@@ -20,7 +19,6 @@ const ProductSchema = new Schema<IProduct>(
     description: { type: String },
     image: { type: String },
     units: [{ type: Schema.Types.ObjectId, ref: "Unit" }],
-    // defaultUnit: { type: Schema.Types.ObjectId, ref: "Unit", required: true },
     category: { type: Schema.Types.ObjectId, ref: "Unit", required: true },
     qtyOnHand: { type: Number, default: 0 },
     alertQty: { type: Number, default: 0 },

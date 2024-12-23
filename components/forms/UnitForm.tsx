@@ -1,7 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { CreateCategorySchema } from "@/lib/validations";
 import z from "zod";
 import { Form } from "../ui/form";
 import FormInput from "../formInputs/FormInput";
@@ -9,41 +8,40 @@ import FormSelect from "../formInputs/FormSelect";
 import { Button } from "../ui/button";
 import { useTransition } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { createCategory, editCategory } from "@/lib/actions/category.action";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
+import { CreateUnitSchema } from "@/lib/validations";
+import { createUnit, editUnit } from "@/lib/actions/unit.action";
 import { dataStatuses } from "@/constants/data";
 interface Params {
-  category?: Category;
+  unit?: Unit;
   isEdit?: boolean;
 }
-const CategoryForm = ({ category, isEdit = false }: Params) => {
+const UnitForm = ({ unit, isEdit = false }: Params) => {
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
-  const form = useForm<z.infer<typeof CreateCategorySchema>>({
-    resolver: zodResolver(CreateCategorySchema),
+  const form = useForm<z.infer<typeof CreateUnitSchema>>({
+    resolver: zodResolver(CreateUnitSchema),
     defaultValues: {
-      title: category?.title || "",
-      status: category?.status || "active",
+      title: unit?.title || "",
+      status: unit?.status || "active",
     },
   });
   const statusData: SelectData[] = dataStatuses;
-  const handleCreateCategory = async (
-    data: z.infer<typeof CreateCategorySchema>
-  ) => {
+  const handleCreateUnit = async (data: z.infer<typeof CreateUnitSchema>) => {
     startTransaction(async () => {
-      if (isEdit && category) {
-        const result = await editCategory({
-          categoryId: category?._id,
+      if (isEdit && unit) {
+        const result = await editUnit({
+          unitId: unit?._id,
           ...data,
         });
         if (result.success) {
           toast({
             title: "success",
-            description: "Category update successfully.",
+            description: "Unit update successfully.",
           });
-          if (result.data) router.push(ROUTES.CATEGORIES);
+          if (result.data) router.push(ROUTES.UNITS);
         } else {
           toast({
             title: `Error ${result.status}`,
@@ -53,14 +51,14 @@ const CategoryForm = ({ category, isEdit = false }: Params) => {
         }
         return;
       }
-      const result = await createCategory(data);
+      const result = await createUnit(data);
 
       if (result.success) {
         toast({
           title: "success",
-          description: "Category created successfully.",
+          description: "Unit created successfully.",
         });
-        if (result.data) router.push(ROUTES.CATEGORIES);
+        if (result.data) router.push(ROUTES.UNITS);
       } else {
         toast({
           title: `Error ${result.status}`,
@@ -74,7 +72,7 @@ const CategoryForm = ({ category, isEdit = false }: Params) => {
     <Form {...form}>
       <form
         className="flex flex-col gap-8"
-        onSubmit={form.handleSubmit(handleCreateCategory)}
+        onSubmit={form.handleSubmit(handleCreateUnit)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormInput name="title" label="Title" control={form.control} />
@@ -105,4 +103,4 @@ const CategoryForm = ({ category, isEdit = false }: Params) => {
     </Form>
   );
 };
-export default CategoryForm;
+export default UnitForm;
