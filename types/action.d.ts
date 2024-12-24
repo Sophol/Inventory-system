@@ -60,3 +60,15 @@ interface EditProductParams extends CreateProductParams {
 interface GetProductParams {
   productId: string;
 }
+
+interface CreateCustomerParams {
+  name: string;
+  status: string;
+}
+
+interface EditCustomerParams extends CreateCustomerParams {
+  customerId: string;
+}
+interface GetCustomerParams {
+  customerId: string;
+}

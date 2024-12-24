@@ -67,3 +67,16 @@ interface Product {
   status: "active" | "inactive";
   categoryTitle?: string;
 }
+
+interface Customer {
+  _id: string;
+  name: string;
+  phone: string;
+  email?: string;
+  social_link: string;
+  location: string;
+  description: string;
+  saleType: "retail" | "wholesale";
+  balance: number;
+  status: "active" | "inactive";
+}

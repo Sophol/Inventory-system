@@ -160,3 +160,15 @@ export const EditProductSchema = CreateProductSchema.extend({
 export const GetProductSchema = z.object({
   productId: z.string().min(1, { message: "Unit ID is required." }),
 });
+
+export const CreateCustomerSchema = z.object({
+  name: z.string().min(1, { message: "Name ID is required." }),
+  status: z.string().min(1, { message: "Status is required." }),
+});
+export const EditCustomerSchema = CreateCategorySchema.extend({
+  customerId: z.string().min(1, { message: "Customer ID is required." }),
+  name: z.string().min(1, { message: "Name ID is required." }),
+});
+export const GetCustomerSchema = z.object({
+  customerId: z.string().min(1, { message: "Customer ID is required." }),
+});

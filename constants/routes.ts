@@ -13,5 +13,10 @@ const ROUTES = {
   ADDPRODUCT: "/inventories/product/form",
   PRODUCT: (_id: string) => `/inventories/product/${_id}`,
   PRODUCTDETAIL: (_id: string) => `/inventories/product/detail/${_id}`,
+  //Customers
+  CUSTOMER: (_id: string) => `/sales/customer/${_id}`,
+  CUSTOMERS: "/sales/customer",
+  ADDCUSTOMER: "/sales/customer/form",
+
 };
 export default ROUTES;

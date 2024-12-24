@@ -8,13 +8,20 @@ import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader
 import { FaRegEdit } from "react-icons/fa";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Category = {
+export type Customer = {
   _id: string;
-  title: string;
   name: string;
+  phone: string;
+  email?: string;
+  social_link: string;
+  location: string;
+  description: string;
+  saleType: "retail" | "wholesale";
+  balance: number;
+  status: "active" | "inactive";
 };
 
-export const CategoryColumn: ColumnDef<Category>[] = [
+export const CustomerColumn: ColumnDef<Customer>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -96,11 +103,11 @@ export const CategoryColumn: ColumnDef<Category>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const category = row.original;
+      const customer = row.original;
       return (
         <RedirectButton
           Icon={FaRegEdit}
-          href={ROUTES.CATEGORY(category._id)}
+          href={ROUTES.CUSTOMER(customer._id)}
           isIcon
           className="text-primary-500"
         />
