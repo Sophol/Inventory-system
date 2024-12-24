@@ -27,14 +27,6 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
-    cell: ({ row }) => {
-      const name = row.getValue("name") as string;
-      return (
-        
-          {name}
-        
-      );
-    },
   },
   {
     accessorKey: "phone",
@@ -74,7 +66,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
     cell: ({ row }) => {
       const saleType = row.getValue("saleType") as string;
       return (
-        <Badge className={saleType === "retail" ? "bg-green-300" : "bg-amber-500"}>
+        <Badge className={`${saleType === "retail" ? "bg-blue-700" : "bg-amber-500"} uppercase`}>
           {saleType}
         </Badge>
       );

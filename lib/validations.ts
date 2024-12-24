@@ -162,12 +162,18 @@ export const GetProductSchema = z.object({
 });
 
 export const CreateCustomerSchema = z.object({
-  name: z.string().min(1, { message: "Name ID is required." }),
+  name: z.string().min(1, { message: "Name  is required." }),
+  phone: z.string().min(1, { message: "Phone is required." }),
+  email: z.string().optional(),
+  social_link: z.string().optional(),
+  location: z.string().optional(),
+  description: z.string().optional(),
+  balance: z.number().default(0),
+  saleType: z.string().min(1, { message: "Sale-Type is required." }),
   status: z.string().min(1, { message: "Status is required." }),
 });
-export const EditCustomerSchema = CreateCategorySchema.extend({
+export const EditCustomerSchema = CreateCustomerSchema.extend({
   customerId: z.string().min(1, { message: "Customer ID is required." }),
-  name: z.string().min(1, { message: "Name ID is required." }),
 });
 export const GetCustomerSchema = z.object({
   customerId: z.string().min(1, { message: "Customer ID is required." }),

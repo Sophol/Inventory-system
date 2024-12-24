@@ -63,7 +63,14 @@ interface GetProductParams {
 
 interface CreateCustomerParams {
   name: string;
-  status: string;
+  phone:string;
+  email:string;
+  social_link: string;
+  location:string;
+  description:string;
+  balance:number;
+  saleType: "retail"| "wholesale";
+  status: "active" | "inactive";
 }
 
 interface EditCustomerParams extends CreateCustomerParams {

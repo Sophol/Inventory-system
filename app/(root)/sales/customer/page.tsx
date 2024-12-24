@@ -22,6 +22,7 @@ const Customer = async ({ searchParams }: SearchParams) => {
     filter: filter || "",
   });
   const { customers, isNext } = data || {};
+  console.log("customers1", customers, isNext)
   return (
     <CardContainer
       title="Customer"
@@ -32,7 +33,7 @@ const Customer = async ({ searchParams }: SearchParams) => {
     >
       <>
         <div className="py-4">
-          <LocalSearch route={ROUTES.CUSTOMERS} placeholder="Search..." />
+          {/* <LocalSearch route={ROUTES.CUSTOMERS} placeholder="Search..." /> */}
         </div>
         <DataRenderer
           success={success}

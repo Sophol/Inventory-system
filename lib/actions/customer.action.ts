@@ -41,14 +41,28 @@ export async function editCustomer(
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { name, status, customerId } = validatedData.params!;
+  console.log(params);
+  // eslint-disable-next-line camelcase
+  const { name, status, phone, email, social_link, location, description, saleType, balance,customerId } = validatedData.params!;
   try {
     const customer = await Customer.findById(customerId);
     if (!customer) {
       throw new Error("Customer not found");
     }
-    if (customer.name !== name || customer.status !== status) {
-      customer.title = name;
+    if (customer.name !== name || customer.status !== status || customer.phone !== phone ||
+      // eslint-disable-next-line camelcase
+      customer.email !== email || customer.social_link !== social_link || customer.location !== location ||
+      customer.saleType !== saleType || customer.balance !== balance || customer.description !== description
+    ) {
+      customer.name = name;
+      customer.phone = phone;
+      customer.email = email;
+      // eslint-disable-next-line camelcase
+      customer.social_link = social_link;
+      customer.description = description;
+      customer.location = location;
+      customer.balance = balance;
+      customer.saleType = saleType;
       customer.status = status;
       await customer.save();
     }
@@ -97,24 +111,19 @@ export async function getCustomers(
   const filterQuery: FilterQuery<typeof Customer> = {};
   if (query) {
     filterQuery.$or = [
+      { name: { $regex: new RegExp(query, "i") } },
       { status: { $regex: new RegExp(query, "i") } },
     ];
   }
   let sortCriteria = {};
-
   switch (filter) {
-    case "status":
-      sortCriteria = { status: -1 };
-      break;
     case "name":
       sortCriteria = { status: -1 };
       break;
-    case "saleType":
+    case "status":
       sortCriteria = { status: -1 };
       break;
-    case "balance":
-      sortCriteria = { status: -1 };
-      break;
+
     default:
       sortCriteria = { createdAt: -1 };
       break;
@@ -135,6 +144,7 @@ export async function getCustomers(
       data: { customers: JSON.parse(JSON.stringify(customers)), isNext },
     };
   } catch (error) {
+
     return handleError(error) as ErrorResponse;
   }
 }

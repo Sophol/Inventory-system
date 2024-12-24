@@ -13,7 +13,7 @@ import { createCustomer, editCustomer } from "@/lib/actions/customer.action";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
-import { dataStatuses } from "@/constants/data";
+import { dataStatuses, dataSaleTypes } from "@/constants/data";
 interface Params {
   customer?: Customer;
   isEdit?: boolean;
@@ -26,9 +26,17 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
     defaultValues: {
       name: customer?.name || "",
       status: customer?.status || "active",
+      phone: customer?.phone || "",
+      email: customer?.email || "",
+      social_link: customer?.social_link || "",
+      description: customer?.description || "",
+      saleType: customer?.saleType || "retail",
+      location: customer?.location || "",
+      balance: customer?.balance || ""
     },
   });
   const statusData: SelectData[] = dataStatuses;
+  const saleTypeData: SelectData[] = dataSaleTypes;
   const handleCreateCustomer = async (
     data: z.infer<typeof CreateCustomerSchema>
   ) => {
@@ -43,7 +51,7 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
             title: "success",
             description: "Customer update successfully.",
           });
-          if (result.data) router.push(ROUTES.CATEGORIES);
+          if (result.data) router.push(ROUTES.CUSTOMERS);
         } else {
           toast({
             title: `Error ${result.status}`,
@@ -60,7 +68,7 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
           title: "success",
           description: "Customer created successfully.",
         });
-        if (result.data) router.push(ROUTES.CATEGORIES);
+        if (result.data) router.push(ROUTES.CUSTOMERS);
       } else {
         toast({
           title: `Error ${result.status}`,
@@ -77,7 +85,19 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
         onSubmit={form.handleSubmit(handleCreateCustomer)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormInput name="title" label="Title" control={form.control} />
+          <FormInput name="name" label="Name" control={form.control} />
+          <FormInput name="phone" label="Phone" control={form.control} />
+          <FormInput name="balance" label="Balance" type="number" control={form.control} />
+          <FormInput name="email" label="Email" control={form.control} />
+          <FormInput name="social_link" label="Social Link" control={form.control} />
+          <FormInput name="location" label="Location" control={form.control} />
+          <FormInput name="description" label="Description" control={form.control} />
+          <FormSelect
+            name="saleType"
+            label="Sale Type"
+            control={form.control}
+            items={saleTypeData}
+          />
           <FormSelect
             name="status"
             label="Status"
