@@ -5,6 +5,10 @@ import { useFieldArray } from "react-hook-form";
 import FormCombobox from "../formInputs/FormCombobox";
 import { Button } from "../ui/button";
 import FormInput from "./FormInput";
+interface SelectData {
+  _id: string;
+  title: string | undefined;
+}
 interface FormUnitVariantProps {
   control: any;
   setValue: any;
@@ -12,6 +16,9 @@ interface FormUnitVariantProps {
     page: number;
     query: string;
   }) => Promise<{ data: SelectData[]; isNext: boolean }>;
+  fetchSingleUnit: (
+    id: string
+  ) => Promise<SelectData | null> | SelectData | null;
 }
 
 const FormUnitVariant: React.FC<FormUnitVariantProps> = ({
@@ -27,52 +34,56 @@ const FormUnitVariant: React.FC<FormUnitVariantProps> = ({
   return (
     <div className="flex flex-col gap-2 justify-start">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
-        {fields.map((field, index) => (
-          <React.Fragment key={field.id}>
-            <FormCombobox
-              control={control}
-              name={`units.${index}.unit`}
-              label="Unit"
-              placeholder="Select unit"
-              fetchData={fetchUnits}
-              setValue={setValue}
-            />
-            <FormInput
-              type="number"
-              name={`units.${index}.qty`}
-              label="Qty"
-              control={control}
-            />
-            <FormInput
-              type="number"
-              name={`units.${index}.cost`}
-              label="Cost"
-              control={control}
-            />
-            <FormInput
-              type="number"
-              name={`units.${index}.price`}
-              label="Price"
-              control={control}
-            />
-            <FormInput
-              type="number"
-              name={`units.${index}.wholeSalePrice`}
-              label="WholeSalePrice"
-              control={control}
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={() => remove(index)}
-              disabled={index === 0}
-              className="mt-7"
-            >
-              <Trash2 className="text-red-500" />
-            </Button>
-          </React.Fragment>
-        ))}
+        {fields.map((field, index) => {
+          const selectedData = { _id: field.unit, title: field.unitTitle };
+          return (
+            <React.Fragment key={field.id}>
+              <FormCombobox
+                control={control}
+                name={`units.${index}.unit`}
+                label="Unit"
+                placeholder="Select unit"
+                fetchSingleItem={selectedData}
+                fetchData={fetchUnits}
+                setValue={setValue}
+              />
+              <FormInput
+                type="number"
+                name={`units.${index}.qty`}
+                label="Qty"
+                control={control}
+              />
+              <FormInput
+                type="number"
+                name={`units.${index}.cost`}
+                label="Cost"
+                control={control}
+              />
+              <FormInput
+                type="number"
+                name={`units.${index}.price`}
+                label="Price"
+                control={control}
+              />
+              <FormInput
+                type="number"
+                name={`units.${index}.wholeSalePrice`}
+                label="WholeSalePrice"
+                control={control}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => remove(index)}
+                disabled={index === 0}
+                className="mt-7"
+              >
+                <Trash2 className="text-red-500" />
+              </Button>
+            </React.Fragment>
+          );
+        })}
       </div>
       <div className="flex justify-start">
         <Button

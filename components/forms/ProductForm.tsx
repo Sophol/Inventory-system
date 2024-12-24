@@ -42,6 +42,9 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
       alertQty: product?.alertQty || 0,
     },
   });
+  const selectedData = product
+    ? { _id: product.category, title: product.categoryTitle }
+    : null;
   const statusData: SelectData[] = dataStatuses;
   const fetchCategories = async ({
     page,
@@ -60,6 +63,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
     }
     return { data: [], isNext: false };
   };
+
   const fetchUnits = async ({
     page,
     query,
@@ -77,9 +81,20 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
     }
     return { data: [], isNext: false };
   };
+  const fetchSingleUnit = (id: string) => {
+    if (product && product.units) {
+      const unit = product.units.find((u) => u.unit.toString() === id);
+      console.log("fetchSingleCategory - Data:", unit);
+      if (unit) {
+        return { _id: unit.unit, title: unit.unitTitle };
+      }
+    }
+    return null;
+  };
   const handleCreateProduct = async (
     data: z.infer<typeof CreateProductSchema>
   ) => {
+    console.log(data);
     startTransaction(async () => {
       if (isEdit && product) {
         const result = await editProduct({
@@ -102,7 +117,6 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
         return;
       }
       const result = await createProduct(data);
-
       if (result.success) {
         toast({
           title: "success",
@@ -131,6 +145,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
             name="category"
             label="Category"
             placeholder="Select category"
+            fetchSingleItem={selectedData}
             fetchData={fetchCategories}
             setValue={form.setValue}
           />

@@ -35,7 +35,7 @@ interface EditUnitParams extends CreateUnitParams {
 interface GetUnitParams {
   unitId: string;
 }
-interface ProductUnit {
+interface ProductUnitParams {
   unit: string;
   qty: number;
   cost: number;
@@ -48,7 +48,7 @@ interface CreateProductParams {
   title: string;
   description?: string;
   image?: string;
-  units: ProductUnit[];
+  units: ProductUnitParams[];
   category: string;
   qtyOnHand: number;
   alertQty: number;

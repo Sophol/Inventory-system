@@ -40,6 +40,17 @@ function FormInput({
               type={type}
               className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[36px] border"
               {...field}
+              value={field.value ?? ""}
+              onChange={(e) => {
+                const value = e.target.value;
+                let newVal;
+                if (type === "number") {
+                  newVal = value === "" ? "" : Number(value);
+                } else {
+                  newVal = value;
+                }
+                field.onChange(newVal);
+              }}
             />
           </FormControl>
           <FormDescription className="body-regular mt-2.5 text-light-500">

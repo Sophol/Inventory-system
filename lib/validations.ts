@@ -132,9 +132,9 @@ export const EditUnitSchema = CreateUnitSchema.extend({
 export const GetUnitSchema = z.object({
   unitId: z.string().min(1, { message: "Unit ID is required." }),
 });
-const ProductUnitSchema = z.object({
+export const ProductUnitSchema = z.object({
   unit: z.string().min(1, { message: "Unit ID is required." }),
-  qty: z.number().default(0),
+  qty: z.number().positive().min(1, { message: "Qty is required." }),
   cost: z.number().default(0),
   price: z.number().default(0),
   wholeSalePrice: z.number().default(0),

@@ -1,15 +1,18 @@
-import ProductUnit, { IProductUnitDoc } from "@/database/product-unit.model";
+"use server";
+import ProductUnit from "@/database/product-unit.model";
 import Product, { IProductDoc } from "@/database/product.model";
+import Unit from "@/database/unit.model";
 import mongoose, { FilterQuery } from "mongoose";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
+import { updateLevels } from "../utils";
 import {
   CreateProductSchema,
   EditProductSchema,
   GetProductSchema,
   PaginatedSearchParamsSchema,
 } from "../validations";
-
+const ObjectId = mongoose.Types.ObjectId;
 export async function createProduct(
   params: CreateProductParams
 ): Promise<ActionResponse<IProductDoc>> {
@@ -22,7 +25,6 @@ export async function createProduct(
   if (validatedData instanceof Error) {
     return handleError(validatedData.message) as ErrorResponse;
   }
-
   const {
     code,
     title,
@@ -46,7 +48,7 @@ export async function createProduct(
           title,
           description,
           image,
-          category,
+          category: new ObjectId(category),
           qtyOnHand,
           alertQty,
           status,
@@ -58,14 +60,24 @@ export async function createProduct(
     if (!product) {
       throw new Error("Failed to create product");
     }
+    const unitIds: mongoose.Types.ObjectId[] = [];
+    const productUnitDocuments: ProductUnit[] = [];
+    for (const unit of units) {
+      const existingUnit = await Unit.findById(unit.unit);
+      if (!existingUnit) {
+        throw new Error("No Unit Found");
+      }
+      unitIds.push(existingUnit._id);
 
-    const productUnitDocuments = units.map((unit) => ({
-      ...unit,
-      product: product._id,
-    }));
-
-    await ProductUnit.insertMany(productUnitDocuments, { session });
-
+      productUnitDocuments.push({ ...unit, product: product._id });
+    }
+    const newProductUnitDocs = updateLevels(productUnitDocuments);
+    await ProductUnit.insertMany(newProductUnitDocs, { session });
+    await Product.findByIdAndUpdate(
+      product._id,
+      { $push: { units: { $each: unitIds } } },
+      { session }
+    );
     await session.commitTransaction();
 
     return { success: true, data: JSON.parse(JSON.stringify(product)) };
@@ -142,27 +154,36 @@ export async function editProduct(
         }
       }
       const unitsToRemove = product.units.filter(
-        (unit: IProductUnitDoc) =>
-          !units.some((u) => u.unit.toString() === unit.id.toString())
+        (unit: Unit) =>
+          !units.some((u) => u.unit.toString() === unit._id.toString())
       );
       if (unitsToRemove.length > 0) {
-        const unitIdsToRemove = unitsToRemove.map(
-          (unit: IProductUnitDoc) => unit.id
-        );
+        const unitIdsToRemove = unitsToRemove.map((unit: Unit) => unit._id);
         await ProductUnit.deleteMany(
-          { _id: { $in: unitIdsToRemove } },
+          { unit: { $in: unitIdsToRemove } },
           { session }
         );
         product.units = product.units.filter(
-          (unit: IProductUnitDoc) =>
+          (unit: Unit) =>
             !unitIdsToRemove.some(
-              (u: IProductUnitDoc) => u.id.toString() === unit.id.toString()
+              (u: Unit) => u._id.toString() === unit._id.toString()
             )
         );
       }
       if (newUnitDocuments.length > 0) {
         await ProductUnit.insertMany(newUnitDocuments, { session });
       }
+      const allUnits = await ProductUnit.find({ product: productId }).session(
+        session
+      );
+      const updatedUnits = updateLevels(allUnits);
+      const bulkOps = updatedUnits.map((unit) => ({
+        updateOne: {
+          filter: { product: unit.product, unit: unit.unit },
+          update: { $set: { level: unit.level } },
+        },
+      }));
+      await ProductUnit.bulkWrite(bulkOps, { session });
       await product.save({ session });
     }
     await session.commitTransaction();
@@ -176,7 +197,7 @@ export async function editProduct(
 }
 export async function getProduct(
   params: GetProductParams
-): Promise<ActionResponse<IProductDoc>> {
+): Promise<ActionResponse<Product>> {
   const validatedData = await action({
     params,
     schema: GetProductSchema,
@@ -187,11 +208,62 @@ export async function getProduct(
   }
   const { productId } = validatedData.params!;
   try {
-    const product = await Product.findById(productId).populate("units");
-    if (!product) {
+    const product = await Product.aggregate([
+      { $match: { _id: new ObjectId(productId) } },
+      {
+        $lookup: {
+          from: "productunits",
+          localField: "_id",
+          foreignField: "product",
+          as: "units",
+        },
+      },
+
+      { $unwind: { path: "$units", preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: "units",
+          localField: "units.unit",
+          foreignField: "_id",
+          as: "unitDetails",
+        },
+      },
+      { $unwind: { path: "$unitDetails", preserveNullAndEmptyArrays: true } },
+      { $addFields: { "units.unit": "$unitDetails._id" } },
+      { $addFields: { "units.unitTitle": "$unitDetails.title" } },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "categoryDetails",
+        },
+      },
+      {
+        $unwind: { path: "$categoryDetails", preserveNullAndEmptyArrays: true },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          code: { $first: "$code" },
+          title: { $first: "$title" },
+          description: { $first: "$description" },
+          image: { $first: "$image" },
+          category: { $first: "$categoryDetails._id" },
+          categoryTitle: { $first: "$categoryDetails.title" },
+          qtyOnHand: { $first: "$qtyOnHand" },
+          alertQty: { $first: "$alertQty" },
+          status: { $first: "$status" },
+          createdAt: { $first: "$createdAt" },
+          updatedAt: { $first: "$updatedAt" },
+          units: { $push: "$units" },
+        },
+      },
+    ]);
+    if (product.length === 0) {
       throw new Error("Product not found");
     }
-    return { success: true, data: JSON.parse(JSON.stringify(product)) };
+    return { success: true, data: JSON.parse(JSON.stringify(product[0])) };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }
@@ -235,14 +307,14 @@ export async function getProducts(
     const [totalProducts, products] = await Promise.all([
       Product.countDocuments(filterQuery),
       Product.find(filterQuery)
+        .populate("category", "title")
         .lean()
         .sort(sortCriteria)
         .skip(skip)
-        .limit(limit)
-        .populate("units"), // Populate the units field
+        .limit(limit), // Populate the units field
     ]);
-    const isNext = totalProducts > skip + products.length;
 
+    const isNext = totalProducts > skip + products.length;
     return {
       success: true,
       data: { products: JSON.parse(JSON.stringify(products)), isNext },
