@@ -45,12 +45,14 @@ interface Unit {
   status: string;
 }
 interface ProductUnit {
-  unit: Unit;
+  unit: string;
+  product: any;
   qty: number;
-  cost: number;
-  price: number;
-  wholeSalePrice: number;
-  level: number;
+  cost?: number;
+  price?: number;
+  wholeSalePrice?: number;
+  level?: number;
+  unitTitle?: string;
 }
 interface Product {
   _id: string;
@@ -63,4 +65,5 @@ interface Product {
   qtyOnHand: number;
   alertQty: number;
   status: "active" | "inactive";
+  categoryTitle?: string;
 }

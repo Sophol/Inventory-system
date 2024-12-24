@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Check, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { Control, UseFormSetValue } from "react-hook-form";
@@ -11,8 +11,19 @@ import {
   CommandItem,
   CommandList,
 } from "../ui/command";
-import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+
+interface SelectData {
+  _id: string;
+  title: string | undefined;
+}
 
 interface ComboboxProps {
   control: Control<any>;
@@ -24,6 +35,7 @@ interface ComboboxProps {
     page: number;
     query: string;
   }) => Promise<{ data: SelectData[]; isNext: boolean }>;
+  fetchSingleItem: SelectData | null;
   isRequired?: boolean;
 }
 
@@ -34,9 +46,11 @@ const FormCombobox: React.FC<ComboboxProps> = ({
   placeholder,
   setValue,
   fetchData,
+  fetchSingleItem,
   isRequired = true,
 }) => {
   const [data, setData] = useState<SelectData[]>([]);
+  const [selectedItem, setSelectedItem] = useState<SelectData | null>();
   const [page, setPage] = useState(1);
   const [isNext, setIsNext] = useState(false);
   const [query, setQuery] = useState("");
@@ -49,12 +63,15 @@ const FormCombobox: React.FC<ComboboxProps> = ({
     if (buttonRef.current) {
       setPopoverWidth(`${buttonRef.current.offsetWidth}px`);
     }
+
     handleFetchData(1, "");
   }, [buttonRef.current]);
-
+  useEffect(() => {}, [selectedItem]);
   const handleFetchData = async (page: number, query: string) => {
     const result = await fetchData({ page, query });
+
     setData(result.data);
+    setSelectedItem(fetchSingleItem);
     setIsNext(result.isNext);
   };
 
@@ -80,20 +97,32 @@ const FormCombobox: React.FC<ComboboxProps> = ({
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  ref={buttonRef}
-                  className={cn(
-                    "paragraph-regular justify-between background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[36px] border",
-                    !field.value && "text-muted-foreground"
-                  )}
-                >
-                  {field.value
-                    ? data.find((item) => item._id === field.value)?.title
-                    : placeholder}
-                  <ChevronDown className="opacity-50" />
-                </Button>
+                {selectedItem ? (
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    ref={buttonRef}
+                    className="paragraph-regular justify-between background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[36px] border"
+                  >
+                    {selectedItem.title}
+                    <ChevronDown className="opacity-50" />
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    ref={buttonRef}
+                    className={cn(
+                      "paragraph-regular justify-between background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[36px] border",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    {field.value
+                      ? data.find((item) => item._id === field.value)?.title
+                      : placeholder}
+                    <ChevronDown className="opacity-50" />
+                  </Button>
+                )}
               </FormControl>
             </PopoverTrigger>
             <PopoverContent
@@ -116,6 +145,7 @@ const FormCombobox: React.FC<ComboboxProps> = ({
                         key={item._id}
                         onSelect={() => {
                           setValue(name, item._id);
+                          setSelectedItem(item);
                         }}
                       >
                         {item.title}
@@ -150,6 +180,7 @@ const FormCombobox: React.FC<ComboboxProps> = ({
               </div>
             </PopoverContent>
           </Popover>
+          <FormMessage />
         </FormItem>
       )}
     />

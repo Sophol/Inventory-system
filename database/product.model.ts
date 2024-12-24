@@ -19,7 +19,7 @@ const ProductSchema = new Schema<IProduct>(
     description: { type: String },
     image: { type: String },
     units: [{ type: Schema.Types.ObjectId, ref: "Unit" }],
-    category: { type: Schema.Types.ObjectId, ref: "Unit", required: true },
+    category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     qtyOnHand: { type: Number, default: 0 },
     alertQty: { type: Number, default: 0 },
     status: {

@@ -11,6 +11,7 @@ import { FaRegEdit } from "react-icons/fa";
 export type Product = {
   _id: string;
   title: string;
+  category: any;
   status: string;
 };
 
@@ -30,19 +31,53 @@ export const ProductColumn: ColumnDef<Product>[] = [
     },
   },
   {
+    accessorKey: "code",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Code" />
+    ),
+  },
+  {
+    accessorKey: "category",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Category" />
+    ),
+    cell: ({ row }) => {
+      const category = row.getValue("category") as {
+        _id: string;
+        title: string;
+      };
+      return category.title;
+    },
+  },
+  {
     accessorKey: "title",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
   },
   {
+    accessorKey: "qtyOnHand",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="QtyOnHand" />
+    ),
+  },
+  {
+    accessorKey: "alertQty",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="AlertQty" />
+    ),
+  },
+  {
     id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Action" />
+    ),
     cell: ({ row }) => {
-      const category = row.original;
+      const product = row.original;
       return (
         <RedirectButton
           Icon={FaRegEdit}
-          href={ROUTES.CATEGORY(category._id)}
+          href={ROUTES.PRODUCT(product._id)}
           isIcon
           className="text-primary-500"
         />

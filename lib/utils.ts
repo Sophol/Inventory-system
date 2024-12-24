@@ -34,3 +34,10 @@ export const getTimeStamp = (date: Date) => {
   }
   return "just now";
 };
+export const updateLevels = (units: ProductUnit[]): ProductUnit[] => {
+  units.sort((a, b) => b.qty - a.qty);
+  for (let i = 0; i < units.length; i++) {
+    units[i].level = i + 1;
+  }
+  return units;
+};
