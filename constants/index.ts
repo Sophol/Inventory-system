@@ -1,17 +1,26 @@
-import { SiSellfy } from "react-icons/si";
+import {
+  Boxes,
+  LucideWarehouse,
+  ShoppingBag,
+  ShoppingBasket,
+  ShoppingCart,
+} from "lucide-react";
 import { AiTwotoneDashboard, AiOutlineProduct } from "react-icons/ai";
-import { LiaFileInvoiceSolid } from "react-icons/lia";
-import { Boxes, ShoppingBag, ShoppingBasket, ShoppingCart } from "lucide-react";
-import { FaUserTie, FaUsers } from "react-icons/fa";
-import { MdOutlineInventory2 } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
-import { TbReportSearch } from "react-icons/tb";
+import { FaUserCog, FaUserTie, FaUsers } from "react-icons/fa";
 import { GrMoney } from "react-icons/gr";
+import { IoSettingsOutline } from "react-icons/io5";
+import { LiaFileInvoiceSolid } from "react-icons/lia";
+import { MdOutlineInventory2 } from "react-icons/md";
+import { SiSellfy } from "react-icons/si";
+import { TbReportSearch } from "react-icons/tb";
+
+import ROUTES from "./routes";
 
 export const sidebarLinks = [
   {
     title: "Dashboard",
-    url: "/",
+    url: ROUTES.HOME,
     icon: AiTwotoneDashboard,
     isActive: true,
   },
@@ -61,7 +70,7 @@ export const sidebarLinks = [
       },
       {
         title: "Supplier",
-        url: "/purchases/supplier",
+        url: ROUTES.SUPPLIERS,
         icon: FaUserTie,
       },
     ],
@@ -74,17 +83,17 @@ export const sidebarLinks = [
     items: [
       {
         title: "Category",
-        url: "/inventories/category",
+        url: ROUTES.CATEGORIES,
         icon: BiCategory,
       },
       {
         title: "Unit",
-        url: "/inventories/unit",
+        url: ROUTES.UNITS,
         icon: Boxes,
       },
       {
         title: "Product",
-        url: "/inventories/product",
+        url: ROUTES.PRODUCTS,
         icon: AiOutlineProduct,
       },
     ],
@@ -114,6 +123,24 @@ export const sidebarLinks = [
         title: "Profit Report",
         url: "/reports/profit",
         icon: GrMoney,
+      },
+    ],
+  },
+  {
+    title: "SETTINGS",
+    url: "#",
+    icon: IoSettingsOutline,
+    isActive: false,
+    items: [
+      {
+        title: "User",
+        url: "/settings/user",
+        icon: FaUserCog,
+      },
+      {
+        title: "Branch",
+        url: ROUTES.BRANCHES,
+        icon: LucideWarehouse,
       },
     ],
   },

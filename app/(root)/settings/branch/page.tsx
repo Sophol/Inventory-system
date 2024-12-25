@@ -1,49 +1,49 @@
 import React from "react";
 import { CiCirclePlus } from "react-icons/ci";
 
-import { SupplierColumn } from "@/columns/SupplierColumn";
+import { BranchColumn } from "@/columns/BranchColumn";
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
 import LocalSearch from "@/components/search/LocalSearch";
 import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
-import { SUPPLIER_EMPTY } from "@/constants/states";
-import { getSuppliers } from "@/lib/actions/supplier.action";
+import { BRANCH_EMPTY } from "@/constants/states";
+import { getBranches } from "@/lib/actions/branch.action";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
-const Supplier = async ({ searchParams }: SearchParams) => {
+const Branch = async ({ searchParams }: SearchParams) => {
   const { page, pageSize, query, filter } = await searchParams;
-  const { success, data, error } = await getSuppliers({
+  const { success, data, error } = await getBranches({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query || "",
     filter: filter || "",
   });
-  const { suppliers, isNext } = data || {};
+  const { branches, isNext } = data || {};
   return (
     <CardContainer
-      title="Supplier"
+      title="Branch"
       redirectTitle="ADD"
-      redirectHref={ROUTES.ADDSUPPLIER}
+      redirectHref={ROUTES.ADDBRANCH}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"
     >
       <>
         <div className="py-4">
-          <LocalSearch route={ROUTES.SUPPLIERS} placeholder="Search..." />
+          <LocalSearch route={ROUTES.BRANCHES} placeholder="Search..." />
         </div>
         <DataRenderer
           success={success}
           error={error}
-          data={suppliers}
-          empty={SUPPLIER_EMPTY}
+          data={branches}
+          empty={BRANCH_EMPTY}
           render={() => (
             <DataTable
-              columns={SupplierColumn}
-              data={suppliers!}
+              columns={BranchColumn}
+              data={branches!}
               isNext={isNext}
             />
           )}
@@ -53,4 +53,4 @@ const Supplier = async ({ searchParams }: SearchParams) => {
   );
 };
 
-export default Supplier;
+export default Branch;

@@ -1,20 +1,21 @@
 import { IoCaretBackOutline } from "react-icons/io5";
 
 import CardContainer from "@/components/cards/CardContainer";
-import CategoryForm from "@/components/forms/CategoryForm";
+import CustomerForm from "@/components/forms/CustomerForm";
 import ROUTES from "@/constants/routes";
 
 const page = () => {
   return (
     <CardContainer
-      title="Add Category"
+      title="Add Customer"
       redirectTitle="BACK"
-      redirectHref={ROUTES.CATEGORIES}
+      redirectHref={ROUTES.CUSTOMERS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"
     >
-      <CategoryForm />
+      <CustomerForm />
     </CardContainer>
   );
 };
+
 export default page;

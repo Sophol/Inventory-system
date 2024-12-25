@@ -14,10 +14,7 @@ export interface Supplier {
   companyName: string;
   name: string;
   phone: string;
-  email?: string;
-  socialLink?: string;
   location: string;
-  description?: string;
   status: "active" | "inactive";
 }
 
@@ -55,9 +52,9 @@ export const SupplierColumn: ColumnDef<Supplier>[] = [
     ),
   },
   {
-    accessorKey: "email",
+    accessorKey: "location",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
+      <DataTableColumnHeader column={column} title="Location" />
     ),
   },
   {

@@ -15,7 +15,7 @@ const ROUTES = {
   PRODUCTDETAIL: (_id: string) => `/inventories/product/detail/${_id}`,
   CUSTOMERS: "/sales/customer",
   ADDCUSTOMER: "/sales/customer/form",
-  CUSTOMER: (_id: string) => `/purchases/customer/${_id}`,
+  CUSTOMER: (_id: string) => `/sales/customer/${_id}`,
   SUPPLIERS: "/purchases/supplier",
   ADDSUPPLIER: "/purchases/supplier/form",
   SUPPLIER: (_id: string) => `/purchases/supplier/${_id}`,

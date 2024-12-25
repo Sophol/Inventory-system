@@ -10,8 +10,8 @@ import z from "zod";
 import { dataStatuses } from "@/constants/data";
 import ROUTES from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
-import { createCustomer, editCustomer } from "@/lib/actions/customer.action";
-import { CreateCustomerSchema } from "@/lib/validations";
+import { createBranch, editBranch } from "@/lib/actions/branch.action";
+import { CreateBranchSchema } from "@/lib/validations";
 
 import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
@@ -19,43 +19,39 @@ import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 
 interface Params {
-  customer?: Customer;
+  branch?: Branch;
   isEdit?: boolean;
 }
 
-const CustomerForm = ({ customer, isEdit = false }: Params) => {
+const BranchForm = ({ branch, isEdit = false }: Params) => {
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
-  const form = useForm<z.infer<typeof CreateCustomerSchema>>({
-    resolver: zodResolver(CreateCustomerSchema),
+  const form = useForm<z.infer<typeof CreateBranchSchema>>({
+    resolver: zodResolver(CreateBranchSchema),
     defaultValues: {
-      name: customer?.name || "",
-      phone: customer?.phone || "",
-      email: customer?.email || "",
-      socialLink: customer?.socialLink || "",
-      location: customer?.location || "",
-      description: customer?.description || "",
-      balance: customer?.balance || 0,
-      saleType: customer?.saleType || "retail",
-      status: customer?.status || "active",
+      title: branch?.title || "",
+      phone: branch?.phone || "",
+      location: branch?.location || "",
+      description: branch?.description || "",
+      status: branch?.status || "active",
     },
   });
   const statusData: SelectData[] = dataStatuses;
-  const handleCreateCustomer = async (
-    data: z.infer<typeof CreateCustomerSchema>
+  const handleCreateBranch = async (
+    data: z.infer<typeof CreateBranchSchema>
   ) => {
     startTransaction(async () => {
-      if (isEdit && customer) {
-        const result = await editCustomer({
-          customerId: customer?._id,
+      if (isEdit && branch) {
+        const result = await editBranch({
+          branchId: branch?._id,
           ...data,
         });
         if (result.success) {
           toast({
             title: "success",
-            description: "Customer updated successfully.",
+            description: "Branch updated successfully.",
           });
-          if (result.data) router.push(ROUTES.CUSTOMERS);
+          if (result.data) router.push(ROUTES.BRANCHES);
         } else {
           toast({
             title: `Error ${result.status}`,
@@ -65,14 +61,14 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
         }
         return;
       }
-      const result = await createCustomer(data);
+      const result = await createBranch(data);
 
       if (result.success) {
         toast({
           title: "success",
-          description: "Customer created successfully.",
+          description: "Branch created successfully.",
         });
-        if (result.data) router.push(ROUTES.CUSTOMERS);
+        if (result.data) router.push(ROUTES.BRANCHES);
       } else {
         toast({
           title: `Error ${result.status}`,
@@ -86,37 +82,17 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
     <Form {...form}>
       <form
         className="flex flex-col gap-8"
-        onSubmit={form.handleSubmit(handleCreateCustomer)}
+        onSubmit={form.handleSubmit(handleCreateBranch)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormInput name="name" label="Name" control={form.control} />
+          <FormInput name="title" label="Title" control={form.control} />
           <FormInput name="phone" label="Phone" control={form.control} />
-          <FormInput
-            name="email"
-            label="Email"
-            isRequired={false}
-            control={form.control}
-          />
-          <FormInput
-            name="socialLink"
-            label="Social Link"
-            control={form.control}
-          />
           <FormInput name="location" label="Location" control={form.control} />
           <FormInput
             name="description"
             label="Description"
             isRequired={false}
             control={form.control}
-          />
-          <FormSelect
-            name="saleType"
-            label="Sale Type"
-            control={form.control}
-            items={[
-              { _id: "retail", title: "Retail" },
-              { _id: "wholesale", title: "Wholesale" },
-            ]}
           />
           <FormSelect
             name="status"
@@ -146,4 +122,4 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
   );
 };
 
-export default CustomerForm;
+export default BranchForm;

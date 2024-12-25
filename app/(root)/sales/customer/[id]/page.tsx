@@ -3,28 +3,29 @@ import { IoCaretBackOutline } from "react-icons/io5";
 
 import { auth } from "@/auth";
 import CardContainer from "@/components/cards/CardContainer";
-import CategoryForm from "@/components/forms/CategoryForm";
+import CustomerForm from "@/components/forms/CustomerForm";
 import ROUTES from "@/constants/routes";
-import { getCategory } from "@/lib/actions/category.action";
+import { getCustomer } from "@/lib/actions/customer.action";
 
-const EditCatgory = async ({ params }: RouteParams) => {
+const EditCustomer = async ({ params }: RouteParams) => {
   const { id } = await params;
   if (!id) return notFound();
   const session = await auth();
   if (!session) return redirect(ROUTES.SIGN_IN);
-  const { data: category, success } = await getCategory({ categoryId: id });
+  const { data: customer, success } = await getCustomer({ customerId: id });
   if (!success) return notFound();
 
   return (
     <CardContainer
-      title="Add Category"
+      title="Edit Customer"
       redirectTitle="BACK"
-      redirectHref={ROUTES.CATEGORIES}
+      redirectHref={ROUTES.CUSTOMERS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"
     >
-      <CategoryForm category={category} isEdit />
+      <CustomerForm customer={customer} isEdit />
     </CardContainer>
   );
 };
-export default EditCatgory;
+
+export default EditCustomer;

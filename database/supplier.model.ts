@@ -4,10 +4,10 @@ export interface ISupplier {
   companyName: string;
   name: string;
   phone: string;
-  email: string;
+  email?: string;
   socialLink: string;
   location: string;
-  description: string;
+  description?: string;
   status: "active" | "inactive";
 }
 export interface ISupplierDoc extends ISupplier, Document {}

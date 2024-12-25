@@ -54,3 +54,21 @@ export const CUSTOMER_EMPTY = {
     href: ROUTES.ADDCUSTOMER,
   },
 };
+export const SUPPLIER_EMPTY = {
+  title: "No Supplier Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add Supplier",
+    href: ROUTES.ADDSUPPLIER,
+  },
+};
+export const BRANCH_EMPTY = {
+  title: "No Branch Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add Branch",
+    href: ROUTES.ADDBRANCH,
+  },
+};

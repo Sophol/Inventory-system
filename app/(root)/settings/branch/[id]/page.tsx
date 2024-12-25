@@ -3,28 +3,29 @@ import { IoCaretBackOutline } from "react-icons/io5";
 
 import { auth } from "@/auth";
 import CardContainer from "@/components/cards/CardContainer";
-import CategoryForm from "@/components/forms/CategoryForm";
+import BranchForm from "@/components/forms/BranchForm";
 import ROUTES from "@/constants/routes";
-import { getCategory } from "@/lib/actions/category.action";
+import { getBranch } from "@/lib/actions/branch.action";
 
-const EditCatgory = async ({ params }: RouteParams) => {
+const EditBranch = async ({ params }: RouteParams) => {
   const { id } = await params;
   if (!id) return notFound();
   const session = await auth();
   if (!session) return redirect(ROUTES.SIGN_IN);
-  const { data: category, success } = await getCategory({ categoryId: id });
+  const { data: branch, success } = await getBranch({ branchId: id });
   if (!success) return notFound();
 
   return (
     <CardContainer
-      title="Add Category"
+      title="Edit Branch"
       redirectTitle="BACK"
-      redirectHref={ROUTES.CATEGORIES}
+      redirectHref={ROUTES.BRANCHES}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"
     >
-      <CategoryForm category={category} isEdit />
+      <BranchForm branch={branch} isEdit />
     </CardContainer>
   );
 };
-export default EditCatgory;
+
+export default EditBranch;

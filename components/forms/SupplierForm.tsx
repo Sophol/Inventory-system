@@ -10,8 +10,8 @@ import z from "zod";
 import { dataStatuses } from "@/constants/data";
 import ROUTES from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
-import { createCustomer, editCustomer } from "@/lib/actions/customer.action";
-import { CreateCustomerSchema } from "@/lib/validations";
+import { createSupplier, editSupplier } from "@/lib/actions/supplier.action";
+import { CreateSupplierSchema } from "@/lib/validations";
 
 import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
@@ -19,43 +19,42 @@ import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 
 interface Params {
-  customer?: Customer;
+  supplier?: Supplier;
   isEdit?: boolean;
 }
 
-const CustomerForm = ({ customer, isEdit = false }: Params) => {
+const SupplierForm = ({ supplier, isEdit = false }: Params) => {
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
-  const form = useForm<z.infer<typeof CreateCustomerSchema>>({
-    resolver: zodResolver(CreateCustomerSchema),
+  const form = useForm<z.infer<typeof CreateSupplierSchema>>({
+    resolver: zodResolver(CreateSupplierSchema),
     defaultValues: {
-      name: customer?.name || "",
-      phone: customer?.phone || "",
-      email: customer?.email || "",
-      socialLink: customer?.socialLink || "",
-      location: customer?.location || "",
-      description: customer?.description || "",
-      balance: customer?.balance || 0,
-      saleType: customer?.saleType || "retail",
-      status: customer?.status || "active",
+      companyName: supplier?.companyName || "",
+      name: supplier?.name || "",
+      phone: supplier?.phone || "",
+      email: supplier?.email || "",
+      socialLink: supplier?.socialLink || "",
+      location: supplier?.location || "",
+      description: supplier?.description || "",
+      status: supplier?.status || "active",
     },
   });
   const statusData: SelectData[] = dataStatuses;
-  const handleCreateCustomer = async (
-    data: z.infer<typeof CreateCustomerSchema>
+  const handleCreateSupplier = async (
+    data: z.infer<typeof CreateSupplierSchema>
   ) => {
     startTransaction(async () => {
-      if (isEdit && customer) {
-        const result = await editCustomer({
-          customerId: customer?._id,
+      if (isEdit && supplier) {
+        const result = await editSupplier({
+          supplierId: supplier?._id,
           ...data,
         });
         if (result.success) {
           toast({
             title: "success",
-            description: "Customer updated successfully.",
+            description: "Supplier updated successfully.",
           });
-          if (result.data) router.push(ROUTES.CUSTOMERS);
+          if (result.data) router.push(ROUTES.SUPPLIERS);
         } else {
           toast({
             title: `Error ${result.status}`,
@@ -65,14 +64,14 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
         }
         return;
       }
-      const result = await createCustomer(data);
+      const result = await createSupplier(data);
 
       if (result.success) {
         toast({
           title: "success",
-          description: "Customer created successfully.",
+          description: "Supplier created successfully.",
         });
-        if (result.data) router.push(ROUTES.CUSTOMERS);
+        if (result.data) router.push(ROUTES.SUPPLIERS);
       } else {
         toast({
           title: `Error ${result.status}`,
@@ -86,9 +85,14 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
     <Form {...form}>
       <form
         className="flex flex-col gap-8"
-        onSubmit={form.handleSubmit(handleCreateCustomer)}
+        onSubmit={form.handleSubmit(handleCreateSupplier)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <FormInput
+            name="companyName"
+            label="Company Name"
+            control={form.control}
+          />
           <FormInput name="name" label="Name" control={form.control} />
           <FormInput name="phone" label="Phone" control={form.control} />
           <FormInput
@@ -99,24 +103,16 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
           />
           <FormInput
             name="socialLink"
+            isRequired={false}
             label="Social Link"
             control={form.control}
           />
           <FormInput name="location" label="Location" control={form.control} />
           <FormInput
             name="description"
-            label="Description"
             isRequired={false}
+            label="Description"
             control={form.control}
-          />
-          <FormSelect
-            name="saleType"
-            label="Sale Type"
-            control={form.control}
-            items={[
-              { _id: "retail", title: "Retail" },
-              { _id: "wholesale", title: "Wholesale" },
-            ]}
           />
           <FormSelect
             name="status"
@@ -146,4 +142,4 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
   );
 };
 
-export default CustomerForm;
+export default SupplierForm;

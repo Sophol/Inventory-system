@@ -176,11 +176,11 @@ export const GetBranchSchema = z.object({
 export const CreateCustomerSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   phone: z.string().min(1, { message: "Phone is required" }),
-  email: z.string().email({ message: "Invalid email address" }).optional(),
+  email: z.string().optional(),
   socialLink: z.string().url({ message: "Invalid URL" }).optional(),
   location: z.string().min(1, { message: "Location is required" }),
   description: z.string().optional(),
-  balance: z.number().positive().default(0),
+  balance: z.number().default(0),
   saleType: z.enum(["retail", "wholesale"]).default("retail"),
   status: z.enum(["active", "inactive"]).default("active"),
 });
@@ -196,7 +196,7 @@ export const CreateSupplierSchema = z.object({
   phone: z.string().min(1, "Phone is required"),
   email: z.string().optional(),
   socialLink: z.string().optional(),
-  location: z.string().optional(),
+  location: z.string().min(1, "Location is required"),
   description: z.string().optional(),
   status: z.enum(["active", "inactive"]),
 });
