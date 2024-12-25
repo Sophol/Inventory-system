@@ -1,12 +1,13 @@
+import { CiCirclePlus } from "react-icons/ci";
+
 import { ProductColumn } from "@/columns/ProductColumn";
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
 import LocalSearch from "@/components/search/LocalSearch";
 import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
-import { UNIT_PRODUCT } from "@/constants/states";
+import { PRODUCT_EMPTY } from "@/constants/states";
 import { getProducts } from "@/lib/actions/product.action";
-import { CiCirclePlus } from "react-icons/ci";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -36,7 +37,7 @@ const Product = async ({ searchParams }: SearchParams) => {
           success={success}
           error={error}
           data={products}
-          empty={UNIT_PRODUCT}
+          empty={PRODUCT_EMPTY}
           render={() => (
             <DataTable
               columns={ProductColumn}
