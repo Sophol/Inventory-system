@@ -160,3 +160,50 @@ export const EditProductSchema = CreateProductSchema.extend({
 export const GetProductSchema = z.object({
   productId: z.string().min(1, { message: "Unit ID is required." }),
 });
+export const CreateBranchSchema = z.object({
+  title: z.string().min(1, { message: "Title is required" }),
+  phone: z.string().min(1, { message: "Phone is required" }),
+  location: z.string().min(1, { message: "Location is required" }),
+  description: z.string().optional(),
+  status: z.enum(["active", "inactive"]),
+});
+export const EditBranchSchema = CreateBranchSchema.extend({
+  branchId: z.string().min(1, { message: "Branch ID is required." }),
+});
+export const GetBranchSchema = z.object({
+  branchId: z.string().min(1, { message: "Branch ID is required." }),
+});
+export const CreateCustomerSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  phone: z.string().min(1, { message: "Phone is required" }),
+  email: z.string().email({ message: "Invalid email address" }).optional(),
+  socialLink: z.string().url({ message: "Invalid URL" }).optional(),
+  location: z.string().min(1, { message: "Location is required" }),
+  description: z.string().optional(),
+  balance: z.number().positive().default(0),
+  saleType: z.enum(["retail", "wholesale"]).default("retail"),
+  status: z.enum(["active", "inactive"]).default("active"),
+});
+export const EditCustomerSchema = CreateCustomerSchema.extend({
+  customerId: z.string().min(1, { message: "Customer ID is required." }),
+});
+export const GetCustomerSchema = z.object({
+  customerId: z.string().min(1, { message: "Customer ID is required." }),
+});
+export const CreateSupplierSchema = z.object({
+  companyName: z.string().min(1, "Company name is required"),
+  name: z.string().min(1, "Name is required"),
+  phone: z.string().min(1, "Phone is required"),
+  email: z.string().optional(),
+  socialLink: z.string().optional(),
+  location: z.string().optional(),
+  description: z.string().optional(),
+  status: z.enum(["active", "inactive"]),
+});
+
+export const EditSupplierSchema = CreateSupplierSchema.extend({
+  supplierId: z.string().min(1, "Supplier ID is required"),
+});
+export const GetSupplierSchema = z.object({
+  supplierId: z.string().min(1, "Supplier ID is required"),
+});

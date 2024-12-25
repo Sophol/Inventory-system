@@ -13,5 +13,14 @@ const ROUTES = {
   ADDPRODUCT: "/inventories/product/form",
   PRODUCT: (_id: string) => `/inventories/product/${_id}`,
   PRODUCTDETAIL: (_id: string) => `/inventories/product/detail/${_id}`,
+  CUSTOMERS: "/sales/customer",
+  ADDCUSTOMER: "/sales/customer/form",
+  CUSTOMER: (_id: string) => `/purchases/customer/${_id}`,
+  SUPPLIERS: "/purchases/supplier",
+  ADDSUPPLIER: "/purchases/supplier/form",
+  SUPPLIER: (_id: string) => `/purchases/supplier/${_id}`,
+  BRANCHES: "/settings/branch",
+  ADDBRANCH: "/settings/branch/form",
+  BRANCH: (_id: string) => `/settings/branch/${_id}`,
 };
 export default ROUTES;

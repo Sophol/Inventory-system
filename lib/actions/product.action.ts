@@ -1,8 +1,10 @@
 "use server";
+import mongoose, { FilterQuery } from "mongoose";
+
 import ProductUnit from "@/database/product-unit.model";
 import Product, { IProductDoc } from "@/database/product.model";
 import Unit from "@/database/unit.model";
-import mongoose, { FilterQuery } from "mongoose";
+
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { updateLevels } from "../utils";
@@ -143,13 +145,11 @@ export async function editProduct(
           if (unit.wholeSalePrice !== undefined)
             existingUnit.wholeSalePrice = unit.wholeSalePrice;
           if (unit.level !== undefined) existingUnit.level = unit.level;
-          //product.units.push(existingUnit.unit);
+
           await existingUnit.save({ session });
         } else {
           newUnitDocuments.push({ ...unit, product: productId });
-          //   await ProductUnit.create([{ ...unit, product: productId }], {
-          //     session,
-          //   });
+
           product.units.push(unit.unit);
         }
       }

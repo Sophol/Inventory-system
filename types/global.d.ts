@@ -27,12 +27,11 @@ interface PaginatedSearchParams {
 }
 
 interface GlobalFilter {
-  globalFilter: any;
+  globalFilter: string | number | boolean | null;
 }
 interface SelectData {
   _id: string;
   title: string;
-  status: string;
 }
 interface Category {
   _id: string;
@@ -46,7 +45,7 @@ interface Unit {
 }
 interface ProductUnit {
   unit: string;
-  product: any;
+  product: string;
   qty: number;
   cost?: number;
   price?: number;
@@ -66,4 +65,36 @@ interface Product {
   alertQty: number;
   status: "active" | "inactive";
   categoryTitle?: string;
+}
+interface Branch {
+  _id: string;
+  title: string;
+  phone: string;
+  location: string;
+  description?: string;
+  status: "active" | "inactive";
+}
+
+interface Customer {
+  _id: string;
+  name: string;
+  phone: string;
+  email?: string;
+  socialLink?: string;
+  location: string;
+  description?: string;
+  balance?: number;
+  saleType: "retail" | "wholesale";
+  status: "active" | "inactive";
+}
+interface Supplier {
+  _id: string;
+  companyName: string;
+  name: string;
+  phone: string;
+  email?: string;
+  socialLink?: string;
+  location: string;
+  description?: string;
+  status: "active" | "inactive";
 }

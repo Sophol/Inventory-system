@@ -36,12 +36,21 @@ export const UNIT_EMPTY = {
     href: ROUTES.ADDUNIT,
   },
 };
-export const UNIT_PRODUCT = {
+export const PRODUCT_EMPTY = {
   title: "No Product Found",
   message:
     "Looks like the database is taking a nap. Wake it up with some new entries.",
   button: {
     text: "Add Product",
     href: ROUTES.ADDPRODUCT,
+  },
+};
+export const CUSTOMER_EMPTY = {
+  title: "No Customer Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add Customer",
+    href: ROUTES.ADDCUSTOMER,
   },
 };

@@ -1,13 +1,14 @@
-import { CategoryColumn } from "@/columns/CategoryColumn";
-import { DataTable } from "@/components/table/DataTable";
-import { CiCirclePlus } from "react-icons/ci";
 import React from "react";
+import { CiCirclePlus } from "react-icons/ci";
+
+import { CategoryColumn } from "@/columns/CategoryColumn";
 import CardContainer from "@/components/cards/CardContainer";
-import { getCategories } from "@/lib/actions/category.action";
 import DataRenderer from "@/components/DataRenderer";
-import { CATEGORY_EMPTY } from "@/constants/states";
-import ROUTES from "@/constants/routes";
 import LocalSearch from "@/components/search/LocalSearch";
+import { DataTable } from "@/components/table/DataTable";
+import ROUTES from "@/constants/routes";
+import { CATEGORY_EMPTY } from "@/constants/states";
+import { getCategories } from "@/lib/actions/category.action";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;

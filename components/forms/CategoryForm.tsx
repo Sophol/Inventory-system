@@ -1,19 +1,23 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { CreateCategorySchema } from "@/lib/validations";
 import z from "zod";
-import { Form } from "../ui/form";
+
+import { dataStatuses } from "@/constants/data";
+import ROUTES from "@/constants/routes";
+import { toast } from "@/hooks/use-toast";
+import { createCategory, editCategory } from "@/lib/actions/category.action";
+import { CreateCategorySchema } from "@/lib/validations";
+
 import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
 import { Button } from "../ui/button";
-import { useTransition } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { createCategory, editCategory } from "@/lib/actions/category.action";
-import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import ROUTES from "@/constants/routes";
-import { dataStatuses } from "@/constants/data";
+import { Form } from "../ui/form";
+
 interface Params {
   category?: Category;
   isEdit?: boolean;
@@ -89,7 +93,7 @@ const CategoryForm = ({ category, isEdit = false }: Params) => {
           <Button
             type="submit"
             disabled={isPending}
-            className="primary-gradient w-fit !text-light-900 uppercase"
+            className="primary-gradient w-fit  uppercase !text-light-900 "
           >
             {isPending ? (
               <>

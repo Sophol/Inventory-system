@@ -5,7 +5,7 @@ export interface ISupplier {
   name: string;
   phone: string;
   email: string;
-  social_link: string;
+  socialLink: string;
   location: string;
   description: string;
   status: "active" | "inactive";
@@ -17,7 +17,7 @@ const SupplierSchema = new Schema<ISupplier>(
     name: { type: String, required: true },
     phone: { type: String, required: true },
     email: { type: String },
-    social_link: { type: String },
+    socialLink: { type: String },
     location: { type: String },
     description: { type: String },
     status: {

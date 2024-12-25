@@ -9,13 +9,19 @@ import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 
-export type Category = {
+export interface Supplier {
   _id: string;
-  title: string;
-  status: string;
-};
+  companyName: string;
+  name: string;
+  phone: string;
+  email?: string;
+  socialLink?: string;
+  location: string;
+  description?: string;
+  status: "active" | "inactive";
+}
 
-export const CategoryColumn: ColumnDef<Category>[] = [
+export const SupplierColumn: ColumnDef<Supplier>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
@@ -31,19 +37,37 @@ export const CategoryColumn: ColumnDef<Category>[] = [
     },
   },
   {
-    accessorKey: "title",
+    accessorKey: "companyName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader column={column} title="Company Name" />
+    ),
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Name" />
+    ),
+  },
+  {
+    accessorKey: "phone",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Phone" />
+    ),
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Email" />
     ),
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const category = row.original;
+      const supplier = row.original;
       return (
         <RedirectButton
           Icon={FaRegEdit}
-          href={ROUTES.CATEGORY(category._id)}
+          href={ROUTES.SUPPLIER(supplier._id)}
           isIcon
           className="text-primary-500"
         />

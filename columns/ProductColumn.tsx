@@ -1,17 +1,22 @@
 "use client";
 
+import { ColumnDef } from "@tanstack/react-table";
+import { FaRegEdit } from "react-icons/fa";
+
 import RedirectButton from "@/components/formInputs/RedirectButton";
 import { Badge } from "@/components/ui/badge";
 import ROUTES from "@/constants/routes";
-import { ColumnDef } from "@tanstack/react-table";
+
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
-import { FaRegEdit } from "react-icons/fa";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Product = {
   _id: string;
   title: string;
-  category: any;
+  category: {
+    _id: string;
+    title: string;
+  };
   status: string;
 };
 

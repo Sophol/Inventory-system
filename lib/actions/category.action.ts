@@ -1,7 +1,9 @@
 "use server";
+import { FilterQuery } from "mongoose";
+
 import { Category } from "@/database";
 import { ICategoryDoc } from "@/database/category.model";
-import { FilterQuery } from "mongoose";
+
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 import {

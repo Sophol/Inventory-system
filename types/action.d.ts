@@ -60,3 +60,51 @@ interface EditProductParams extends CreateProductParams {
 interface GetProductParams {
   productId: string;
 }
+interface CreateBranchParams {
+  title: string;
+  phone: string;
+  location: string;
+  description?: string;
+  status: "active" | "inactive";
+}
+interface EditBranchParams extends CreateBranchParams {
+  branchId: string;
+}
+interface GetBranchParams {
+  branchId: string;
+}
+interface CreateCustomerParams {
+  name: string;
+  phone: string;
+  email?: string;
+  socialLink?: string;
+  location: string;
+  description?: string;
+  balance?: number;
+  saleType: "retail" | "wholesale";
+  status: "active" | "inactive";
+}
+interface EditCustomerParams extends CreateCustomerParams {
+  customerId: string;
+}
+interface GetCustomerParams {
+  customerId: string;
+}
+interface CreateSupplierParams {
+  companyName: string;
+  name: string;
+  phone: string;
+  email?: string;
+  socialLink?: string;
+  location: string;
+  description?: string;
+  status: "active" | "inactive";
+}
+
+interface EditSupplierParams extends CreateSupplierParams {
+  supplierId: string;
+}
+
+interface GetSupplierParams {
+  supplierId: string;
+}

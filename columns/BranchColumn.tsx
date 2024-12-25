@@ -9,13 +9,16 @@ import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 
-export type Category = {
+export interface Branch {
   _id: string;
   title: string;
-  status: string;
-};
+  phone: string;
+  location: string;
+  description?: string;
+  status: "active" | "inactive";
+}
 
-export const CategoryColumn: ColumnDef<Category>[] = [
+export const BranchColumn: ColumnDef<Branch>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
@@ -37,13 +40,25 @@ export const CategoryColumn: ColumnDef<Category>[] = [
     ),
   },
   {
+    accessorKey: "phone",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Phone" />
+    ),
+  },
+  {
+    accessorKey: "location",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Location" />
+    ),
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
-      const category = row.original;
+      const branch = row.original;
       return (
         <RedirectButton
           Icon={FaRegEdit}
-          href={ROUTES.CATEGORY(category._id)}
+          href={ROUTES.BRANCH(branch._id)}
           isIcon
           className="text-primary-500"
         />
