@@ -34,9 +34,11 @@ interface ComboboxProps {
   fetchData: (params: {
     page: number;
     query: string;
+    parentId?: string;
   }) => Promise<{ data: SelectData[]; isNext: boolean }>;
   fetchSingleItem: SelectData | null;
   isRequired?: boolean;
+  parentId?: string;
 }
 
 const FormCombobox: React.FC<ComboboxProps> = ({
@@ -48,6 +50,7 @@ const FormCombobox: React.FC<ComboboxProps> = ({
   fetchData,
   fetchSingleItem,
   isRequired = true,
+  parentId,
 }) => {
   const [data, setData] = useState<SelectData[]>([]);
   const [selectedItem, setSelectedItem] = useState<SelectData | null>();
@@ -63,12 +66,18 @@ const FormCombobox: React.FC<ComboboxProps> = ({
     if (buttonRef.current) {
       setPopoverWidth(`${buttonRef.current.offsetWidth}px`);
     }
-
-    handleFetchData(1, "");
-  }, [buttonRef.current]);
-  useEffect(() => {}, [selectedItem]);
-  const handleFetchData = async (page: number, query: string) => {
-    const result = await fetchData({ page, query });
+    if (parentId) {
+      handleFetchData(1, "", parentId);
+    } else {
+      handleFetchData(1, "");
+    }
+  }, [buttonRef.current, parentId]);
+  const handleFetchData = async (
+    page: number,
+    query: string,
+    parentId?: string
+  ) => {
+    const result = await fetchData({ page, query, parentId });
 
     setData(result.data);
     setSelectedItem(fetchSingleItem);
@@ -77,12 +86,12 @@ const FormCombobox: React.FC<ComboboxProps> = ({
 
   const handleSearch = (query: string) => {
     setQuery(query);
-    handleFetchData(1, query);
+    handleFetchData(1, query, parentId);
   };
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
-    handleFetchData(newPage, query);
+    handleFetchData(newPage, query, parentId);
   };
 
   return (
@@ -102,7 +111,7 @@ const FormCombobox: React.FC<ComboboxProps> = ({
                     variant="outline"
                     role="combobox"
                     ref={buttonRef}
-                    className="paragraph-regular justify-between background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[36px] border"
+                    className="paragraph-regular justify-between light-border-3 text-dark300_light700 no-focus min-h-[36px] border"
                   >
                     {selectedItem.title}
                     <ChevronDown className="opacity-50" />
@@ -113,7 +122,7 @@ const FormCombobox: React.FC<ComboboxProps> = ({
                     role="combobox"
                     ref={buttonRef}
                     className={cn(
-                      "paragraph-regular justify-between background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[36px] border",
+                      "paragraph-regular justify-between light-border-3 text-dark300_light700 no-focus min-h-[36px] border",
                       !field.value && "text-muted-foreground"
                     )}
                   >

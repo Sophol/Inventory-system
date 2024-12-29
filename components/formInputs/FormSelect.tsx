@@ -44,7 +44,7 @@ function FormSelect({
           </FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[36px] border">
+              <SelectTrigger className="paragraph-regular light-border-3 text-dark300_light700 no-focus min-h-[36px] border">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>

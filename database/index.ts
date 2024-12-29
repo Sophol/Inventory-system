@@ -13,6 +13,7 @@ import SaleDetail from "./sale-detail.model";
 import Stock from "./stock.model";
 import Supplier from "./supplier.model";
 import User from "./user.model";
+import Setting from "./setting.model";
 
 export {
   Account,
@@ -30,4 +31,5 @@ export {
   Stock,
   Supplier,
   User,
+  Setting,
 };

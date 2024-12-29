@@ -1,4 +1,6 @@
-import { Input } from "../ui/input";
+import React from "react";
+import { Control, FieldValues, Path, useController } from "react-hook-form";
+
 import {
   FormControl,
   FormDescription,
@@ -6,56 +8,76 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Control } from "react-hook-form";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-type FormInputProps = {
-  name: string;
+type FormInputProps<T extends FieldValues> = {
+  name: Path<T>;
   label?: string;
   message?: string;
   type?: string;
-  control: Control<any, any>;
+  control: Control<T>;
   isRequired?: boolean;
+  placeholder?: string;
+  readonly?: boolean;
+  onChange?: (value: any) => void;
 };
 
-function FormInput({
+function FormInput<T extends FieldValues>({
   label,
   name,
   message,
   control,
   type = "text",
   isRequired = true,
-}: FormInputProps) {
+  placeholder,
+  readonly = false,
+  onChange,
+}: FormInputProps<T>) {
+  const {
+    field: { onChange: fieldOnChange, ...field },
+  } = useController({ name, control });
+
+  const handleChange = (value: any) => {
+    let newVal;
+    if (type === "number") {
+      newVal = value === "" ? "" : Number(value);
+    } else {
+      newVal = value;
+    }
+    fieldOnChange(newVal);
+    if (onChange) {
+      onChange(value);
+    }
+  };
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
         <FormItem className="flex w-full flex-col">
-          <FormLabel className="paragraph-semibold text-dark400_light800">
-            {label} {isRequired && <span className="text-primary-500">*</span>}
-          </FormLabel>
+          {label && (
+            <FormLabel className="paragraph-semibold text-dark400_light800">
+              {label}
+              {isRequired && <span className="text-primary-500">*</span>}
+            </FormLabel>
+          )}
           <FormControl>
             <Input
               type={type}
-              className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[36px] border"
+              className="paragraph-regular light-border-3 text-dark300_light700 no-focus min-h-[36px] border"
+              placeholder={placeholder}
+              readOnly={readonly}
               {...field}
               value={field.value ?? ""}
-              onChange={(e) => {
-                const value = e.target.value;
-                let newVal;
-                if (type === "number") {
-                  newVal = value === "" ? "" : Number(value);
-                } else {
-                  newVal = value;
-                }
-                field.onChange(newVal);
-              }}
+              onChange={(e) => handleChange(e.target.value)}
             />
           </FormControl>
-          <FormDescription className="body-regular mt-2.5 text-light-500">
-            {message}
-          </FormDescription>
+          {message && (
+            <FormDescription className="body-regular mt-2.5 text-light-500">
+              {message}
+            </FormDescription>
+          )}
           <FormMessage />
         </FormItem>
       )}

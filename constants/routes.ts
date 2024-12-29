@@ -22,5 +22,8 @@ const ROUTES = {
   BRANCHES: "/settings/branch",
   ADDBRANCH: "/settings/branch/form",
   BRANCH: (_id: string) => `/settings/branch/${_id}`,
+  PURCHASES: "/purchases/order",
+  ADDPURCHASE: "/purchases/order/form",
+  PURCHASE: (_id: string) => `/purchases/order/${_id}`,
 };
 export default ROUTES;

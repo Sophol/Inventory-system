@@ -2,9 +2,10 @@
 import { Trash2 } from "lucide-react";
 import React from "react";
 import { useFieldArray } from "react-hook-form";
+
+import FormInput from "./FormInput";
 import FormCombobox from "../formInputs/FormCombobox";
 import { Button } from "../ui/button";
-import FormInput from "./FormInput";
 interface SelectData {
   _id: string;
   title: string | undefined;
@@ -16,9 +17,6 @@ interface FormUnitVariantProps {
     page: number;
     query: string;
   }) => Promise<{ data: SelectData[]; isNext: boolean }>;
-  fetchSingleUnit: (
-    id: string
-  ) => Promise<SelectData | null> | SelectData | null;
 }
 
 const FormUnitVariant: React.FC<FormUnitVariantProps> = ({

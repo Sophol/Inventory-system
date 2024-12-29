@@ -98,3 +98,45 @@ interface Supplier {
   description?: string;
   status: "active" | "inactive";
 }
+interface PurchaseDetail {
+  _id: string;
+  purchase: string;
+  product: string;
+  unit: string;
+  description?: string;
+  discount: number;
+  qty: number;
+  cost: number;
+  total: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+}
+
+interface Purchase {
+  _id: string;
+  supplier: { _id: string; title: string };
+  branch: { _id: string; title: string };
+  referenceNo: string;
+  description?: string;
+  purchaseDate: string;
+  discount: number;
+  subtotal: number;
+  grandtoal: number;
+  paid: number;
+  balance: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  orderStatus: "pending" | "approved" | "completed";
+  paymentStatus: "pending" | "credit" | "completed";
+  purchaseDetails: PurchaseDetail[];
+}
+interface Setting {
+  _id: string;
+  companyName: string;
+  companyLogo: string;
+  address: string;
+  phone: string;
+  exchangeRateD: number;
+  exchangeRateT: number;
+}

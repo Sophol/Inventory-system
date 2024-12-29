@@ -5,11 +5,12 @@ export interface IPurchase {
   branch: Types.ObjectId;
   referenceNo: string;
   description: string;
-  purchaseDate: any;
+  purchaseDate: Date;
   discount: number;
-  // tax: number;
   subtotal: number;
   grandtoal: number;
+  exchangeRateD: number;
+  exchangeRateT: number;
   paid: number;
   balance: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
@@ -25,9 +26,10 @@ const PurchaseSchema = new Schema<IPurchase>(
     purchaseDate: { type: Date, default: Date.now() },
     description: { type: String },
     discount: { type: Number, default: 0 },
-    //tax: { type: Number, default: 0 },
     subtotal: { type: Number, default: 0 },
     grandtoal: { type: Number, default: 0 },
+    exchangeRateD: { type: Number, default: 0 },
+    exchangeRateT: { type: Number, default: 0 },
     paid: { type: Number, default: 0 },
     balance: { type: Number, default: 0 },
     paidBy: {

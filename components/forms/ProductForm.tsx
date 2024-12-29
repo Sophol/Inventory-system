@@ -1,24 +1,26 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { CreateProductSchema } from "@/lib/validations";
 import z from "zod";
+
+import { CreateProductSchema } from "@/lib/validations";
+import { createProduct, editProduct } from "@/lib/actions/product.action";
+import { getCategories } from "@/lib/actions/category.action";
+import { getUnits } from "@/lib/actions/unit.action";
+import { dataStatuses } from "@/constants/data";
+import ROUTES from "@/constants/routes";
+import { toast } from "@/hooks/use-toast";
+
 import { Form } from "../ui/form";
+import { Button } from "../ui/button";
+import FormCombobox from "../formInputs/FormCombobox";
 import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
-import { Button } from "../ui/button";
-import { useTransition } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import ROUTES from "@/constants/routes";
-import { createProduct, editProduct } from "@/lib/actions/product.action";
-import FormCombobox from "../formInputs/FormCombobox";
-import { getCategories } from "@/lib/actions/category.action";
-import { dataStatuses } from "@/constants/data";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { getUnits } from "@/lib/actions/unit.action";
 import FormUnitVariant from "../formInputs/FormUnitVariant";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 interface Params {
   product?: Product;
   isEdit?: boolean;
@@ -80,16 +82,6 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
       return { data: data?.units || [], isNext: data?.isNext || false };
     }
     return { data: [], isNext: false };
-  };
-  const fetchSingleUnit = (id: string) => {
-    if (product && product.units) {
-      const unit = product.units.find((u) => u.unit.toString() === id);
-      console.log("fetchSingleCategory - Data:", unit);
-      if (unit) {
-        return { _id: unit.unit, title: unit.unitTitle };
-      }
-    }
-    return null;
   };
   const handleCreateProduct = async (
     data: z.infer<typeof CreateProductSchema>

@@ -108,3 +108,54 @@ interface EditSupplierParams extends CreateSupplierParams {
 interface GetSupplierParams {
   supplierId: string;
 }
+interface PurchaseDetailParams {
+  product: string;
+  unit: string;
+  description?: string;
+  discount: number;
+  qty: number;
+  cost: number;
+  total: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+}
+
+interface CreatePurchaseParams {
+  supplier: string;
+  branch: string;
+  referenceNo: string;
+  description?: string;
+  purchaseDate?: Date | string;
+  discount: number;
+  subtotal: number;
+  grandtoal: number;
+  paid: number;
+  balance: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  orderStatus: "pending" | "approved" | "completed";
+  paymentStatus: "pending" | "credit" | "completed";
+  purchaseDetails: PurchaseDetailParams[];
+}
+
+interface EditPurchaseParams extends CreatePurchaseParams {
+  purchaseId: string;
+}
+interface GetPurchaseParams {
+  purchaseId: string;
+}
+
+interface GetSettingParams {
+  settingId: string;
+}
+
+interface EditSettingParams {
+  settingId: string;
+  companyName: string;
+  companyLogo: string;
+  address: string;
+  phone: string;
+  exchangeRateD: number;
+  exchangeRateT: number;
+}

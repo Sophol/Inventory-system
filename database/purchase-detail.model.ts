@@ -9,6 +9,8 @@ export interface IPurchaseDetail {
   cost: number;
   total: number;
   description: string;
+  exchangeRateD: number;
+  exchangeRateT: number;
 }
 export interface IPurchaseDetailDoc extends IPurchaseDetail, Document {}
 const PurchaseDetailSchema = new Schema<IPurchaseDetail>(
@@ -21,6 +23,8 @@ const PurchaseDetailSchema = new Schema<IPurchaseDetail>(
     qty: { type: Number, default: 0 },
     cost: { type: Number, default: 0 },
     total: { type: Number, default: 0 },
+    exchangeRateD: { type: Number, default: 0 },
+    exchangeRateT: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

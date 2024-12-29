@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { z } from "zod";
+import { string, z } from "zod";
 
 export const ObjectIdSchema = z
   .string()
@@ -206,4 +206,57 @@ export const EditSupplierSchema = CreateSupplierSchema.extend({
 });
 export const GetSupplierSchema = z.object({
   supplierId: z.string().min(1, "Supplier ID is required"),
+});
+export const PurchaseDetailSchema = z.object({
+  product: z.string().min(1, "Product is required"),
+  unit: z.string().min(1, "Unit is required"),
+  description: z.string().optional(),
+  discount: z.number().min(0).default(0),
+  qty: z.number().min(0).default(0),
+  cost: z.number().min(0).default(0),
+  total: z.number().min(0).default(0),
+});
+export const CreatePurchaseDetailSchema = PurchaseDetailSchema.extend({
+  purchase: string().min(1, "Purchase ID is required"),
+});
+export const CreatePurchaseSchema = z.object({
+  supplier: z.string().min(1, "Supplier is required"),
+  branch: z.string().min(1, "Branch is required"),
+  referenceNo: z.string().min(1, "Reference number is required"),
+  description: z.string().optional(),
+  purchaseDate: z.date(),
+  discount: z.number().min(0).default(0),
+  subtotal: z.number().min(0).default(0),
+  grandtoal: z.number().min(0).default(0),
+  paid: z.number().min(0).default(0),
+  balance: z.number().min(0).default(0),
+  exchangeRateD: z.number().min(0).default(0),
+  exchangeRateT: z.number().min(0).default(0),
+  paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]).optional(),
+  orderStatus: z.enum(["pending", "approved", "completed"]).default("pending"),
+  paymentStatus: z.enum(["pending", "credit", "completed"]).default("pending"),
+  purchaseDetails: z
+    .array(PurchaseDetailSchema)
+    .min(1, { message: "At least one Unit is required." }),
+});
+
+export const EditPurchaseSchema = CreatePurchaseSchema.extend({
+  purchaseId: z.string().min(1, "Purchase ID is required"),
+});
+export const GetPurchaseSchema = z.object({
+  purchaseId: z.string().min(1, "Purchase ID is required"),
+});
+
+export const GetSettingSchema = z.object({
+  settingId: z.string().min(1, "Setting ID is required"),
+});
+
+export const EditSettingSchema = z.object({
+  settingId: z.string().min(1, "Setting ID is required"),
+  companyName: z.string().min(1, "Company Name is required"),
+  companyLogo: z.string().min(1, "Company Logo is required"),
+  address: z.string().min(1, "Address is required"),
+  phone: z.string().min(1, "Phone is required"),
+  exchangeRateD: z.number().min(0).default(0),
+  exchangeRateT: z.number().min(0).default(0),
 });
