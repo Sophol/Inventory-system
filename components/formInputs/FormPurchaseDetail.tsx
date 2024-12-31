@@ -155,7 +155,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
                   name={`purchaseDetails.${index}.product`}
                   label="Product"
                   placeholder="Select Product"
-                  fetchSingleItem={null}
+                  fetchSingleItem={field.selectedProduct}
                   fetchData={fetchProducts}
                   setValue={(name, value) => {
                     setValue(name, value);
@@ -169,7 +169,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
                   name={`purchaseDetails.${index}.unit`}
                   label="Unit"
                   placeholder="Select unit"
-                  fetchSingleItem={null}
+                  fetchSingleItem={field.selectedUnit}
                   parentId={selectedProduct}
                   fetchData={(params) =>
                     fetchUnits({ ...params, parentId: selectedProduct })

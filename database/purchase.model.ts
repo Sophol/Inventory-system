@@ -8,7 +8,7 @@ export interface IPurchase {
   purchaseDate: Date;
   discount: number;
   subtotal: number;
-  grandtoal: number;
+  grandtotal: number;
   exchangeRateD: number;
   exchangeRateT: number;
   paid: number;
@@ -27,7 +27,7 @@ const PurchaseSchema = new Schema<IPurchase>(
     description: { type: String },
     discount: { type: Number, default: 0 },
     subtotal: { type: Number, default: 0 },
-    grandtoal: { type: Number, default: 0 },
+    grandtotal: { type: Number, default: 0 },
     exchangeRateD: { type: Number, default: 0 },
     exchangeRateT: { type: Number, default: 0 },
     paid: { type: Number, default: 0 },

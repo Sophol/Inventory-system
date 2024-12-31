@@ -1,11 +1,13 @@
+"use server";
 import mongoose, { FilterQuery } from "mongoose";
 
-import { Purchase, PurchaseDetail } from "@/database";
+import { ProductUnit, Purchase, PurchaseDetail, Stock } from "@/database";
 import { IPurchaseDetailDoc } from "@/database/purchase-detail.model";
 import { IPurchaseDoc } from "@/database/purchase.model";
 
 import action from "../handlers/action";
 import handleError from "../handlers/error";
+import { convertToSmallUnit } from "../utils";
 import {
   CreatePurchaseSchema,
   EditPurchaseSchema,
@@ -35,13 +37,14 @@ export async function createPurchase(
     purchaseDate,
     discount,
     subtotal,
-    grandtoal,
-    paid,
+    grandtotal,
     balance,
     paidBy,
     orderStatus,
     paymentStatus,
     purchaseDetails,
+    exchangeRateD,
+    exchangeRateT,
   } = validatedData.params!;
 
   const session = await mongoose.startSession();
@@ -58,12 +61,14 @@ export async function createPurchase(
           purchaseDate,
           discount,
           subtotal,
-          grandtoal,
-          paid,
+          grandtotal,
+          paid: grandtotal,
           balance,
           paidBy,
           orderStatus,
           paymentStatus,
+          exchangeRateD,
+          exchangeRateT,
         },
       ],
       { session }
@@ -74,13 +79,82 @@ export async function createPurchase(
     }
 
     const purchaseDetailDocuments: IPurchaseDetailDoc[] = [];
+    const stockUpdates: { [key: string]: number } = {};
     for (const detail of purchaseDetails) {
+      detail.total = detail.qty * detail.cost - detail.discount;
+      detail.exchangeRateD = exchangeRateD;
+      detail.exchangeRateT = exchangeRateT;
+      const productUnits = await ProductUnit.find({
+        product: new ObjectId(detail.product),
+      });
+
+      // Find the smallest unit (level = 1)
+      const smallestUnit = productUnits.find((pu) => pu.level === 1);
+      if (!smallestUnit) {
+        throw new Error(
+          `Smallest unit not found for product ${detail.product}`
+        );
+      }
+
+      // Find the selected unit
+      const selectedUnit = productUnits.find(
+        (pu) => pu.unit.toString() === detail.unit.toString()
+      );
+
+      if (!selectedUnit) {
+        throw new Error(
+          `Selected unit not found for product ${detail.product}`
+        );
+      }
+      const qtySmallUnit = convertToSmallUnit({
+        level: selectedUnit.level,
+        smallqty: smallestUnit.qty,
+        selectedQty: selectedUnit.qty,
+        qty: detail.qty,
+      });
+      const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
+      if (stockUpdates[stockKey]) {
+        stockUpdates[stockKey] += qtySmallUnit;
+      } else {
+        stockUpdates[stockKey] = qtySmallUnit;
+      }
+      console.log("stockUpdates", stockUpdates);
       purchaseDetailDocuments.push(
         new PurchaseDetail({
           ...detail,
           purchase: purchase._id,
         })
       );
+    }
+    for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
+      const [branchId, productId, unitId, cost, price] = key.split("_");
+
+      const existingStock = await Stock.findOne({
+        branch: new ObjectId(branchId),
+        product: new ObjectId(productId),
+        unit: new ObjectId(unitId),
+      });
+
+      if (existingStock) {
+        // Update the existing stock entry
+        existingStock.qtySmallUnit += qtySmallUnit;
+        await existingStock.save({ session });
+      } else {
+        // Create a new stock entry
+        await Stock.create(
+          [
+            {
+              branch: new ObjectId(branchId),
+              product: new ObjectId(productId),
+              unit: new ObjectId(unitId),
+              qtySmallUnit,
+              cost: parseFloat(cost), // Set appropriate cost
+              price: parseFloat(price), // Set appropriate price
+            },
+          ],
+          { session }
+        );
+      }
     }
 
     await PurchaseDetail.insertMany(purchaseDetailDocuments, { session });
@@ -115,13 +189,15 @@ export async function editPurchase(
     purchaseDate,
     discount,
     subtotal,
-    grandtoal,
+    grandtotal,
     paid,
     balance,
     paidBy,
     orderStatus,
     paymentStatus,
     purchaseDetails,
+    exchangeRateD,
+    exchangeRateT,
   } = validatedData.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -137,9 +213,11 @@ export async function editPurchase(
     if (purchaseDate) purchase.purchaseDate = purchaseDate;
     if (discount !== undefined) purchase.discount = discount;
     if (subtotal !== undefined) purchase.subtotal = subtotal;
-    if (grandtoal !== undefined) purchase.grandtoal = grandtoal;
+    if (grandtotal !== undefined) purchase.grandtoal = grandtotal;
     if (paid !== undefined) purchase.paid = paid;
     if (balance !== undefined) purchase.balance = balance;
+    if (exchangeRateD) purchase.exchangeRateD = exchangeRateD;
+    if (exchangeRateT) purchase.exchangeRateT = exchangeRateT;
     if (paidBy) purchase.paidBy = paidBy;
     if (orderStatus) purchase.orderStatus = orderStatus;
     if (paymentStatus) purchase.paymentStatus = paymentStatus;
@@ -147,43 +225,173 @@ export async function editPurchase(
 
     if (purchaseDetails) {
       const newDetailDocuments = [];
+      const stockUpdates: { [key: string]: number } = {};
+      const stockRemoves: { [key: string]: number } = {};
       for (const detail of purchaseDetails) {
+        const productUnits = await ProductUnit.find({
+          product: new ObjectId(detail.product),
+        });
+        // Find the smallest unit (level = 1)
+        const smallestUnit = productUnits.find((pu) => pu.level === 1);
+        if (!smallestUnit) {
+          throw new Error(
+            `Smallest unit not found for product ${detail.product}`
+          );
+        }
+        // Find the selected unit
+        const selectedUnit = productUnits.find(
+          (pu) => pu.unit.toString() === detail.unit.toString()
+        );
+        if (!selectedUnit) {
+          throw new Error(
+            `Selected unit not found for product ${detail.product}`
+          );
+        }
+        const qtySmallUnit = convertToSmallUnit({
+          level: selectedUnit.level,
+          smallqty: smallestUnit.qty,
+          selectedQty: selectedUnit.qty,
+          qty: detail.qty,
+        });
+        const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
+        if (stockUpdates[stockKey]) {
+          stockUpdates[stockKey] += qtySmallUnit;
+        } else {
+          stockUpdates[stockKey] = qtySmallUnit;
+        }
+
         const existingDetail = await PurchaseDetail.findOne({
           purchase: purchaseId,
           product: detail.product,
           unit: detail.unit,
         }).session(session);
         if (existingDetail) {
-          if (detail.qty !== undefined) existingDetail.qty = detail.qty;
-          if (detail.cost !== undefined) existingDetail.cost = detail.cost;
-          if (detail.total !== undefined) existingDetail.total = detail.total;
-          if (detail.discount !== undefined)
-            existingDetail.discount = detail.discount;
-          if (detail.description !== undefined)
-            existingDetail.description = detail.description;
+          const existingSmallQty = convertToSmallUnit({
+            level: selectedUnit.level,
+            smallqty: smallestUnit.qty,
+            selectedQty: selectedUnit.qty,
+            qty: existingDetail.qty,
+          });
+          const deleteStockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
+          if (stockRemoves[deleteStockKey]) {
+            stockRemoves[deleteStockKey] += existingSmallQty;
+          } else {
+            stockRemoves[deleteStockKey] = existingSmallQty;
+          }
 
+          if (detail.qty !== existingDetail.qty)
+            existingDetail.qty = detail.qty;
+          if (detail.cost !== existingDetail.cost)
+            existingDetail.cost = detail.cost;
+          if (detail.discount !== existingDetail.discount)
+            existingDetail.discount = detail.discount;
+          if (detail.description !== existingDetail.description)
+            existingDetail.description = detail.description;
+          existingDetail.total = detail.qty * detail.cost - detail.discount;
           await existingDetail.save({ session });
         } else {
           newDetailDocuments.push({ ...detail, purchase: purchaseId });
         }
       }
+
       const detailsToRemove = await PurchaseDetail.find({
         purchase: purchaseId,
-        $or: [
-          {
-            $and: [
-              { product: { $nin: purchaseDetails.map((d) => d.product) } },
-              { unit: { $nin: purchaseDetails.map((d) => d.unit) } },
-            ],
-          },
-        ],
+        $nor: purchaseDetails.map((d) => ({
+          product: d.product,
+          unit: d.unit,
+        })),
       }).session(session);
+
       if (detailsToRemove.length > 0) {
-        const detailIdsToRemove = detailsToRemove.map((detail) => detail._id);
+        const detailIdsToRemove = [];
+        for (const rmd of detailsToRemove) {
+          detailIdsToRemove.push(rmd._id);
+          const productUnitRm = await ProductUnit.find({
+            product: new ObjectId(rmd.product),
+          });
+          const smallestUnitRm = productUnitRm.find((pu) => pu.level === 1);
+          if (!smallestUnitRm) {
+            throw new Error(
+              `Smallest unit not found for product ${rmd.product}`
+            );
+          }
+          // Find the selected unit
+          const selectedUnitRm = productUnitRm.find(
+            (pu) => pu.unit.toString() === rmd.unit.toString()
+          );
+          if (!selectedUnitRm) {
+            throw new Error(
+              `Selected unit not found for product ${rmd.product}`
+            );
+          }
+          const existingSmallQtyRm = convertToSmallUnit({
+            level: selectedUnitRm.level,
+            smallqty: smallestUnitRm.qty,
+            selectedQty: selectedUnitRm.qty,
+            qty: rmd.qty,
+          });
+          const deleteStockKeyRm = `${branch}_${rmd.product}_${smallestUnitRm.unit}_${smallestUnitRm.cost}_${smallestUnitRm.price}`;
+          if (stockRemoves[deleteStockKeyRm]) {
+            stockRemoves[deleteStockKeyRm] += existingSmallQtyRm;
+          } else {
+            stockRemoves[deleteStockKeyRm] = existingSmallQtyRm;
+          }
+        }
+
         await PurchaseDetail.deleteMany(
           { _id: { $in: detailIdsToRemove } },
           { session }
         );
+      }
+      for (const [key, qtySmallUnitRm] of Object.entries(stockRemoves)) {
+        const [branchId, productId, unitId] = key.split("_");
+
+        const existingStockRm = await Stock.findOne({
+          branch: new ObjectId(branchId),
+          product: new ObjectId(productId),
+          unit: new ObjectId(unitId),
+        }).session(session);
+        if (existingStockRm) {
+          // Update the existing stock entry
+          existingStockRm.qtySmallUnit = Math.max(
+            0,
+            existingStockRm.qtySmallUnit - qtySmallUnitRm
+          );
+
+          await existingStockRm.save({ session });
+        }
+      }
+      for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
+        const [branchId, productId, unitId, cost, price] = key.split("_");
+
+        const existingStock = await Stock.findOne({
+          branch: new ObjectId(branchId),
+          product: new ObjectId(productId),
+          unit: new ObjectId(unitId),
+        }).session(session);
+
+        if (existingStock) {
+          // Update the existing stock entry
+          existingStock.qtySmallUnit =
+            existingStock.qtySmallUnit + qtySmallUnit;
+
+          await existingStock.save({ session });
+        } else {
+          // Create a new stock entry
+          await Stock.create(
+            [
+              {
+                branch: new ObjectId(branchId),
+                product: new ObjectId(productId),
+                unit: new ObjectId(unitId),
+                qtySmallUnit,
+                cost: parseFloat(cost), // Set appropriate cost
+                price: parseFloat(price), // Set appropriate price
+              },
+            ],
+            { session }
+          );
+        }
       }
       if (newDetailDocuments.length > 0) {
         await PurchaseDetail.insertMany(newDetailDocuments, { session });
@@ -200,7 +408,7 @@ export async function editPurchase(
 }
 export async function getPurchase(
   params: GetPurchaseParams
-): Promise<ActionResponse<IPurchaseDoc>> {
+): Promise<ActionResponse<Purchase>> {
   const validatedData = await action({
     params,
     schema: GetPurchaseSchema,
@@ -235,7 +443,7 @@ export async function getPurchase(
       },
       {
         $addFields: {
-          "details.product": {
+          "details.selectedProduct": {
             _id: "$productDetails._id",
             title: "$productDetails.title",
           },
@@ -252,7 +460,7 @@ export async function getPurchase(
       { $unwind: { path: "$unitDetails", preserveNullAndEmptyArrays: true } },
       {
         $addFields: {
-          "details.unit": {
+          "details.selectedUnit": {
             _id: "$unitDetails._id",
             title: "$unitDetails.title",
           },
@@ -288,7 +496,7 @@ export async function getPurchase(
       { $unwind: { path: "$branchDetails", preserveNullAndEmptyArrays: true } },
       {
         $addFields: {
-          branch: { _id: "$branchDetails._id", title: "$branchDetails.name" },
+          branch: { _id: "$branchDetails._id", title: "$branchDetails.title" },
         },
       },
       {
@@ -309,10 +517,11 @@ export async function getPurchase(
           paymentStatus: { $first: "$paymentStatus" },
           createdAt: { $first: "$createdAt" },
           updatedAt: { $first: "$updatedAt" },
-          details: { $push: "$details" },
+          purchaseDetails: { $push: "$details" },
         },
       },
     ]);
+
     if (purchase.length === 0) {
       throw new Error("Purchase not found");
     }

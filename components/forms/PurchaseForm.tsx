@@ -51,7 +51,7 @@ const PurchaseForm = ({
         : new Date(),
       discount: purchase?.discount || 0,
       subtotal: purchase?.subtotal || 0,
-      grandtoal: purchase?.grandtoal || 0,
+      grandtotal: purchase?.grandtotal || 0,
       exchangeRateD: purchase?.exchangeRateD || exchangeRateD || 0,
       exchangeRateT: purchase?.exchangeRateT || exchangeRateT || 0,
       paid: purchase?.paid || 0,

@@ -103,6 +103,8 @@ interface PurchaseDetail {
   purchase: string;
   product: string;
   unit: string;
+  selectedProduct?: { _id: string; title: string };
+  selectedUnit?: { _id: string; title: string };
   description?: string;
   discount: number;
   qty: number;
@@ -121,7 +123,7 @@ interface Purchase {
   purchaseDate: string;
   discount: number;
   subtotal: number;
-  grandtoal: number;
+  grandtotal: number;
   paid: number;
   balance: number;
   exchangeRateD?: number;

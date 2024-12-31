@@ -208,8 +208,8 @@ export const GetSupplierSchema = z.object({
   supplierId: z.string().min(1, "Supplier ID is required"),
 });
 export const PurchaseDetailSchema = z.object({
-  product: z.string().min(1, "Product is required"),
-  unit: z.string().min(1, "Unit is required"),
+  product: ObjectIdSchema,
+  unit: ObjectIdSchema,
   description: z.string().optional(),
   discount: z.number().min(0).default(0),
   qty: z.number().min(0).default(0),
@@ -227,7 +227,7 @@ export const CreatePurchaseSchema = z.object({
   purchaseDate: z.date(),
   discount: z.number().min(0).default(0),
   subtotal: z.number().min(0).default(0),
-  grandtoal: z.number().min(0).default(0),
+  grandtotal: z.number().min(0).default(0),
   paid: z.number().min(0).default(0),
   balance: z.number().min(0).default(0),
   exchangeRateD: z.number().min(0).default(0),

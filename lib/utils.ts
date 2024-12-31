@@ -41,3 +41,24 @@ export const updateLevels = (units: ProductUnit[]): ProductUnit[] => {
   }
   return units;
 };
+interface ConvertToSmallUnitParams {
+  level: number;
+  smallqty: number;
+  selectedQty: number;
+  qty: number;
+}
+
+export const convertToSmallUnit = ({
+  level,
+  smallqty,
+  selectedQty,
+  qty,
+}: ConvertToSmallUnitParams): number => {
+  if (level === 1) {
+    return qty;
+  } else if (level === 2) {
+    return selectedQty * qty;
+  } else {
+    return qty * smallqty;
+  }
+};

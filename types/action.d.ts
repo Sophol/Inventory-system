@@ -111,6 +111,8 @@ interface GetSupplierParams {
 interface PurchaseDetailParams {
   product: string;
   unit: string;
+  selectedProduct?: { _id: string; title: string };
+  selectedUnit?: { _id: string; title: string };
   description?: string;
   discount: number;
   qty: number;
@@ -126,16 +128,16 @@ interface CreatePurchaseParams {
   referenceNo: string;
   description?: string;
   purchaseDate?: Date | string;
-  discount: number;
-  subtotal: number;
-  grandtoal: number;
-  paid: number;
-  balance: number;
+  discount?: number;
+  subtotal?: number;
+  grandtotal?: number;
+  paid?: number;
+  balance?: number;
   exchangeRateD?: number;
   exchangeRateT?: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
-  orderStatus: "pending" | "approved" | "completed";
-  paymentStatus: "pending" | "credit" | "completed";
+  orderStatus?: "pending" | "approved" | "completed";
+  paymentStatus?: "pending" | "credit" | "completed";
   purchaseDetails: PurchaseDetailParams[];
 }
 
