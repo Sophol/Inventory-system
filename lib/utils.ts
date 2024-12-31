@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+
 import { techMap } from "../constants/techMaps";
 
 export function cn(...inputs: ClassValue[]) {
@@ -55,10 +56,27 @@ export const convertToSmallUnit = ({
   qty,
 }: ConvertToSmallUnitParams): number => {
   if (level === 1) {
-    return qty;
+    return qty * smallqty;
   } else if (level === 2) {
     return selectedQty * qty;
   } else {
-    return qty * smallqty;
+    return qty;
   }
 };
+export function convertFromSmallUnitQty(
+  smallUnitQty: number,
+  units: ProductUnit[]
+): string {
+  let remainingQty = smallUnitQty;
+  const result: string[] = [];
+
+  for (const unit of units) {
+    const unitQty = Math.floor(remainingQty / unit.qty);
+    if (unitQty > 0) {
+      result.push(`${unitQty} ${unit.unitTitle}${unitQty > 1 ? "s" : ""}`);
+      remainingQty %= unit.qty;
+    }
+  }
+
+  return result.join(" ");
+}

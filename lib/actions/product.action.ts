@@ -232,6 +232,9 @@ export async function getProduct(
       { $addFields: { "units.unit": "$unitDetails._id" } },
       { $addFields: { "units.unitTitle": "$unitDetails.title" } },
       {
+        $sort: { "units.level": -1 }, // Sort units by level in ascending order
+      },
+      {
         $lookup: {
           from: "categories",
           localField: "category",
@@ -306,12 +309,80 @@ export async function getProducts(
   try {
     const [totalProducts, products] = await Promise.all([
       Product.countDocuments(filterQuery),
-      Product.find(filterQuery)
-        .populate("category", "title")
-        .lean()
-        .sort(sortCriteria)
-        .skip(skip)
-        .limit(limit), // Populate the units field
+      Product.aggregate([
+        { $match: filterQuery },
+        {
+          $lookup: {
+            from: "productunits",
+            localField: "_id",
+            foreignField: "product",
+            as: "units",
+          },
+        },
+        { $unwind: { path: "$units", preserveNullAndEmptyArrays: true } },
+        {
+          $lookup: {
+            from: "units",
+            localField: "units.unit",
+            foreignField: "_id",
+            as: "unitDetails",
+          },
+        },
+        { $unwind: { path: "$unitDetails", preserveNullAndEmptyArrays: true } },
+        { $addFields: { "units.unit": "$unitDetails._id" } },
+        { $addFields: { "units.unitTitle": "$unitDetails.title" } },
+        {
+          $sort: { "units.level": 1 }, // Sort units by level in ascending order
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "categoryDetails",
+          },
+        },
+        {
+          $unwind: {
+            path: "$categoryDetails",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $lookup: {
+            from: "stocks",
+            localField: "_id",
+            foreignField: "product",
+            as: "stockDetails",
+          },
+        },
+        {
+          $addFields: {
+            qtySmallUnit: { $sum: "$stockDetails.qtySmallUnit" },
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            code: { $first: "$code" },
+            title: { $first: "$title" },
+            description: { $first: "$description" },
+            image: { $first: "$image" },
+            category: { $first: "$categoryDetails._id" },
+            categoryTitle: { $first: "$categoryDetails.title" },
+            qtyOnHand: { $first: "$qtyOnHand" },
+            alertQty: { $first: "$alertQty" },
+            status: { $first: "$status" },
+            createdAt: { $first: "$createdAt" },
+            updatedAt: { $first: "$updatedAt" },
+            units: { $push: "$units" },
+            qtySmallUnit: { $first: "$qtySmallUnit" },
+          },
+        },
+        { $sort: sortCriteria },
+        { $skip: skip },
+        { $limit: limit },
+      ]),
     ]);
 
     const isNext = totalProducts > skip + products.length;

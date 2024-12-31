@@ -509,7 +509,7 @@ export async function getPurchase(
           description: { $first: "$description" },
           discount: { $first: "$discount" },
           subtotal: { $first: "$subtotal" },
-          grandtoal: { $first: "$grandtoal" },
+          grandtotal: { $first: "$grandtotal" },
           paid: { $first: "$paid" },
           balance: { $first: "$balance" },
           paidBy: { $first: "$paidBy" },
@@ -574,7 +574,7 @@ export async function getPurchases(
       Purchase.countDocuments(filterQuery),
       Purchase.find(filterQuery)
         .populate("supplier", "name")
-        .populate("branch", "name")
+        .populate("branch", "title")
         .lean()
         .sort(sortCriteria)
         .skip(skip)
@@ -588,5 +588,91 @@ export async function getPurchases(
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
+  }
+}
+export async function deletePurchase(
+  params: GetPurchaseParams
+): Promise<ActionResponse> {
+  const validatedData = await action({
+    params,
+    schema: GetPurchaseSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { purchaseId } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const purchase = await Purchase.findById(purchaseId);
+    if (!purchase) {
+      throw new Error("Purchase not found");
+    }
+    const stockRemoves: { [key: string]: number } = {};
+    const detailsToRemove = await PurchaseDetail.find({ purchase: purchaseId });
+    if (detailsToRemove.length > 0) {
+      const detailIdsToRemove = [];
+      for (const rmd of detailsToRemove) {
+        detailIdsToRemove.push(rmd._id);
+        const productUnitRm = await ProductUnit.find({
+          product: new ObjectId(rmd.product),
+        });
+        const smallestUnitRm = productUnitRm.find((pu) => pu.level === 1);
+        if (!smallestUnitRm) {
+          throw new Error(`Smallest unit not found for product ${rmd.product}`);
+        }
+        // Find the selected unit
+        const selectedUnitRm = productUnitRm.find(
+          (pu) => pu.unit.toString() === rmd.unit.toString()
+        );
+        if (!selectedUnitRm) {
+          throw new Error(`Selected unit not found for product ${rmd.product}`);
+        }
+        const existingSmallQtyRm = convertToSmallUnit({
+          level: selectedUnitRm.level,
+          smallqty: smallestUnitRm.qty,
+          selectedQty: selectedUnitRm.qty,
+          qty: rmd.qty,
+        });
+        const deleteStockKeyRm = `${purchase.branch}_${rmd.product}_${smallestUnitRm.unit}`;
+        if (stockRemoves[deleteStockKeyRm]) {
+          stockRemoves[deleteStockKeyRm] += existingSmallQtyRm;
+        } else {
+          stockRemoves[deleteStockKeyRm] = existingSmallQtyRm;
+        }
+      }
+
+      await PurchaseDetail.deleteMany(
+        { _id: { $in: detailIdsToRemove } },
+        { session }
+      );
+    }
+    for (const [key, qtySmallUnitRm] of Object.entries(stockRemoves)) {
+      const [branchId, productId, unitId] = key.split("_");
+
+      const existingStockRm = await Stock.findOne({
+        branch: new ObjectId(branchId),
+        product: new ObjectId(productId),
+        unit: new ObjectId(unitId),
+      }).session(session);
+      if (existingStockRm) {
+        // Update the existing stock entry
+        existingStockRm.qtySmallUnit = Math.max(
+          0,
+          existingStockRm.qtySmallUnit - qtySmallUnitRm
+        );
+
+        await existingStockRm.save({ session });
+      }
+    }
+    await Purchase.deleteOne({ _id: purchaseId }).session(session);
+    await session.commitTransaction();
+    return { success: true };
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    await session.endSession();
   }
 }

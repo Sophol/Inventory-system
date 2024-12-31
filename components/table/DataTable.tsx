@@ -26,6 +26,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isNext: boolean | undefined;
+  refreshData?: () => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -34,8 +35,7 @@ export function DataTable<TData, TValue>({
   isNext,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pageSize, setPageSize] = useState(10);
-  const [pageIndex, setPageIndex] = useState(0);
+
   const table = useReactTable({
     data,
     columns,
@@ -45,10 +45,8 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
-      pagination: { pageIndex, pageSize },
     },
     manualPagination: true,
-    pageCount: isNext ? pageIndex + 2 : pageIndex + 1, // Adjust page count based on `isNext` onPaginationChange: ({ pageIndex, pageSize }) => { setPageIndex(pageIndex); setPageSize(pageSize); },
   });
 
   return (

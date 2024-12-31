@@ -8,16 +8,16 @@ import { Badge } from "@/components/ui/badge";
 import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
+import { convertFromSmallUnitQty } from "@/lib/utils";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Product = {
   _id: string;
   title: string;
-  category: {
-    _id: string;
-    title: string;
-  };
+  categoryTitle: string;
   status: string;
+  qtySmallUnit: number;
+  units: ProductUnit[];
 };
 
 export const ProductColumn: ColumnDef<Product>[] = [
@@ -47,11 +47,8 @@ export const ProductColumn: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="Category" />
     ),
     cell: ({ row }) => {
-      const category = row.getValue("category") as {
-        _id: string;
-        title: string;
-      };
-      return category.title;
+      const category = row.original;
+      return category.categoryTitle;
     },
   },
   {
@@ -65,6 +62,11 @@ export const ProductColumn: ColumnDef<Product>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="QtyOnHand" />
     ),
+    cell: ({ row }) => {
+      const product = row.original;
+      const qty = convertFromSmallUnitQty(product.qtySmallUnit, product.units);
+      return qty;
+    },
   },
   {
     accessorKey: "alertQty",
