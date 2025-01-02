@@ -804,3 +804,39 @@ export async function deleteSale(
     await session.endSession();
   }
 }
+  export async function approveOrder (
+    params: GetSaleParams
+  ): Promise<ActionResponse> {
+    const validatedData = await action({
+      params,
+      schema: GetSaleSchema,
+      authorize: true,
+    });
+    if (validatedData instanceof Error) {
+      return handleError(validatedData) as ErrorResponse;
+    }
+    const { saleId } = validatedData.params!;
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+      const sale = await Sale.findById(saleId);
+      if (!sale) {
+        throw new Error("Sale not found");
+      }
+      if ( sale.orderStatus === "pending" ) {
+        sale.orderStatus  = "approved";
+        console.log("sale", sale)
+        await sale.save({ });
+        return { success: true };
+       
+      } 
+      else{
+        return { success: false };
+      }
+    } catch (error) {
+      await session.abortTransaction();
+      return handleError(error) as ErrorResponse;
+    } finally {
+      await session.endSession();
+    }
+  }

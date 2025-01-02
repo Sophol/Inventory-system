@@ -9,7 +9,8 @@ import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
-import { deleteSale } from "@/lib/actions/sale.action";
+import ButtonPopup from "@/components/formInputs/ButtonApproveOrder";
+import { deleteSale, approveOrder } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
@@ -109,16 +110,13 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
     ),
     cell: ({ row }) => {
       const sale = row.original;
-
-      const handleDelete = async () => {
-        // Add your delete logic here
-        const { success } = await deleteSale({ saleId: sale._id });
+      const handlePopup = async () => {
+        const { success } = await approveOrder({ saleId: sale._id });
         if (success) {
           toast({
             title: "success",
             description: "Sale deleted successfully.",
           });
-          // Provide an alternative way to refresh the table data
           reloadPage();
         } else {
           toast({
@@ -128,8 +126,28 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
           });
         }
       };
+      const handleDelete = async () => {
+        const { success } = await deleteSale({ saleId: sale._id });
+        if (success) {
+          toast({
+            title: "success",
+            description: "Sale deleted successfully.",
+          });
+          reloadPage();
+        } else {
+          toast({
+            title: "error",
+            description: "Something went wrong.",
+            variant: "destructive",
+          });
+        }
+      };
+  
+      
+  
       return (
         <div className="flex items-center space-x-1">
+          <ButtonPopup onPopup={handlePopup} />
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.SALE(sale._id)}
@@ -137,8 +155,11 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
             className="text-primary-500"
           />
           <ButtonDelete onDelete={handleDelete} />
+          
+         
         </div>
       );
     },
-  },
+  }
+  
 ];
