@@ -13,6 +13,7 @@ import { deleteSale } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
+
 export type Sale = {
   _id: string;
   referenceNo: string;
@@ -78,7 +79,7 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
       const status = row.getValue("orderStatus") as string;
       return (
         <Badge
-          className={status === "completed" ? "bg-green-500" : status === "approved" ? "bg-blue-500" : status === "pending" ? "bg-yellow-500" : "bg-red-500"}
+          className={status === "completed" ? "bg-green-500 uppercase" : status === "approved" ? "bg-blue-500 uppercase" : status === "pending" ? "bg-yellow-500 uppercase" : "bg-red-500 uppercase"}
         >
           {status}
         </Badge>
@@ -94,7 +95,7 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
       const status = row.getValue("paymentStatus") as string;
       return (
         <Badge
-        className={status === "completed" ? "bg-green-500" : status === "credit" ? "bg-blue-500" : status === "pending" ? "bg-yellow-500" : "bg-red-500"}
+        className={status === "completed" ? "bg-green-500 uppercase" : status === "credit" ? "bg-blue-500 uppercase" : status === "pending" ? "bg-yellow-500 uppercase" : "bg-red-500 uppercase"}
         >
           {status}
         </Badge>

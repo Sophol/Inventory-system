@@ -594,6 +594,130 @@ export async function getSales(
     return handleError(error) as ErrorResponse;
   }
 }
+
+export async function getApprovedOrder(
+  params: PaginatedSearchParams
+): Promise<ActionResponse<{ sales: Sale[]; isNext: boolean }>> {
+  const validatedData = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { page = 1, pageSize = 10, query, filter } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+  const filterQuery: FilterQuery<typeof Sale> = { orderStatus: "approved"};
+  if (query) {
+    filterQuery.$or = [
+      { referenceNo: { $regex: new RegExp(query, "i") } },
+      { description: { $regex: new RegExp(query, "i") } },
+      { orderStatus: { $regex: new RegExp(query, "i") } },
+      { paymentStatus: { $regex: new RegExp(query, "i") } },
+      
+    ];
+  }
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "referenceNo":
+      sortCriteria = { referenceNo: -1 };
+      break;
+    case "orderStatus":
+      sortCriteria = { orderStatus: -1 };
+      break;
+    case "paymentStatus":
+      sortCriteria = { paymentStatus: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+      break;
+  }
+  try {
+    const [totalSales, sales] = await Promise.all([
+      Sale.countDocuments(filterQuery),
+      Sale.find(filterQuery)
+        .populate("customer", "name")
+        .populate("branch", "title")
+        .lean()
+        .sort(sortCriteria)
+        .skip(skip)
+        .limit(limit),
+    ]);
+    console.log(sales);
+    const isNext = totalSales > skip + sales.length;
+    return {
+      success: true,
+      data: { sales: JSON.parse(JSON.stringify(sales)), isNext },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function getPendingOrder(
+  params: PaginatedSearchParams
+): Promise<ActionResponse<{ sales: Sale[]; isNext: boolean }>> {
+  const validatedData = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { page = 1, pageSize = 10, query, filter } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+  const filterQuery: FilterQuery<typeof Sale> = { orderStatus: "pending"};
+  if (query) {
+    filterQuery.$or = [
+      { referenceNo: { $regex: new RegExp(query, "i") } },
+      { description: { $regex: new RegExp(query, "i") } },
+      { orderStatus: { $regex: new RegExp(query, "i") } },
+      { paymentStatus: { $regex: new RegExp(query, "i") } },
+      
+    ];
+  }
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "referenceNo":
+      sortCriteria = { referenceNo: -1 };
+      break;
+    case "orderStatus":
+      sortCriteria = { orderStatus: -1 };
+      break;
+    case "paymentStatus":
+      sortCriteria = { paymentStatus: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+      break;
+  }
+  try {
+    const [totalSales, sales] = await Promise.all([
+      Sale.countDocuments(filterQuery),
+      Sale.find(filterQuery)
+        .populate("customer", "name")
+        .populate("branch", "title")
+        .lean()
+        .sort(sortCriteria)
+        .skip(skip)
+        .limit(limit),
+    ]);
+    console.log(sales);
+    const isNext = totalSales > skip + sales.length;
+    return {
+      success: true,
+      data: { sales: JSON.parse(JSON.stringify(sales)), isNext },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
 export async function deleteSale(
   params: GetSaleParams
 ): Promise<ActionResponse> {

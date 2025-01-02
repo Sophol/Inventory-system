@@ -16,6 +16,7 @@ import { CreateSaleSchema } from "@/lib/validations";
 import FormCombobox from "../formInputs/FormCombobox";
 import FormDatePicker from "../formInputs/FormDatePicker";
 import FormInput from "../formInputs/FormInput";
+import FormSelect from "../formInputs/FormSelect";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { getCustomers } from "@/lib/actions/customer.action";
@@ -284,6 +285,16 @@ const SaleForm = ({
             control={form.control}
             defaultValue={0}
             isRequired={false}
+          />
+            <FormSelect
+            name="orderStatus"
+            label="Order Status"
+            control={form.control}
+            items={[
+              { _id: "pending", title: "Pending" },
+              { _id: "approved", title: "Approved" },
+              { _id: "completed", title: "Completed" },
+            ]}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
