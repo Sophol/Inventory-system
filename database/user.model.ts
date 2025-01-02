@@ -1,4 +1,4 @@
-import { model, models, Schema, Document } from "mongoose";
+import { model, models, Schema, Document, Types } from "mongoose";
 
 export interface IUser {
   name: string;
@@ -9,7 +9,8 @@ export interface IUser {
   location?: string;
   isStaff: boolean;
   salary: number;
-  role: "stock" | "seller" | "admin" | "report" | "branch" | "normal";
+  branch: Types.ObjectId;
+  role: "stock" | "seller" | "admin" | "report" | "branch" | "user";
 }
 export interface IUserDoc extends IUser, Document {}
 const UserSchema = new Schema<IUser>(
@@ -21,11 +22,13 @@ const UserSchema = new Schema<IUser>(
     image: { type: String },
     location: { type: String },
     isStaff: { type: Boolean, default: false },
+    branch: { type: Schema.Types.ObjectId, ref: "Branch", required: true },
+    salary: { type: Number, default: 0 },
     role: {
       type: String,
-      enum: ["stock", "seller", "admin", "report", "branch", "normal"],
+      enum: ["stock", "seller", "admin", "report", "branch", "user"],
       required: true,
-      default: "normal",
+      default: "user",
     },
   },
   { timestamps: true }

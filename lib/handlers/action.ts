@@ -18,10 +18,8 @@ async function action<T>({
 }: ActionOptions<T>) {
   if (schema && params) {
     try {
-      console.log(params);
       schema.parse(params);
     } catch (error) {
-      console.log(error);
       if (error instanceof ZodError) {
         return new ValidationError(
           error.flatten().fieldErrors as Record<string, string[]>

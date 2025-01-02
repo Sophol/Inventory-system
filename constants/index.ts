@@ -17,6 +17,9 @@ import { TbReportSearch } from "react-icons/tb";
 
 import ROUTES from "./routes";
 
+const settingId =
+  (process.env.SETTING_ID as string) || "6770f9d30b15822465aec2ac";
+console.log(process.env.SETTING_ID);
 export const sidebarLinks = [
   {
     title: "Dashboard",
@@ -141,6 +144,11 @@ export const sidebarLinks = [
         title: "Branch",
         url: ROUTES.BRANCHES,
         icon: LucideWarehouse,
+      },
+      {
+        title: "SETTING",
+        url: ROUTES.SETTING(settingId),
+        icon: IoSettingsOutline,
       },
     ],
   },

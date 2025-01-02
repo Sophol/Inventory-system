@@ -1,3 +1,4 @@
+"use server";
 import { Setting } from "@/database";
 import action from "../handlers/action";
 import handleError from "../handlers/error";

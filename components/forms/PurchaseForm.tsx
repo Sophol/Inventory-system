@@ -105,6 +105,7 @@ const PurchaseForm = ({
       }
     });
   };
+
   const fetchBranches = async ({
     page,
     query,
@@ -122,7 +123,6 @@ const PurchaseForm = ({
     }
     return { data: [], isNext: false };
   };
-
   const fetchSuppliers = async ({
     page,
     query,
@@ -327,5 +327,4 @@ const PurchaseForm = ({
     </Form>
   );
 };
-
 export default PurchaseForm;

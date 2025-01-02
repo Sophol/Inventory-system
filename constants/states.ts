@@ -81,3 +81,12 @@ export const PURCHASE_EMPTY = {
     href: ROUTES.ADDPURCHASE,
   },
 };
+export const USER_EMPTY = {
+  title: "No User Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add User",
+    href: ROUTES.ADDUSER,
+  },
+};

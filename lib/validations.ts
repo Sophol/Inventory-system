@@ -66,10 +66,23 @@ export const UserSchema = z.object({
     .string()
     .min(3, { message: "Username must be at least 3 characters long." }),
   email: z.string().email({ message: "Please provide a valid email address." }),
-  role: z.string().email({ message: "Please provide a valid role." }),
-  image: z.string().url({ message: "Please provide a valid URL." }).optional(),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" })
+    .max(100, { message: "Password cannot exceed 100 characters." }),
+  role: z
+    .enum(
+      ["stock", "seller", "admin", "report", "branch", "user", "auditReport"],
+      {
+        required_error: "Role is required",
+      }
+    )
+    .default("user"),
+  image: z.string().optional(),
   phone: z.string().optional(),
-  isStaff: z.boolean().optional(),
+  isStaff: z.boolean().default(false),
+  branch: ObjectIdSchema,
+  salary: z.number().default(0),
 });
 export const AccountSchema = z.object({
   userId: z.string().min(1, { message: "User ID is required." }),

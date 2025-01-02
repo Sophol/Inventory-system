@@ -33,6 +33,7 @@ interface SelectData {
   _id: string;
   title: string;
 }
+
 interface Category {
   _id: string;
   title: string;
@@ -141,4 +142,18 @@ interface Setting {
   phone: string;
   exchangeRateD: number;
   exchangeRateT: number;
+}
+interface User {
+  _id: string;
+  name: string;
+  username: string;
+  password: string;
+  email: string;
+  role: string;
+  image?: string;
+  phone?: string;
+  isStaff: boolean;
+  branch: { _id: string; title: string };
+  salary?: number;
+  status: "active" | "inactive";
 }

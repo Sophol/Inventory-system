@@ -25,5 +25,9 @@ const ROUTES = {
   PURCHASES: "/purchases/order",
   ADDPURCHASE: "/purchases/order/form",
   PURCHASE: (_id: string) => `/purchases/order/${_id}`,
+  USERS: "/settings/user",
+  ADDUSER: "/settings/user/form",
+  USER: (_id: string) => `/settings/user/${_id}`,
+  SETTING: (_id: string) => `/settings/setting/${_id}`,
 };
 export default ROUTES;
