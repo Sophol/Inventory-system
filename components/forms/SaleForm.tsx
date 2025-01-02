@@ -18,7 +18,7 @@ import FormDatePicker from "../formInputs/FormDatePicker";
 import FormInput from "../formInputs/FormInput";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
-import { getSuppliers } from "@/lib/actions/supplier.action";
+import { getCustomers } from "@/lib/actions/customer.action";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import FormSaleDetail from "../formInputs/FormSaleDetail";
 import { getProduct, getProducts } from "@/lib/actions/product.action";
@@ -42,13 +42,20 @@ const SaleForm = ({
   const form = useForm<z.infer<typeof CreateSaleSchema>>({
     resolver: zodResolver(CreateSaleSchema),
     defaultValues: {
-      supplier: sale?.supplier._id || "",
+      customer: sale?.customer._id || "",
       branch: sale?.branch._id || "",
       referenceNo: sale?.referenceNo || "",
       description: sale?.description || "",
-      saleDate: sale?.saleDate
-        ? new Date(sale.saleDate)
+      orderDate: sale?.orderDate
+        ? new Date(sale.orderDate)
         : new Date(),
+      approvedDate :sale?.approvedDate
+      ? new Date(sale.approvedDate)
+      : new Date(),
+      invoicedDate :sale?.invoicedDate
+      ? new Date(sale.invoicedDate)
+      : new Date(),
+      tax : sale?.tax || 0,
       discount: sale?.discount || 0,
       subtotal: sale?.subtotal || 0,
       grandtotal: sale?.grandtotal || 0,
@@ -57,8 +64,8 @@ const SaleForm = ({
       paid: sale?.paid || 0,
       balance: sale?.balance || 0,
       paidBy: sale?.paidBy || "Cash",
-      orderStatus: sale?.orderStatus || "completed",
-      paymentStatus: sale?.paymentStatus || "completed",
+      orderStatus: sale?.orderStatus || "pending",
+      paymentStatus: sale?.paymentStatus || "pending",
       saleDetails: sale?.saleDetails || [
         { product: "", unit: "", qty: 0, cost: 0, total: 0 },
       ],
@@ -78,7 +85,7 @@ const SaleForm = ({
             title: "success",
             description: "Sale updated successfully.",
           });
-          if (result.data) router.push(ROUTES.PURCHASES);
+          if (result.data) router.push(ROUTES.SALES);
         } else {
           toast({
             title: `Error ${result.status}`,
@@ -95,7 +102,7 @@ const SaleForm = ({
           title: "success",
           description: "Sale created successfully.",
         });
-        if (result.data) router.push(ROUTES.PURCHASES);
+        if (result.data) router.push(ROUTES.SALES);
       } else {
         toast({
           title: `Error ${result.status}`,
@@ -123,25 +130,25 @@ const SaleForm = ({
     return { data: [], isNext: false };
   };
 
-  const fetchSuppliers = async ({
+  const fetchCustomers = async ({
     page,
     query,
   }: {
     page: number;
     query: string;
   }) => {
-    const { success, data } = await getSuppliers({
+    const { success, data } = await getCustomers({
       page: Number(page) || 1,
       pageSize: 10,
       query: query || "",
     });
     if (success) {
-      const suppliers =
-        data?.suppliers.map((supplier) => ({
-          _id: supplier._id,
-          title: supplier.name, // Assuming 'name' is the correct field for title
+      const customers =
+        data?.customers.map((customer) => ({
+          _id: customer._id,
+          title: customer.name, // Assuming 'name' is the correct field for title
         })) || [];
-      return { data: suppliers, isNext: data?.isNext || false };
+      return { data: customers, isNext: data?.isNext || false };
     }
     return { data: [], isNext: false };
   };
@@ -246,12 +253,12 @@ const SaleForm = ({
           />
           <FormCombobox
             control={form.control}
-            name="supplier"
-            label="Supplier"
-            placeholder="Select Supplier"
-            fetchSingleItem={sale ? sale.supplier : null}
-            fetchData={fetchSuppliers}
-            setValue={form.setValue} // Replace with actual supplier data
+            name="customer"
+            label="Customer"
+            placeholder="Select Customer"
+            fetchSingleItem={sale ? sale.customer : null}
+            fetchData={fetchCustomers}
+            setValue={form.setValue} // Replace with actual customer data
           />
           <FormCombobox
             control={form.control}
@@ -265,12 +272,22 @@ const SaleForm = ({
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormDatePicker
-            name="saleDate"
-            label="Sale Date"
+            name="OrderDate"
+            label="Order Date"
             control={form.control}
             defaultValue={new Date()}
           />
-          <FormInput
+           <FormInput
+            name="tax"
+            label="tax"
+            type="number"
+            control={form.control}
+            defaultValue={0}
+            isRequired={false}
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <FormInput
             name="exchangeRateD"
             label="ExchangeRate Dollar"
             control={form.control}
@@ -280,8 +297,6 @@ const SaleForm = ({
             label="ExchangeRate Thai"
             control={form.control}
           />
-        </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
           <FormInput
             name="description"
             label="Description"

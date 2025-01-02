@@ -11,11 +11,12 @@ import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import { deleteSale } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
+import { format } from "date-fns";
 
 export type Sale = {
   _id: string;
   referenceNo: string;
-  supplier: { _id: string; name: string };
+  customer: { _id: string; name: string };
   branch: { _id: string; title: string };
   saleDate: string;
   orderStatus: string;
@@ -34,9 +35,9 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
     ),
   },
   {
-    accessorKey: "supplier.name",
+    accessorKey: "customer.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Supplier" />
+      <DataTableColumnHeader column={column} title="Customer" />
     ),
   },
   {
@@ -46,10 +47,27 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
     ),
   },
   {
-    accessorKey: "saleDate",
+    accessorKey: "subtotal",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Sale Date" />
+      <DataTableColumnHeader column={column} title="Sub Total" />
     ),
+  },
+  {
+    accessorKey: "grandtotal",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Grand Total" />
+    ),
+  },
+  {
+    accessorKey: "orderDate", // Assuming saleDate is the date field you want to format
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Order Date" />
+    ),
+    cell: ({ row }) => {
+      const date = row.getValue("orderDate") as string;
+      const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss " ); // Customize format as needed
+      return <span>{formattedDate}</span>;
+    },
   },
   {
     accessorKey: "orderStatus",
@@ -60,7 +78,7 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
       const status = row.getValue("orderStatus") as string;
       return (
         <Badge
-          className={status === "completed" ? "bg-green-500" : "bg-yellow-500"}
+          className={status === "completed" ? "bg-green-500" : status === "approved" ? "bg-blue-500" : status === "pending" ? "bg-yellow-500" : "bg-red-500"}
         >
           {status}
         </Badge>
@@ -76,7 +94,7 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
       const status = row.getValue("paymentStatus") as string;
       return (
         <Badge
-          className={status === "completed" ? "bg-green-500" : "bg-red-500"}
+        className={status === "completed" ? "bg-green-500" : status === "credit" ? "bg-blue-500" : status === "pending" ? "bg-yellow-500" : "bg-red-500"}
         >
           {status}
         </Badge>

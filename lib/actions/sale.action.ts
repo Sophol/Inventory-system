@@ -30,7 +30,7 @@ export async function createSale(
     return handleError(validatedData.message) as ErrorResponse;
   }
   const {
-    supplier,
+    customer,
     branch,
     referenceNo,
     description,
@@ -54,7 +54,7 @@ export async function createSale(
     const [sale] = await Sale.create(
       [
         {
-          supplier: new ObjectId(supplier),
+          customer: new ObjectId(customer),
           branch: new ObjectId(branch),
           referenceNo,
           description,
@@ -182,7 +182,7 @@ export async function editSale(
   }
   const {
     saleId,
-    supplier,
+    customer,
     branch,
     referenceNo,
     description,
@@ -206,14 +206,14 @@ export async function editSale(
     if (!sale) {
       throw new Error("Sale not found");
     }
-    if (supplier) sale.supplier = supplier;
+    if (customer) sale.customer = customer;
     if (branch) sale.branch = branch;
     if (referenceNo) sale.referenceNo = referenceNo;
     if (description) sale.description = description;
     if (saleDate) sale.saleDate = saleDate;
     if (discount !== undefined) sale.discount = discount;
     if (subtotal !== undefined) sale.subtotal = subtotal;
-    if (grandtotal !== undefined) sale.grandtoal = grandtotal;
+    if (grandtotal !== undefined) sale.grandtotal = grandtotal;
     if (paid !== undefined) sale.paid = paid;
     if (balance !== undefined) sale.balance = balance;
     if (exchangeRateD) sale.exchangeRateD = exchangeRateD;
@@ -468,20 +468,20 @@ export async function getSale(
       },
       {
         $lookup: {
-          from: "suppliers",
-          localField: "supplier",
+          from: "customers",
+          localField: "customer",
           foreignField: "_id",
-          as: "supplierDetails",
+          as: "customerDetails",
         },
       },
       {
-        $unwind: { path: "$supplierDetails", preserveNullAndEmptyArrays: true },
+        $unwind: { path: "$customerDetails", preserveNullAndEmptyArrays: true },
       },
       {
         $addFields: {
-          supplier: {
-            _id: "$supplierDetails._id",
-            title: "$supplierDetails.name",
+          customer: {
+            _id: "$customerDetails._id",
+            title: "$customerDetails.name",
           },
         },
       },
@@ -503,9 +503,12 @@ export async function getSale(
         $group: {
           _id: "$_id",
           referenceNo: { $first: "$referenceNo" },
-          supplier: { $first: "$supplier" },
+          customer: { $first: "$customer" },
           branch: { $first: "$branch" },
-          saleDate: { $first: "$saleDate" },
+          orderDate: { $first: "$orderDate" },
+          approvedDate: { $first: "$approvedDate" },
+          invoicedDate: { $first: "$invoicedDate" },
+          tax: { $first: "$tax" },
           description: { $first: "$description" },
           discount: { $first: "$discount" },
           subtotal: { $first: "$subtotal" },
@@ -551,6 +554,7 @@ export async function getSales(
       { description: { $regex: new RegExp(query, "i") } },
       { orderStatus: { $regex: new RegExp(query, "i") } },
       { paymentStatus: { $regex: new RegExp(query, "i") } },
+      
     ];
   }
   let sortCriteria = {};
@@ -573,14 +577,14 @@ export async function getSales(
     const [totalSales, sales] = await Promise.all([
       Sale.countDocuments(filterQuery),
       Sale.find(filterQuery)
-        .populate("supplier", "name")
+        .populate("customer", "name")
         .populate("branch", "title")
         .lean()
         .sort(sortCriteria)
         .skip(skip)
         .limit(limit),
     ]);
-
+    console.log(sales);
     const isNext = totalSales > skip + sales.length;
     return {
       success: true,

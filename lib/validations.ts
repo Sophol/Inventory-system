@@ -287,11 +287,14 @@ export const CreateSaleDetailSchema =SaleDetailSchema.extend({
   sale: string().min(1, "Sale ID is required"),
 });
 export const CreateSaleSchema = z.object({
-  supplier: z.string().min(1, "Supplier is required"),
+  customer: z.string().min(1, "Customer is required"),
   branch: z.string().min(1, "Branch is required"),
   referenceNo: z.string().min(1, "Reference number is required"),
   description: z.string().optional(),
-  saleDate: z.date(),
+  orderDate: z.date(),
+  approvedDate: z.date(),
+  invoicedDate: z.date(),
+  tax: z.number().min(0).default(0),
   discount: z.number().min(0).default(0),
   subtotal: z.number().min(0).default(0),
   grandtotal: z.number().min(0).default(0),

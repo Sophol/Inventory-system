@@ -161,3 +161,43 @@ interface EditSettingParams {
   exchangeRateD: number;
   exchangeRateT: number;
 }
+
+interface SaleDetailParams {
+  product: string;
+  unit: string;
+  selectedProduct?: { _id: string; title: string };
+  selectedUnit?: { _id: string; title: string };
+  description?: string;
+  discount: number;
+  qty: number;
+  cost: number;
+  total: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+}
+
+interface CreateSaleParams {
+  customer: string;
+  branch: string;
+  referenceNo: string;
+  description?: string;
+  saleDate?: Date | string;
+  discount?: number;
+  subtotal?: number;
+  grandtotal?: number;
+  paid?: number;
+  balance?: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  orderStatus?: "pending" | "approved" | "completed";
+  paymentStatus?: "pending" | "credit" | "completed";
+  saleDetails: SaleDetailParams[];
+}
+
+interface EditSaleParams extends CreateSaleParams {
+  saleId: string;
+}
+interface GetSaleParams {
+  saleId: string;
+}

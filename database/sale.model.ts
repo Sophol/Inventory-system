@@ -11,7 +11,7 @@ export interface ISale {
   discount: number;
   tax: number;
   subtotal: number;
-  grandtoal: number;
+  grandtotal: number;
   paid: number;
   balance: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
@@ -31,7 +31,7 @@ const SaleSchema = new Schema<ISale>(
     discount: { type: Number, default: 0 },
     tax: { type: Number, default: 0 },
     subtotal: { type: Number, default: 0 },
-    grandtoal: { type: Number, default: 0 },
+    grandtotal: { type: Number, default: 0 },
     paid: { type: Number, default: 0 },
     balance: { type: Number, default: 0 },
     paidBy: {
