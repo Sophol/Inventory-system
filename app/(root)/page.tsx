@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import * as React from "react";
+import withAuthorization from "@/components/withAuthorizatoin";
 const salesData = [
   { name: "Sun", value: 0 },
   { name: "Mon", value: 0 },
@@ -372,4 +373,4 @@ function Sun({ className, ...props }: React.ComponentProps<"svg">) {
   );
 }
 
-export default Home;
+export default withAuthorization(Home, ["admin", "report"]);

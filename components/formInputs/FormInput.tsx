@@ -35,7 +35,7 @@ function FormInput<T extends FieldValues>({
   onChange,
 }: FormInputProps<T>) {
   const {
-    field: { onChange: fieldOnChange, ...field },
+    field: { onChange: fieldOnChange },
   } = useController({ name, control });
 
   const handleChange = (value: any) => {
@@ -68,6 +68,7 @@ function FormInput<T extends FieldValues>({
               className="paragraph-regular light-border-3 text-dark300_light700 no-focus min-h-[36px] border"
               placeholder={placeholder}
               readOnly={readonly}
+              autoComplete="off"
               {...field}
               value={field.value ?? ""}
               onChange={(e) => handleChange(e.target.value)}

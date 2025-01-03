@@ -1,28 +1,31 @@
-import * as React from "react";
 import { GalleryVerticalEnd, LogOut } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
+import { auth, signOut } from "@/auth";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { auth, signOut } from "@/auth";
-import { Button } from "../ui/button";
-import Image from "next/image";
-import Link from "next/link";
 import ROUTES from "@/constants/routes";
+
+import { Button } from "../ui/button";
 import NavLinks from "./navbar/NavLinks";
+import { redirect } from "next/navigation";
 
 const AppSidebar = async () => {
   const session = await auth();
   const userId = session?.user?.id;
+  const role = session?.user?.role;
+  console.log("role", session?.user);
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -46,7 +49,7 @@ const AppSidebar = async () => {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            <NavLinks userId={userId} />
+            <NavLinks userId={userId} role={role ?? "user"} />
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
@@ -59,6 +62,7 @@ const AppSidebar = async () => {
                   action={async () => {
                     "use server";
                     await signOut();
+                    redirect(ROUTES.SIGN_IN);
                   }}
                 >
                   <Button

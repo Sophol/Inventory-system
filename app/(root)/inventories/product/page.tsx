@@ -8,11 +8,22 @@ import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { PRODUCT_EMPTY } from "@/constants/states";
 import { getProducts } from "@/lib/actions/product.action";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 const Product = async ({ searchParams }: SearchParams) => {
+  const isAuthorized = await checkAuthorization([
+    "admin",
+    "branch",
+    "stock",
+    "seller",
+  ]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { page, pageSize, query, filter } = await searchParams;
   const { success, data, error } = await getProducts({
     page: Number(page) || 1,

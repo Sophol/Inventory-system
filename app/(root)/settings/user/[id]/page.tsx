@@ -1,17 +1,20 @@
 import { notFound, redirect } from "next/navigation";
 import { IoCaretBackOutline } from "react-icons/io5";
 
-import { auth } from "@/auth";
 import CardContainer from "@/components/cards/CardContainer";
+import UserForm from "@/components/forms/UserForm";
 import ROUTES from "@/constants/routes";
 import { api } from "@/lib/api";
-import UserForm from "@/components/forms/UserForm";
+import { checkAuthorization } from "@/lib/auth";
 
 const EditUser = async ({ params }: RouteParams) => {
+  const isAuthorized = await checkAuthorization(["admin", "branch"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { id } = await params;
   if (!id) return notFound();
-  const session = await auth();
-  if (!session) return redirect(ROUTES.SIGN_IN);
+
   const { data: user, success } = await api.users.getById(id);
   if (!success) return notFound();
 

@@ -4,15 +4,18 @@ import CardContainer from "@/components/cards/CardContainer";
 import PurchaseForm from "@/components/forms/PurchaseForm";
 import ROUTES from "@/constants/routes";
 import { getSetting } from "@/lib/actions/setting.action";
-import { auth } from "@/auth";
+
 import { notFound, redirect } from "next/navigation";
 import { getPurchase } from "@/lib/actions/purchase.action";
+import { checkAuthorization } from "@/lib/auth";
 
 const EditPurchase = async ({ params }: RouteParams) => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "stock"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { id } = await params;
   if (!id) return notFound();
-  const session = await auth();
-  if (!session) return redirect(ROUTES.SIGN_IN);
   const { success: settingSuccess, data: setting } = await getSetting({
     settingId: process.env.SETTING_ID as string,
   });

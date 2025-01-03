@@ -9,12 +9,18 @@ import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { CATEGORY_EMPTY } from "@/constants/states";
 import { getCategories } from "@/lib/actions/category.action";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
 const Category = async ({ searchParams }: SearchParams) => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "stock"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { page, pageSize, query, filter } = await searchParams;
   const { success, data, error } = await getCategories({
     page: Number(page) || 1,

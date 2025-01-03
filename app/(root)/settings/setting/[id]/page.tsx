@@ -1,17 +1,24 @@
 import { notFound, redirect } from "next/navigation";
 import { IoCaretBackOutline } from "react-icons/io5";
 
-import { auth } from "@/auth";
 import CardContainer from "@/components/cards/CardContainer";
-import ROUTES from "@/constants/routes";
 import SettingForm from "@/components/forms/SettingForm";
+import ROUTES from "@/constants/routes";
 import { getSetting } from "@/lib/actions/setting.action";
+import { checkAuthorization } from "@/lib/auth";
 
 const EditSetting = async ({ params }: RouteParams) => {
+  const isAuthorized = await checkAuthorization([
+    "admin",
+    "branch",
+    "stock",
+    "seller",
+  ]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { id } = await params;
   if (!id) return notFound();
-  const session = await auth();
-  if (!session) return redirect(ROUTES.SIGN_IN);
   const { data, success } = await getSetting({ settingId: id });
   if (!success || !data) return notFound();
   const setting = data;

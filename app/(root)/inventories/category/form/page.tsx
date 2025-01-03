@@ -3,8 +3,14 @@ import { IoCaretBackOutline } from "react-icons/io5";
 import CardContainer from "@/components/cards/CardContainer";
 import CategoryForm from "@/components/forms/CategoryForm";
 import ROUTES from "@/constants/routes";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-const page = () => {
+const page = async () => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "stock"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   return (
     <CardContainer
       title="Add Category"

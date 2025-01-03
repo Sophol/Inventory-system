@@ -1,16 +1,18 @@
-import { auth } from "@/auth";
 import CardContainer from "@/components/cards/CardContainer";
 import UnitForm from "@/components/forms/UnitForm";
 import ROUTES from "@/constants/routes";
 import { getUnit } from "@/lib/actions/unit.action";
+import { checkAuthorization } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 import { IoCaretBackOutline } from "react-icons/io5";
 
 const EditUnit = async ({ params }: RouteParams) => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "stock"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { id } = await params;
   if (!id) return notFound();
-  const session = await auth();
-  if (!session) return redirect(ROUTES.SIGN_IN);
   const { data: unit, success } = await getUnit({ unitId: id });
   if (!success) return notFound();
 

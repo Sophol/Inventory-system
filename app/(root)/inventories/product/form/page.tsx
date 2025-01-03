@@ -1,10 +1,15 @@
 import CardContainer from "@/components/cards/CardContainer";
 import ProductForm from "@/components/forms/ProductForm";
 import ROUTES from "@/constants/routes";
-import { getCategories } from "@/lib/actions/category.action";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { IoCaretBackOutline } from "react-icons/io5";
 
-const page = () => {
+const page = async () => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "stock"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   return (
     <CardContainer
       title="Add Product"

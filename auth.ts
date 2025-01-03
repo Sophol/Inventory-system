@@ -30,12 +30,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             password,
             existingAccount.password!
           );
+
           if (isValidPassword) {
             return {
               id: existingUser._id,
               name: existingUser.name,
               email: existingUser.email,
               image: existingUser.image,
+              role: existingUser.role,
             };
           }
         }
@@ -46,24 +48,43 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async session({ session, token }) {
       session.user.id = token.sub as string;
+      session.user.role = token.role as string; // Add role to session
       return session;
     },
-    async jwt({ token, account }) {
-      if (account) {
-        const { data: existingAccount, success } =
-          (await api.accounts.getByProvider(
-            account.type === "credentials"
-              ? token.email!
-              : account.providerAccountId
-          )) as ActionResponse<IAccountDoc>;
+    async jwt({ token, user, account, trigger }) {
+      if (trigger === "signIn" || trigger === "signUp") {
+        if (user) {
+          token.id = user.id;
+          token.role = user.role;
+        } else if (account) {
+          // Handle OAuth sign-in
+          const { data: existingAccount, success } =
+            (await api.accounts.getByProvider(
+              account.provider === "credentials"
+                ? token.email!
+                : account.providerAccountId
+            )) as ActionResponse<IAccountDoc>;
 
-        if (!success || !existingAccount) return token;
+          if (success && existingAccount) {
+            const { data: existingUser } = (await api.users.getById(
+              existingAccount.userId.toString()
+            )) as ActionResponse<IUserDoc>;
 
-        const userId = existingAccount.userId;
-
-        if (userId) token.sub = userId.toString();
+            if (existingUser) {
+              token.id = existingUser._id;
+              token.role = existingUser.role;
+            }
+          }
+        }
+      } else if (!token.role) {
+        const { data: existingUser } = token.sub
+          ? ((await api.users.getById(token.sub)) as ActionResponse<IUserDoc>)
+          : { data: null };
+        if (existingUser) {
+          token.id = existingUser._id;
+          token.role = existingUser.role;
+        }
       }
-
       return token;
     },
     async signIn({ user, profile, account }) {

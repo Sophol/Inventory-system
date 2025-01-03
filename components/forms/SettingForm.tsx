@@ -92,11 +92,13 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
           <FormInput
             name="exchangeRateD"
             label="exchangeRate Dollar"
+            type="number"
             control={form.control}
           />
           <FormInput
             name="exchangeRateT"
             label="exchangeRate Thai"
+            type="number"
             control={form.control}
           />
         </div>

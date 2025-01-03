@@ -18,6 +18,14 @@ export const DEFAULT_ERROR = {
     href: ROUTES.HOME,
   },
 };
+export const DEFAULT_UNAUTHORIZED = {
+  title: "Oops! Unauthorized",
+  message: "Please login other user to access this page.",
+  button: {
+    text: "Login",
+    href: ROUTES.SIGN_IN,
+  },
+};
 export const CATEGORY_EMPTY = {
   title: "No Category Found",
   message:

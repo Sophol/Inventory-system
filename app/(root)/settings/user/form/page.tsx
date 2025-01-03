@@ -1,10 +1,16 @@
+import { redirect } from "next/navigation";
 import { IoCaretBackOutline } from "react-icons/io5";
 
 import CardContainer from "@/components/cards/CardContainer";
 import UserForm from "@/components/forms/UserForm";
 import ROUTES from "@/constants/routes";
+import { checkAuthorization } from "@/lib/auth";
 
-const page = () => {
+const CreateUser = async () => {
+  const isAuthorized = await checkAuthorization(["admin", "branch"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   return (
     <CardContainer
       title="Add User"
@@ -18,4 +24,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CreateUser;

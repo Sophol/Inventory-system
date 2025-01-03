@@ -1,13 +1,6 @@
 "use client";
-import {
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-} from "@/components/ui/sidebar";
-import { sidebarLinks } from "@/constants/index";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import {
   Collapsible,
   CollapsibleContent,
@@ -15,12 +8,19 @@ import {
 } from "@radix-ui/react-collapsible";
 import { ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
 
-const NavLinks = ({ userId }: { userId?: string }) => {
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar";
+import { getSidebarLinks } from "@/constants/index";
+
+const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
   const pathname = usePathname();
-
+  const sidebarLinks = getSidebarLinks(role);
   const isActiveRoute = (route: string) =>
     (pathname.includes(route) && route.length > 1) || pathname === route;
 

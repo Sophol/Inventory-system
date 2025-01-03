@@ -1,9 +1,15 @@
 import CardContainer from "@/components/cards/CardContainer";
 import UnitForm from "@/components/forms/UnitForm";
 import ROUTES from "@/constants/routes";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { IoCaretBackOutline } from "react-icons/io5";
 
-const CreateUnit = () => {
+const CreateUnit = async () => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "stock"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   return (
     <CardContainer
       title="Add Unit"
