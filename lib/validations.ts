@@ -273,3 +273,46 @@ export const EditSettingSchema = z.object({
   exchangeRateD: z.number().min(0).default(0),
   exchangeRateT: z.number().min(0).default(0),
 });
+
+export const SaleDetailSchema = z.object({
+  product: ObjectIdSchema,
+  unit: ObjectIdSchema,
+  description: z.string().optional(),
+  discount: z.number().min(0).default(0),
+  qty: z.number().min(0).default(0),
+  cost: z.number().min(0).default(0),
+  total: z.number().min(0).default(0),
+});
+export const CreateSaleDetailSchema =SaleDetailSchema.extend({
+  sale: string().min(1, "Sale ID is required"),
+});
+export const CreateSaleSchema = z.object({
+  customer: z.string().min(1, "Customer is required"),
+  branch: z.string().min(1, "Branch is required"),
+  referenceNo: z.string().min(1, "Reference number is required"),
+  description: z.string().optional(),
+  orderDate: z.date(),
+  approvedDate: z.date(),
+  invoicedDate: z.date(),
+  tax: z.number().min(0).default(0),
+  discount: z.number().min(0).default(0),
+  subtotal: z.number().min(0).default(0),
+  grandtotal: z.number().min(0).default(0),
+  paid: z.number().min(0).default(0),
+  balance: z.number().min(0).default(0),
+  exchangeRateD: z.number().min(0).default(0),
+  exchangeRateT: z.number().min(0).default(0),
+  paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]).optional(),
+  orderStatus: z.enum(["pending", "approved", "completed"]).default("pending"),
+  paymentStatus: z.enum(["pending", "credit", "completed"]).default("pending"),
+  saleDetails: z
+    .array(SaleDetailSchema)
+    .min(1, { message: "At least one Unit is required." }),
+});
+
+export const EditSaleSchema = CreateSaleSchema.extend({
+  saleId: z.string().min(1, "Sale ID is required"),
+});
+export const GetSaleSchema = z.object({
+  saleId: z.string().min(1, "Sale ID is required"),
+});

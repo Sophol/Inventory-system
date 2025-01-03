@@ -134,6 +134,47 @@ interface Purchase {
   paymentStatus: "pending" | "credit" | "completed";
   purchaseDetails: PurchaseDetail[];
 }
+
+
+interface saleDetail {
+  _id: string;
+  sale: string;
+  product: string;
+  unit: string;
+  selectedProduct?: { _id: string; title: string };
+  selectedUnit?: { _id: string; title: string };
+  description?: string;
+  discount: number;
+  qty: number;
+  cost: number;
+  total: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+}
+
+interface Sale {
+  _id: string;
+  customer: { _id: string; title: string };
+  branch: { _id: string; title: string };
+  referenceNo: string;
+  description?: string;
+  orderDate: string;
+  approvedDate: string;
+  invoicedDate: string;
+  discount: number;
+  subtotal: number;
+  grandtotal: number;
+  paid: number;
+  balance: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+  tax: number;
+  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  orderStatus: "pending" | "approved" | "completed";
+  paymentStatus: "pending" | "credit" | "completed";
+  saleDetails: PurchaseDetail[];
+}
+
 interface Setting {
   _id: string;
   companyName: string;

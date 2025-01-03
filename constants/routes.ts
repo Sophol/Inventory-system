@@ -29,5 +29,9 @@ const ROUTES = {
   ADDUSER: "/settings/user/form",
   USER: (_id: string) => `/settings/user/${_id}`,
   SETTING: (_id: string) => `/settings/setting/${_id}`,
+
+  SALES: "/sales/order",
+  ADDSALE: "/sales/order/form",
+  SALE: (_id: string) => `/sales/order/${_id}`,
 };
 export default ROUTES;

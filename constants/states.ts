@@ -98,3 +98,13 @@ export const USER_EMPTY = {
     href: ROUTES.ADDUSER,
   },
 };
+export const SALE_EMPTY = {
+  title: "No SALE Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add SALE",
+    href: ROUTES.ADDSALE,
+  },
+};
+
