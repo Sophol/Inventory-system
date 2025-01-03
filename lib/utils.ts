@@ -80,3 +80,12 @@ export function convertFromSmallUnitQty(
 
   return result.join(" ");
 }
+
+export const generateUniqueReference = ({
+  prefix,
+}: {
+  prefix: string;
+}): string => {
+  const timestamp = Date.now().toString(36); // Convert current timestamp to base-36 string
+  return `${prefix}-${timestamp}`.toUpperCase(); // Return the reference number
+};

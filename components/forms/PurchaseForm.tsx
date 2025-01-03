@@ -23,6 +23,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import FormPurchaseDetail from "../formInputs/FormPurchaseDetail";
 import { getProduct, getProducts } from "@/lib/actions/product.action";
 import { getUnits } from "@/lib/actions/unit.action";
+import { get } from "http";
+import { generateUniqueReference } from "@/lib/utils";
 
 interface Params {
   purchase?: Purchase;
@@ -44,7 +46,8 @@ const PurchaseForm = ({
     defaultValues: {
       supplier: purchase?.supplier._id || "",
       branch: purchase?.branch._id || "",
-      referenceNo: purchase?.referenceNo || "",
+      referenceNo:
+        purchase?.referenceNo || generateUniqueReference({ prefix: "PO" }),
       description: purchase?.description || "",
       purchaseDate: purchase?.purchaseDate
         ? new Date(purchase.purchaseDate)

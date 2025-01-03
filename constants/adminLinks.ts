@@ -79,16 +79,37 @@ export const adminLinks: Link[] = [
     url: "#",
     icon: ShoppingCart,
     isActive: false,
-    permissions: ["admin", "stock"],
+    permissions: ["admin", "stock", "branch"],
     items: [
       {
         title: "Purchase Order",
-        url: "/purchases/order",
+        url: ROUTES.PURCHASES,
         icon: ShoppingBasket,
-        permissions: ["admin", "stock"],
+        permissions: ["admin", "stock", "branch"],
       },
       {
         title: "Supplier",
+        url: ROUTES.SUPPLIERS,
+        icon: FaUserTie,
+        permissions: ["admin", "stock", "branch"],
+      },
+    ],
+  },
+  {
+    title: "Expense",
+    url: "#",
+    icon: ShoppingCart,
+    isActive: false,
+    permissions: ["admin", "branch"],
+    items: [
+      {
+        title: "General Expense",
+        url: "/expenses/general",
+        icon: ShoppingBasket,
+        permissions: ["admin", "branch"],
+      },
+      {
+        title: "Mission Expense",
         url: ROUTES.SUPPLIERS,
         icon: FaUserTie,
         permissions: ["admin", "stock"],

@@ -33,5 +33,16 @@ const ROUTES = {
   SALES: "/sales/order",
   ADDSALE: "/sales/order/form",
   SALE: (_id: string) => `/sales/order/${_id}`,
+  GENERALEXPS: "/expenses/general",
+  ADDGENERALEXP: "/expenses/general/form",
+  GENERALEXP: (_id: string) => `/expenses/general/${_id}`,
+
+  MISSIONEXPS: "/expenses/mission",
+  ADDMISSIONEXP: "/expenses/mission/form",
+  MISSIONEXP: (_id: string) => `/expenses/mission/${_id}`,
+
+  SALARYEXPS: "/expenses/salary",
+  ADDSALARYEXP: "/expenses/salary/form",
+  SALARYEXP: (_id: string) => `/expenses/salary/${_id}`,
 };
 export default ROUTES;

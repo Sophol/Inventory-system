@@ -1,6 +1,4 @@
 "use client";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -10,7 +8,6 @@ import {
   Plus,
   ShoppingCart,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Bar,
@@ -96,7 +93,6 @@ const recentOrders = [
 ];
 
 function Home() {
-  const [searchQuery, setSearchQuery] = React.useState("");
   return (
     <>
       <section>
