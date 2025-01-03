@@ -2,7 +2,7 @@
 import React from "react";
 import { CiCirclePlus } from "react-icons/ci";
 
-import { SaleColumn } from "@/columns/SaleColumn";
+import { SaleColumn } from "@/columns/OrderApproveColumn";
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
 import LocalSearch from "@/components/search/LocalSearch";
@@ -27,11 +27,11 @@ const ApprovedOrder = async ({ searchParams }: SearchParams) => {
     data || ({} as { sales: Sale[]; isNext: boolean });
   return (
     <CardContainer
-      title="Sale"
-      redirectTitle="ADD"
-      redirectHref={ROUTES.ADDSALE}
-      redirectIcon={CiCirclePlus}
-      redirectClass="!text-light-900 primary-gradient"
+      title="Approved Order"
+      redirectTitle=""
+      redirectHref={""}
+      redirectIcon={""}
+      redirectClass="hidden"
     >
       <>
         <div className="py-4">

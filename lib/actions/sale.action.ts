@@ -804,7 +804,7 @@ export async function deleteSale(
     await session.endSession();
   }
 }
-  export async function approveOrder (
+  export async function updateOrderStatus (
     params: GetSaleParams
   ): Promise<ActionResponse> {
     const validatedData = await action({

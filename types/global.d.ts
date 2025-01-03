@@ -67,6 +67,7 @@ interface Product {
   status: "active" | "inactive";
   categoryTitle?: string;
 }
+
 interface Branch {
   _id: string;
   title: string;
@@ -197,4 +198,19 @@ interface User {
   branch: { _id: string; title: string };
   salary?: number;
   status: "active" | "inactive";
+}
+
+interface Payment {
+  _id: string;
+  customer: string;
+  branch: string;
+  sale: string;
+  referenceNo: string;
+  paymentDate: string;
+  creditAmount: number;
+  paidAmount: number;
+  balance: number;
+  description?: string;
+  paidBy: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  paymentStatus: "pending" | "credit" | "completed";
 }

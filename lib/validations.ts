@@ -1,3 +1,4 @@
+
 import { Types } from "mongoose";
 import { string, z } from "zod";
 
@@ -315,4 +316,18 @@ export const EditSaleSchema = CreateSaleSchema.extend({
 });
 export const GetSaleSchema = z.object({
   saleId: z.string().min(1, "Sale ID is required"),
+});
+
+
+export const CreatePaymentSchema = z.object({
+  customer: z.string().min(1, "Customer is required"),
+  branch: z.string().min(1, "Branch is required"),
+  referenceNo: z.string().min(1, "Reference number is required"),
+  description: z.string().optional(),
+  paymentDate: z.string().min(1, "Payment date is required"),
+  creditAmount: z.number().min(0, "Credit amount must be a positive number"),
+  paidAmount: z.number().min(0, "Paid amount must be a positive number"),
+  balance: z.number().min(0, "Balance must be a positive number"),
+  paidBy: z.string().min(1, "Paid by is required"),
+  paymentStatus: z.string().min(1, "Payment status is required"),
 });
