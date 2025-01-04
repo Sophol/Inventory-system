@@ -825,7 +825,6 @@ export async function deleteSale(
       }
       if ( sale.orderStatus === "pending" ) {
         sale.orderStatus  = "approved";
-        console.log("sale", sale)
         await sale.save({ });
         return { success: true };
        

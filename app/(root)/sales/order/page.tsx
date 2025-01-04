@@ -1,7 +1,7 @@
 import React from "react";
 import { CiCirclePlus } from "react-icons/ci";
 
-import { SaleColumn } from "@/columns/OrderPendingColumn";
+import { SaleColumn } from "@/columns/OrderListColumn";
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
 import LocalSearch from "@/components/search/LocalSearch";
