@@ -8,6 +8,7 @@ export interface ISale {
   orderDate: any;
   approvedDate?: any;
   invoicedDate?: any;
+  dueDate?: any;
   discount: number;
   tax: number;
   subtotal: number;
@@ -27,6 +28,7 @@ const SaleSchema = new Schema<ISale>(
     orderDate: { type: Date, default: Date.now() },
     approvedDate: { type: Date, default: Date.now() },
     invoicedDate: { type: Date, default: Date.now() },
+    dueDate: { type: Date, default: Date.now() },
     description: { type: String },
     discount: { type: Number, default: 0 },
     tax: { type: Number, default: 0 },

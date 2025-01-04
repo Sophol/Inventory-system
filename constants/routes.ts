@@ -1,4 +1,4 @@
-import Invoice from "@/app/(root)/sales/invoice/page";
+
 
 const ROUTES = {
   HOME: "/",
@@ -35,8 +35,8 @@ const ROUTES = {
   SALES: "/sales/order",
   ADDSALE: "/sales/order/form",
   SALE: (_id: string) => `/sales/order/${_id}`,
-  
-  INVOICE: (_id: string) => `/invoice/${_id}`,
+  INVOICES : "/sales/invoice",
+  INVOICE: (_id: string) => `/sales/invoice/${_id}`,
   GENERALEXPS: "/expenses/general",
   ADDGENERALEXP: "/expenses/general/form",
   GENERALEXP: (_id: string) => `/expenses/general/${_id}`,
