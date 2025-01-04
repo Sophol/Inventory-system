@@ -107,4 +107,12 @@ export const SALE_EMPTY = {
     href: ROUTES.ADDSALE,
   },
 };
-
+export const SALARY_EMPTY = {
+  title: "No SALARY Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add Salary",
+    href: ROUTES.ADDSALARYEXP,
+  },
+};

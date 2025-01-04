@@ -283,7 +283,7 @@ export const SaleDetailSchema = z.object({
   cost: z.number().min(0).default(0),
   total: z.number().min(0).default(0),
 });
-export const CreateSaleDetailSchema =SaleDetailSchema.extend({
+export const CreateSaleDetailSchema = SaleDetailSchema.extend({
   sale: string().min(1, "Sale ID is required"),
 });
 export const CreateSaleSchema = z.object({
@@ -315,4 +315,59 @@ export const EditSaleSchema = CreateSaleSchema.extend({
 });
 export const GetSaleSchema = z.object({
   saleId: z.string().min(1, "Sale ID is required"),
+});
+
+export const CreateSalarySchema = z.object({
+  staffId: ObjectIdSchema,
+  branch: ObjectIdSchema,
+  description: z.string().optional(),
+  salaryDate: z.date().default(() => new Date()),
+  salary: z.number().min(0).default(0),
+  allowance: z.number().min(0).default(0),
+  deduction: z.number().min(0).default(0),
+  exchangeRateD: z.number().min(0).default(0),
+  exchangeRateT: z.number().min(0).default(0),
+  netSalary: z.number().min(0).default(0),
+});
+
+export const EditSalarySchema = CreateSalarySchema.extend({
+  salaryId: z.string().min(1, "Salary ID is required"),
+});
+export const GetSalarySchema = z.object({
+  salaryId: z.string().min(1, "Salary  ID is required"),
+});
+
+export const CreateMissionSchema = z.object({
+  staffId: ObjectIdSchema,
+  branch: ObjectIdSchema,
+  description: z.string().optional(),
+  missionDate: z.date().default(new Date()),
+  amount: z.number().min(0).default(0),
+  exchangeRateD: z.number().min(0).default(0),
+  exchangeRateT: z.number().min(0).default(0),
+});
+
+export const EditMissionSchema = CreateMissionSchema.extend({
+  missionId: z.string().min(1, "Mission ID is required"),
+});
+
+export const GetMissionSchema = z.object({
+  missionId: z.string().min(1, "Mission ID is required"),
+});
+export const CreateGeneralExpSchema = z.object({
+  title: z.string().min(1, { message: "Title is required" }),
+  branch: ObjectIdSchema,
+  description: z.string().optional(),
+  generalDate: z.date().default(new Date()),
+  amount: z.number().min(0).default(0),
+  exchangeRateD: z.number().min(0).default(0),
+  exchangeRateT: z.number().min(0).default(0),
+});
+
+export const EditGeneralExpSchema = CreateGeneralExpSchema.extend({
+  generalExpId: z.string().min(1, "General ID is required"),
+});
+
+export const GetGeneralExpSchema = z.object({
+  generalExpId: z.string().min(1, "General ID is required"),
 });

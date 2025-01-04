@@ -135,7 +135,6 @@ interface Purchase {
   purchaseDetails: PurchaseDetail[];
 }
 
-
 interface saleDetail {
   _id: string;
   sale: string;
@@ -197,4 +196,40 @@ interface User {
   branch: { _id: string; title: string };
   salary?: number;
   status: "active" | "inactive";
+}
+
+interface Salary {
+  _id: Types.ObjectId;
+  staffId: Types.ObjectId;
+  branch: Types.ObjectId;
+  description?: string;
+  salaryDate: Date;
+  salary: number;
+  allowance: number;
+  deduction: number;
+  exchangeRateD: number;
+  exchangeRateT: number;
+  netSalary: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+interface Mission {
+  _id: string;
+  title: string;
+  branch: string;
+  description?: string;
+  generalDate: Date | string;
+  amount?: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+}
+interface GeneralExp {
+  _id: string;
+  title: string;
+  branch: string;
+  description?: string;
+  generalDate: Date | string;
+  amount?: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
 }

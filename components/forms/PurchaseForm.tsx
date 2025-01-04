@@ -23,7 +23,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import FormPurchaseDetail from "../formInputs/FormPurchaseDetail";
 import { getProduct, getProducts } from "@/lib/actions/product.action";
 import { getUnits } from "@/lib/actions/unit.action";
-import { get } from "http";
 import { generateUniqueReference } from "@/lib/utils";
 
 interface Params {

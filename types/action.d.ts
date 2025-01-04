@@ -201,3 +201,56 @@ interface EditSaleParams extends CreateSaleParams {
 interface GetSaleParams {
   saleId: string;
 }
+interface CreateSalaryParams {
+  staffId: string;
+  branch: string;
+  description?: string;
+  salaryDate?: Date | string;
+  salary?: number;
+  allowance?: number;
+  deduction?: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+  netSalary?: number;
+}
+
+interface EditSalaryParams extends CreateSalaryParams {
+  salaryId: string;
+}
+interface GetSalaryParams {
+  salaryId: string;
+}
+interface CreateMissionParams {
+  staffId: string;
+  branch: string;
+  description?: string;
+  missionDate: Date;
+  amount?: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+}
+
+interface EditMissionParams extends CreateMissionParams {
+  missionId: string;
+}
+interface GetMissionParams {
+  missionId: string;
+}
+// New types for GeneralExp
+interface CreateGeneralExpParams {
+  title: string;
+  branch: string;
+  description?: string;
+  generalDate: Date;
+  amount?: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+}
+
+interface EditGeneralExpParams extends CreateGeneralExpParams {
+  generalExpId: string;
+}
+
+interface GetGeneralExpParams {
+  generalExpId: string;
+}

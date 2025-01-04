@@ -13,7 +13,7 @@ import bcrypt from "bcryptjs";
 export async function GET(
   _: Request,
   { params }: { params: Promise<{ id: string }> }
-) {
+): Promise<APIResponse<User>> {
   const { id } = await params;
   if (!id) throw new NotFoundError("User");
   try {

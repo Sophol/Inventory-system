@@ -14,6 +14,9 @@ import Stock from "./stock.model";
 import Supplier from "./supplier.model";
 import User from "./user.model";
 import Setting from "./setting.model";
+import Salary from "./salary.model";
+import GeneralExp from "./generalExp.model";
+import Mission from "./mission.model";
 
 export {
   Account,
@@ -32,4 +35,7 @@ export {
   Supplier,
   User,
   Setting,
+  Salary,
+  GeneralExp,
+  Mission,
 };
