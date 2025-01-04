@@ -3,7 +3,7 @@
     padding: 50px;
     border-radius: 5px;
     color: charcoal;
-    width: 77%;
+    width: 80%;
     border:1px solid lightgrey;
   }
   .invoice-header{
@@ -17,17 +17,23 @@
   .sub-info{
     color:rgba(47, 43, 61, 0.87);
   }
+  .button-download-invoice{
+    background: #675dd8;
+  }
   .sale-details {
     padding: 20px 0 15px 0;
     border-radius: 5px;
     color: black;
-    
     border:1px solid lightgrey;
   }
   .card20 {
-    border:1px solid lightgrey;
-    padding: 15px;
-    border-radius: 5px;
+    
     color: black;
-    width: 23%;
+    width: 20%;
+  }
+  .card20-container{
+    width:100%;
+    border:1px solid lightgrey;
+    padding: 30px;
+    border-radius: 5px;
   }

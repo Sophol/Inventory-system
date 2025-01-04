@@ -51,7 +51,7 @@ const InvoiceDetail: React.FC<params> = ({ invoice }) => {
       <div className='flex gap-4 p-2 invoice-body mb-5'>
         <div className='w-1/2 '>
           <p className='pb-3'>Invoice To:</p>
-          <p className='text-base text-dark-300'>{invoice.customer.title}</p>
+          <p className='sub-info'>{invoice.customer.title}</p>
         </div>
         <div className='w-1/2'>
           <h1 className=" text-lg mb-2">Bill To:</h1>

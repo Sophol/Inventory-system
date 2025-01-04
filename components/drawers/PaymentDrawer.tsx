@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaRegEye, FaRegArrowAltCircleLeft } from 'react-icons/fa';
+import { FaDollarSign, FaRegArrowAltCircleLeft } from 'react-icons/fa';
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import z from "zod";
@@ -39,14 +39,11 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale }) => {
   return (
     <>
       {/* Button to open the drawer */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="text-green-500"
-        onClick={toggleDrawer}
-      >
-        <FaRegEye />
-      </Button>
+          <Button type="submit"
+          onClick={toggleDrawer}
+            className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600">
+            <FaDollarSign /> Add Payment
+          </Button>
 
       {/* Overlay */}
       {isOpen && (
