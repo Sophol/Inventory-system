@@ -254,3 +254,16 @@ interface EditGeneralExpParams extends CreateGeneralExpParams {
 interface GetGeneralExpParams {
   generalExpId: string;
 }
+
+interface CreatePaymentParams {
+  customer: string;
+  branch: string;
+  referenceNo: string;
+  description?: string;
+  paymentDate?: Date | string;
+  creditAmount?: number;
+  paidAmount?: number;
+  balance?: number;
+  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  paymentStatus?: "pending" | "credit" | "completed";
+}

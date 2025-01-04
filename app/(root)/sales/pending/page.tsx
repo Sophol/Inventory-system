@@ -2,7 +2,7 @@
 import React from "react";
 import { CiCirclePlus } from "react-icons/ci";
 
-import { SaleColumn } from "@/columns/SaleColumn";
+import { SaleColumn } from "@/columns/OrderPendingColumn";
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
 import LocalSearch from "@/components/search/LocalSearch";
@@ -27,7 +27,7 @@ const PendingOrder = async ({ searchParams }: SearchParams) => {
     data || ({} as { sales: Sale[]; isNext: boolean });
   return (
     <CardContainer
-      title="Sale"
+      title="Pening Order"
       redirectTitle="ADD"
       redirectHref={ROUTES.ADDSALE}
       redirectIcon={CiCirclePlus}

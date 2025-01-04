@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaRegCheckCircle } from "react-icons/fa";
+import { FaPrint } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,28 +28,28 @@ const ButtonPopup: React.FC<ButtonPopupProps> = ({ onPopup }) => {
       <Button
         variant="ghost"
         size="icon"
-        className="text-green-500"
+        className="text-blue-500"
         onClick={() => setIsDialogOpen(true)}
       >
-          <FaRegCheckCircle />
+             <FaPrint />
       </Button>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
           <Button variant="ghost" size="icon" className="hidden">
-            <FaRegCheckCircle />
+            <FaPrint />
           </Button>
         </DialogTrigger>
         <DialogContent>
-          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogTitle>Confirm Issue</DialogTitle>
           <DialogDescription>
-            Are you sure you want to Approve this Order?
+            Are you sure you want to Issue this Invoice?
           </DialogDescription>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
               Cancel
             </Button>
-            <Button variant="success" onClick={handlePopup}>
-              Approve   <FaRegCheckCircle />
+            <Button variant="info" onClick={handlePopup}>
+              Issue <FaPrint />
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -24,6 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import FormSaleDetail from "../formInputs/FormSaleDetail";
 import { getProduct, getProducts } from "@/lib/actions/product.action";
 import { getUnits } from "@/lib/actions/unit.action";
+import { generateUniqueReference } from "@/lib/utils";
 
 interface Params {
   sale?: Sale;
@@ -45,7 +46,8 @@ const SaleForm = ({
     defaultValues: {
       customer: sale?.customer._id || "",
       branch: sale?.branch._id || "",
-      referenceNo: sale?.referenceNo || "",
+      referenceNo:
+      sale?.referenceNo || generateUniqueReference({ prefix: "SO" }),
       description: sale?.description || "",
       orderDate: sale?.orderDate
         ? new Date(sale.orderDate)
@@ -278,23 +280,18 @@ const SaleForm = ({
             control={form.control}
             defaultValue={new Date()}
           />
-           <FormInput
-            name="tax"
-            label="tax"
-            type="number"
+
+        <FormInput
+            name="description"
+            label="Description"
             control={form.control}
-            defaultValue={0}
             isRequired={false}
           />
-            <FormSelect
-            name="orderStatus"
-            label="Order Status"
+          <FormInput
+            name="description"
+            label="Description"
             control={form.control}
-            items={[
-              { _id: "pending", title: "Pending" },
-              { _id: "approved", title: "Approved" },
-              { _id: "completed", title: "Completed" },
-            ]}
+            isRequired={false}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -309,11 +306,14 @@ const SaleForm = ({
             control={form.control}
           />
           <FormInput
-            name="description"
-            label="Description"
+            name="tax"
+            label="Tax"
+            type="number"
             control={form.control}
+            defaultValue={0}
             isRequired={false}
           />
+ 
         </div>
         <div className="grid grid-cols-1">
           <Card>

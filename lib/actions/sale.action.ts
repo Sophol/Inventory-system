@@ -804,7 +804,7 @@ export async function deleteSale(
     await session.endSession();
   }
 }
-  export async function approveOrder (
+  export async function updateOrderStatus (
     params: GetSaleParams
   ): Promise<ActionResponse> {
     const validatedData = await action({
@@ -825,7 +825,6 @@ export async function deleteSale(
       }
       if ( sale.orderStatus === "pending" ) {
         sale.orderStatus  = "approved";
-        console.log("sale", sale)
         await sale.save({ });
         return { success: true };
        
