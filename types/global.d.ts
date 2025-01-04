@@ -216,10 +216,11 @@ interface Salary {
 }
 interface Mission {
   _id: string;
+  staffId: Types.ObjectId;
   title: string;
-  branch: string;
+  branch: Types.ObjectId;
   description?: string;
-  generalDate: Date | string;
+  missionDate: Date | string;
   amount?: number;
   exchangeRateD?: number;
   exchangeRateT?: number;
@@ -227,7 +228,7 @@ interface Mission {
 interface GeneralExp {
   _id: string;
   title: string;
-  branch: string;
+  branch: Types.ObjectId;
   description?: string;
   generalDate: Date | string;
   amount?: number;

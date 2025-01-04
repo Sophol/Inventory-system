@@ -1,34 +1,38 @@
-import { notFound, redirect } from "next/navigation";
+import React from "react";
 import { IoCaretBackOutline } from "react-icons/io5";
 
 import CardContainer from "@/components/cards/CardContainer";
-import SalaryForm from "@/components/forms/SalaryForm";
+import MissionForm from "@/components/forms/MissionForm";
 import ROUTES from "@/constants/routes";
-import { getSalary } from "@/lib/actions/salary.action";
 import { checkAuthorization } from "@/lib/auth";
 import { getSetting } from "@/lib/actions/setting.action";
+import { redirect, notFound } from "next/navigation";
 
-const EditSalary = async ({ params }: RouteParams) => {
+const page = async () => {
   const isAuthorized = await checkAuthorization(["admin", "branch"]);
   if (!isAuthorized) {
     return redirect("/unauthorized");
   }
-  const { id } = await params;
-  if (!id) return notFound();
-  const { data: salary, success } = await getSalary({ salaryId: id });
+  const { success, data: setting } = await getSetting({
+    settingId: process.env.SETTING_ID as string,
+  });
   if (!success) return notFound();
-
+  if (!setting) return notFound();
+  const { exchangeRateD, exchangeRateT } = setting;
   return (
     <CardContainer
-      title="Edit Salary"
+      title="Add Mission"
       redirectTitle="BACK"
-      redirectHref={ROUTES.BRANCHES}
+      redirectHref={ROUTES.MISSIONEXPS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"
     >
-      <SalaryForm salary={salary!} isEdit />
+      <MissionForm
+        exchangeRateD={exchangeRateD}
+        exchangeRateT={exchangeRateT}
+      />
     </CardContainer>
   );
 };
 
-export default EditSalary;
+export default page;

@@ -116,3 +116,21 @@ export const SALARY_EMPTY = {
     href: ROUTES.ADDSALARYEXP,
   },
 };
+export const MISSION_EMPTY = {
+  title: "No MISSION Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add Mission",
+    href: ROUTES.ADDMISSIONEXP,
+  },
+};
+export const GENERALEXP_EMPTY = {
+  title: "No GeneralExp Found",
+  message:
+    "Looks like the database is taking a nap. Wake it up with some new entries.",
+  button: {
+    text: "Add GeneralExp",
+    href: ROUTES.ADDGENERALEXP,
+  },
+};
