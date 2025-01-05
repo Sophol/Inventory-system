@@ -37,3 +37,23 @@
     padding: 30px;
     border-radius: 5px;
   }
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    .printable-area, .printable-area * {
+      visibility: visible;
+    }
+    .printable-area {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+    }
+  }
+  .invoice-note{
+    width:76%;
+  }
+  .invoice-total{
+    width:24%;
+  }

@@ -16,25 +16,7 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale }) => {
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (drawerRef.current && !drawerRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
+  };  
 
   return (
     <>

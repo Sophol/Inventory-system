@@ -38,7 +38,7 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
       paidAmount: 0,
       balance: 0,
       paidBy: "Cash",
-      paymentStatus: "Pending",
+    
     },
   });
  
@@ -88,23 +88,28 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-8"
+        className="flex flex-col gap-8 p-8"
         onSubmit={form.handleSubmit(handleCreatePayment)}
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <FormInput name="balance" label="Code" control={form.control} />
-          <FormInput name="paidAmount" label="Paid Amount" control={form.control} />
-          <FormInput name="creditAmount" label="Credit Amount" control={form.control} />
-        </div>
-        
-          <FormInput name="referenceNo" label="Reference No" control={form.control} />
-          <FormInput name="description" label="Description" control={form.control} />
+          <FormInput name="referenceNo" label="Invoice Balance" control={form.control} />
+          <FormInput name="description" label="Payment Amount" control={form.control} />
           <FormInput name="paymentDate" label="Payment Date" control={form.control} />
-        <div className="mt-2 flex justify-end">
+          <FormSelect
+            name="paidBy"
+            label="Select Payment Method"
+            control={form.control}
+            items={[
+              { _id: "Cash", title: "Cash" },
+              { _id: "ABA Bank", title: "ABA Bank" },
+              { _id: "ACLEDA Bank", title: "ACLEDA Bank" },
+              { _id: "Others", title: "Others" }
+            ]}
+          />
+        <div className="mt-2 flex ">
           <Button
             type="submit"
             disabled={isPending}
-            className="primary-gradient w-fit !text-light-900 uppercase"
+            className="button-download-invoice w-fit !text-light-900 px-7"
           >
             {isPending ? (
               <>
@@ -112,10 +117,25 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? "Update" : "Send"}</>
+            )}
+          </Button>
+          <Button
+            type="reset"
+            className="ml-3 w-fit bg-light-400 hover:bg-light-500 !text-light-900 px-7"
+          >
+            {isPending ? (
+              <>
+                <span>Submitting...</span>
+              </>
+            ) : (
+              <>Cancel</>
             )}
           </Button>
         </div>
+        
+         
+        
       </form>
     </Form>
   );

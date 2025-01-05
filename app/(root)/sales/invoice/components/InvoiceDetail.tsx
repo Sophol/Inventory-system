@@ -34,7 +34,8 @@ const formatCurrency = (amount: number) => {
 
 const InvoiceDetail: React.FC<params> = ({ invoice }) => {
   return (
-    <div className="card80">
+    <div className="card80 ">
+      <div className='printable-area'>
       <div className='flex gap-4 p-2 invoice-header'>
         <div className='w-3/4 '>
           <h2>Branch {invoice.branch.title}</h2>
@@ -72,9 +73,9 @@ const InvoiceDetail: React.FC<params> = ({ invoice }) => {
       <div className="sale-details bg-white rounded-lg shadow-sm">
         <div className="flex gap-4 border-b pb-4 px-7  ">
           <p className="w-2/6">ITEM</p>
-          <p className="w-2/6">Cost</p>
+          <p className="w-2/6">COST</p>
           <p className="w-1/6">QTY</p>
-          <p className="w-1/6">Total</p>
+          <p className="w-1/6">TOTAL</p>
         </div>
         {invoice.saleDetails.map((detail, index) => (
           <div key={index} className="flex gap-4 border-b py-3 last:border-b-0 px-7">
@@ -86,11 +87,11 @@ const InvoiceDetail: React.FC<params> = ({ invoice }) => {
         ))}
       </div>
       <div className='flex gap-4 invoice-body'>
-        <div className='w-4/5 pt-3'>
+        <div className='pt-3 invoice-note'>
           <p>Salesperson: <span className='sub-info'>Jenny Parker </span></p>
           <p className='sub-info'>Thanks for your bussiness</p>
         </div>
-        <div className='w-1/5 pt-3'>
+        <div className='pt-3 invoice-total'>
           <br />
           <div className='sub-info'>
             <div className='flex gap-4'>
@@ -118,6 +119,8 @@ const InvoiceDetail: React.FC<params> = ({ invoice }) => {
         </div>
 
       </div>
+      </div>
+      
     </div>
   );
 };
