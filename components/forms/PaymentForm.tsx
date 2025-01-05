@@ -37,37 +37,13 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
       paidAmount: 0,
       balance: sale?.grandtotal,
       paidBy: "Cash",
-    
     },
   });
- 
-
-  
   const handleCreatePayment = async (
     data: z.infer<typeof CreatePaymentSchema>
   ) => {
     console.log(data);
     startTransaction(async () => {
-      // if (isEdit && payment) {
-      //   const result = await editPayment({
-      //     paymentId: payment?._id,
-      //     ...data,
-      //   });
-      //   if (result.success) {
-      //     toast({
-      //       title: "success",
-      //       description: "Payment update successfully.",
-      //     });
-      //     if (result.data) router.push(ROUTES.SALES);
-      //   } else {
-      //     toast({
-      //       title: `Error ${result.status}`,
-      //       description: result.error?.message || "Something went wrong!",
-      //       variant: "destructive",
-      //     });
-      //   }
-      //   return;
-      // }
       const result = await createPayment(data);
       if (result.success) {
         toast({
@@ -93,6 +69,7 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
           <FormInput name="creditAmount" label="Credit Amount" control={form.control} />
           <FormInput name="paidAmount" label="Payment Amount" control={form.control} />
           <FormInput name="balance" label="Invoice Balance" control={form.control} />
+          <FormInput name="description" label="Description" control={form.control} />
           <FormDatePicker
             name="paymentDate"
             label="Payment Date"
