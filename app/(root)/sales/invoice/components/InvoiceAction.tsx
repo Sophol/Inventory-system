@@ -4,10 +4,12 @@
 import jsPDF from 'jspdf';
 import React from 'react';
 
+import { FaRegCheckCircle } from 'react-icons/fa';
 
 import "../invoice.css";
 
-
+import { updateOrderStatus } from "@/lib/actions/sale.action";
+import { toast } from "@/hooks/use-toast";
 
 
 import PaymentDrawer from '@/components/drawers/PaymentDrawer';
@@ -16,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import html2canvas from 'html2canvas';
 interface params {
   invoice: {
+    _id: string,
     referenceNo: string,
     invoicedDate: string,
     dueDate: string,
@@ -26,9 +29,13 @@ interface params {
     discount: number,
     tax: number,
     grandtotal: number,
+    orderStatus: string,
     saleDetails: Array<any>
   };
 }
+const reloadPage = () => {
+  window.location.reload();
+};
 const handlePrint = () => {
   window.print();
 };
@@ -51,19 +58,41 @@ const handleDownload = async () => {
 };
 
 const InvoiceAction: React.FC<params> = ({ invoice }) => {
+  console.log(invoice)
+  const handleInvoiceOrder = async () => {
+    const { success } = await updateOrderStatus({ saleId: invoice._id });
+    if (success) {
+      toast({
+        title: "success",
+        description: "Order Status update successfully.",
+      });
+      reloadPage();
+    } else {
+      toast({
+        title: "error",
+        description: "Something went wrong.",
+        variant: "destructive",
+      });
+    }
+  };
   return (
     <div className="card20">
       <div className="card20-container">
+      <Button type="button"
+          disabled={invoice.orderStatus === 'completed'}
+          onClick={handleInvoiceOrder}
+          className="button-download-invoice mb-4 w-full rounded px-4 py-2 text-white hover:bg-purple-700">
+          <FaRegCheckCircle className="cursor-pointer text-xl"  /> <span>Complete Order</span>
+        </Button>
         <Button type="button"
-           onClick={handleDownload}
-          className="button-download-invoice w-full rounded px-4 py-2 text-white hover:bg-purple-700">
+          onClick={handleDownload}
+          className="bg-light-400 hover:bg-light-500 w-full rounded px-4 py-2 text-white">
           <span>Download</span>
         </Button>
-        <div className='flex gap-4 my-5'>
-          <Button    onClick={handlePrint} className='w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500 '>Print</Button>
+        <div className='flex gap-4 my-4'>
+          <Button onClick={handlePrint} className='w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500 '>Print</Button>
           <Button className='w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500 '> Edit</Button>
         </div>
-
         <PaymentDrawer sale={invoice}/>
       </div>
     </div>

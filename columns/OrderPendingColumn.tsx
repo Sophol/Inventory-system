@@ -31,7 +31,7 @@ const reloadPage = () => {
   window.location.reload();
 };
 
-export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
+export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (

@@ -823,14 +823,18 @@ export async function deleteSale(
       if (!sale) {
         throw new Error("Sale not found");
       }
-      if ( sale.orderStatus === "pending" ) {
-        sale.orderStatus  = "approved";
+      if(sale.orderStatus !== "pending" && sale.orderStatus !== "approved" ){
+        return { success: false };
+      }
+      else if (sale.orderStatus === "pending" ) {
+            sale.orderStatus  = "approved";
+            await sale.save({ });
+            return { success: true };
+      }
+      else {
+        sale.orderStatus  = "completed";
         await sale.save({ });
         return { success: true };
-       
-      } 
-      else{
-        return { success: false };
       }
     } catch (error) {
       await session.abortTransaction();

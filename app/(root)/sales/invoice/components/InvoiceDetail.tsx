@@ -1,6 +1,8 @@
 import React from 'react';
 import "../invoice.css";
-
+import { getSetting } from "@/lib/actions/setting.action";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect, notFound } from "next/navigation";
 interface params {
   invoice: {
     referenceNo: string,
@@ -25,21 +27,35 @@ const formatDate = (dateString: string) => {
     year: 'numeric',
   }).format(date);
 };
+
 const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount);
+  return new Intl.NumberFormat('km-KH', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })
+    .format(amount)
+    .replace(/\./g, ','); // Replace dot with comma
 };
 
-const InvoiceDetail: React.FC<params> = ({ invoice }) => {
+const InvoiceDetail: React.FC<params> = async ({ invoice }) => {
+    const isAuthorized = await checkAuthorization(["admin", "branch"]);
+    if (!isAuthorized) {
+      return redirect("/unauthorized");
+    }
+    const { success, data: setting } = await getSetting({
+      settingId: process.env.SETTING_ID as string,
+    });
+    console.log(setting);
+    if (!success) return notFound();
+    if (!setting) return notFound();
   return (
     <div className="card80 ">
       <div className='printable-area'>
       <div className='flex gap-4 p-2 invoice-header'>
         <div className='w-3/4 '>
-          <h2>Branch {invoice.branch.title}</h2>
-          <p></p>
+        <img src={`/`+setting.companyLogo} alt="Company Logo" className="h-8 w-auto object-contain" />
+          <p className='text-sm pt-4 pb-0'>{setting.companyName}</p>
+          <p className='text-sm '>{setting.address}, {setting.phone}</p>
         </div>
         <div className='w-1/4'>
           <h1 className="font-bold text-lg">Inovice # {invoice.referenceNo}</h1>
