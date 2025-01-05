@@ -13,11 +13,10 @@ import { toast } from "@/hooks/use-toast";
 
 import { Form } from "../ui/form";
 import { Button } from "../ui/button";
-import FormCombobox from "../formInputs/FormCombobox";
 import FormInput from "../formInputs/FormInput";
+import FormDatePicker from "../formInputs/FormDatePicker";
 import FormSelect from "../formInputs/FormSelect";
-import FormUnitVariant from "../formInputs/FormUnitVariant";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+
 interface Params {
   sale?: Sale;
   isEdit?: boolean;
@@ -36,7 +35,7 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
       paymentDate: new Date().toISOString(),
       creditAmount: 0,
       paidAmount: 0,
-      balance: 0,
+      balance: sale?.grandtotal,
       paidBy: "Cash",
     
     },
@@ -91,9 +90,15 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
         className="flex flex-col gap-8 p-8"
         onSubmit={form.handleSubmit(handleCreatePayment)}
       >
-          <FormInput name="referenceNo" label="Invoice Balance" control={form.control} />
-          <FormInput name="description" label="Payment Amount" control={form.control} />
-          <FormInput name="paymentDate" label="Payment Date" control={form.control} />
+          <FormInput name="creditAmount" label="Credit Amount" control={form.control} />
+          <FormInput name="paidAmount" label="Payment Amount" control={form.control} />
+          <FormInput name="balance" label="Invoice Balance" control={form.control} />
+          <FormDatePicker
+            name="paymentDate"
+            label="Payment Date"
+            control={form.control}
+            defaultValue={new Date()}
+          />
           <FormSelect
             name="paidBy"
             label="Select Payment Method"
