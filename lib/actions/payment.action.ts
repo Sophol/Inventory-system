@@ -11,7 +11,7 @@ import handleError from "../handlers/error";
 import {
   CreatePaymentSchema,
 } from "../validations";
-import { ActionResponse, ErrorResponse } from "../types";
+
 export async function createPayment(
   params: CreatePaymentParams
 ): Promise<ActionResponse<IPaymentDoc>> {
@@ -21,9 +21,11 @@ export async function createPayment(
     schema: CreatePaymentSchema,
     authorize: true,
   });
+  console.log('here1')
   if (validatedData instanceof Error) {
     return handleError(validatedData.message) as ErrorResponse;
   }
+  console.log('here2')
   const {
     customer,
     branch,
@@ -34,29 +36,30 @@ export async function createPayment(
     paidAmount,
     balance,
     paidBy,
-    paymentStatus
+    paymentStatus,
   } = validatedData.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const [payment] = await Payment.create(
-      [
-        {
-          customer,
-          branch,
-          referenceNo,
-          description,
-          paymentDate,
-          creditAmount,
-          paidAmount,
-          balance,
-          paidBy,
-          paymentStatus
-        },
-      ],
-      { session }
-    );
-    return { success: true, data: JSON.parse(JSON.stringify(payment)) };
+    console.log("here", customer, referenceNo, paymentDate, creditAmount, paidAmount, balance, paidBy, paymentStatus);
+    // const [payment] = await Payment.create(
+    //   [
+    //     {
+    //       customer,
+    //       branch,
+    //       referenceNo,
+    //       description,
+    //       paymentDate,
+    //       creditAmount,
+    //       paidAmount,
+    //       balance,
+    //       paidBy,
+    //       paymentStatus
+    //     },
+    //   ],
+    //   { session }
+    // );
+    return { success: true, data: JSON.parse(JSON.stringify("payment")) };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }

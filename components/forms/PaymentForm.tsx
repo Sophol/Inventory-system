@@ -20,9 +20,9 @@ import FormSelect from "../formInputs/FormSelect";
 interface Params {
   sale?: Sale;
   isEdit?: boolean;
-  payment?: Payment;
+  // payment?: Payment;
 }
-const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
+const PaymentForm = ({ sale,  isEdit = false}: Params) => {
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreatePaymentSchema>>({
@@ -36,13 +36,14 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
       creditAmount: 0,
       paidAmount: 0,
       balance: sale?.grandtotal,
-      paidBy: "Cash",
+      paidBy: sale?.paidBy || "Cash",
+      paymentStatus: "pending",
     },
   });
+  
   const handleCreatePayment = async (
     data: z.infer<typeof CreatePaymentSchema>
   ) => {
-    console.log(data);
     startTransaction(async () => {
       const result = await createPayment(data);
       if (result.success) {
@@ -66,9 +67,9 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
         className="flex flex-col gap-8 p-8"
         onSubmit={form.handleSubmit(handleCreatePayment)}
       >
-          <FormInput name="creditAmount" label="Credit Amount" control={form.control} />
-          <FormInput name="paidAmount" label="Payment Amount" control={form.control} />
-          <FormInput name="balance" label="Invoice Balance" control={form.control} />
+          <FormInput name="creditAmount" type="number" label="Credit Amount" control={form.control} />
+          <FormInput name="paidAmount" type="number"  label="Payment Amount" control={form.control} />
+          <FormInput name="balance" type="number"  label="Invoice Balance" control={form.control} />
           <FormInput name="description" label="Description" control={form.control} />
           <FormDatePicker
             name="paymentDate"
@@ -115,9 +116,6 @@ const PaymentForm = ({ sale,  isEdit = false, payment}: Params) => {
             )}
           </Button>
         </div>
-        
-         
-        
       </form>
     </Form>
   );

@@ -381,6 +381,6 @@ export const CreatePaymentSchema = z.object({
   creditAmount: z.number().min(0, "Credit amount must be a positive number"),
   paidAmount: z.number().min(0, "Paid amount must be a positive number"),
   balance: z.number().min(0, "Balance must be a positive number"),
-  paidBy: z.string().min(1, "Paid by is required"),
-  paymentStatus: z.string().min(1, "Payment status is required"),
+  paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]),
+  paymentStatus: z.enum(["pending", "credit", "completed"]),
 });
