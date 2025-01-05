@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaFileInvoice } from "react-icons/fa";
 
 import RedirectButton from "@/components/formInputs/RedirectButton";
 import { Badge } from "@/components/ui/badge";
@@ -9,8 +9,8 @@ import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
-// import ButtonAprroveOrder from "@/components/formInputs/ButtonApproveOrder";
-import PaymentDrawer from '../components/drawers/PaymentDrawer';
+import ButtonApproveOrder from "@/components/formInputs/ButtonApproveOrder";
+
 import { deleteSale, updateOrderStatus } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
@@ -24,18 +24,6 @@ export type Sale = {
   saleDate: string;
   orderStatus: string;
   paymentStatus: string;
-    payment: {
-    customer: string;
-    branch: string;
-    referenceNo: string;
-    description: string;
-    paymentDate: string;
-    creditAmount: number;
-    paidAmount: number;
-    balance: number;
-    paidBy: string;
-    paymentStatus: string;
-  };
 };
 
 const reloadPage = () => {
@@ -101,28 +89,28 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
     },
   },
   {
-    accessorKey: "paymentStatus",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payment Status" />
-    ),
-    cell: ({ row }) => {
-      const status = row.getValue("paymentStatus") as string;
-      return (
-        <Badge
-        className={status === "completed" ? "bg-green-500 uppercase" : status === "credit" ? "bg-blue-500 uppercase" : status === "pending" ? "bg-yellow-500 uppercase" : "bg-red-500 uppercase"}
-        >
-          {status}
-        </Badge>
-      );
-    },
-  },
-  {
     id: "actions",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Actions" />
     ),
     cell: ({ row }) => {
       const sale = row.original;
+      const handleApproveOrder = async () => {
+        const { success } = await updateOrderStatus({ saleId: sale._id });
+        if (success) {
+          toast({
+            title: "success",
+            description: "Order Status update successfully.",
+          });
+          reloadPage();
+        } else {
+          toast({
+            title: "error",
+            description: "Something went wrong.",
+            variant: "destructive",
+          });
+        }
+      };
       const handleDelete = async () => {
         const { success } = await deleteSale({ saleId: sale._id });
         if (success) {
@@ -140,12 +128,23 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
         }
       };
   
-      
   
       return (
         <div className="flex items-center space-x-1">
-          <PaymentDrawer sale={sale}/>
-      
+          <div>
+            {sale.orderStatus === 'pending' ? (
+            // Display the "above" content
+              <ButtonApproveOrder onPopup={handleApproveOrder} /> 
+            ) : (
+              // Display the "below" content
+              <RedirectButton
+              Icon={FaFileInvoice}
+              href={ROUTES.INVOICE(sale._id)}
+              isIcon
+              className="text-blue-500"
+            />
+            )}
+        </div>
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.SALE(sale._id)}

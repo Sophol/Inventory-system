@@ -281,19 +281,34 @@ const SaleForm = ({
             defaultValue={new Date()}
           />
 
+
+           <FormSelect
+            name="orderStatus"
+            label="Order Status"
+            control={form.control}
+            items={[
+              { _id: "pending", title: "Pending" },
+              { _id: "approved", title: "Approved" },
+              { _id: "completed", title: "Completed" },
+            ]}
+          />
+            <FormSelect
+            name="paymentStatus"
+            label="Payment Status"
+            control={form.control}
+            items={[
+              { _id: "pending", title: "Pending" },
+              { _id: "credit", title: "Credit" },
+              { _id: "completed", title: "Completed" },
+            ]}
+          />
+        </div>
         <FormInput
             name="description"
             label="Description"
             control={form.control}
             isRequired={false}
           />
-          <FormInput
-            name="description"
-            label="Description"
-            control={form.control}
-            isRequired={false}
-          />
-        </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <FormInput
             name="exchangeRateD"

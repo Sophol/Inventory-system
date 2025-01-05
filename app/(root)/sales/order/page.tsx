@@ -1,62 +1,35 @@
-import React from "react";
-import { CiCirclePlus } from "react-icons/ci";
+import { IoCaretBackOutline } from "react-icons/io5";
 
-import { SaleColumn } from "@/columns/OrderListColumn";
 import CardContainer from "@/components/cards/CardContainer";
-import DataRenderer from "@/components/DataRenderer";
-import LocalSearch from "@/components/search/LocalSearch";
-import { DataTable } from "@/components/table/DataTable";
+import SaleForm from "@/components/forms/SaleForm";
 import ROUTES from "@/constants/routes";
-import { SALE_EMPTY } from "@/constants/states";
-import { getSales } from "@/lib/actions/sale.action";
-import { checkAuthorization } from "@/lib/auth";
-import { redirect } from "next/navigation";
-interface SearchParams {
-  searchParams: Promise<{ [key: string]: string }>;
-}
+import { getSetting } from "@/lib/actions/setting.action";
+import { auth } from "@/auth";
+import { notFound, redirect } from "next/navigation";
 
-const Sale = async ({ searchParams }: SearchParams) => {
-    const isAuthorized = await checkAuthorization(["admin", "branch", "stock"]);
-    if (!isAuthorized) {
-      return redirect("/unauthorized");
-    }
-  const { page, pageSize, query, filter } = await searchParams;
-  const { success, data, error } = await getSales({
-    page: Number(page) || 1,
-    pageSize: Number(pageSize) || 10,
-    query: query || "",
-    filter: filter || "",
+const page = async () => {
+  const session = await auth();
+  if (!session) return redirect(ROUTES.SIGN_IN);
+  const { success, data: setting } = await getSetting({
+    settingId: process.env.SETTING_ID as string,
   });
-  const { sales, isNext } =
-    data || ({} as { sales: Sale[]; isNext: boolean });
+  if (!success) return notFound();
+  if (!setting) return notFound();
+  const { exchangeRateD, exchangeRateT } = setting;
   return (
     <CardContainer
-      title="Order"
-      redirectTitle="ADD"
-      redirectHref={ROUTES.ADDSALE}
-      redirectIcon={CiCirclePlus}
-      redirectClass="!text-light-900 primary-gradient"
+      title="Create Order"
+      redirectTitle="BACK"
+      redirectHref={ROUTES.HOME}
+      redirectIcon={IoCaretBackOutline}
+      redirectClass="background-light800_dark300 text-light400_light500"
     >
-      <>
-        <div className="py-4">
-          <LocalSearch route={ROUTES.SALES} placeholder="Search..." />
-        </div>
-        <DataRenderer
-          success={success}
-          error={error}
-          data={sales}
-          empty={SALE_EMPTY}
-          render={() => (
-            <DataTable
-              columns={SaleColumn}
-              data={sales!}
-              isNext={isNext}
-            />
-          )}
-        />
-      </>
+      <SaleForm
+        exchangeRateD={exchangeRateD}
+        exchangeRateT={exchangeRateT}
+      />
     </CardContainer>
   );
 };
 
-export default Sale;
+export default page;
