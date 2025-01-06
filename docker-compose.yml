@@ -1,8 +1,8 @@
 services:
   next-app:
-    container_name: next-app
+    container_name: app
     build:
-      context: ./next-app
+      context: ./app
       dockerfile: Dockerfile
       args:
         MONGODB_URI: ${MONGODB_URI}
