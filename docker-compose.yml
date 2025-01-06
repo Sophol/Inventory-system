@@ -1,13 +1,14 @@
 version: "3.1"
 services:
   app:
-    container_name: next-app
+    container_name: inventory-app
     build:
       context: .
       dockerfile: Dockerfile
       args:
         MONGODB_URI: ${MONGODB_URI}
         SETTING_ID: ${SETTING_ID}
+    image: inventory-image-latest
     restart: unless-stopped
     ports:
       - 3000:3000
