@@ -25,7 +25,10 @@ interface PaginatedSearchParams {
   filter?: string;
   sort?: string;
 }
-
+interface ProductSearchParams extends PaginatedSearchParams {
+  categoryId: string;
+  branchId: string;
+}
 interface GlobalFilter {
   globalFilter: string | number | boolean | null;
 }

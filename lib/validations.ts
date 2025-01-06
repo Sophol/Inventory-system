@@ -1,11 +1,5 @@
-import { Types } from "mongoose";
-import { string, z } from "zod";
+import { z } from "zod";
 
-export const ObjectIdSchema = z
-  .string()
-  .refine((val) => Types.ObjectId.isValid(val), {
-    message: "Invalid ObjectId",
-  });
 export const PaginatedSearchParamsSchema = z.object({
   page: z.number().int().positive().default(1),
   pageNumber: z.number().int().positive().default(10),
@@ -81,7 +75,7 @@ export const UserSchema = z.object({
   image: z.string().optional(),
   phone: z.string().optional(),
   isStaff: z.boolean().default(false),
-  branch: ObjectIdSchema,
+  branch: z.string().min(1, { message: "Branch ID is required." }),
   salary: z.number().default(0),
 });
 export const AccountSchema = z.object({
@@ -162,7 +156,7 @@ export const CreateProductSchema = z.object({
     .array(ProductUnitSchema)
     .min(1, { message: "At least one Unit is required." })
     .max(3, { message: "Cannot add more than 3 Units." }),
-  category: ObjectIdSchema,
+  category: z.string().min(1, { message: "Category ID is required." }),
   qtyOnHand: z.number().default(0),
   alertQty: z.number().default(0),
   status: z.enum(["active", "inactive"]).default("active"),
@@ -221,8 +215,8 @@ export const GetSupplierSchema = z.object({
   supplierId: z.string().min(1, "Supplier ID is required"),
 });
 export const PurchaseDetailSchema = z.object({
-  product: ObjectIdSchema,
-  unit: ObjectIdSchema,
+  product: z.string().min(1, { message: "Product ID is required." }),
+  unit: z.string().min(1, { message: "Unit ID is required." }),
   description: z.string().optional(),
   discount: z.number().min(0).default(0),
   qty: z.number().min(0).default(0),
@@ -230,7 +224,7 @@ export const PurchaseDetailSchema = z.object({
   total: z.number().min(0).default(0),
 });
 export const CreatePurchaseDetailSchema = PurchaseDetailSchema.extend({
-  purchase: string().min(1, "Purchase ID is required"),
+  purchase: z.string().min(1, "Purchase ID is required"),
 });
 export const CreatePurchaseSchema = z.object({
   supplier: z.string().min(1, "Supplier is required"),
@@ -275,8 +269,8 @@ export const EditSettingSchema = z.object({
 });
 
 export const SaleDetailSchema = z.object({
-  product: ObjectIdSchema,
-  unit: ObjectIdSchema,
+  product: z.string().min(1, { message: "Product ID is required." }),
+  unit: z.string().min(1, { message: "Unit ID is required." }),
   description: z.string().optional(),
   discount: z.number().min(0).default(0),
   qty: z.number().min(0).default(0),
@@ -284,7 +278,7 @@ export const SaleDetailSchema = z.object({
   total: z.number().min(0).default(0),
 });
 export const CreateSaleDetailSchema = SaleDetailSchema.extend({
-  sale: string().min(1, "Sale ID is required"),
+  sale: z.string().min(1, "Sale ID is required"),
 });
 export const CreateSaleSchema = z.object({
   customer: z.string().min(1, "Customer is required"),
@@ -318,8 +312,8 @@ export const GetSaleSchema = z.object({
 });
 
 export const CreateSalarySchema = z.object({
-  staffId: ObjectIdSchema,
-  branch: ObjectIdSchema,
+  staffId: z.string().min(1, { message: "Staff ID is required." }),
+  branch: z.string().min(1, { message: "Branch ID is required." }),
   description: z.string().optional(),
   salaryDate: z.date().default(() => new Date()),
   salary: z.number().min(0).default(0),
@@ -338,8 +332,8 @@ export const GetSalarySchema = z.object({
 });
 
 export const CreateMissionSchema = z.object({
-  staffId: ObjectIdSchema,
-  branch: ObjectIdSchema,
+  staffId: z.string().min(1, { message: "Staff ID is required." }),
+  branch: z.string().min(1, { message: "Branch ID is required." }),
   description: z.string().optional(),
   missionDate: z.date().default(new Date()),
   amount: z.number().min(0).default(0),
@@ -356,7 +350,7 @@ export const GetMissionSchema = z.object({
 });
 export const CreateGeneralExpSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
-  branch: ObjectIdSchema,
+  branch: z.string().min(1, { message: "Branch ID is required." }),
   description: z.string().optional(),
   generalDate: z.date().default(new Date()),
   amount: z.number().min(0).default(0),

@@ -1,5 +1,3 @@
-
-
 const ROUTES = {
   HOME: "/",
   SIGN_IN: "/sign-in",
@@ -35,7 +33,7 @@ const ROUTES = {
   SALES: "/sales/order",
   ADDSALE: "/sales/order/form",
   SALE: (_id: string) => `/sales/order/${_id}`,
-  INVOICES : "/sales/invoice",
+  INVOICES: "/sales/invoice",
   INVOICE: (_id: string) => `/sales/invoice/${_id}`,
   GENERALEXPS: "/expenses/general",
   ADDGENERALEXP: "/expenses/general/form",
@@ -48,5 +46,10 @@ const ROUTES = {
   SALARYEXPS: "/expenses/salary",
   ADDSALARYEXP: "/expenses/salary/form",
   SALARYEXP: (_id: string) => `/expenses/salary/${_id}`,
+
+  PRODUCTREPORT: "/reports/product",
+  PURCHASEREPORT: "/reports/purchase",
+  SALEREPORT: "/reports/sale",
+  PROFITREPORT: "/reports/profit",
 };
 export default ROUTES;

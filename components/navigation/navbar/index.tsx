@@ -1,9 +1,9 @@
+import Theme from "./Theme";
+
 import { auth } from "@/auth";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import UserAvatar from "@/components/UserAvatar";
-
-import Theme from "./Theme";
 
 const NavBar = async () => {
   const session = await auth();
