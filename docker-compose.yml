@@ -17,6 +17,6 @@ services:
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
-networks:
-  my_network:
-    external: true
+#networks:
+#  my_network:
+ #   external: true
