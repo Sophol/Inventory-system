@@ -8,58 +8,87 @@ import { IPaymentDoc } from "@/database/payment.model";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 
+const ObjectId = mongoose.Types.ObjectId;
+
 import {
   CreatePaymentSchema,
+  PaginatedSearchParamsPaymentSchema,
 } from "../validations";
 
+
 export async function createPayment(
-  params: CreatePaymentParams
+  params: CreateCustomerParams
 ): Promise<ActionResponse<IPaymentDoc>> {
-  console.log(params);
   const validatedData = await action({
     params,
     schema: CreatePaymentSchema,
     authorize: true,
   });
-  console.log('here1')
   if (validatedData instanceof Error) {
     return handleError(validatedData.message) as ErrorResponse;
   }
-  console.log('here2')
-  const {
-    customer,
-    branch,
-    referenceNo,
-    description,
-    paymentDate,
-    creditAmount,
-    paidAmount,
-    balance,
-    paidBy,
-    paymentStatus,
-  } = validatedData.params!;
-  const session = await mongoose.startSession();
-  session.startTransaction();
   try {
-    console.log("here", customer, referenceNo, paymentDate, creditAmount, paidAmount, balance, paidBy, paymentStatus);
-    // const [payment] = await Payment.create(
-    //   [
-    //     {
-    //       customer,
-    //       branch,
-    //       referenceNo,
-    //       description,
-    //       paymentDate,
-    //       creditAmount,
-    //       paidAmount,
-    //       balance,
-    //       paidBy,
-    //       paymentStatus
-    //     },
-    //   ],
-    //   { session }
-    // );
-    return { success: true, data: JSON.parse(JSON.stringify("payment")) };
+    const customer = await Payment.create(validatedData.params);
+    return { success: true, data: JSON.parse(JSON.stringify(customer)) };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+
+export async function getPayments(
+  params: PaginatedSearchParamsPayment
+): Promise<ActionResponse<{ payment: Payment[]; isNext: boolean }>> {
+  const validatedData = await action({
+    params,
+    schema: PaginatedSearchParamsPaymentSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { page = 1, pageSize = 10, query, filter } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+  // sale : params.sale 
+  const filterQuery: FilterQuery<typeof Payment> = {};
+  if (query) {
+    filterQuery.$or = [
+      { name: { $regex: new RegExp(query, "i") } },
+      { status: { $regex: new RegExp(query, "i") } },
+    ];
+  }
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "paymentDate":
+      sortCriteria = { name: -1 };
+      break;
+    case "paidBy":
+      sortCriteria = { status: -1 };
+    case "creditAmount":
+        sortCriteria = { status: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+      break;
+  }
+  try {
+    const [totalPayments, payments] = await Promise.all([
+      Payment.countDocuments(filterQuery),
+      Payment.find(filterQuery)
+        .lean()
+        .sort(sortCriteria)
+        .skip(skip)
+        .limit(limit),
+    ]);
+    console.log("totalPayments, payments", payments);
+    const isNext = totalPayments > skip + payments.length;
+
+    return {
+      success: true,
+      data: { payment: JSON.parse(JSON.stringify(payments)), isNext },
+    };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }

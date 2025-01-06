@@ -234,7 +234,8 @@ const SaleForm = ({
       product?.units.map((unit) => ({
         _id: unit.unit,
         title: unit.unitTitle,
-        cost: unit.cost || 0,
+        price: unit.price || 0,
+        wholeSalePrice: unit.wholeSalePrice || 0,
       })) || [];
 
     if (units.length > 0) {

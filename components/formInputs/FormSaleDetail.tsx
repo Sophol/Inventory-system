@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 interface SelectData {
   _id: string;
   title: string | undefined;
-  cost?: number | undefined;
+  price?: number | undefined;
 }
 
 interface FormSaleDetailProps {
@@ -92,8 +92,8 @@ const FormSaleDetail: React.FC<FormSaleDetailProps> = ({
   const calculateTotal = useCallback(
     (index: number) => {
       const qty = parseFloat(watch(`saleDetails.${index}.qty`) || "0");
-      const cost = parseFloat(watch(`saleDetails.${index}.cost`) || "0");
-      const total = qty * cost;
+      const price = parseFloat(watch(`saleDetails.${index}.price`) || "0");
+      const total = qty * price;
       setValue(`saleDetails.${index}.total`, total);
       calculateSubTotal();
       calculateGrandTotal();
@@ -111,7 +111,6 @@ const FormSaleDetail: React.FC<FormSaleDetailProps> = ({
     async (index: number, productId: string) => {
       try {
         const productDetails = await fetchProductDetails(productId);
-        console.log("productDetails", productDetails);
         setUnits(Array.isArray(productDetails.data) ? productDetails.data : []);
         setValue(`saleDetails.${index}.unit`, productDetails.data || "");
         calculateTotal(index);
@@ -134,7 +133,7 @@ const FormSaleDetail: React.FC<FormSaleDetailProps> = ({
         const unit = units.find((unit) => unit._id === unitId);
         console.log("unit", units);
         if (unit) {
-          setValue(`saleDetails.${index}.cost`, unit.cost || 0);
+          setValue(`saleDetails.${index}.price`, unit.price || 0);
           calculateTotal(index);
         }
       }
@@ -190,8 +189,8 @@ const FormSaleDetail: React.FC<FormSaleDetailProps> = ({
               <div className="col-span-1 md:col-span-2">
                 <FormInput
                   type="number"
-                  name={`saleDetails.${index}.cost`}
-                  label="Cost"
+                  name={`saleDetails.${index}.price`}
+                  label="Price"
                   control={control}
                   onChange={() => calculateTotal(index)}
                 />

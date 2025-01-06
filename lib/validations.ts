@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { string, z } from "zod";
+import { object, string, z } from "zod";
 
 export const ObjectIdSchema = z
   .string()
@@ -373,6 +373,7 @@ export const GetGeneralExpSchema = z.object({
 });
 
 export const CreatePaymentSchema = z.object({
+  sale:ObjectIdSchema,
   customer: z.string().min(1, "Customer is required"),
   branch: z.string().min(1, "Branch is required"),
   referenceNo: z.string().min(1, "Reference number is required"),
@@ -384,3 +385,9 @@ export const CreatePaymentSchema = z.object({
   paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]),
   paymentStatus: z.enum(["pending", "credit", "completed"]),
 });
+export const PaginatedSearchParamsInvoiceSchema = PaginatedSearchParamsSchema.extend({
+  orderStatus: z.enum(["pending", "approved", "completed"]),
+})
+export const PaginatedSearchParamsPaymentSchema = PaginatedSearchParamsSchema.extend({
+  sale:  z.string(),
+})
