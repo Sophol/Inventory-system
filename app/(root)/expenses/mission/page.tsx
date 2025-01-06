@@ -11,6 +11,7 @@ import { getMissions } from "@/lib/actions/mission.action";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { MissionColumn } from "@/columns/MissionColumn";
+import { ColumnDef } from "@tanstack/react-table";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -49,7 +50,7 @@ const Mission = async ({ searchParams }: SearchParams) => {
           empty={MISSION_EMPTY}
           render={() => (
             <DataTable
-              columns={MissionColumn}
+              columns={MissionColumn as ColumnDef<Mission, unknown>[]}
               data={missions!}
               isNext={isNext}
             />

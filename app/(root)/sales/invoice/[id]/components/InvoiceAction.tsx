@@ -1,9 +1,9 @@
 "use client";
 
-import jsPDF from 'jspdf';
-import React from 'react';
+import jsPDF from "jspdf";
+import React from "react";
 
-import { FaRegCheckCircle, FaHistory } from 'react-icons/fa';
+import { FaRegCheckCircle, FaHistory } from "react-icons/fa";
 
 import "../invoice.css";
 
@@ -11,25 +11,33 @@ import { updateOrderStatus } from "@/lib/actions/sale.action";
 import { getPayments } from "@/lib/actions/payment.action";
 import { toast } from "@/hooks/use-toast";
 
-import PaymentDrawer from '@/components/drawers/PaymentDrawer';
+import PaymentDrawer from "@/components/drawers/PaymentDrawer";
 import { Button } from "@/components/ui/button";
 // eslint-disable-next-line import/order
-import html2canvas from 'html2canvas';
+import html2canvas from "html2canvas";
 interface params {
   invoice: {
-    _id: string,
-    referenceNo: string,
-    invoicedDate: string,
-    dueDate: string,
-    customer: any,
-    branch: any,
-    paidBy: string,
-    paid: number,
-    discount: number,
-    tax: number,
-    grandtotal: number,
-    orderStatus: string,
-    saleDetails: Array<any>
+    _id: string;
+    customer: { _id: string; title: string };
+    branch: { _id: string; title: string };
+    referenceNo: string;
+    description?: string;
+    orderDate: string;
+    approvedDate: string;
+    dueDate: string;
+    invoicedDate: string;
+    discount: number;
+    subtotal: number;
+    grandtotal: number;
+    paid: number;
+    balance: number;
+    exchangeRateD?: number;
+    exchangeRateT?: number;
+    tax: number;
+    paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+    orderStatus: "pending" | "approved" | "completed";
+    paymentStatus: "pending" | "credit" | "completed";
+    saleDetails: PurchaseDetail[];
   };
 }
 const reloadPage = () => {
@@ -40,20 +48,27 @@ const handlePrint = () => {
 };
 
 const handleDownload = async () => {
-  const input = document.querySelector('.printable-area') as HTMLElement;
+  const input = document.querySelector(".printable-area") as HTMLElement;
   if (!input) return;
 
   const canvas = await html2canvas(input);
-  const imgData = canvas.toDataURL('image/png');
-  const pdf = new jsPDF('p', 'mm', 'a4');
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF("p", "mm", "a4");
   const imgProps = pdf.getImageProperties(imgData);
   const pdfWidth = pdf.internal.pageSize.getWidth();
   const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-  const padding = 10; 
+  const padding = 10;
 
-  pdf.addImage(imgData, 'PNG', padding, padding, pdfWidth - 2 * padding, pdfHeight - 2 * padding);
-  pdf.save('invoice.pdf');
+  pdf.addImage(
+    imgData,
+    "PNG",
+    padding,
+    padding,
+    pdfWidth - 2 * padding,
+    pdfHeight - 2 * padding
+  );
+  pdf.save("invoice.pdf");
 };
 
 const InvoiceAction: React.FC<params> = ({ invoice }) => {
@@ -91,28 +106,44 @@ const InvoiceAction: React.FC<params> = ({ invoice }) => {
   };
   return (
     <div className="card20">
-      <div className="card20-container">  
-        <div className='flex gap-4'>
-        <Button type="button"
-          disabled={invoice.orderStatus === 'completed'}
-          onClick={handleInvoiceOrder}
-          className="w-2/3 button-download-invoice mb-4 rounded px-4 py-2 text-white hover:bg-purple-700">
-          <FaRegCheckCircle className="cursor-pointer text-xl"/> <span>Complete Order</span>
-        </Button>
-        <Button 
-          onClick={handleCallInvoice}
-          className='w-1/3 rounded bg-blue-400 px-4 py-2 text-white hover:bg-blue-500 '><FaHistory className="cursor-pointer text-xl"  /></Button>
+      <div className="card20-container">
+        <div className="flex gap-4">
+          <Button
+            type="button"
+            disabled={invoice.orderStatus === "completed"}
+            onClick={handleInvoiceOrder}
+            className="w-2/3 button-download-invoice mb-4 rounded px-4 py-2 text-white hover:bg-purple-700"
+          >
+            <FaRegCheckCircle className="cursor-pointer text-xl" />{" "}
+            <span>Complete Order</span>
+          </Button>
+          <Button
+            onClick={handleCallInvoice}
+            className="w-1/3 rounded bg-blue-400 px-4 py-2 text-white hover:bg-blue-500 "
+          >
+            <FaHistory className="cursor-pointer text-xl" />
+          </Button>
         </div>
-        <Button type="button"
+        <Button
+          type="button"
           onClick={handleDownload}
-          className="bg-light-400 hover:bg-light-500 w-full rounded px-4 py-2 text-white">
+          className="bg-light-400 hover:bg-light-500 w-full rounded px-4 py-2 text-white"
+        >
           <span>Download</span>
         </Button>
-        <div className='flex gap-4 my-4'>
-          <Button onClick={handlePrint} className='w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500 '>Print</Button>
-          <Button className='w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500 '> Edit</Button>
+        <div className="flex gap-4 my-4">
+          <Button
+            onClick={handlePrint}
+            className="w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500 "
+          >
+            Print
+          </Button>
+          <Button className="w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500 ">
+            {" "}
+            Edit
+          </Button>
         </div>
-        <PaymentDrawer sale={invoice}/>
+        <PaymentDrawer sale={invoice} />
       </div>
     </div>
   );

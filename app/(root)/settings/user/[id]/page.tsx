@@ -15,7 +15,8 @@ const EditUser = async ({ params }: RouteParams) => {
   const { id } = await params;
   if (!id) return notFound();
 
-  const { data: user, success } = await api.users.getById(id);
+  const { data, success } = await api.users.getById(id);
+  const user = data as User;
   if (!success) return notFound();
 
   return (

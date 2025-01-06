@@ -88,6 +88,7 @@ interface Product {
   alertQty: number;
   status: "active" | "inactive";
   categoryTitle?: string;
+  qtySmallUnit?: number;
 }
 
 interface Branch {
@@ -182,6 +183,7 @@ interface Sale {
   description?: string;
   orderDate: string;
   approvedDate: string;
+  dueDate: string;
   invoicedDate: string;
   discount: number;
   subtotal: number;
@@ -239,7 +241,6 @@ interface Salary {
 interface Mission {
   _id: string;
   staffId: Types.ObjectId;
-  title: string;
   branch: Types.ObjectId;
   description?: string;
   missionDate: Date | string;

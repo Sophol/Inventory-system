@@ -31,7 +31,7 @@ const Product = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
-  const { products, isNext } = data || {};
+  const { products, isNext } = data || { products: [], isNext: false };
   return (
     <CardContainer
       title="Product"

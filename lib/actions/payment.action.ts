@@ -1,5 +1,5 @@
 "use server";
-import mongoose, { FilterQuery } from "mongoose";
+import { FilterQuery } from "mongoose";
 
 import { Payment } from "@/database";
 // import { ISaleDetailDoc } from "@/database/sale-detail.model";
@@ -8,13 +8,10 @@ import { IPaymentDoc } from "@/database/payment.model";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 
-const ObjectId = mongoose.Types.ObjectId;
-
 import {
   CreatePaymentSchema,
   PaginatedSearchParamsPaymentSchema,
 } from "../validations";
-
 
 export async function createPayment(
   params: CreateCustomerParams
@@ -35,7 +32,6 @@ export async function createPayment(
   }
 }
 
-
 export async function getPayments(
   params: PaginatedSearchParamsPayment
 ): Promise<ActionResponse<{ payment: Payment[]; isNext: boolean }>> {
@@ -50,7 +46,7 @@ export async function getPayments(
   const { page = 1, pageSize = 10, query, filter } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
-  // sale : params.sale 
+  // sale : params.sale
   const filterQuery: FilterQuery<typeof Payment> = {};
   if (query) {
     filterQuery.$or = [
@@ -66,8 +62,9 @@ export async function getPayments(
       break;
     case "paidBy":
       sortCriteria = { status: -1 };
+      break;
     case "creditAmount":
-        sortCriteria = { status: -1 };
+      sortCriteria = { status: -1 };
       break;
     default:
       sortCriteria = { createdAt: -1 };

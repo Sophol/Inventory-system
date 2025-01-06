@@ -16,16 +16,15 @@ import { deleteSale, updateOrderStatus } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
-
-export type Sale = {
-  _id: string;
-  referenceNo: string;
-  customer: { _id: string; name: string };
-  branch: { _id: string; title: string };
-  saleDate: string;
-  orderStatus: string;
-  paymentStatus: string;
-};
+// export type Sale = {
+//   _id: string;
+//   referenceNo: string;
+//   customer: { _id: string; name: string };
+//   branch: { _id: string; title: string };
+//   saleDate: string;
+//   orderStatus: string;
+//   paymentStatus: string;
+// };
 
 const reloadPage = () => {
   window.location.reload();
@@ -69,7 +68,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("orderDate") as string;
-      const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss " ); // Customize format as needed
+      const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
       return <span>{formattedDate}</span>;
     },
   },
@@ -82,7 +81,15 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       const status = row.getValue("orderStatus") as string;
       return (
         <Badge
-          className={status === "completed" ? "bg-green-500 uppercase" : status === "approved" ? "bg-blue-500 uppercase" : status === "pending" ? "bg-yellow-500 uppercase" : "bg-red-500 uppercase"}
+          className={
+            status === "completed"
+              ? "bg-green-500 uppercase"
+              : status === "approved"
+                ? "bg-blue-500 uppercase"
+                : status === "pending"
+                  ? "bg-yellow-500 uppercase"
+                  : "bg-red-500 uppercase"
+          }
         >
           {status}
         </Badge>
@@ -160,9 +167,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
           });
         }
       };
-  
-      
-  
+
       return (
         <div className="flex items-center space-x-1">
           <div>
@@ -178,6 +183,5 @@ export const SaleColumn: ColumnDef<Sale>[] = [
         </div>
       );
     },
-  }
-  
+  },
 ];

@@ -6,7 +6,6 @@ import SalaryForm from "@/components/forms/SalaryForm";
 import ROUTES from "@/constants/routes";
 import { getSalary } from "@/lib/actions/salary.action";
 import { checkAuthorization } from "@/lib/auth";
-import { getSetting } from "@/lib/actions/setting.action";
 
 const EditSalary = async ({ params }: RouteParams) => {
   const isAuthorized = await checkAuthorization(["admin", "branch"]);

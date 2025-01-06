@@ -1,7 +1,7 @@
 "use client";
 import { Trash2 } from "lucide-react";
 import React from "react";
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, Control } from "react-hook-form";
 
 import FormInput from "./FormInput";
 import FormCombobox from "../formInputs/FormCombobox";
@@ -11,8 +11,24 @@ interface SelectData {
   title: string | undefined;
 }
 interface FormUnitVariantProps {
-  control: any;
-  setValue: any;
+  control: Control<{
+    units: {
+      unit: string;
+      qty: number;
+      cost: number;
+      price: number;
+      wholeSalePrice: number;
+    }[];
+  }>;
+  setValue: (
+    name: string,
+    value: string | number | boolean | object,
+    options?: Partial<{
+      shouldValidate: boolean;
+      shouldDirty: boolean;
+      shouldTouch: boolean;
+    }>
+  ) => void;
   fetchUnits: (params: {
     page: number;
     query: string;

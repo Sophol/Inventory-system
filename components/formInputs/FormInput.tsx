@@ -20,7 +20,7 @@ type FormInputProps<T extends FieldValues> = {
   isRequired?: boolean;
   placeholder?: string;
   readonly?: boolean;
-  onChange?: (value: any) => void;
+  onChange?: (value: string | number) => void;
 };
 
 function FormInput<T extends FieldValues>({
@@ -38,7 +38,7 @@ function FormInput<T extends FieldValues>({
     field: { onChange: fieldOnChange },
   } = useController({ name, control });
 
-  const handleChange = (value: any) => {
+  const handleChange = (value: string | number) => {
     let newVal;
     if (type === "number") {
       newVal = value === "" ? "" : Number(value);

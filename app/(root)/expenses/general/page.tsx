@@ -11,6 +11,7 @@ import { getGeneralExps } from "@/lib/actions/generalExp.action";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { GeneralExpColumn } from "@/columns/GeneralExpColumn";
+import { ColumnDef } from "@tanstack/react-table";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -49,7 +50,7 @@ const GeneralExp = async ({ searchParams }: SearchParams) => {
           empty={GENERALEXP_EMPTY}
           render={() => (
             <DataTable
-              columns={GeneralExpColumn}
+              columns={GeneralExpColumn as ColumnDef<GeneralExp, unknown>[]}
               data={generalExps!}
               isNext={isNext}
             />

@@ -41,7 +41,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
 }) => {
   const { watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
-    control,
+    control: control,
     name: "purchaseDetails",
   });
   const [selectedProducts, setSelectedProducts] = useState<{
@@ -144,8 +144,9 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
   return (
     <div className="flex flex-col justify-start gap-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-11">
-        {fields.map((field, index) => {
+        {fields.map((field, index: number) => {
           const selectedProduct = selectedProducts[index];
+
           return (
             <React.Fragment key={field.id}>
               <div className="col-span-2 md:col-span-3">

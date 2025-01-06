@@ -1,4 +1,3 @@
-
 import React from "react";
 import { CiCirclePlus } from "react-icons/ci";
 
@@ -23,8 +22,7 @@ const PendingOrder = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
-  const { sales, isNext } =
-    data || ({} as { sales: Sale[]; isNext: boolean });
+  const { sales, isNext } = data || ({} as { sales: Sale[]; isNext: boolean });
   return (
     <CardContainer
       title="Pening Order"
@@ -43,11 +41,7 @@ const PendingOrder = async ({ searchParams }: SearchParams) => {
           data={sales}
           empty={SALE_EMPTY}
           render={() => (
-            <DataTable
-              columns={SaleColumn}
-              data={sales!}
-              isNext={isNext}
-            />
+            <DataTable columns={SaleColumn} data={sales!} isNext={isNext} />
           )}
         />
       </>
@@ -56,4 +50,3 @@ const PendingOrder = async ({ searchParams }: SearchParams) => {
 };
 
 export default PendingOrder;
-

@@ -1,16 +1,12 @@
 import { notFound, redirect } from "next/navigation";
-import { IoCaretBackOutline } from "react-icons/io5";
 
 import { auth } from "@/auth";
-import CardContainer from "@/components/cards/CardContainer";
-
-
 
 import ROUTES from "@/constants/routes";
 import { getSale } from "@/lib/actions/sale.action";
 
-import InvoiceAction from './components/InvoiceAction';
-import InvoiceDetail from './components/InvoiceDetail';
+import InvoiceAction from "./components/InvoiceAction";
+import InvoiceDetail from "./components/InvoiceDetail";
 
 const InvoiceDetailPage = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -19,14 +15,13 @@ const InvoiceDetailPage = async ({ params }: RouteParams) => {
   if (!session) return redirect(ROUTES.SIGN_IN);
   const { data: invoice, success } = await getSale({ saleId: id });
   if (!success) return notFound();
-console.log(invoice)
+  if (!invoice) return notFound();
+  console.log(invoice);
   return (
-    
-      <div className="flex gap-4 p-7">
-        <InvoiceDetail invoice={invoice} />    
-        <InvoiceAction invoice={invoice} />      
-      </div>
- 
+    <div className="flex gap-4 p-7">
+      <InvoiceDetail invoice={invoice} />
+      <InvoiceAction invoice={invoice} />
+    </div>
   );
 };
 

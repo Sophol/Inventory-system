@@ -50,7 +50,6 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const handleFetchCategories = async ({
     page,
     query,
-    parentId,
   }: {
     page: number;
     query: string;

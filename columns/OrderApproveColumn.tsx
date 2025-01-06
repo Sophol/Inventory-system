@@ -15,22 +15,21 @@ import { deleteSale, updateOrderStatus } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
-
-export type Sale = {
-  _id: string;
-  referenceNo: string;
-  customer: { _id: string; name: string };
-  branch: { _id: string; title: string };
-  saleDate: string;
-  orderStatus: string;
-  paymentStatus: string;
-};
+// export type Sale = {
+//   _id: string;
+//   referenceNo: string;
+//   customer: { _id: string; name: string };
+//   branch: { _id: string; title: string };
+//   saleDate: string;
+//   orderStatus: string;
+//   paymentStatus: string;
+// };
 
 const reloadPage = () => {
   window.location.reload();
 };
 
-export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
+export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
@@ -68,7 +67,7 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("orderDate") as string;
-      const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss " ); // Customize format as needed
+      const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
       return <span>{formattedDate}</span>;
     },
   },
@@ -81,7 +80,15 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
       const status = row.getValue("orderStatus") as string;
       return (
         <Badge
-          className={status === "completed" ? "bg-green-500 uppercase" : status === "approved" ? "bg-blue-500 uppercase" : status === "pending" ? "bg-yellow-500 uppercase" : "bg-red-500 uppercase"}
+          className={
+            status === "completed"
+              ? "bg-green-500 uppercase"
+              : status === "approved"
+                ? "bg-blue-500 uppercase"
+                : status === "pending"
+                  ? "bg-yellow-500 uppercase"
+                  : "bg-red-500 uppercase"
+          }
         >
           {status}
         </Badge>
@@ -127,24 +134,23 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
           });
         }
       };
-  
-  
+
       return (
         <div className="flex items-center space-x-1">
           <div>
-            {sale.orderStatus === 'pending' ? (
-            // Display the "above" content
-              <ButtonApproveOrder onPopup={handleApproveOrder} /> 
+            {sale.orderStatus === "pending" ? (
+              // Display the "above" content
+              <ButtonApproveOrder onPopup={handleApproveOrder} />
             ) : (
               // Display the "below" content
               <RedirectButton
-              Icon={FaFileInvoice}
-              href={ROUTES.INVOICE(sale._id)}
-              isIcon
-              className="text-blue-500"
-            />
+                Icon={FaFileInvoice}
+                href={ROUTES.INVOICE(sale._id)}
+                isIcon
+                className="text-blue-500"
+              />
             )}
-        </div>
+          </div>
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.SALE(sale._id)}
@@ -152,11 +158,8 @@ export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
             className="text-primary-500"
           />
           <ButtonDelete onDelete={handleDelete} />
-          
-         
         </div>
       );
     },
-  }
-  
+  },
 ];

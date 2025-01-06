@@ -80,7 +80,7 @@ export async function PUT(
       trim: true,
     });
 
-    let existingUser = await User.findById(id).session(session);
+    const existingUser = await User.findById(id).session(session);
 
     if (!existingUser) {
       throw new NotFoundError("User");

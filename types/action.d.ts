@@ -238,7 +238,6 @@ interface GetMissionParams {
 }
 // New types for GeneralExp
 interface CreateGeneralExpParams {
-  title: string;
   branch: string;
   description?: string;
   generalDate: Date;
@@ -256,7 +255,7 @@ interface GetGeneralExpParams {
 }
 
 interface CreatePaymentParams {
-  sale:string,
+  sale: string;
   customer: string;
   branch: string;
   referenceNo: string;

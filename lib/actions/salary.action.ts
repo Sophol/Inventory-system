@@ -89,7 +89,7 @@ export async function editSalary(
 
 export async function getSalary(
   params: GetSalaryParams
-): Promise<ActionResponse<ISalaryDoc>> {
+): Promise<ActionResponse<Salary>> {
   const validatedData = await action({
     params,
     schema: GetSalarySchema,
@@ -148,7 +148,7 @@ export async function getSalary(
 }
 export async function getSalaries(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ salaries: ISalaryDoc[]; isNext: boolean }>> {
+): Promise<ActionResponse<{ salaries: Salary[]; isNext: boolean }>> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,

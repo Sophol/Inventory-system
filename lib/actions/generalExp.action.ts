@@ -83,7 +83,7 @@ export async function editGeneralExp(
 
 export async function getGeneralExp(
   params: GetGeneralExpParams
-): Promise<ActionResponse<IGeneralExpDoc>> {
+): Promise<ActionResponse<GeneralExp>> {
   const validatedData = await action({
     params,
     schema: GetGeneralExpSchema,
@@ -131,7 +131,7 @@ export async function getGeneralExp(
 
 export async function getGeneralExps(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ generalExps: IGeneralExpDoc[]; isNext: boolean }>> {
+): Promise<ActionResponse<{ generalExps: GeneralExp[]; isNext: boolean }>> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,

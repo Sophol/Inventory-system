@@ -33,7 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (isValidPassword) {
             return {
-              id: existingUser._id,
+              id: existingUser.id.toString(),
               name: existingUser.name,
               email: existingUser.email,
               image: existingUser.image,

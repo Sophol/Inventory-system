@@ -12,21 +12,11 @@ import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import { deletePurchase } from "@/lib/actions/purchase.action";
 import { toast } from "@/hooks/use-toast";
 
-export type Purchase = {
-  _id: string;
-  referenceNo: string;
-  supplier: { _id: string; name: string };
-  branch: { _id: string; title: string };
-  purchaseDate: string;
-  orderStatus: string;
-  paymentStatus: string;
-};
-
 const reloadPage = () => {
   window.location.reload();
 };
 
-export const PurchaseColumn: ColumnDef<Purchase, PurchaseTableMeta>[] = [
+export const PurchaseColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (

@@ -80,7 +80,7 @@ export async function editMission(
 
 export async function getMission(
   params: GetMissionParams
-): Promise<ActionResponse<IMissionDoc>> {
+): Promise<ActionResponse<Mission>> {
   const validatedData = await action({
     params,
     schema: GetMissionSchema,
@@ -137,7 +137,7 @@ export async function getMission(
 
 export async function getMissions(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ missions: IMissionDoc[]; isNext: boolean }>> {
+): Promise<ActionResponse<{ missions: Mission[]; isNext: boolean }>> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,

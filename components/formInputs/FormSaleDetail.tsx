@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { Trash2, Plus } from "lucide-react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext, Control } from "react-hook-form";
 
 import FormInput from "./FormInput";
 import FormCombobox from "./FormCombobox";
@@ -16,8 +16,23 @@ interface SelectData {
 }
 
 interface FormSaleDetailProps {
-  control: any;
-  setValue: any;
+  control: Control<{
+    saleDetails: {
+      product: string;
+      unit: string;
+      qty: number;
+      price: number;
+      total: number;
+    }[];
+    subtotal: number;
+    discount: number;
+    grandtotal: number;
+  }>;
+  setValue: (
+    name: string,
+    value: string | number | boolean | undefined,
+    options?: Partial<{ shouldValidate: boolean; shouldDirty: boolean }>
+  ) => void;
   fetchProducts: (params: {
     page: number;
     query: string;

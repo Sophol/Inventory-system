@@ -10,8 +10,6 @@ import { PRODUCT_EMPTY } from "@/constants/states";
 import { getProducts } from "@/lib/actions/product.action";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { getCategories } from "@/lib/actions/category.action";
-import { getBranches } from "@/lib/actions/branch.action";
 import ProductSearch from "@/components/search/ProductSearch";
 
 interface SearchParams {
@@ -37,21 +35,6 @@ const ProductReport = async ({ searchParams }: SearchParams) => {
   });
   const { products, isNext } = data || {};
 
-  const { success: categorySuccess, data: categoryData } = await getCategories({
-    page: 1,
-    pageSize: 10,
-    query: "",
-  });
-
-  const { success: branchSuccess, data: branchData } = await getBranches({
-    page: 1,
-    pageSize: 10,
-    query: "",
-  });
-
-  const categories = categorySuccess ? categoryData?.categories || [] : [];
-  const branches = branchSuccess ? branchData?.branches || [] : [];
-
   return (
     <CardContainer
       title="Product"
@@ -62,11 +45,7 @@ const ProductReport = async ({ searchParams }: SearchParams) => {
     >
       <>
         <div className="py-4">
-          <ProductSearch
-            route={ROUTES.PRODUCTREPORT}
-            initialCategories={categories}
-            initialBranches={branches}
-          />
+          <ProductSearch route={ROUTES.PRODUCTREPORT} />
         </div>
         <DataRenderer
           success={success}

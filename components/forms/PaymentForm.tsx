@@ -1,14 +1,12 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
 import { CreatePaymentSchema } from "@/lib/validations";
 import { createPayment } from "@/lib/actions/payment.action";
-import ROUTES from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
 
 import { Form } from "../ui/form";
@@ -16,13 +14,34 @@ import { Button } from "../ui/button";
 import FormInput from "../formInputs/FormInput";
 import FormDatePicker from "../formInputs/FormDatePicker";
 import FormSelect from "../formInputs/FormSelect";
-
+interface Saleparams {
+  _id: string;
+  customer: { _id: string; title: string };
+  branch: { _id: string; title: string };
+  referenceNo: string;
+  description?: string;
+  orderDate: string;
+  approvedDate: string;
+  dueDate: string;
+  invoicedDate: string;
+  discount: number;
+  subtotal: number;
+  grandtotal: number;
+  paid: number;
+  balance: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+  tax: number;
+  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  orderStatus: "pending" | "approved" | "completed";
+  paymentStatus: "pending" | "credit" | "completed";
+  saleDetails: PurchaseDetail[];
+}
 interface Params {
-  sale?: Sale;
+  sale: Saleparams;
 }
 
 const PaymentForm = ({ sale }: Params) => {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof CreatePaymentSchema>>({
     resolver: zodResolver(CreatePaymentSchema),
@@ -46,7 +65,6 @@ const PaymentForm = ({ sale }: Params) => {
   ) => {
     startTransition(async () => {
       try {
-        
         const result = await createPayment(data);
         if (result.success) {
           toast({
@@ -62,10 +80,10 @@ const PaymentForm = ({ sale }: Params) => {
           });
         }
       } catch (error) {
-        console.log('error', error);
+        console.log("error", error);
         toast({
           title: "error",
-          description: error.message,
+          description: (error as Error).message || "Something went wrong!",
           variant: "destructive",
         });
       }
@@ -78,10 +96,29 @@ const PaymentForm = ({ sale }: Params) => {
         className="flex flex-col gap-8 p-8"
         onSubmit={form.handleSubmit(handleCreatePayment)}
       >
-        <FormInput name="creditAmount" type="number" label="Credit Amount" control={form.control} />
-        <FormInput name="paidAmount" type="number" label="Payment Amount" control={form.control} />
-        <FormInput name="balance" type="number" label="Invoice Balance" control={form.control} />
-        <FormInput name="description" label="Description" control={form.control} />
+        <FormInput
+          name="creditAmount"
+          type="number"
+          label="Credit Amount"
+          control={form.control}
+        />
+        <FormInput
+          name="paidAmount"
+          type="number"
+          label="Payment Amount"
+          control={form.control}
+        />
+        <FormInput
+          name="balance"
+          type="number"
+          label="Invoice Balance"
+          control={form.control}
+        />
+        <FormInput
+          name="description"
+          label="Description"
+          control={form.control}
+        />
         <FormDatePicker
           name="paymentDate"
           label="Payment Date"
@@ -96,7 +133,7 @@ const PaymentForm = ({ sale }: Params) => {
             { _id: "Cash", title: "Cash" },
             { _id: "ABA Bank", title: "ABA Bank" },
             { _id: "ACLEDA Bank", title: "ACLEDA Bank" },
-            { _id: "Others", title: "Others" }
+            { _id: "Others", title: "Others" },
           ]}
         />
         <div className="mt-2 flex ">

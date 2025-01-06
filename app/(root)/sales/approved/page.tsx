@@ -1,6 +1,4 @@
-
 import React from "react";
-
 
 import { SaleColumn } from "@/columns/OrderApproveColumn";
 import CardContainer from "@/components/cards/CardContainer";
@@ -23,14 +21,13 @@ const ApprovedOrder = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
-  const { sales, isNext } =
-    data || ({} as { sales: Sale[]; isNext: boolean });
+  const { sales, isNext } = data || ({} as { sales: Sale[]; isNext: boolean });
   return (
     <CardContainer
       title="Approved Order"
       redirectTitle=""
-      redirectHref={""}
-      redirectIcon={""}
+      redirectHref=""
+      redirectIcon={undefined}
       redirectClass="hidden"
     >
       <>
@@ -43,11 +40,7 @@ const ApprovedOrder = async ({ searchParams }: SearchParams) => {
           data={sales}
           empty={SALE_EMPTY}
           render={() => (
-            <DataTable
-              columns={SaleColumn}
-              data={sales!}
-              isNext={isNext}
-            />
+            <DataTable columns={SaleColumn} data={sales!} isNext={isNext} />
           )}
         />
       </>
@@ -56,4 +49,3 @@ const ApprovedOrder = async ({ searchParams }: SearchParams) => {
 };
 
 export default ApprovedOrder;
-

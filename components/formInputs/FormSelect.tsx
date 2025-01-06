@@ -21,7 +21,7 @@ interface FormSelectProps {
   label: string;
   placeholder?: string;
   message?: string;
-  control: Control<any, any>;
+  control: Control<{ [key: string]: unknown }>;
   isRequired?: boolean;
 }
 function FormSelect({

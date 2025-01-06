@@ -26,11 +26,11 @@ interface SelectData {
 }
 
 interface ComboboxProps {
-  control: Control<any>;
+  control: Control<{ [key: string]: unknown }>;
   name: string;
   label: string;
   placeholder: string;
-  setValue: UseFormSetValue<any>;
+  setValue: UseFormSetValue<{ [key: string]: unknown }>;
   fetchData: (params: {
     page: number;
     query: string;
