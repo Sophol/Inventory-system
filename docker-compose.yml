@@ -1,0 +1,24 @@
+version: "3.1"
+services:
+  app:
+    container_name: inventory-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MONGODB_URI: ${MONGODB_URI}
+        SETTING_ID: ${SETTING_ID}
+    image: inventory-image-latest
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+   # networks:
+   #   - my_network
+
+  # Add more containers below (nginx, postgres, etc.)
+
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+#networks:
+#  my_network:
+ #   external: true

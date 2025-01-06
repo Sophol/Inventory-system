@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaDollarSign, FaRegArrowAltCircleLeft } from 'react-icons/fa';
 import { Button } from "@/components/ui/button";
-import { useTransition } from "react";
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import PaymentForm from '../forms/PaymentForm';
 interface PaymentDrawerProps {
     sale: any; 
@@ -34,7 +30,6 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale }) => {
           onClick={toggleDrawer}
         ></div>
       )}
-
       {/* Drawer */}
       <div
         ref={drawerRef}

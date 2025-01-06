@@ -29,6 +29,25 @@ interface ProductSearchParams extends PaginatedSearchParams {
   categoryId: string;
   branchId: string;
 }
+
+interface PaginatedSearchParamsInvoice {
+  orderStatus?: "pending" | "approved" | "completed";
+  page?: number;
+  pageSize?: number;
+  query?: string;
+  filter?: string;
+  sort?: string;
+}
+
+interface PaginatedSearchParamsPayment {
+  sale: string;
+  page?: number;
+  pageSize?: number;
+  query?: string;
+  filter?: string;
+  sort?: string;
+}
+
 interface GlobalFilter {
   globalFilter: string | number | boolean | null;
 }

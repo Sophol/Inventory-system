@@ -16,10 +16,10 @@ export interface IPayment {
 export interface IPaymentDoc extends IPayment, Document {}
 const PaymentSchema = new Schema<IPayment>(
   {
-    referenceNo: { type: String, required: true, unique: true },
+    referenceNo: { type: String, required: true },
     customer: { type: Schema.Types.ObjectId, ref: "Customer", required: true },
     branch: { type: Schema.Types.ObjectId, ref: "Branch", required: true },
-    sale: { type: Schema.Types.ObjectId, ref: "Branch", required: true },
+    sale: { type: Schema.Types.ObjectId, ref: "Sale", required: true },
     paymentDate: { type: Date, default: Date.now() },
     description: { type: String },
     creditAmount: { type: Number, default: 0 },

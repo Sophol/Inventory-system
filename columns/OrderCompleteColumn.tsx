@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaFileInvoice } from "react-icons/fa";
 
 import RedirectButton from "@/components/formInputs/RedirectButton";
 import { Badge } from "@/components/ui/badge";
@@ -9,10 +9,8 @@ import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
-import ButtonApproveOrder from "@/components/formInputs/ButtonApproveOrder";
-import ButtonInvoiceOrder from "@/components/formInputs/ButtonInvoiceOrder";
 
-import { deleteSale, updateOrderStatus } from "@/lib/actions/sale.action";
+import { deleteSale } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
@@ -31,7 +29,7 @@ const reloadPage = () => {
   window.location.reload();
 };
 
-export const SaleColumn: ColumnDef<Sale>[] = [
+export const SaleColumn: ColumnDef<Sale, SaleTableMeta>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
@@ -89,22 +87,6 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "paymentStatus",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Payment Status" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const status = row.getValue("paymentStatus") as string;
-  //     return (
-  //       <Badge
-  //       className={status === "completed" ? "bg-green-500 uppercase" : status === "credit" ? "bg-blue-500 uppercase" : status === "pending" ? "bg-yellow-500 uppercase" : "bg-red-500 uppercase"}
-  //       >
-  //         {status}
-  //       </Badge>
-  //     );
-  //   },
-  // },
   {
     id: "actions",
     header: ({ column }) => (
@@ -112,38 +94,6 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const sale = row.original;
-      const handleApproveOrder = async () => {
-        const { success } = await updateOrderStatus({ saleId: sale._id });
-        if (success) {
-          toast({
-            title: "success",
-            description: "Order Status update successfully.",
-          });
-          reloadPage();
-        } else {
-          toast({
-            title: "error",
-            description: "Something went wrong.",
-            variant: "destructive",
-          });
-        }
-      };
-      const handleInvoiceOrder = async () => {
-        const { success } = await updateOrderStatus({ saleId: sale._id });
-        if (success) {
-          toast({
-            title: "success",
-            description: "Order Status update successfully.",
-          });
-          reloadPage();
-        } else {
-          toast({
-            title: "error",
-            description: "Something went wrong.",
-            variant: "destructive",
-          });
-        }
-      };
       const handleDelete = async () => {
         const { success } = await deleteSale({ saleId: sale._id });
         if (success) {
@@ -160,14 +110,16 @@ export const SaleColumn: ColumnDef<Sale>[] = [
           });
         }
       };
-  
-      
-  
       return (
         <div className="flex items-center space-x-1">
           <div>
-            <ButtonApproveOrder onPopup={handleApproveOrder} />
-          </div>
+              <RedirectButton
+              Icon={FaFileInvoice}
+              href={ROUTES.INVOICE(sale._id)}
+              isIcon
+              className="text-blue-500"
+            />
+        </div>
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.SALE(sale._id)}

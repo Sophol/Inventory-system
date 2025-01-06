@@ -256,6 +256,7 @@ interface GetGeneralExpParams {
 }
 
 interface CreatePaymentParams {
+  sale:string,
   customer: string;
   branch: string;
   referenceNo: string;

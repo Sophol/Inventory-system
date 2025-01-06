@@ -13,6 +13,7 @@ import {
   EditSaleSchema,
   GetSaleSchema,
   PaginatedSearchParamsSchema,
+  PaginatedSearchParamsInvoiceSchema,
 } from "../validations";
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -595,6 +596,68 @@ export async function getSales(
   }
 }
 
+export async function getOrders(
+  params: PaginatedSearchParamsInvoice
+): Promise<ActionResponse<{ sales: Sale[]; isNext: boolean }>> {
+  const validatedData = await action({
+    params,
+    schema: PaginatedSearchParamsInvoiceSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { page = 1, pageSize = 10, query, filter, orderStatus } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+  const filterQuery: FilterQuery<typeof Sale> = { orderStatus: orderStatus};
+  if (query) {
+    filterQuery.$or = [
+      { referenceNo: { $regex: new RegExp(query, "i") } },
+      { description: { $regex: new RegExp(query, "i") } },
+      { orderStatus: { $regex: new RegExp(query, "i") } },
+      { paymentStatus: { $regex: new RegExp(query, "i") } },
+      
+    ];
+  }
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "referenceNo":
+      sortCriteria = { referenceNo: -1 };
+      break;
+    case "orderStatus":
+      sortCriteria = { orderStatus: -1 };
+      break;
+    case "paymentStatus":
+      sortCriteria = { paymentStatus: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+      break;
+  }
+  try {
+    const [totalSales, sales] = await Promise.all([
+      Sale.countDocuments(filterQuery),
+      Sale.find(filterQuery)
+        .populate("customer", "name")
+        .populate("branch", "title")
+        .lean()
+        .sort(sortCriteria)
+        .skip(skip)
+        .limit(limit),
+    ]);
+    console.log(sales);
+    const isNext = totalSales > skip + sales.length;
+    return {
+      success: true,
+      data: { sales: JSON.parse(JSON.stringify(sales)), isNext },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
 export async function getApprovedOrder(
   params: PaginatedSearchParams
 ): Promise<ActionResponse<{ sales: Sale[]; isNext: boolean }>> {
@@ -718,6 +781,7 @@ export async function getPendingOrder(
     return handleError(error) as ErrorResponse;
   }
 }
+
 export async function deleteSale(
   params: GetSaleParams
 ): Promise<ActionResponse> {
