@@ -1,13 +1,14 @@
+version: "3.1"
 services:
-  next-app:
-    container_name: app
+  app:
+    container_name: next-app
     build:
-      context: ./app
+      context: .
       dockerfile: Dockerfile
       args:
         MONGODB_URI: ${MONGODB_URI}
         SETTING_ID: ${SETTING_ID}
-    restart: always
+    restart: unless-stopped
     ports:
       - 3000:3000
    # networks:
