@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (!existingAccount) return null;
           const { data: existingUser } = (await api.users.getById(
             existingAccount.userId.toString()
-          )) as ActionResponse<IUserDoc>;
+          )) as ActionResponse<User>;
           if (!existingUser) return null;
           const isValidPassword = await bcrypt.compare(
             password,
@@ -33,7 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (isValidPassword) {
             return {
-              id: existingUser.id.toString(),
+              id: existingUser._id.toString(),
               name: existingUser.name,
               email: existingUser.email,
               image: existingUser.image,
