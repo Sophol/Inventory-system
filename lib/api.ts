@@ -1,5 +1,5 @@
 import { IAccount } from "@/database/account.model";
-import { IUser, IUserDoc } from "@/database/user.model";
+import { IUser } from "@/database/user.model";
 import { fetchHandler } from "./handlers/fetch";
 
 const API_BASE_URL =
@@ -25,12 +25,12 @@ export const api = {
         method: "POST",
         body: JSON.stringify({ email }),
       }),
-    create: (userData: Partial<IUserDoc>) =>
+    create: (userData: Partial<UserParams>) =>
       fetchHandler(`${API_BASE_URL}/users`, {
         method: "POST",
         body: JSON.stringify(userData),
       }),
-    update: (id: string, userData: Partial<User>) =>
+    update: (id: string, userData: Partial<UserParams>) =>
       fetchHandler(`${API_BASE_URL}/users/${id}`, {
         method: "PUT",
         body: JSON.stringify(userData),

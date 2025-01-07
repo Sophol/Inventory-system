@@ -47,18 +47,16 @@ const SaleForm = ({
       customer: sale?.customer._id || "",
       branch: sale?.branch._id || "",
       referenceNo:
-      sale?.referenceNo || generateUniqueReference({ prefix: "SO" }),
+        sale?.referenceNo || generateUniqueReference({ prefix: "SO" }),
       description: sale?.description || "",
-      orderDate: sale?.orderDate
-        ? new Date(sale.orderDate)
+      orderDate: sale?.orderDate ? new Date(sale.orderDate) : new Date(),
+      approvedDate: sale?.approvedDate
+        ? new Date(sale.approvedDate)
         : new Date(),
-      approvedDate :sale?.approvedDate
-      ? new Date(sale.approvedDate)
-      : new Date(),
-      invoicedDate :sale?.invoicedDate
-      ? new Date(sale.invoicedDate)
-      : new Date(),
-      tax : sale?.tax || 0,
+      invoicedDate: sale?.invoicedDate
+        ? new Date(sale.invoicedDate)
+        : new Date(),
+      tax: sale?.tax || 0,
       discount: sale?.discount || 0,
       subtotal: sale?.subtotal || 0,
       grandtotal: sale?.grandtotal || 0,
@@ -74,9 +72,7 @@ const SaleForm = ({
       ],
     },
   });
-  const handleCreateSale = async (
-    data: z.infer<typeof CreateSaleSchema>
-  ) => {
+  const handleCreateSale = async (data: z.infer<typeof CreateSaleSchema>) => {
     startTransaction(async () => {
       if (isEdit && sale) {
         const result = await editSale({
@@ -276,14 +272,13 @@ const SaleForm = ({
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormDatePicker
-            name="OrderDate"
+            name="orderDate"
             label="Order Date"
             control={form.control}
             defaultValue={new Date()}
           />
 
-
-           <FormSelect
+          <FormSelect
             name="orderStatus"
             label="Order Status"
             control={form.control}
@@ -293,7 +288,7 @@ const SaleForm = ({
               { _id: "completed", title: "Completed" },
             ]}
           />
-            <FormSelect
+          <FormSelect
             name="paymentStatus"
             label="Payment Status"
             control={form.control}
@@ -305,13 +300,13 @@ const SaleForm = ({
           />
         </div>
         <FormInput
-            name="description"
-            label="Description"
-            control={form.control}
-            isRequired={false}
-          />
+          name="description"
+          label="Description"
+          control={form.control}
+          isRequired={false}
+        />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <FormInput
+          <FormInput
             name="exchangeRateD"
             label="ExchangeRate Dollar"
             control={form.control}
@@ -326,10 +321,8 @@ const SaleForm = ({
             label="Tax"
             type="number"
             control={form.control}
-            defaultValue={0}
             isRequired={false}
           />
- 
         </div>
         <div className="grid grid-cols-1">
           <Card>
@@ -339,6 +332,7 @@ const SaleForm = ({
             <CardContent>
               <div className="container mx-auto py-4">
                 <FormSaleDetail
+                  name="saleDetails"
                   control={form.control}
                   setValue={form.setValue}
                   fetchProducts={fetchPrducts}

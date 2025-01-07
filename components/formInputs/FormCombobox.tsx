@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Check, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
-import { Control, UseFormSetValue } from "react-hook-form";
+import { Control, FieldValues, Path, UseFormSetValue } from "react-hook-form";
 import { Button } from "../ui/button";
 import {
   Command,
@@ -25,12 +25,12 @@ interface SelectData {
   title: string | undefined;
 }
 
-interface ComboboxProps {
-  control: Control<{ [key: string]: unknown }>;
-  name: string;
+interface FormComboboxProps<T extends FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
   label: string;
   placeholder: string;
-  setValue: UseFormSetValue<{ [key: string]: unknown }>;
+  setValue: UseFormSetValue<T>;
   fetchData: (params: {
     page: number;
     query: string;
@@ -41,17 +41,17 @@ interface ComboboxProps {
   parentId?: string;
 }
 
-const FormCombobox: React.FC<ComboboxProps> = ({
+function FormCombobox<T extends FieldValues>({
   control,
   name,
   label,
   placeholder,
-  setValue,
-  fetchData,
   fetchSingleItem,
-  isRequired = true,
+  fetchData,
+  setValue,
   parentId,
-}) => {
+  isRequired = true,
+}: FormComboboxProps<T>) {
   const [data, setData] = useState<SelectData[]>([]);
   const [selectedItem, setSelectedItem] = useState<SelectData | null>();
   const [page, setPage] = useState(1);
@@ -153,7 +153,7 @@ const FormCombobox: React.FC<ComboboxProps> = ({
                         value={item.title}
                         key={item._id}
                         onSelect={() => {
-                          setValue(name, item._id);
+                          setValue(name as Path<T>, item._id as any);
                           setSelectedItem(item);
                         }}
                       >
@@ -194,6 +194,6 @@ const FormCombobox: React.FC<ComboboxProps> = ({
       )}
     />
   );
-};
+}
 
 export default FormCombobox;

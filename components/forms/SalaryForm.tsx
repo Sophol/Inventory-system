@@ -134,8 +134,9 @@ const SalaryForm = ({
   };
   const handleChangeStaff = async (staffId: string) => {
     const { data: user, success } = await api.users.getById(staffId);
+    const dataUser = user as User;
     if (success && user) {
-      form.setValue("salary", user.salary || 0);
+      form.setValue("salary", dataUser.salary || 0);
     } else {
       form.setValue("salary", 0);
     }
@@ -166,7 +167,9 @@ const SalaryForm = ({
             fetchData={fetchStaffs}
             setValue={(name, value) => {
               form.setValue(name, value);
-              handleChangeStaff(value);
+              if (typeof value === "string") {
+                handleChangeStaff(value);
+              }
             }} // Replace with actual supplier data
           />
           <FormCombobox

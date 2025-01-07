@@ -1,60 +1,59 @@
 "use client";
+
 import { Trash2 } from "lucide-react";
 import React from "react";
-import { useFieldArray, Control } from "react-hook-form";
+import {
+  useFieldArray,
+  Control,
+  FieldValues,
+  UseFormSetValue,
+  Path,
+  ArrayPath,
+} from "react-hook-form";
 
 import FormInput from "./FormInput";
 import FormCombobox from "../formInputs/FormCombobox";
 import { Button } from "../ui/button";
+
 interface SelectData {
   _id: string;
   title: string | undefined;
 }
-interface FormUnitVariantProps {
-  control: Control<{
-    units: {
-      unit: string;
-      qty: number;
-      cost: number;
-      price: number;
-      wholeSalePrice: number;
-    }[];
-  }>;
-  setValue: (
-    name: string,
-    value: string | number | boolean | object,
-    options?: Partial<{
-      shouldValidate: boolean;
-      shouldDirty: boolean;
-      shouldTouch: boolean;
-    }>
-  ) => void;
+
+type FormUnitVariantProps<T extends FieldValues> = {
+  control: Control<T>;
+  setValue: UseFormSetValue<T>;
   fetchUnits: (params: {
     page: number;
     query: string;
   }) => Promise<{ data: SelectData[]; isNext: boolean }>;
-}
+  name: ArrayPath<T>;
+};
 
-const FormUnitVariant: React.FC<FormUnitVariantProps> = ({
+function FormUnitVariant<T extends FieldValues>({
   control,
   setValue,
   fetchUnits,
-}) => {
+  name,
+}: FormUnitVariantProps<T>) {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "units",
+    name,
   });
 
   return (
     <div className="flex flex-col gap-2 justify-start">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
         {fields.map((field, index) => {
-          const selectedData = { _id: field.unit, title: field.unitTitle };
+          const selectedData = {
+            _id: (field as any).unit,
+            title: (field as any).unitTitle,
+          };
           return (
             <React.Fragment key={field.id}>
               <FormCombobox
                 control={control}
-                name={`units.${index}.unit`}
+                name={`${name}.${index}.unit` as Path<T>}
                 label="Unit"
                 placeholder="Select unit"
                 fetchSingleItem={selectedData}
@@ -63,25 +62,25 @@ const FormUnitVariant: React.FC<FormUnitVariantProps> = ({
               />
               <FormInput
                 type="number"
-                name={`units.${index}.qty`}
+                name={`${name}.${index}.qty` as Path<T>}
                 label="Qty"
                 control={control}
               />
               <FormInput
                 type="number"
-                name={`units.${index}.cost`}
+                name={`${name}.${index}.cost` as Path<T>}
                 label="Cost"
                 control={control}
               />
               <FormInput
                 type="number"
-                name={`units.${index}.price`}
+                name={`${name}.${index}.price` as Path<T>}
                 label="Price"
                 control={control}
               />
               <FormInput
                 type="number"
-                name={`units.${index}.wholeSalePrice`}
+                name={`${name}.${index}.wholeSalePrice` as Path<T>}
                 label="WholeSalePrice"
                 control={control}
               />
@@ -105,7 +104,13 @@ const FormUnitVariant: React.FC<FormUnitVariantProps> = ({
           className="body-medium bg-green-600 hover:bg-green-500"
           onClick={() =>
             fields.length < 3 &&
-            append({ unit: "", qty: 0, cost: 0, price: 0, wholeSalePrice: 0 })
+            append({
+              unit: "",
+              qty: 0,
+              cost: 0,
+              price: 0,
+              wholeSalePrice: 0,
+            } as any)
           }
           disabled={fields.length >= 3}
         >
@@ -114,6 +119,6 @@ const FormUnitVariant: React.FC<FormUnitVariantProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default FormUnitVariant;

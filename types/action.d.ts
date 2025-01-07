@@ -114,10 +114,10 @@ interface PurchaseDetailParams {
   selectedProduct?: { _id: string; title: string };
   selectedUnit?: { _id: string; title: string };
   description?: string;
-  discount: number;
-  qty: number;
-  cost: number;
-  total: number;
+  discount?: number;
+  qty?: number;
+  cost?: number;
+  total?: number;
   exchangeRateD?: number;
   exchangeRateT?: number;
 }
@@ -168,10 +168,10 @@ interface SaleDetailParams {
   selectedProduct?: { _id: string; title: string };
   selectedUnit?: { _id: string; title: string };
   description?: string;
-  discount: number;
-  qty: number;
-  cost: number;
-  total: number;
+  discount?: number;
+  qty?: number;
+  cost?: number;
+  total?: number;
   exchangeRateD?: number;
   exchangeRateT?: number;
 }
@@ -238,6 +238,7 @@ interface GetMissionParams {
 }
 // New types for GeneralExp
 interface CreateGeneralExpParams {
+  title: string;
   branch: string;
   description?: string;
   generalDate: Date;
@@ -266,4 +267,18 @@ interface CreatePaymentParams {
   balance?: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   paymentStatus?: "pending" | "credit" | "completed";
+}
+interface UserParams {
+  _id: string;
+  name: string;
+  username: string;
+  password: string;
+  email: string;
+  role: string;
+  image?: string;
+  phone?: string;
+  isStaff: boolean;
+  branch: string;
+  salary?: number;
+  status: "active" | "inactive";
 }

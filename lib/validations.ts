@@ -352,7 +352,7 @@ export const CreateGeneralExpSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   branch: z.string().min(1, { message: "Branch ID is required." }),
   description: z.string().optional(),
-  generalDate: z.date().default(new Date()),
+  generalDate: z.date(),
   amount: z.number().min(0).default(0),
   exchangeRateD: z.number().min(0).default(0),
   exchangeRateT: z.number().min(0).default(0),

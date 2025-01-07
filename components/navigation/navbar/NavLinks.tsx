@@ -69,15 +69,8 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
                                   "flex items-center justify-start !text-xs gap-4 bg-transparent p-4"
                                 )}
                               >
-                                {subItem.icon && (
-                                  <subItem.icon
-                                    className={cn(
-                                      isSubActive
-                                        ? "!text-light-900"
-                                        : "text-dark300_light900"
-                                    )}
-                                  />
-                                )}
+                                {subItem.icon && <subItem.icon />}
+
                                 <span>{subItem.title}</span>
                               </Link>
                             </SidebarMenuSubButton>

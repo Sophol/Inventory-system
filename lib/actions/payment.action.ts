@@ -14,7 +14,7 @@ import {
 } from "../validations";
 
 export async function createPayment(
-  params: CreateCustomerParams
+  params: CreatePaymentParams
 ): Promise<ActionResponse<IPaymentDoc>> {
   const validatedData = await action({
     params,

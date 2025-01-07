@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Control } from "react-hook-form";
+import { Control, FieldValues, Path } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -14,17 +14,17 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-interface FormSelectProps {
+interface FormSelectProps<T extends FieldValues> {
   defaultValue?: string;
   items: SelectData[];
-  name: string;
+  name: Path<T>;
   label: string;
   placeholder?: string;
   message?: string;
-  control: Control<{ [key: string]: unknown }>;
+  control: Control<T>;
   isRequired?: boolean;
 }
-function FormSelect({
+function FormSelect<T extends FieldValues>({
   items,
   name,
   label,
@@ -32,7 +32,7 @@ function FormSelect({
   message,
   control,
   isRequired = true,
-}: FormSelectProps) {
+}: FormSelectProps<T>) {
   return (
     <FormField
       control={control}
@@ -42,7 +42,10 @@ function FormSelect({
           <FormLabel className="paragraph-semibold text-dark400_light800">
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value as string | undefined}
+          >
             <FormControl>
               <SelectTrigger className="paragraph-regular light-border-3 text-dark300_light700 no-focus min-h-[36px] border">
                 <SelectValue placeholder={placeholder} />

@@ -2,7 +2,16 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { Trash2, Plus } from "lucide-react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import {
+  ArrayPath,
+  Control,
+  FieldValues,
+  Path,
+  PathValue,
+  useFieldArray,
+  useFormContext,
+  UseFormSetValue,
+} from "react-hook-form";
 
 import FormInput from "./FormInput";
 import FormCombobox from "./FormCombobox";
@@ -15,9 +24,9 @@ interface SelectData {
   cost?: number | undefined;
 }
 
-interface FormPurchaseDetailProps {
-  control: any;
-  setValue: any;
+interface FormPurchaseDetailProps<T extends FieldValues> {
+  control: Control<T>;
+  setValue: UseFormSetValue<T>;
   fetchProducts: (params: {
     page: number;
     query: string;
@@ -30,19 +39,21 @@ interface FormPurchaseDetailProps {
   fetchProductDetails: (
     productId: string
   ) => Promise<{ data: SelectData[]; isNext: boolean }>;
+  name: ArrayPath<T>;
 }
 
-const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
+function FormPurchaseDetail<T extends FieldValues>({
   control,
   setValue,
   fetchProducts,
   fetchUnits,
   fetchProductDetails,
-}) => {
+  name,
+}: FormPurchaseDetailProps<T>) {
   const { watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
-    control: control,
-    name: "purchaseDetails",
+    control,
+    name,
   });
   const [selectedProducts, setSelectedProducts] = useState<{
     [key: number]: string;
@@ -71,7 +82,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
       price: 0,
       wholeSalePrice: 0,
       total: 0,
-    });
+    } as any);
   }, [append]);
   const calculateSubTotal = useCallback(() => {
     const subTotal = fields.reduce((acc, _, index) => {
@@ -79,14 +90,14 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
       return acc + total;
     }, 0);
 
-    setValue("subtotal", subTotal);
+    setValue("subtotal" as Path<T>, subTotal as PathValue<T, Path<T>>);
   }, [fields, watch, setValue]);
 
   const calculateGrandTotal = useCallback(() => {
     const subTotal = parseFloat(watch("subtotal") || "0");
     const discount = parseFloat(watch("discount") || "0");
     const grandTotal = subTotal - discount;
-    setValue("grandtotal", grandTotal);
+    setValue("grandtotal" as Path<T>, grandTotal as PathValue<T, Path<T>>);
   }, [watch, setValue]);
 
   const calculateTotal = useCallback(
@@ -94,7 +105,10 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
       const qty = parseFloat(watch(`purchaseDetails.${index}.qty`) || "0");
       const cost = parseFloat(watch(`purchaseDetails.${index}.cost`) || "0");
       const total = qty * cost;
-      setValue(`purchaseDetails.${index}.total`, total);
+      setValue(
+        `purchaseDetails.${index}.total` as Path<T>,
+        total as PathValue<T, Path<T>>
+      );
       calculateSubTotal();
       calculateGrandTotal();
     },
@@ -113,7 +127,11 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
         const productDetails = await fetchProductDetails(productId);
         console.log("productDetails", productDetails);
         setUnits(Array.isArray(productDetails.data) ? productDetails.data : []);
-        setValue(`purchaseDetails.${index}.unit`, productDetails.data || "");
+        setValue(
+          `purchaseDetails.${index}.unit` as Path<T>,
+          (productDetails.data[0]?._id as PathValue<T, Path<T>>) ||
+            ("" as PathValue<T, Path<T>>)
+        );
         calculateTotal(index);
 
         // Update the selectedProducts state
@@ -132,31 +150,34 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
     async (index: number, unitId: string) => {
       if (unitId) {
         const unit = units.find((unit) => unit._id === unitId);
-        console.log("unit", units);
+
         if (unit) {
-          setValue(`purchaseDetails.${index}.cost`, unit.cost || 0);
+          setValue(
+            `${name}.${index}.cost` as Path<T>,
+            unit.cost as PathValue<T, Path<T>>
+          );
           calculateTotal(index);
         }
       }
     },
-    [units, setValue, calculateTotal]
+    [units, setValue, calculateTotal, name]
   );
   return (
     <div className="flex flex-col justify-start gap-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-11">
-        {fields.map((field, index: number) => {
+        {fields.map((field, index) => {
           const selectedProduct = selectedProducts[index];
-
+          const singleProduct = (field as any).selectedProduct;
           return (
             <React.Fragment key={field.id}>
               <div className="col-span-2 md:col-span-3">
                 <Input type="hidden" value={field.id} disabled />
                 <FormCombobox
                   control={control}
-                  name={`purchaseDetails.${index}.product`}
+                  name={`${name}.${index}.product` as Path<T>}
                   label="Product"
                   placeholder="Select Product"
-                  fetchSingleItem={field.selectedProduct}
+                  fetchSingleItem={singleProduct}
                   fetchData={fetchProducts}
                   setValue={(name, value) => {
                     setValue(name, value);
@@ -167,10 +188,10 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
               <div className="col-span-2 md:col-span-2">
                 <FormCombobox
                   control={control}
-                  name={`purchaseDetails.${index}.unit`}
+                  name={`${name}.${index}.unit` as Path<T>}
                   label="Unit"
                   placeholder="Select unit"
-                  fetchSingleItem={field.selectedUnit}
+                  fetchSingleItem={(field as any).selectedUnit}
                   parentId={selectedProduct}
                   fetchData={(params) =>
                     fetchUnits({ ...params, parentId: selectedProduct })
@@ -183,7 +204,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
               </div>
               <FormInput
                 type="number"
-                name={`purchaseDetails.${index}.qty`}
+                name={`purchaseDetails.${index}.qty` as Path<T>}
                 label="Qty"
                 control={control}
                 onChange={() => calculateTotal(index)}
@@ -191,7 +212,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
               <div className="col-span-1 md:col-span-2">
                 <FormInput
                   type="number"
-                  name={`purchaseDetails.${index}.cost`}
+                  name={`purchaseDetails.${index}.cost` as Path<T>}
                   label="Cost"
                   control={control}
                   onChange={() => calculateTotal(index)}
@@ -200,7 +221,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
               <div className="col-span-2 md:col-span-2">
                 <FormInput
                   type="number"
-                  name={`purchaseDetails.${index}.total`}
+                  name={`purchaseDetails.${index}.total` as Path<T>}
                   label="Total"
                   control={control}
                   readonly={true}
@@ -239,7 +260,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
         <div className="flex w-[295px]">
           <FormInput
             type="number"
-            name="subtotal"
+            name={"subtotal" as Path<T>}
             control={control}
             readonly={true}
           />
@@ -254,7 +275,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
         <div className="flex w-[295px]">
           <FormInput
             type="number"
-            name="discount"
+            name={"discount" as Path<T>}
             control={control}
             onChange={calculateGrandTotal}
           />
@@ -268,7 +289,7 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
         <div className="flex w-[295px]">
           <FormInput
             type="number"
-            name="grandtotal"
+            name={"grandtotal" as Path<T>}
             control={control}
             readonly={true}
           />
@@ -277,6 +298,6 @@ const FormPurchaseDetail: React.FC<FormPurchaseDetailProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default FormPurchaseDetail;

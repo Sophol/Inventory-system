@@ -2,7 +2,7 @@
 
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { Control } from "react-hook-form";
+import { Control, FieldValues, Path } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -20,22 +20,21 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-type FormInputProps = {
-  name: string;
+interface FormDatePickerProps<T extends FieldValues> {
+  name: Path<T>;
   label?: string;
   type?: string;
-  control: Control<{ [key: string]: unknown }>;
+  control: Control<T>;
   isRequired?: boolean;
   defaultValue?: Date;
-};
-
-const FormDatePicker = ({
+}
+const FormDatePicker = <T extends FieldValues>({
   label,
   name,
   control,
   isRequired = true,
   defaultValue,
-}: FormInputProps) => {
+}: FormDatePickerProps<T>) => {
   return (
     <FormField
       control={control}

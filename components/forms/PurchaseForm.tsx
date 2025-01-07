@@ -299,6 +299,7 @@ const PurchaseForm = ({
             <CardContent>
               <div className="container mx-auto py-4">
                 <FormPurchaseDetail
+                  name="purchaseDetails"
                   control={form.control}
                   setValue={form.setValue}
                   fetchProducts={fetchPrducts}

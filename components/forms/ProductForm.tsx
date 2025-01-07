@@ -21,10 +21,12 @@ import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
 import FormUnitVariant from "../formInputs/FormUnitVariant";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+
 interface Params {
   product?: Product;
   isEdit?: boolean;
 }
+
 const ProductForm = ({ product, isEdit = false }: Params) => {
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
@@ -44,10 +46,12 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
       alertQty: product?.alertQty || 0,
     },
   });
+
   const selectedData = product
     ? { _id: product.category, title: product.categoryTitle }
     : null;
   const statusData: SelectData[] = dataStatuses;
+
   const fetchCategories = async ({
     page,
     query,
@@ -83,6 +87,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
     }
     return { data: [], isNext: false };
   };
+
   const handleCreateProduct = async (
     data: z.infer<typeof CreateProductSchema>
   ) => {
@@ -96,7 +101,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
         if (result.success) {
           toast({
             title: "success",
-            description: "Product update successfully.",
+            description: "Product updated successfully.",
           });
           if (result.data) router.push(ROUTES.PRODUCTS);
         } else {
@@ -124,6 +129,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
       }
     });
   };
+
   return (
     <Form {...form}>
       <form
@@ -165,6 +171,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
             <CardContent>
               <div className="container mx-auto py-4">
                 <FormUnitVariant
+                  name="units"
                   control={form.control}
                   setValue={form.setValue}
                   fetchUnits={fetchUnits}
@@ -193,4 +200,5 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
     </Form>
   );
 };
+
 export default ProductForm;

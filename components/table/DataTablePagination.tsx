@@ -19,7 +19,7 @@ import { formUrlQuery } from "@/lib/url";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
-  isNext: boolean;
+  isNext: boolean | undefined;
 }
 
 export function DataTablePagination<TData>({

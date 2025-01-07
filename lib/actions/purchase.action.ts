@@ -81,7 +81,15 @@ export async function createPurchase(
     const purchaseDetailDocuments: IPurchaseDetailDoc[] = [];
     const stockUpdates: { [key: string]: number } = {};
     for (const detail of purchaseDetails) {
-      detail.total = detail.qty * detail.cost - detail.discount;
+      if (detail.qty !== undefined) {
+        if (detail.cost !== undefined) {
+          detail.total = detail.qty * detail.cost - (detail.discount ?? 0);
+        } else {
+          throw new Error(`Cost is undefined for product ${detail.product}`);
+        }
+      } else {
+        throw new Error(`Quantity is undefined for product ${detail.product}`);
+      }
       detail.exchangeRateD = exchangeRateD;
       detail.exchangeRateT = exchangeRateT;
       const productUnits = await ProductUnit.find({
@@ -110,7 +118,7 @@ export async function createPurchase(
         level: selectedUnit.level,
         smallqty: smallestUnit.qty,
         selectedQty: selectedUnit.qty,
-        qty: detail.qty,
+        qty: detail.qty!,
       });
       const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
       if (stockUpdates[stockKey]) {
@@ -251,7 +259,7 @@ export async function editPurchase(
           level: selectedUnit.level,
           smallqty: smallestUnit.qty,
           selectedQty: selectedUnit.qty,
-          qty: detail.qty,
+          qty: detail.qty!,
         });
         const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
         if (stockUpdates[stockKey]) {
@@ -287,7 +295,8 @@ export async function editPurchase(
             existingDetail.discount = detail.discount;
           if (detail.description !== existingDetail.description)
             existingDetail.description = detail.description;
-          existingDetail.total = detail.qty * detail.cost - detail.discount;
+          existingDetail.total =
+            (detail.qty ?? 0) * (detail.cost ?? 0) - (detail.discount ?? 0);
           await existingDetail.save({ session });
         } else {
           newDetailDocuments.push({ ...detail, purchase: purchaseId });

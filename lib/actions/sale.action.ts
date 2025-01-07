@@ -82,7 +82,8 @@ export async function createSale(
     const saleDetailDocuments: ISaleDetailDoc[] = [];
     const stockUpdates: { [key: string]: number } = {};
     for (const detail of saleDetails) {
-      detail.total = detail.qty * detail.cost - detail.discount;
+      detail.total =
+        (detail.qty ?? 0) * (detail.cost ?? 0) - (detail.discount ?? 0);
       detail.exchangeRateD = exchangeRateD;
       detail.exchangeRateT = exchangeRateT;
       const productUnits = await ProductUnit.find({
@@ -111,7 +112,7 @@ export async function createSale(
         level: selectedUnit.level,
         smallqty: smallestUnit.qty,
         selectedQty: selectedUnit.qty,
-        qty: detail.qty,
+        qty: detail.qty!,
       });
       const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
       if (stockUpdates[stockKey]) {
@@ -128,7 +129,7 @@ export async function createSale(
       );
     }
     for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
-      const [branchId, productId, unitId, cost, price] = key.split("_");
+      const [branchId, productId, unitId] = key.split("_");
 
       const existingStock = await Stock.findOne({
         branch: new ObjectId(branchId),
@@ -139,26 +140,26 @@ export async function createSale(
       if (existingStock) {
         // Update the existing stock entry
         existingStock.qtySmallUnit += qtySmallUnit;
-        await existingStock.save({ session });
+        // await existingStock.save({ session });
       } else {
         // Create a new stock entry
-        await Stock.create(
-          [
-            {
-              branch: new ObjectId(branchId),
-              product: new ObjectId(productId),
-              unit: new ObjectId(unitId),
-              qtySmallUnit,
-              cost: parseFloat(cost), // Set appropriate cost
-              price: parseFloat(price), // Set appropriate price
-            },
-          ],
-          { session }
-        );
+        // await Stock.create(
+        //   [
+        //     {
+        //       branch: new ObjectId(branchId),
+        //       product: new ObjectId(productId),
+        //       unit: new ObjectId(unitId),
+        //       qtySmallUnit,
+        //       cost: parseFloat(cost), // Set appropriate cost
+        //       price: parseFloat(price), // Set appropriate price
+        //     },
+        //   ],
+        //   { session }
+        // );
       }
     }
 
-    await SaleDetail.insertMany(saleDetailDocuments, { session });
+    //await SaleDetail.insertMany(saleDetailDocuments, { session });
     await session.commitTransaction();
 
     return { success: true, data: JSON.parse(JSON.stringify(sale)) };
@@ -252,7 +253,7 @@ export async function editSale(
           level: selectedUnit.level,
           smallqty: smallestUnit.qty,
           selectedQty: selectedUnit.qty,
-          qty: detail.qty,
+          qty: detail.qty!,
         });
         const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
         if (stockUpdates[stockKey]) {
@@ -288,7 +289,8 @@ export async function editSale(
             existingDetail.discount = detail.discount;
           if (detail.description !== existingDetail.description)
             existingDetail.description = detail.description;
-          existingDetail.total = detail.qty * detail.cost - detail.discount;
+          existingDetail.total =
+            (detail.qty ?? 0) * (detail.cost ?? 0) - (detail.discount ?? 0);
           await existingDetail.save({ session });
         } else {
           newDetailDocuments.push({ ...detail, sale: saleId });
@@ -339,10 +341,10 @@ export async function editSale(
           }
         }
 
-        await SaleDetail.deleteMany(
-          { _id: { $in: detailIdsToRemove } },
-          { session }
-        );
+        // await SaleDetail.deleteMany(
+        //   { _id: { $in: detailIdsToRemove } },
+        //   { session }
+        // );
       }
       for (const [key, qtySmallUnitRm] of Object.entries(stockRemoves)) {
         const [branchId, productId, unitId] = key.split("_");
@@ -363,7 +365,7 @@ export async function editSale(
         }
       }
       for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
-        const [branchId, productId, unitId, cost, price] = key.split("_");
+        const [branchId, productId, unitId] = key.split("_");
 
         const existingStock = await Stock.findOne({
           branch: new ObjectId(branchId),
@@ -376,27 +378,27 @@ export async function editSale(
           existingStock.qtySmallUnit =
             existingStock.qtySmallUnit + qtySmallUnit;
 
-          await existingStock.save({ session });
+          //await existingStock.save({ session });
         } else {
           // Create a new stock entry
-          await Stock.create(
-            [
-              {
-                branch: new ObjectId(branchId),
-                product: new ObjectId(productId),
-                unit: new ObjectId(unitId),
-                qtySmallUnit,
-                cost: parseFloat(cost), // Set appropriate cost
-                price: parseFloat(price), // Set appropriate price
-              },
-            ],
-            { session }
-          );
+          // await Stock.create(
+          //   [
+          //     {
+          //       branch: new ObjectId(branchId),
+          //       product: new ObjectId(productId),
+          //       unit: new ObjectId(unitId),
+          //       qtySmallUnit,
+          //       cost: parseFloat(cost), // Set appropriate cost
+          //       price: parseFloat(price), // Set appropriate price
+          //     },
+          //   ],
+          //   { session }
+          // );
         }
       }
-      if (newDetailDocuments.length > 0) {
-        await SaleDetail.insertMany(newDetailDocuments, { session });
-      }
+      // if (newDetailDocuments.length > 0) {
+      //   await SaleDetail.insertMany(newDetailDocuments, { session });
+      // }
     }
     await session.commitTransaction();
     return { success: true, data: JSON.parse(JSON.stringify(sale)) };
@@ -555,7 +557,6 @@ export async function getSales(
       { description: { $regex: new RegExp(query, "i") } },
       { orderStatus: { $regex: new RegExp(query, "i") } },
       { paymentStatus: { $regex: new RegExp(query, "i") } },
-      
     ];
   }
   let sortCriteria = {};
@@ -610,14 +611,13 @@ export async function getOrders(
   const { page = 1, pageSize = 10, query, filter, orderStatus } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
-  const filterQuery: FilterQuery<typeof Sale> = { orderStatus: orderStatus};
+  const filterQuery: FilterQuery<typeof Sale> = { orderStatus: orderStatus };
   if (query) {
     filterQuery.$or = [
       { referenceNo: { $regex: new RegExp(query, "i") } },
       { description: { $regex: new RegExp(query, "i") } },
       { orderStatus: { $regex: new RegExp(query, "i") } },
       { paymentStatus: { $regex: new RegExp(query, "i") } },
-      
     ];
   }
   let sortCriteria = {};
@@ -672,14 +672,13 @@ export async function getApprovedOrder(
   const { page = 1, pageSize = 10, query, filter } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
-  const filterQuery: FilterQuery<typeof Sale> = { orderStatus: "approved"};
+  const filterQuery: FilterQuery<typeof Sale> = { orderStatus: "approved" };
   if (query) {
     filterQuery.$or = [
       { referenceNo: { $regex: new RegExp(query, "i") } },
       { description: { $regex: new RegExp(query, "i") } },
       { orderStatus: { $regex: new RegExp(query, "i") } },
       { paymentStatus: { $regex: new RegExp(query, "i") } },
-      
     ];
   }
   let sortCriteria = {};
@@ -734,14 +733,13 @@ export async function getPendingOrder(
   const { page = 1, pageSize = 10, query, filter } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
-  const filterQuery: FilterQuery<typeof Sale> = { orderStatus: "pending"};
+  const filterQuery: FilterQuery<typeof Sale> = { orderStatus: "pending" };
   if (query) {
     filterQuery.$or = [
       { referenceNo: { $regex: new RegExp(query, "i") } },
       { description: { $regex: new RegExp(query, "i") } },
       { orderStatus: { $regex: new RegExp(query, "i") } },
       { paymentStatus: { $regex: new RegExp(query, "i") } },
-      
     ];
   }
   let sortCriteria = {};
@@ -835,10 +833,10 @@ export async function deleteSale(
         }
       }
 
-      await SaleDetail.deleteMany(
-        { _id: { $in: detailIdsToRemove } },
-        { session }
-      );
+      // await SaleDetail.deleteMany(
+      //   { _id: { $in: detailIdsToRemove } },
+      //   { session }
+      // );
     }
     for (const [key, qtySmallUnitRm] of Object.entries(stockRemoves)) {
       const [branchId, productId, unitId] = key.split("_");
@@ -868,42 +866,40 @@ export async function deleteSale(
     await session.endSession();
   }
 }
-  export async function updateOrderStatus (
-    params: GetSaleParams
-  ): Promise<ActionResponse> {
-    const validatedData = await action({
-      params,
-      schema: GetSaleSchema,
-      authorize: true,
-    });
-    if (validatedData instanceof Error) {
-      return handleError(validatedData) as ErrorResponse;
-    }
-    const { saleId } = validatedData.params!;
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    try {
-      const sale = await Sale.findById(saleId);
-      if (!sale) {
-        throw new Error("Sale not found");
-      }
-      if(sale.orderStatus !== "pending" && sale.orderStatus !== "approved" ){
-        return { success: false };
-      }
-      else if (sale.orderStatus === "pending" ) {
-            sale.orderStatus  = "approved";
-            await sale.save({ });
-            return { success: true };
-      }
-      else {
-        sale.orderStatus  = "completed";
-        await sale.save({ });
-        return { success: true };
-      }
-    } catch (error) {
-      await session.abortTransaction();
-      return handleError(error) as ErrorResponse;
-    } finally {
-      await session.endSession();
-    }
+export async function updateOrderStatus(
+  params: GetSaleParams
+): Promise<ActionResponse> {
+  const validatedData = await action({
+    params,
+    schema: GetSaleSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
   }
+  const { saleId } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const sale = await Sale.findById(saleId);
+    if (!sale) {
+      throw new Error("Sale not found");
+    }
+    if (sale.orderStatus !== "pending" && sale.orderStatus !== "approved") {
+      return { success: false };
+    } else if (sale.orderStatus === "pending") {
+      sale.orderStatus = "approved";
+      await sale.save({});
+      return { success: true };
+    } else {
+      sale.orderStatus = "completed";
+      await sale.save({});
+      return { success: true };
+    }
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    await session.endSession();
+  }
+}

@@ -134,7 +134,6 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
           name="category"
           label="Category"
           placeholder="Select category"
-          keyRemove="categoryId"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchCategories}
@@ -147,7 +146,6 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
           control={form.control}
           name="branch"
           label="Branch"
-          keyRemove="branchId"
           placeholder="Select branch"
           fetchSingleItem={null}
           isRequired={false}
