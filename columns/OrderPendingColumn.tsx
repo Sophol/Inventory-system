@@ -10,7 +10,6 @@ import ROUTES from "@/constants/routes";
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import ButtonApproveOrder from "@/components/formInputs/ButtonApproveOrder";
-import ButtonInvoiceOrder from "@/components/formInputs/ButtonInvoiceOrder";
 
 import { deleteSale, updateOrderStatus } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
@@ -120,22 +119,6 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const sale = row.original;
       const handleApproveOrder = async () => {
-        const { success } = await updateOrderStatus({ saleId: sale._id });
-        if (success) {
-          toast({
-            title: "success",
-            description: "Order Status update successfully.",
-          });
-          reloadPage();
-        } else {
-          toast({
-            title: "error",
-            description: "Something went wrong.",
-            variant: "destructive",
-          });
-        }
-      };
-      const handleInvoiceOrder = async () => {
         const { success } = await updateOrderStatus({ saleId: sale._id });
         if (success) {
           toast({
