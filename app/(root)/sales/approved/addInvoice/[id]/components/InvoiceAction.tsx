@@ -85,9 +85,7 @@ const InvoiceAction = ({
           >
             Print
           </Button>
-          {/* <Button className="w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500">
-            Edit
-          </Button> */}
+
           <RedirectButton
             title="Edit"
             href={ROUTES.APPROVEDSALE(invoice._id)}
