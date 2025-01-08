@@ -14,31 +14,9 @@ import { Button } from "../ui/button";
 import FormInput from "../formInputs/FormInput";
 import FormDatePicker from "../formInputs/FormDatePicker";
 import FormSelect from "../formInputs/FormSelect";
-interface Saleparams {
-  _id: string;
-  customer: { _id: string; title: string };
-  branch: { _id: string; title: string };
-  referenceNo: string;
-  description?: string;
-  orderDate: string;
-  approvedDate: string;
-  dueDate: string;
-  invoicedDate: string;
-  discount: number;
-  subtotal: number;
-  grandtotal: number;
-  paid: number;
-  balance: number;
-  exchangeRateD?: number;
-  exchangeRateT?: number;
-  tax: number;
-  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
-  orderStatus: "pending" | "approved" | "completed";
-  paymentStatus: "pending" | "credit" | "completed";
-  saleDetails: PurchaseDetail[];
-}
+
 interface Params {
-  sale: Saleparams;
+  sale: Sale;
 }
 
 const PaymentForm = ({ sale }: Params) => {

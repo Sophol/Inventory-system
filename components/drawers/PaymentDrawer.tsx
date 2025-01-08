@@ -2,34 +2,8 @@ import React, { useState, useRef } from "react";
 import { FaDollarSign, FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import PaymentForm from "../forms/PaymentForm";
-interface Saleparams {
-  _id: string;
-  customer: { _id: string; title: string };
-  branch: { _id: string; title: string };
-  referenceNo: string;
-  description?: string;
-  orderDate: string;
-  approvedDate: string;
-  dueDate: string;
-  invoicedDate: string;
-  discount: number;
-  subtotal: number;
-  grandtotal: number;
-  paid: number;
-  balance: number;
-  exchangeRateD?: number;
-  exchangeRateT?: number;
-  tax: number;
-  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
-  orderStatus: "pending" | "approved" | "completed";
-  paymentStatus: "pending" | "credit" | "completed";
-  saleDetails: PurchaseDetail[];
-}
-interface PaymentDrawerProps {
-  sale: Saleparams;
-}
 
-const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale }) => {
+const PaymentDrawer = ({ sale }: { sale: Sale }) => {
   const [isOpen, setIsOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
 

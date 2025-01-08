@@ -201,7 +201,7 @@ function FormPurchaseDetail<T extends FieldValues>({
                   label="Unit"
                   placeholder="Select unit"
                   fetchSingleItem={(field as any).selectedUnit}
-                  parentId={singleProduct._id}
+                  parentId={selectedProduct}
                   fetchData={(params) =>
                     fetchUnits({ ...params, parentId: singleProduct._id })
                   }

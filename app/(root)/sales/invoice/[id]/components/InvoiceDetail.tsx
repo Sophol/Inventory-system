@@ -4,31 +4,6 @@ import { getSetting } from "@/lib/actions/setting.action";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import Image from "next/image";
-interface params {
-  invoice: {
-    _id: string;
-    customer: { _id: string; title: string };
-    branch: { _id: string; title: string };
-    referenceNo: string;
-    description?: string;
-    orderDate: string;
-    approvedDate: string;
-    dueDate: string;
-    invoicedDate: string;
-    discount: number;
-    subtotal: number;
-    grandtotal: number;
-    paid: number;
-    balance: number;
-    exchangeRateD?: number;
-    exchangeRateT?: number;
-    tax: number;
-    paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
-    orderStatus: "pending" | "approved" | "completed";
-    paymentStatus: "pending" | "credit" | "completed";
-    saleDetails: PurchaseDetail[];
-  };
-}
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -48,7 +23,7 @@ const formatCurrency = (amount: number) => {
     .replace(/\./g, ","); // Replace dot with comma
 };
 
-const InvoiceDetail: React.FC<params> = async ({ invoice }) => {
+const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
   const isAuthorized = await checkAuthorization(["admin", "branch"]);
   if (!isAuthorized) {
     return redirect("/unauthorized");
@@ -127,13 +102,19 @@ const InvoiceDetail: React.FC<params> = async ({ invoice }) => {
               className="flex gap-4 border-b py-3 last:border-b-0 px-7"
             >
               <p className="w-2/6">{detail.selectedProduct?.title}</p>
-              <p className="w-2/6">{formatCurrency(detail.cost)}</p>
+              <p className="w-2/6">
+                {detail.cost !== undefined
+                  ? formatCurrency(detail.cost)
+                  : "N/A"}
+              </p>
               <p className="w-1/6">
                 {detail.qty}{" "}
                 {detail.selectedUnit ? detail.selectedUnit.title : "N/A"}
               </p>
               <p className="w-1/6">
-                {formatCurrency(detail.cost * detail.qty)}
+                {detail.cost !== undefined && detail.qty !== undefined
+                  ? formatCurrency(detail.cost * detail.qty)
+                  : "N/A"}
               </p>
             </div>
           ))}

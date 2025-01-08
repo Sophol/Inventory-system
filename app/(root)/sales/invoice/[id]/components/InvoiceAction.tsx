@@ -15,31 +15,7 @@ import PaymentDrawer from "@/components/drawers/PaymentDrawer";
 import { Button } from "@/components/ui/button";
 // eslint-disable-next-line import/order
 import html2canvas from "html2canvas";
-interface params {
-  invoice: {
-    _id: string;
-    customer: { _id: string; title: string };
-    branch: { _id: string; title: string };
-    referenceNo: string;
-    description?: string;
-    orderDate: string;
-    approvedDate: string;
-    dueDate: string;
-    invoicedDate: string;
-    discount: number;
-    subtotal: number;
-    grandtotal: number;
-    paid: number;
-    balance: number;
-    exchangeRateD?: number;
-    exchangeRateT?: number;
-    tax: number;
-    paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
-    orderStatus: "pending" | "approved" | "completed";
-    paymentStatus: "pending" | "credit" | "completed";
-    saleDetails: PurchaseDetail[];
-  };
-}
+
 const reloadPage = () => {
   window.location.reload();
 };
@@ -71,7 +47,7 @@ const handleDownload = async () => {
   pdf.save("invoice.pdf");
 };
 
-const InvoiceAction: React.FC<params> = ({ invoice }) => {
+const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
   const handleInvoiceOrder = async () => {
     const { success } = await updateOrderStatus({ saleId: invoice._id });
     if (success) {
