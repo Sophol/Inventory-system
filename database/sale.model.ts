@@ -45,7 +45,7 @@ const SaleSchema = new Schema<ISale>(
     },
     orderStatus: {
       type: String,
-      enum: ["pending", "approved", "completed"],
+      enum: ["pending", "approved", "completed", "void"],
       required: true,
       default: "pending",
     },
