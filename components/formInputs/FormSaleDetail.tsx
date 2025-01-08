@@ -17,11 +17,14 @@ import FormInput from "./FormInput";
 import FormCombobox from "./FormCombobox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import FormSelect from "./FormSelect";
 
 interface SelectData {
   _id: string;
-  title: string | undefined;
-  price?: number | undefined;
+  title: string;
+  cost?: number;
+  price?: number;
+  wholeSalePrice?: number;
 }
 
 interface FormSaleDetailProps<T extends FieldValues> {
@@ -41,6 +44,7 @@ interface FormSaleDetailProps<T extends FieldValues> {
     productId: string
   ) => Promise<{ data: SelectData[]; isNext: boolean }>;
   name: ArrayPath<T>;
+  defaultValue?: string;
 }
 
 function FormSaleDetail<T extends FieldValues>({
@@ -50,6 +54,7 @@ function FormSaleDetail<T extends FieldValues>({
   fetchUnits,
   fetchProductDetails,
   name,
+  defaultValue,
 }: FormSaleDetailProps<T>) {
   const { watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -83,6 +88,7 @@ function FormSaleDetail<T extends FieldValues>({
       total: 0,
     } as any);
   }, [append]);
+
   const calculateSubTotal = useCallback(() => {
     const subTotal = fields.reduce((acc, _, index) => {
       const total = parseFloat(watch(`saleDetails.${index}.total`) || "0");
@@ -131,14 +137,7 @@ function FormSaleDetail<T extends FieldValues>({
       try {
         const productDetails = await fetchProductDetails(productId);
         setUnits(Array.isArray(productDetails.data) ? productDetails.data : []);
-        const unitId =
-          productDetails.data.length > 0 ? productDetails.data[0]._id : "";
-        setValue(
-          `saleDetails.${index}.unit` as Path<T>,
-          unitId as unknown as PathValue<T, Path<T>>
-        );
         calculateTotal(index);
-
         // Update the selectedProducts state
         setSelectedProducts((prev) => ({
           ...prev,
@@ -155,11 +154,25 @@ function FormSaleDetail<T extends FieldValues>({
     async (index: number, unitId: string) => {
       if (unitId) {
         const unit = units.find((unit) => unit._id === unitId);
-
+        console.log("price", unit?.price);
         if (unit) {
+          const saleType = watch("saleType"); // Watch the saleType value
+
+          if (saleType === "wholesale") {
+            setValue(
+              `saleDetails.${index}.price` as Path<T>,
+              unit.wholeSalePrice as unknown as PathValue<T, Path<T>>
+            );
+          } else {
+            setValue(
+              `saleDetails.${index}.price` as Path<T>,
+              unit.price as unknown as PathValue<T, Path<T>>
+            );
+          }
+          console.log(unit.cost);
           setValue(
-            `saleDetails.${index}.price` as Path<T>,
-            unit.price as unknown as PathValue<T, Path<T>>
+            `saleDetails.${index}.cost` as Path<T>,
+            unit.cost as unknown as PathValue<T, Path<T>>
           );
           calculateTotal(index);
         }
@@ -167,8 +180,21 @@ function FormSaleDetail<T extends FieldValues>({
     },
     [units, setValue, calculateTotal]
   );
+  const saleTypeData: SelectData[] = [
+    { _id: "retail", title: "Retail" },
+    { _id: "wholesale", title: "Whole Sale" },
+  ];
   return (
     <div className="flex flex-col justify-start gap-4">
+      <div className="flex items-center gap-4 w-36">
+        <FormSelect
+          name={"saleType" as Path<T>}
+          items={saleTypeData}
+          label="Sale Type"
+          defaultValue={defaultValue}
+          control={control}
+        />
+      </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-11">
         {fields.map((field, index) => {
           const selectedProduct = selectedProducts[index];
@@ -220,6 +246,13 @@ function FormSaleDetail<T extends FieldValues>({
                   label="Price"
                   control={control}
                   onChange={() => calculateTotal(index)}
+                />
+                <FormInput
+                  type="hidden"
+                  name={`${name}.${index}.cost` as Path<T>}
+                  label="Total"
+                  control={control}
+                  readonly={true}
                 />
               </div>
               <div className="col-span-2 md:col-span-2">

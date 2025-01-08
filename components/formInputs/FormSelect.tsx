@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Control, FieldValues, Path } from "react-hook-form";
+import { Control, FieldValues, Path, PathValue } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -25,6 +25,7 @@ interface FormSelectProps<T extends FieldValues> {
   isRequired?: boolean;
 }
 function FormSelect<T extends FieldValues>({
+  defaultValue,
   items,
   name,
   label,
@@ -37,6 +38,7 @@ function FormSelect<T extends FieldValues>({
     <FormField
       control={control}
       name={name}
+      defaultValue={defaultValue as PathValue<T, Path<T>>}
       render={({ field }) => (
         <FormItem className="flex w-full flex-col">
           <FormLabel className="paragraph-semibold text-dark400_light800">

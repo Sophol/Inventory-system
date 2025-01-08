@@ -16,7 +16,6 @@ import { CreateSaleSchema } from "@/lib/validations";
 import FormCombobox from "../formInputs/FormCombobox";
 import FormDatePicker from "../formInputs/FormDatePicker";
 import FormInput from "../formInputs/FormInput";
-import FormSelect from "../formInputs/FormSelect";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { getCustomers } from "@/lib/actions/customer.action";
@@ -41,6 +40,7 @@ const SaleForm = ({
 }: Params) => {
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
+  // const defaultSaleType = sale?.saleType || "retail";
   const form = useForm<z.infer<typeof CreateSaleSchema>>({
     resolver: zodResolver(CreateSaleSchema),
     defaultValues: {
@@ -67,8 +67,17 @@ const SaleForm = ({
       paidBy: sale?.paidBy || "Cash",
       orderStatus: sale?.orderStatus || "pending",
       paymentStatus: sale?.paymentStatus || "pending",
+      saleType: sale?.saleType || "retail",
       saleDetails: sale?.saleDetails || [
-        { product: "", unit: "", qty: 0, cost: 0, total: 0 },
+        {
+          product: "",
+          unit: "",
+          qty: 0,
+          cost: 0,
+          price: 0,
+          totalCost: 0,
+          totalPrice: 0,
+        },
       ],
     },
   });
@@ -191,8 +200,9 @@ const SaleForm = ({
       const units =
         product?.units.map((unit) => ({
           _id: unit.unit,
-          title: unit.unitTitle,
+          title: unit.unitTitle || "",
           cost: unit.cost || 0,
+          price: unit.price || 0,
         })) || [];
 
       if (units.length > 0) {
@@ -207,7 +217,7 @@ const SaleForm = ({
       const units =
         data?.units.map((unit) => ({
           _id: unit._id,
-          title: unit.title,
+          title: unit.title || "",
           cost: 0,
         })) || [];
       if (units.length > 0 && success) {
@@ -229,7 +239,8 @@ const SaleForm = ({
     const units =
       product?.units.map((unit) => ({
         _id: unit.unit,
-        title: unit.unitTitle,
+        title: unit.unitTitle || "",
+        cost: unit.cost || 0,
         price: unit.price || 0,
         wholeSalePrice: unit.wholeSalePrice || 0,
       })) || [];
@@ -277,35 +288,6 @@ const SaleForm = ({
             control={form.control}
             defaultValue={new Date()}
           />
-
-          <FormSelect
-            name="orderStatus"
-            label="Order Status"
-            control={form.control}
-            items={[
-              { _id: "pending", title: "Pending" },
-              { _id: "approved", title: "Approved" },
-              { _id: "completed", title: "Completed" },
-            ]}
-          />
-          <FormSelect
-            name="paymentStatus"
-            label="Payment Status"
-            control={form.control}
-            items={[
-              { _id: "pending", title: "Pending" },
-              { _id: "credit", title: "Credit" },
-              { _id: "completed", title: "Completed" },
-            ]}
-          />
-        </div>
-        <FormInput
-          name="description"
-          label="Description"
-          control={form.control}
-          isRequired={false}
-        />
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormInput
             name="exchangeRateD"
             label="ExchangeRate Dollar"
@@ -316,10 +298,12 @@ const SaleForm = ({
             label="ExchangeRate Thai"
             control={form.control}
           />
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
           <FormInput
-            name="tax"
-            label="Tax"
-            type="number"
+            name="description"
+            label="Description"
             control={form.control}
             isRequired={false}
           />
@@ -335,6 +319,7 @@ const SaleForm = ({
                   name="saleDetails"
                   control={form.control}
                   setValue={form.setValue}
+                  defaultValue="retail"
                   fetchProducts={fetchPrducts}
                   fetchUnits={fetchUnits}
                   fetchProductDetails={fetchProductDetails}

@@ -171,7 +171,9 @@ interface SaleDetailParams {
   discount?: number;
   qty?: number;
   cost?: number;
-  total?: number;
+  price?: number;
+  totalCost?: number;
+  totalPrice?: number;
   exchangeRateD?: number;
   exchangeRateT?: number;
 }
@@ -192,6 +194,7 @@ interface CreateSaleParams {
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   orderStatus?: "pending" | "approved" | "completed";
   paymentStatus?: "pending" | "credit" | "completed";
+  saleType?: "retail" | "wholesale";
   saleDetails: SaleDetailParams[];
 }
 

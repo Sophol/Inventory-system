@@ -275,7 +275,9 @@ export const SaleDetailSchema = z.object({
   discount: z.number().min(0).default(0),
   qty: z.number().min(0).default(0),
   cost: z.number().min(0).default(0),
-  total: z.number().min(0).default(0),
+  price: z.number().min(0).default(0),
+  totalCost: z.number().min(0).default(0),
+  totalPrice: z.number().min(0).default(0),
 });
 export const CreateSaleDetailSchema = SaleDetailSchema.extend({
   sale: z.string().min(1, "Sale ID is required"),
@@ -299,6 +301,7 @@ export const CreateSaleSchema = z.object({
   paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]).optional(),
   orderStatus: z.enum(["pending", "approved", "completed"]).default("pending"),
   paymentStatus: z.enum(["pending", "credit", "completed"]).default("pending"),
+  saleType: z.enum(["retail", "wholesale"]).default("retail"),
   saleDetails: z
     .array(SaleDetailSchema)
     .min(1, { message: "At least one Unit is required." }),
