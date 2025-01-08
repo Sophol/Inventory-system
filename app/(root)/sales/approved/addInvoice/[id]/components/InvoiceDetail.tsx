@@ -71,7 +71,6 @@ const InvoiceDetail = ({
               <div className="flex gap-4">
                 <p className="pb-1 w-1/3">Total Due: </p>
                 <p className="pb-1 w-2/3">
-                  {" "}
                   {invoice.paid ? formatCurrency(invoice.paid) : "N/A"}
                 </p>
               </div>

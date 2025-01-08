@@ -332,6 +332,7 @@ export async function getSale(
           orderDate: { $first: "$orderDate" },
           approvedDate: { $first: "$approvedDate" },
           invoicedDate: { $first: "$invoicedDate" },
+          dueDate: { $first: "$dueDate" },
           tax: { $first: "$tax" },
           description: { $first: "$description" },
           discount: { $first: "$discount" },

@@ -46,7 +46,7 @@ const InvoiceForm = ({
       customer: sale?.customer._id || "",
       branch: sale?.branch._id || "",
       referenceNo:
-        sale?.referenceNo || generateUniqueReference({ prefix: "SO" }),
+        sale?.referenceNo || generateUniqueReference({ prefix: "INV" }),
       description: sale?.description || "",
       orderDate: sale?.orderDate ? new Date(sale.orderDate) : new Date(),
       approvedDate: sale?.approvedDate
@@ -55,6 +55,7 @@ const InvoiceForm = ({
       invoicedDate: sale?.invoicedDate
         ? new Date(sale.invoicedDate)
         : new Date(),
+      dueDate: sale?.dueDate ? new Date(sale.dueDate) : new Date(),
       tax: sale?.tax || 0,
       discount: sale?.discount || 0,
       subtotal: sale?.subtotal || 0,
@@ -88,7 +89,7 @@ const InvoiceForm = ({
           title: "success",
           description: "Sale created successfully.",
         });
-        if (result.data) router.push(ROUTES.INVOICES);
+        if (result.data) router.push(ROUTES.INVOICE(result.data._id as string));
       } else {
         toast({
           title: `Error ${result.status}`,
@@ -259,10 +260,16 @@ const InvoiceForm = ({
             setValue={form.setValue} // Replace with actual branch data
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <FormDatePicker
-            name="orderDate"
-            label="Order Date"
+            name="invoicedDate"
+            label="Invoice Date"
+            control={form.control}
+            defaultValue={new Date()}
+          />
+          <FormDatePicker
+            name="dueDate"
+            label="Due Date"
             control={form.control}
             defaultValue={new Date()}
           />

@@ -45,6 +45,7 @@ export async function createInvoice(
     exchangeRateD,
     exchangeRateT,
     saleType,
+    dueDate,
   } = validatedData.params!;
 
   const session = await mongoose.startSession();
@@ -70,6 +71,7 @@ export async function createInvoice(
           exchangeRateD,
           exchangeRateT,
           saleType,
+          dueDate,
         },
       ],
       { session }

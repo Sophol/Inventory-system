@@ -6,15 +6,6 @@ import { redirect, notFound } from "next/navigation";
 import Image from "next/image";
 import { format } from "date-fns";
 
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
-};
-
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("km-KH", {
     minimumFractionDigits: 0,
@@ -32,14 +23,14 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
   const { success, data: setting } = await getSetting({
     settingId: process.env.SETTING_ID as string,
   });
-  console.log(setting);
+  console.log("invoice", invoice);
   if (!success) return notFound();
   if (!setting) return notFound();
   return (
     <div className="card80 ">
       <div className="printable-area">
-        <div className="flex gap-4 p-2 invoice-header">
-          <div className="w-3/4 ">
+        <div className="flex flex-row justify-between  p-2 invoice-header">
+          <div className="flex flex-col ">
             <Image
               src={`/` + setting.companyLogo}
               alt="Company Logo"
@@ -52,14 +43,14 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
               {setting.address}, {setting.phone}
             </p>
           </div>
-          <div className="w-1/4">
+          <div className="flex flex-col">
             <h1 className="font-bold text-lg"># {invoice.referenceNo}</h1>
             <br />
             <p className="text-sm">
               Date Issued: {format(invoice.invoicedDate, "PPP")}
             </p>
             <p className="text-sm">
-              Due Date:{" "}
+              Due Date:
               {invoice.dueDate ? format(invoice.dueDate, "PPP") : "N/A"}
             </p>
           </div>
