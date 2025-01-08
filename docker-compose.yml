@@ -2,8 +2,8 @@ version: '3.9'
 
 services:
   nextapp:
-    container_name: inventoryApp
-    image: inventoryApp
+    container_name: inventoryapp
+    image: inventoryapp
     build: .
     ports:
       - "3000:3000"
