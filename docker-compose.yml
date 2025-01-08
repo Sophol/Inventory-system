@@ -5,17 +5,17 @@ services:
     container_name: inventoryapp
     image: inventoryapp
     restart: unless-stopped
-    env_file: .env
+    #env_file: .env
     build: .
     ports:
       - "3000:3000"
-    environment:
-      - AUTH_SECRET=$AUTH_SECRET
-      - AUTH_GITHUB_ID=$AUTH_GITHUB_ID
-      - AUTH_GITHUB_SECRET=$AUTH_GITHUB_SECRET
-      - AUTH_GOOGLE_ID=$AUTH_GOOGLE_ID
-      - AUTH_GOOGLE_SECRET=$AUTH_GOOGLE_SECRET
-      - MONGODB_URI=$MONGODB_URI
-      - SETTING_ID=$SETTING_ID
+    # environment:
+    #   - AUTH_SECRET=$AUTH_SECRET
+    #   - AUTH_GITHUB_ID=$AUTH_GITHUB_ID
+    #   - AUTH_GITHUB_SECRET=$AUTH_GITHUB_SECRET
+    #   - AUTH_GOOGLE_ID=$AUTH_GOOGLE_ID
+    #   - AUTH_GOOGLE_SECRET=$AUTH_GOOGLE_SECRET
+    #   - MONGODB_URI=$MONGODB_URI
+    #   - SETTING_ID=$SETTING_ID
 
 
