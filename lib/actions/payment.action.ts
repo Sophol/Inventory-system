@@ -2,6 +2,7 @@
 import { FilterQuery } from "mongoose";
 
 import { Payment } from "@/database";
+
 // import { ISaleDetailDoc } from "@/database/sale-detail.model";
 import { IPaymentDoc } from "@/database/payment.model";
 
@@ -47,7 +48,7 @@ export async function getPayments(
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   // sale : params.sale
-  const filterQuery: FilterQuery<typeof Payment> = {};
+  const filterQuery: FilterQuery<typeof Payment> = {sale : params.sale};
   if (query) {
     filterQuery.$or = [
       { name: { $regex: new RegExp(query, "i") } },
@@ -74,10 +75,12 @@ export async function getPayments(
     const [totalPayments, payments] = await Promise.all([
       Payment.countDocuments(filterQuery),
       Payment.find(filterQuery)
+        .populate("customer", "name")
         .lean()
         .sort(sortCriteria)
         .skip(skip)
         .limit(limit),
+     
     ]);
     console.log("totalPayments, payments", payments);
     const isNext = totalPayments > skip + payments.length;

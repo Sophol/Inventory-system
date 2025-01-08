@@ -16,7 +16,6 @@ const InvoiceDetailPage = async ({ params }: RouteParams) => {
   const { data: invoice, success } = await getSale({ saleId: id });
   if (!success) return notFound();
   if (!invoice) return notFound();
-  console.log(invoice);
   return (
     <div className="flex gap-4 p-7">
       <InvoiceDetail invoice={invoice} />

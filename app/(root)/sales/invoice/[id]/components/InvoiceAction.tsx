@@ -1,24 +1,49 @@
 "use client";
 
 import jsPDF from "jspdf";
-import React from "react";
-
-import { FaRegCheckCircle, FaHistory } from "react-icons/fa";
-
+import React, { useState } from "react";
+import { FaHistory } from "react-icons/fa";
 import "../invoice.css";
-
 import { updateOrderStatus } from "@/lib/actions/sale.action";
 import { getPayments } from "@/lib/actions/payment.action";
 import { toast } from "@/hooks/use-toast";
-
 import PaymentDrawer from "@/components/drawers/PaymentDrawer";
 import { Button } from "@/components/ui/button";
-// eslint-disable-next-line import/order
+import ButtonStatusOrder from "@/components/formInputs/ButtonStatusOrder";
 import html2canvas from "html2canvas";
+import PaymentHistory from "../payment/PaymentHistory";
+
+
+interface params {
+  invoice: {
+    _id: string;
+    customer: { _id: string; title: string };
+    branch: { _id: string; title: string };
+    referenceNo: string;
+    description?: string;
+    orderDate: string;
+    approvedDate: string;
+    dueDate: string;
+    invoicedDate: string;
+    discount: number;
+    subtotal: number;
+    grandtotal: number;
+    paid: number;
+    balance: number;
+    exchangeRateD?: number;
+    exchangeRateT?: number;
+    tax: number;
+    paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+    orderStatus: "pending" | "approved" | "completed";
+    paymentStatus: "pending" | "credit" | "completed";
+    saleDetails: PurchaseDetail[];
+  };
+}
 
 const reloadPage = () => {
   window.location.reload();
 };
+
 const handlePrint = () => {
   window.print();
 };
@@ -47,13 +72,16 @@ const handleDownload = async () => {
   pdf.save("invoice.pdf");
 };
 
-const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
-  const handleInvoiceOrder = async () => {
+const InvoiceAction: React.FC<params> = ({ invoice }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [payments, setPayments] = useState<any>([]);
+
+  const handleStatusOrder = async () => {
     const { success } = await updateOrderStatus({ saleId: invoice._id });
     if (success) {
       toast({
         title: "success",
-        description: "Order Status update successfully.",
+        description: "Invoice status updated successfully.",
       });
       reloadPage();
     } else {
@@ -64,14 +92,16 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
       });
     }
   };
+
   const handleCallInvoice = async () => {
-    const { success } = await getPayments({ sale: invoice._id });
-    if (success) {
-      toast({
-        title: "success",
-        description: "Order Status update successfully.",
-      });
-      reloadPage();
+    const { data: payments } = await getPayments({ sale: invoice._id });
+    if (payments) {
+      setPayments(payments);
+      setIsDialogOpen(true);
+      // toast({
+      //   title: "success",
+      //   description: "Payments retrieved successfully.",
+      // });
     } else {
       toast({
         title: "error",
@@ -80,26 +110,28 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
       });
     }
   };
+
   return (
     <div className="card20">
       <div className="card20-container">
         <div className="flex gap-4">
-          <Button
-            type="button"
-            disabled={invoice.orderStatus === "completed"}
-            onClick={handleInvoiceOrder}
-            className="w-2/3 button-download-invoice mb-4 rounded px-4 py-2 text-white hover:bg-purple-700"
-          >
-            <FaRegCheckCircle className="cursor-pointer text-xl" />{" "}
-            <span>Complete Order</span>
-          </Button>
+          <ButtonStatusOrder
+            onPopup={handleStatusOrder}
+            btnTitle="Complete Order"
+            disable={invoice.orderStatus === "completed"}
+            description="Are you sure you want to complete this order?"
+            classValue="w-2/3 button-download-invoice mb-4 rounded px-4 py-2 text-white hover:bg-purple-700"
+          />
           <Button
             onClick={handleCallInvoice}
-            className="w-1/3 rounded bg-blue-400 px-4 py-2 text-white hover:bg-blue-500 "
+            className="w-1/3 rounded bg-blue-400 px-4 py-2 text-white hover:bg-blue-500"
           >
             <FaHistory className="cursor-pointer text-xl" />
           </Button>
         </div>
+        {isDialogOpen && (
+          <PaymentHistory invoiceId={invoice._id} onClose={() => setIsDialogOpen(false)} />
+        )}
         <Button
           type="button"
           onClick={handleDownload}
@@ -110,12 +142,11 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
         <div className="flex gap-4 my-4">
           <Button
             onClick={handlePrint}
-            className="w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500 "
+            className="w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500"
           >
             Print
           </Button>
-          <Button className="w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500 ">
-            {" "}
+          <Button className="w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500">
             Edit
           </Button>
         </div>
