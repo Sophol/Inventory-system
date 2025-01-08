@@ -13,33 +13,6 @@ import ButtonStatusOrder from "@/components/formInputs/ButtonStatusOrder";
 import html2canvas from "html2canvas";
 import PaymentHistory from "../payment/PaymentHistory";
 
-
-interface params {
-  invoice: {
-    _id: string;
-    customer: { _id: string; title: string };
-    branch: { _id: string; title: string };
-    referenceNo: string;
-    description?: string;
-    orderDate: string;
-    approvedDate: string;
-    dueDate: string;
-    invoicedDate: string;
-    discount: number;
-    subtotal: number;
-    grandtotal: number;
-    paid: number;
-    balance: number;
-    exchangeRateD?: number;
-    exchangeRateT?: number;
-    tax: number;
-    paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
-    orderStatus: "pending" | "approved" | "completed";
-    paymentStatus: "pending" | "credit" | "completed";
-    saleDetails: PurchaseDetail[];
-  };
-}
-
 const reloadPage = () => {
   window.location.reload();
 };
@@ -72,9 +45,8 @@ const handleDownload = async () => {
   pdf.save("invoice.pdf");
 };
 
-const InvoiceAction: React.FC<params> = ({ invoice }) => {
+const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [payments, setPayments] = useState<any>([]);
 
   const handleStatusOrder = async () => {
     const { success } = await updateOrderStatus({ saleId: invoice._id });
@@ -96,7 +68,6 @@ const InvoiceAction: React.FC<params> = ({ invoice }) => {
   const handleCallInvoice = async () => {
     const { data: payments } = await getPayments({ sale: invoice._id });
     if (payments) {
-      setPayments(payments);
       setIsDialogOpen(true);
       // toast({
       //   title: "success",
@@ -130,7 +101,10 @@ const InvoiceAction: React.FC<params> = ({ invoice }) => {
           </Button>
         </div>
         {isDialogOpen && (
-          <PaymentHistory invoiceId={invoice._id} onClose={() => setIsDialogOpen(false)} />
+          <PaymentHistory
+            invoiceId={invoice._id}
+            onClose={() => setIsDialogOpen(false)}
+          />
         )}
         <Button
           type="button"

@@ -1,5 +1,5 @@
 "use server";
-import mongoose, { FilterQuery } from "mongoose";
+import mongoose from "mongoose";
 
 import { ProductUnit, Sale, SaleDetail, Stock } from "@/database";
 import { ISaleDetailDoc } from "@/database/sale-detail.model";
@@ -8,12 +8,7 @@ import { ISaleDoc } from "@/database/sale.model";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { convertToSmallUnit } from "../utils";
-import {
-  CreateSaleSchema,
-  GetSaleSchema,
-  PaginatedSearchParamsSchema,
-  PaginatedSearchParamsInvoiceSchema,
-} from "../validations";
+import { CreateSaleSchema, GetSaleSchema } from "../validations";
 
 const ObjectId = mongoose.Types.ObjectId;
 

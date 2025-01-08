@@ -299,7 +299,9 @@ export const CreateSaleSchema = z.object({
   exchangeRateD: z.number().min(0).default(0),
   exchangeRateT: z.number().min(0).default(0),
   paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]).optional(),
-  orderStatus: z.enum(["pending", "approved", "completed"]).default("pending"),
+  orderStatus: z
+    .enum(["pending", "approved", "completed", "void"])
+    .default("pending"),
   paymentStatus: z.enum(["pending", "credit", "completed"]).default("pending"),
   saleType: z.enum(["retail", "wholesale"]).default("retail"),
   saleDetails: z
