@@ -276,6 +276,9 @@ interface CreatePaymentParams {
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   paymentStatus?: "pending" | "credit" | "completed";
 }
+interface GetPaymentParams {
+  saleId: string;
+}
 interface UserParams {
   _id: string;
   name: string;

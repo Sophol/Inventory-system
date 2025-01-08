@@ -2,12 +2,23 @@ import React, { useState, useRef } from "react";
 import { FaDollarSign, FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import PaymentForm from "../forms/PaymentForm";
+import { getPayment } from "@/lib/actions/payment.action";
+
 
 const PaymentDrawer = ({ sale }: { sale: Sale }) => {
+
   const [isOpen, setIsOpen] = useState(false);
+  const [payment, setPayment] = useState<Payment>({} as Payment); // Initialize payment state with an empty object
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  const toggleDrawer = () => {
+  const toggleDrawer = async () => {
+    if (!isOpen) { 
+       // Fetch payment data
+       const { data: paymentData, success } = await getPayment({ saleId: sale._id });
+      // If the payment data fetch is successful, update the state
+    if (success && paymentData) {
+      setPayment(paymentData);
+    }}
     setIsOpen(!isOpen);
   };
 
@@ -44,7 +55,7 @@ const PaymentDrawer = ({ sale }: { sale: Sale }) => {
           />
         </div>
         <hr className="border-t border-gray-300" />
-        <PaymentForm sale={sale} />
+        <PaymentForm sale={sale} payment={payment} />
       </div>
     </>
   );

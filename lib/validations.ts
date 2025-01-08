@@ -389,6 +389,9 @@ export const CreatePaymentSchema = z.object({
   paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]),
   paymentStatus: z.enum(["pending", "credit", "completed"]),
 });
+export const GetPaymentSchema = z.object({
+  saleId: z.string().min(1, { message: "Payment ID is required." }),
+});
 export const PaginatedSearchParamsInvoiceSchema =
   PaginatedSearchParamsSchema.extend({
     orderStatus: z.enum(["pending", "approved", "completed"]),

@@ -69,10 +69,6 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
     const { data: payments } = await getPayments({ sale: invoice._id });
     if (payments) {
       setIsDialogOpen(true);
-      // toast({
-      //   title: "success",
-      //   description: "Payments retrieved successfully.",
-      // });
     } else {
       toast({
         title: "error",

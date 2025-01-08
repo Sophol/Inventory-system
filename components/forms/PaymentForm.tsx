@@ -1,10 +1,10 @@
-"use client";
+"use client";	
+import { useEffect } from "react"; 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-
 import { CreatePaymentSchema } from "@/lib/validations";
 import { createPayment } from "@/lib/actions/payment.action";
 import { toast } from "@/hooks/use-toast";
@@ -15,11 +15,14 @@ import FormInput from "../formInputs/FormInput";
 import FormDatePicker from "../formInputs/FormDatePicker";
 import FormSelect from "../formInputs/FormSelect";
 
+
 interface Params {
   sale: Sale;
+  payment : Payment;
 }
 
-const PaymentForm = ({ sale }: Params) => {
+const PaymentForm = ({ sale, payment }: Params) => {
+  
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof CreatePaymentSchema>>({
     resolver: zodResolver(CreatePaymentSchema),
@@ -30,14 +33,38 @@ const PaymentForm = ({ sale }: Params) => {
       referenceNo: sale?.referenceNo,
       description: "",
       paymentDate: new Date().toISOString(),
-      creditAmount: 0,
+      creditAmount: payment?.balance || 10,
       paidAmount: 0,
-      balance: sale?.grandtotal,
+      balance: payment?.creditAmount - payment?.paidAmount || 0,
       paidBy: sale?.paidBy || "Cash",
       paymentStatus: "pending",
     },
   });
-
+  const { watch, setValue } = form;
+  const creditAmount = watch("creditAmount");
+  const paidAmount = watch("paidAmount");
+    // Update balance whenever creditAmount or paidAmount changes
+    useEffect(() => {
+      const balance = creditAmount - paidAmount;
+      setValue("balance", balance); // Dynamically update the balance field
+    }, [creditAmount, paidAmount, setValue]);
+ // Update form values when payment prop changes
+ useEffect(() => {
+  // Update form with new payment data if payment changes
+  form.reset({
+    sale: sale?._id,
+    customer: sale?.customer._id,
+    branch: sale?.branch._id,
+    referenceNo: sale?.referenceNo,
+    description: "", // You can customize the default description here
+    paymentDate: new Date().toISOString(),
+    creditAmount: payment?.balance || 0,
+    paidAmount: 0,
+    balance: payment?.creditAmount - payment?.paidAmount || 0,
+    paidBy: sale?.paidBy || "Cash",
+    paymentStatus: "pending",
+  });
+}, [payment, sale, form]); 
   const handleCreatePayment = async (
     data: z.infer<typeof CreatePaymentSchema>
   ) => {
@@ -112,6 +139,16 @@ const PaymentForm = ({ sale }: Params) => {
             { _id: "ABA Bank", title: "ABA Bank" },
             { _id: "ACLEDA Bank", title: "ACLEDA Bank" },
             { _id: "Others", title: "Others" },
+          ]}
+        />
+         <FormSelect
+          name="paymentStatus"
+          label="Select Payment Status"
+          control={form.control}
+          items={[
+            { _id: "pending", title: "Pending" },
+            { _id: "credit", title: "Credit" },
+            { _id: "completed", title: "Completed" },
           ]}
         />
         <div className="mt-2 flex ">

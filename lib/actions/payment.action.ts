@@ -3,7 +3,6 @@ import { FilterQuery } from "mongoose";
 
 import { Payment } from "@/database";
 
-// import { ISaleDetailDoc } from "@/database/sale-detail.model";
 import { IPaymentDoc } from "@/database/payment.model";
 
 import action from "../handlers/action";
@@ -11,6 +10,7 @@ import handleError from "../handlers/error";
 
 import {
   CreatePaymentSchema,
+  GetPaymentSchema,
   PaginatedSearchParamsPaymentSchema,
 } from "../validations";
 
@@ -89,6 +89,28 @@ export async function getPayments(
       success: true,
       data: { payment: JSON.parse(JSON.stringify(payments)), isNext },
     };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+export async function getPayment(
+  params: GetPaymentParams
+): Promise<ActionResponse<Payment>> {
+  const validatedData = await action({
+    params,
+    schema: GetPaymentSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { saleId } = validatedData.params!;
+  try {
+    const payment = await Payment.findOne({ sale: saleId })
+    .sort({ createdAt: -1 }) // Sort by paymentDate in descending order
+    .lean();
+
+    return { success: true, data: JSON.parse(JSON.stringify(payment ? payment : [])) };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }
