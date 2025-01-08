@@ -125,13 +125,7 @@ function FormPurchaseDetail<T extends FieldValues>({
     async (index: number, productId: string) => {
       try {
         const productDetails = await fetchProductDetails(productId);
-        console.log("productDetails", productDetails);
         setUnits(Array.isArray(productDetails.data) ? productDetails.data : []);
-        setValue(
-          `purchaseDetails.${index}.unit` as Path<T>,
-          (productDetails.data[0]?._id as PathValue<T, Path<T>>) ||
-            ("" as PathValue<T, Path<T>>)
-        );
         calculateTotal(index);
 
         // Update the selectedProducts state
@@ -150,17 +144,32 @@ function FormPurchaseDetail<T extends FieldValues>({
     async (index: number, unitId: string) => {
       if (unitId) {
         const unit = units.find((unit) => unit._id === unitId);
-
+        console.log("unit", unit);
         if (unit) {
           setValue(
-            `${name}.${index}.cost` as Path<T>,
+            `purchaseDetails.${index}.cost` as Path<T>,
             unit.cost as PathValue<T, Path<T>>
           );
           calculateTotal(index);
+        } else {
+          const productId = watch(`purchaseDetails.${index}.product`);
+          const productDetails = await fetchProductDetails(productId);
+          setUnits(
+            Array.isArray(productDetails.data) ? productDetails.data : []
+          );
+          const unit = units.find((unit) => unit._id === unitId);
+          console.log("unit", unit);
+          if (unit) {
+            setValue(
+              `purchaseDetails.${index}.cost` as Path<T>,
+              unit.cost as PathValue<T, Path<T>>
+            );
+            calculateTotal(index);
+          }
         }
       }
     },
-    [units, setValue, calculateTotal, name]
+    [watch, fetchProductDetails, units, setValue, calculateTotal]
   );
   return (
     <div className="flex flex-col justify-start gap-4">
@@ -194,7 +203,7 @@ function FormPurchaseDetail<T extends FieldValues>({
                   fetchSingleItem={(field as any).selectedUnit}
                   parentId={selectedProduct}
                   fetchData={(params) =>
-                    fetchUnits({ ...params, parentId: selectedProduct })
+                    fetchUnits({ ...params, parentId: singleProduct._id })
                   }
                   setValue={(name, value) => {
                     setValue(name, value);

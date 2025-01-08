@@ -18,6 +18,7 @@ export interface ISale {
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   orderStatus: "pending" | "approved" | "completed";
   paymentStatus: "pending" | "credit" | "completed";
+  saleType: "retail" | "wholesale";
 }
 export interface ISaleDoc extends ISale, Document {}
 const SaleSchema = new Schema<ISale>(
@@ -53,6 +54,12 @@ const SaleSchema = new Schema<ISale>(
       enum: ["pending", "credit", "completed"],
       required: true,
       default: "pending",
+    },
+    saleType: {
+      type: String,
+      enum: ["retail", "wholesale"],
+      required: true,
+      default: "retail",
     },
   },
   { timestamps: true }

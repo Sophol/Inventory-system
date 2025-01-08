@@ -167,10 +167,12 @@ interface saleDetail {
   selectedProduct?: { _id: string; title: string };
   selectedUnit?: { _id: string; title: string };
   description?: string;
-  discount: number;
-  qty: number;
-  cost: number;
-  total: number;
+  discount?: number;
+  qty?: number;
+  cost?: number;
+  price?: number;
+  totalCost: number;
+  totalPrice: number;
   exchangeRateD?: number;
   exchangeRateT?: number;
 }
@@ -196,7 +198,8 @@ interface Sale {
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   orderStatus: "pending" | "approved" | "completed";
   paymentStatus: "pending" | "credit" | "completed";
-  saleDetails: PurchaseDetail[];
+  saleType?: "retail" | "wholesale";
+  saleDetails: saleDetail[];
 }
 
 interface Setting {

@@ -46,6 +46,7 @@ export async function createSale(
     saleDetails,
     exchangeRateD,
     exchangeRateT,
+    saleType,
   } = validatedData.params!;
 
   const session = await mongoose.startSession();
@@ -70,6 +71,7 @@ export async function createSale(
           paymentStatus,
           exchangeRateD,
           exchangeRateT,
+          saleType,
         },
       ],
       { session }
@@ -80,47 +82,12 @@ export async function createSale(
     }
 
     const saleDetailDocuments: ISaleDetailDoc[] = [];
-    const stockUpdates: { [key: string]: number } = {};
     for (const detail of saleDetails) {
-      detail.total =
-        (detail.qty ?? 0) * (detail.cost ?? 0) - (detail.discount ?? 0);
+      detail.totalPrice =
+        (detail.qty ?? 0) * (detail.price ?? 0) - (detail.discount ?? 0);
+      detail.totalCost = (detail.qty ?? 0) * (detail.cost ?? 0);
       detail.exchangeRateD = exchangeRateD;
       detail.exchangeRateT = exchangeRateT;
-      const productUnits = await ProductUnit.find({
-        product: new ObjectId(detail.product),
-      });
-
-      // Find the smallest unit (level = 1)
-      const smallestUnit = productUnits.find((pu) => pu.level === 1);
-      if (!smallestUnit) {
-        throw new Error(
-          `Smallest unit not found for product ${detail.product}`
-        );
-      }
-
-      // Find the selected unit
-      const selectedUnit = productUnits.find(
-        (pu) => pu.unit.toString() === detail.unit.toString()
-      );
-
-      if (!selectedUnit) {
-        throw new Error(
-          `Selected unit not found for product ${detail.product}`
-        );
-      }
-      const qtySmallUnit = convertToSmallUnit({
-        level: selectedUnit.level,
-        smallqty: smallestUnit.qty,
-        selectedQty: selectedUnit.qty,
-        qty: detail.qty!,
-      });
-      const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
-      if (stockUpdates[stockKey]) {
-        stockUpdates[stockKey] += qtySmallUnit;
-      } else {
-        stockUpdates[stockKey] = qtySmallUnit;
-      }
-      console.log("stockUpdates", stockUpdates);
       saleDetailDocuments.push(
         new SaleDetail({
           ...detail,
@@ -128,38 +95,8 @@ export async function createSale(
         })
       );
     }
-    for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
-      const [branchId, productId, unitId] = key.split("_");
 
-      const existingStock = await Stock.findOne({
-        branch: new ObjectId(branchId),
-        product: new ObjectId(productId),
-        unit: new ObjectId(unitId),
-      });
-
-      if (existingStock) {
-        // Update the existing stock entry
-        existingStock.qtySmallUnit += qtySmallUnit;
-        // await existingStock.save({ session });
-      } else {
-        // Create a new stock entry
-        // await Stock.create(
-        //   [
-        //     {
-        //       branch: new ObjectId(branchId),
-        //       product: new ObjectId(productId),
-        //       unit: new ObjectId(unitId),
-        //       qtySmallUnit,
-        //       cost: parseFloat(cost), // Set appropriate cost
-        //       price: parseFloat(price), // Set appropriate price
-        //     },
-        //   ],
-        //   { session }
-        // );
-      }
-    }
-
-    //await SaleDetail.insertMany(saleDetailDocuments, { session });
+    await SaleDetail.insertMany(saleDetailDocuments, { session });
     await session.commitTransaction();
 
     return { success: true, data: JSON.parse(JSON.stringify(sale)) };
@@ -200,6 +137,7 @@ export async function editSale(
     saleDetails,
     exchangeRateD,
     exchangeRateT,
+    saleType,
   } = validatedData.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -208,79 +146,37 @@ export async function editSale(
     if (!sale) {
       throw new Error("Sale not found");
     }
-    if (customer) sale.customer = customer;
-    if (branch) sale.branch = branch;
-    if (referenceNo) sale.referenceNo = referenceNo;
-    if (description) sale.description = description;
-    if (saleDate) sale.saleDate = saleDate;
-    if (discount !== undefined) sale.discount = discount;
-    if (subtotal !== undefined) sale.subtotal = subtotal;
-    if (grandtotal !== undefined) sale.grandtotal = grandtotal;
-    if (paid !== undefined) sale.paid = paid;
-    if (balance !== undefined) sale.balance = balance;
-    if (exchangeRateD) sale.exchangeRateD = exchangeRateD;
-    if (exchangeRateT) sale.exchangeRateT = exchangeRateT;
-    if (paidBy) sale.paidBy = paidBy;
-    if (orderStatus) sale.orderStatus = orderStatus;
-    if (paymentStatus) sale.paymentStatus = paymentStatus;
+    console.log("saleType", saleType);
+    if (sale.customer !== customer) sale.customer = customer;
+    if (sale.branch !== branch) sale.branch = branch;
+    if (sale.referenceNo !== referenceNo) sale.referenceNo = referenceNo;
+    if (sale.description !== description) sale.description = description;
+    if (sale.saleDate !== saleDate) sale.saleDate = saleDate;
+    if (discount !== sale.discount) sale.discount = discount;
+    if (subtotal !== sale.subtotal) sale.subtotal = subtotal;
+    if (grandtotal !== sale.grandtotal) sale.grandtotal = grandtotal;
+    if (paid !== sale.paid) sale.paid = paid;
+    if (balance !== sale.balance) sale.balance = balance;
+    if (exchangeRateD !== sale.exchangeRateD)
+      sale.exchangeRateD = exchangeRateD;
+    if (exchangeRateT !== sale.exchangeRateT)
+      sale.exchangeRateT = exchangeRateT;
+    if (paidBy !== sale.paidBy) sale.paidBy = paidBy;
+    if (orderStatus !== sale.orderStatus) sale.orderStatus = orderStatus;
+    if (paymentStatus !== sale.paymentStatus)
+      sale.paymentStatus = paymentStatus;
+    if (saleType !== sale.saleType) sale.saleType = saleType;
     await sale.save({ session });
 
     if (saleDetails) {
       const newDetailDocuments = [];
-      const stockUpdates: { [key: string]: number } = {};
-      const stockRemoves: { [key: string]: number } = {};
       for (const detail of saleDetails) {
-        const productUnits = await ProductUnit.find({
-          product: new ObjectId(detail.product),
-        });
-        // Find the smallest unit (level = 1)
-        const smallestUnit = productUnits.find((pu) => pu.level === 1);
-        if (!smallestUnit) {
-          throw new Error(
-            `Smallest unit not found for product ${detail.product}`
-          );
-        }
-        // Find the selected unit
-        const selectedUnit = productUnits.find(
-          (pu) => pu.unit.toString() === detail.unit.toString()
-        );
-        if (!selectedUnit) {
-          throw new Error(
-            `Selected unit not found for product ${detail.product}`
-          );
-        }
-        const qtySmallUnit = convertToSmallUnit({
-          level: selectedUnit.level,
-          smallqty: smallestUnit.qty,
-          selectedQty: selectedUnit.qty,
-          qty: detail.qty!,
-        });
-        const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
-        if (stockUpdates[stockKey]) {
-          stockUpdates[stockKey] += qtySmallUnit;
-        } else {
-          stockUpdates[stockKey] = qtySmallUnit;
-        }
-
         const existingDetail = await SaleDetail.findOne({
           sale: saleId,
           product: detail.product,
           unit: detail.unit,
         }).session(session);
         if (existingDetail) {
-          const existingSmallQty = convertToSmallUnit({
-            level: selectedUnit.level,
-            smallqty: smallestUnit.qty,
-            selectedQty: selectedUnit.qty,
-            qty: existingDetail.qty,
-          });
-          const deleteStockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
-          if (stockRemoves[deleteStockKey]) {
-            stockRemoves[deleteStockKey] += existingSmallQty;
-          } else {
-            stockRemoves[deleteStockKey] = existingSmallQty;
-          }
-
           if (detail.qty !== existingDetail.qty)
             existingDetail.qty = detail.qty;
           if (detail.cost !== existingDetail.cost)
@@ -289,10 +185,14 @@ export async function editSale(
             existingDetail.discount = detail.discount;
           if (detail.description !== existingDetail.description)
             existingDetail.description = detail.description;
-          existingDetail.total =
-            (detail.qty ?? 0) * (detail.cost ?? 0) - (detail.discount ?? 0);
+          existingDetail.totalPrice =
+            (detail.qty ?? 0) * (detail.price ?? 0) - (detail.discount ?? 0);
+          existingDetail.totalCost = (detail.qty ?? 0) * (detail.cost ?? 0);
           await existingDetail.save({ session });
         } else {
+          detail.totalPrice =
+            (detail.qty ?? 0) * (detail.price ?? 0) - (detail.discount ?? 0);
+          detail.totalCost = (detail.qty ?? 0) * (detail.cost ?? 0);
           newDetailDocuments.push({ ...detail, sale: saleId });
         }
       }
@@ -309,96 +209,17 @@ export async function editSale(
         const detailIdsToRemove = [];
         for (const rmd of detailsToRemove) {
           detailIdsToRemove.push(rmd._id);
-          const productUnitRm = await ProductUnit.find({
-            product: new ObjectId(rmd.product),
-          });
-          const smallestUnitRm = productUnitRm.find((pu) => pu.level === 1);
-          if (!smallestUnitRm) {
-            throw new Error(
-              `Smallest unit not found for product ${rmd.product}`
-            );
-          }
-          // Find the selected unit
-          const selectedUnitRm = productUnitRm.find(
-            (pu) => pu.unit.toString() === rmd.unit.toString()
-          );
-          if (!selectedUnitRm) {
-            throw new Error(
-              `Selected unit not found for product ${rmd.product}`
-            );
-          }
-          const existingSmallQtyRm = convertToSmallUnit({
-            level: selectedUnitRm.level,
-            smallqty: smallestUnitRm.qty,
-            selectedQty: selectedUnitRm.qty,
-            qty: rmd.qty,
-          });
-          const deleteStockKeyRm = `${branch}_${rmd.product}_${smallestUnitRm.unit}_${smallestUnitRm.cost}_${smallestUnitRm.price}`;
-          if (stockRemoves[deleteStockKeyRm]) {
-            stockRemoves[deleteStockKeyRm] += existingSmallQtyRm;
-          } else {
-            stockRemoves[deleteStockKeyRm] = existingSmallQtyRm;
-          }
         }
 
-        // await SaleDetail.deleteMany(
-        //   { _id: { $in: detailIdsToRemove } },
-        //   { session }
-        // );
+        await SaleDetail.deleteMany(
+          { _id: { $in: detailIdsToRemove } },
+          { session }
+        );
       }
-      for (const [key, qtySmallUnitRm] of Object.entries(stockRemoves)) {
-        const [branchId, productId, unitId] = key.split("_");
 
-        const existingStockRm = await Stock.findOne({
-          branch: new ObjectId(branchId),
-          product: new ObjectId(productId),
-          unit: new ObjectId(unitId),
-        }).session(session);
-        if (existingStockRm) {
-          // Update the existing stock entry
-          existingStockRm.qtySmallUnit = Math.max(
-            0,
-            existingStockRm.qtySmallUnit - qtySmallUnitRm
-          );
-
-          await existingStockRm.save({ session });
-        }
+      if (newDetailDocuments.length > 0) {
+        await SaleDetail.insertMany(newDetailDocuments, { session });
       }
-      for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
-        const [branchId, productId, unitId] = key.split("_");
-
-        const existingStock = await Stock.findOne({
-          branch: new ObjectId(branchId),
-          product: new ObjectId(productId),
-          unit: new ObjectId(unitId),
-        }).session(session);
-
-        if (existingStock) {
-          // Update the existing stock entry
-          existingStock.qtySmallUnit =
-            existingStock.qtySmallUnit + qtySmallUnit;
-
-          //await existingStock.save({ session });
-        } else {
-          // Create a new stock entry
-          // await Stock.create(
-          //   [
-          //     {
-          //       branch: new ObjectId(branchId),
-          //       product: new ObjectId(productId),
-          //       unit: new ObjectId(unitId),
-          //       qtySmallUnit,
-          //       cost: parseFloat(cost), // Set appropriate cost
-          //       price: parseFloat(price), // Set appropriate price
-          //     },
-          //   ],
-          //   { session }
-          // );
-        }
-      }
-      // if (newDetailDocuments.length > 0) {
-      //   await SaleDetail.insertMany(newDetailDocuments, { session });
-      // }
     }
     await session.commitTransaction();
     return { success: true, data: JSON.parse(JSON.stringify(sale)) };
@@ -519,6 +340,7 @@ export async function getSale(
           paid: { $first: "$paid" },
           balance: { $first: "$balance" },
           paidBy: { $first: "$paidBy" },
+          saleType: { $first: "$saleType" },
           orderStatus: { $first: "$orderStatus" },
           paymentStatus: { $first: "$paymentStatus" },
           createdAt: { $first: "$createdAt" },
