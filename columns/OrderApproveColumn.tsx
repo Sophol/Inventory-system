@@ -144,10 +144,10 @@ export const SaleColumn: ColumnDef<Sale>[] = [
             ) : (
               // Display the "below" content
               <RedirectButton
+                title="Invoice"
+                href={ROUTES.APPROVEDINVOICE(sale._id)}
+                className="bg-green-500 text-white"
                 Icon={FaFileInvoice}
-                href={ROUTES.INVOICE(sale._id)}
-                isIcon
-                className="text-blue-500"
               />
             )}
           </div>

@@ -288,6 +288,7 @@ export const CreateSaleSchema = z.object({
   referenceNo: z.string().min(1, "Reference number is required"),
   description: z.string().optional(),
   orderDate: z.date(),
+  dueDate: z.date().optional(),
   approvedDate: z.date(),
   invoicedDate: z.date(),
   tax: z.number().min(0).default(0),
@@ -314,6 +315,10 @@ export const EditSaleSchema = CreateSaleSchema.extend({
 });
 export const GetSaleSchema = z.object({
   saleId: z.string().min(1, "Sale ID is required"),
+});
+export const ApprovedInvoiceSchema = z.object({
+  saleId: z.string().min(1, "Sale ID is required"),
+  dueDate: z.date(),
 });
 
 export const CreateSalarySchema = z.object({

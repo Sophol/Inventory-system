@@ -469,7 +469,7 @@ export async function getOrders(
         .skip(skip)
         .limit(limit),
     ]);
-    console.log(sales);
+
     const isNext = totalSales > skip + sales.length;
     return {
       success: true,

@@ -184,6 +184,7 @@ interface CreateSaleParams {
   referenceNo: string;
   description?: string;
   saleDate?: Date | string;
+  dueDate?: Date | string;
   discount?: number;
   subtotal?: number;
   grandtotal?: number;
@@ -203,6 +204,10 @@ interface EditSaleParams extends CreateSaleParams {
 }
 interface GetSaleParams {
   saleId: string;
+}
+interface ApprovedInvoiceParams {
+  saleId: string;
+  dueDate: Date;
 }
 interface CreateSalaryParams {
   staffId: string;

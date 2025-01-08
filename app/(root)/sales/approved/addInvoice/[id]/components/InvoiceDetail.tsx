@@ -1,19 +1,8 @@
-import React from "react";
+"use client";
 import "../invoice.css";
-import { getSetting } from "@/lib/actions/setting.action";
-import { checkAuthorization } from "@/lib/auth";
-import { redirect, notFound } from "next/navigation";
 import Image from "next/image";
+import DatePicker from "@/components/formInputs/DatePicker";
 import { format } from "date-fns";
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
-};
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("km-KH", {
@@ -24,22 +13,23 @@ const formatCurrency = (amount: number) => {
     .replace(/\./g, ","); // Replace dot with comma
 };
 
-const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
-  const isAuthorized = await checkAuthorization(["admin", "branch"]);
-  if (!isAuthorized) {
-    return redirect("/unauthorized");
-  }
-  const { success, data: setting } = await getSetting({
-    settingId: process.env.SETTING_ID as string,
-  });
-  console.log(setting);
-  if (!success) return notFound();
-  if (!setting) return notFound();
+const InvoiceDetail = ({
+  invoice,
+  onDueDateChange,
+  setting,
+}: {
+  invoice: Sale;
+  onDueDateChange: (date: Date) => void;
+  setting: Setting;
+}) => {
+  const handleChangeDate = (date: Date) => {
+    onDueDateChange(date);
+  };
   return (
     <div className="card80 ">
       <div className="printable-area">
-        <div className="flex gap-4 p-2 invoice-header">
-          <div className="w-3/4 ">
+        <div className="flex flex-row justify-between  p-2 invoice-header">
+          <div className="flex flex-col">
             <Image
               src={`/` + setting.companyLogo}
               alt="Company Logo"
@@ -52,16 +42,21 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
               {setting.address}, {setting.phone}
             </p>
           </div>
-          <div className="w-1/4">
+          <div className="flex flex-col">
             <h1 className="font-bold text-lg"># {invoice.referenceNo}</h1>
             <br />
             <p className="text-sm">
               Date Issued: {format(invoice.invoicedDate, "PPP")}
             </p>
-            <p className="text-sm">
-              Due Date:{" "}
-              {invoice.dueDate ? format(invoice.dueDate, "PPP") : "N/A"}
-            </p>
+            <div className="flex flex-row space-x-1 items-center text-sm">
+              <span>Due Date: </span>
+              <span>
+                <DatePicker
+                  initialDate={new Date()}
+                  onDateChange={handleChangeDate}
+                />
+              </span>
+            </div>
           </div>
         </div>
         <br />

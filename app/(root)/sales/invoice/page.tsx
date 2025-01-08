@@ -8,6 +8,7 @@ import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { SALE_EMPTY } from "@/constants/states";
 import { getOrders } from "@/lib/actions/sale.action";
+import { CiCirclePlus } from "react-icons/ci";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -26,10 +27,10 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
   return (
     <CardContainer
       title="Invoice"
-      redirectTitle=""
-      redirectHref={""}
-      redirectIcon={undefined}
-      redirectClass="hidden"
+      redirectTitle="ADD"
+      redirectHref={ROUTES.ADDINVOICE}
+      redirectIcon={CiCirclePlus}
+      redirectClass="!text-light-900 primary-gradient"
     >
       <>
         <div className="py-4">

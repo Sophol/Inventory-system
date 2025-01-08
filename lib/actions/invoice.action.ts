@@ -8,7 +8,11 @@ import { ISaleDoc } from "@/database/sale.model";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { convertToSmallUnit } from "../utils";
-import { CreateSaleSchema, GetSaleSchema } from "../validations";
+import {
+  ApprovedInvoiceSchema,
+  CreateSaleSchema,
+  GetSaleSchema,
+} from "../validations";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -187,7 +191,8 @@ export async function voidInvoice(
     if (!invoice) {
       throw new Error("Invoice not found");
     }
-    const saleDetails = await SaleDetail.find({ sale: saleId });
+    const saleDetails = await SaleDetail.find({ sale: invoice._id });
+
     if (saleDetails.length > 0) {
       const stockUpdates: { [key: string]: number } = {};
       for (const detail of saleDetails) {
@@ -221,6 +226,7 @@ export async function voidInvoice(
           stockUpdates[stockKey] = qtySmallUnit;
         }
       }
+
       for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
         const [branchId, productId, unitId] = key.split("_");
         const existingStock = await Stock.findOne({
@@ -228,25 +234,120 @@ export async function voidInvoice(
           product: new ObjectId(productId),
           unit: new ObjectId(unitId),
         });
+        console.log("existingStock", existingStock);
         if (existingStock) {
-          existingStock.qtySmallUnit = Math.max(
-            0,
-            existingStock.qtySmallUnit + qtySmallUnit
-          );
+          existingStock.qtySmallUnit += qtySmallUnit;
           await existingStock.save({ session });
         }
       }
       invoice.orderStatus = "void";
-
-      await SaleDetail.deleteMany({ sale: saleId }, { session });
       await invoice.save({ session });
     }
+    await session.commitTransaction();
     return { success: true, data: JSON.parse(JSON.stringify(invoice)) };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }
 }
+export async function approvedInvoice(
+  params: ApprovedInvoiceParams
+): Promise<ActionResponse<Sale>> {
+  const validatedData = await action({
+    params,
+    schema: ApprovedInvoiceSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { saleId, dueDate } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const invoice = await Sale.findById(saleId);
+    if (!invoice) {
+      throw new Error("Invoice not found");
+    }
+    if (invoice.orderStatus !== "approved") {
+      throw new Error("Invoice not approved yet");
+    }
+    const saleDetails = await SaleDetail.find({ sale: saleId });
+    if (saleDetails.length > 0) {
+      const stockUpdates: { [key: string]: number } = {};
+      for (const detail of saleDetails) {
+        const productUnits = await ProductUnit.find({
+          product: new ObjectId(detail.product),
+        });
+        const smallestUnit = productUnits.find((pu) => pu.level === 1);
+        if (!smallestUnit) {
+          throw new Error(
+            `Smallest unit not found for product ${detail.product}`
+          );
+        }
+        const selectedUnit = productUnits.find(
+          (pu) => pu.unit.toString() === detail.unit.toString()
+        );
+        if (!selectedUnit) {
+          throw new Error(
+            `Selected unit not found for product ${detail.product}`
+          );
+        }
+        const qtySmallUnit = convertToSmallUnit({
+          level: selectedUnit.level,
+          smallqty: smallestUnit.qty,
+          selectedQty: selectedUnit.qty,
+          qty: detail.qty,
+        });
+        const stockKey = `${invoice.branch}_${detail.product}_${smallestUnit.unit}`;
+        if (stockUpdates[stockKey]) {
+          stockUpdates[stockKey] -= qtySmallUnit;
+        } else {
+          stockUpdates[stockKey] = -qtySmallUnit;
+        }
+      }
+      // Check stock levels before committing the transaction
+      for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
+        const [branchId, productId, unitId] = key.split("_");
 
+        const existingStock = await Stock.findOne({
+          branch: new ObjectId(branchId),
+          product: new ObjectId(productId),
+          unit: new ObjectId(unitId),
+        });
+
+        if (!existingStock || existingStock.qtySmallUnit < -qtySmallUnit) {
+          throw new Error(
+            `Insufficient stock for product ${productId} in branch ${branchId}`
+          );
+        }
+      }
+
+      // Update stock levels
+      for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
+        const [branchId, productId, unitId] = key.split("_");
+
+        const existingStock = await Stock.findOne({
+          branch: new ObjectId(branchId),
+          product: new ObjectId(productId),
+          unit: new ObjectId(unitId),
+        });
+
+        if (existingStock) {
+          // Update the existing stock entry
+          existingStock.qtySmallUnit += qtySmallUnit;
+          await existingStock.save({ session });
+        }
+      }
+      invoice.orderStatus = "completed";
+      invoice.dueDate = dueDate;
+      await invoice.save({ session });
+    }
+    await session.commitTransaction();
+    return { success: true, data: JSON.parse(JSON.stringify(invoice)) };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
 export async function getInvoice(
   params: GetSaleParams
 ): Promise<ActionResponse<Sale>> {

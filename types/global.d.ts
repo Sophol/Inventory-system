@@ -185,7 +185,7 @@ interface Sale {
   description?: string;
   orderDate: string;
   approvedDate: string;
-  dueDate: string;
+  dueDate?: Date;
   invoicedDate: string;
   discount: number;
   subtotal: number;

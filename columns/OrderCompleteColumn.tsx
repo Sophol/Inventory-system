@@ -10,19 +10,9 @@ import ROUTES from "@/constants/routes";
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
 
-import { deleteSale } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
-
-// export type Sale = {
-//   _id: string;
-//   referenceNo: string;
-//   customer: { _id: string; name: string };
-//   branch: { _id: string; title: string };
-//   saleDate: string;
-//   orderStatus: string;
-//   paymentStatus: string;
-// };
+import { voidInvoice } from "@/lib/actions/invoice.action";
 
 const reloadPage = () => {
   window.location.reload();
@@ -102,7 +92,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const sale = row.original;
       const handleDelete = async () => {
-        const { success } = await deleteSale({ saleId: sale._id });
+        const { success } = await voidInvoice({ saleId: sale._id });
         if (success) {
           toast({
             title: "success",
@@ -127,12 +117,6 @@ export const SaleColumn: ColumnDef<Sale>[] = [
               className="text-blue-500"
             />
           </div>
-          <RedirectButton
-            Icon={FaRegEdit}
-            href={ROUTES.SALE(sale._id)}
-            isIcon
-            className="text-primary-500"
-          />
           <ButtonDelete onDelete={handleDelete} />
         </div>
       );
