@@ -20,9 +20,12 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
+  const categoryId = searchParams.get("categoryId") || "";
+  const branchId = searchParams.get("branchId") || "";
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState(query);
-
+  const [searchCategory, setSearchCategory] = useState(categoryId);
+  const [searchBranch, setSearchBranch] = useState(branchId);
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchQuery) {
@@ -31,6 +34,7 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
           key: "query",
           value: searchQuery,
         });
+
         router.push(newUrl, { scroll: false });
       } else {
         if (pathname === route) {
@@ -44,8 +48,57 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
     }, 1000);
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, route, router, searchParams, pathname]);
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchCategory) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "categoryId",
+          value: searchCategory,
+        });
 
-  const form = useForm();
+        router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeyFromUrlQuery({
+            params: searchParams.toString(),
+            keyToRemove: ["categoryId"],
+          });
+          router.push(newUrl, { scroll: false });
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(delayDebounceFn);
+  }, [route, router, pathname, searchCategory, searchParams]);
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchBranch) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "branchId",
+          value: searchBranch,
+        });
+        console.log("newUrl", newUrl);
+        router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeyFromUrlQuery({
+            params: searchParams.toString(),
+            keyToRemove: ["branchId"],
+          });
+          router.push(newUrl, { scroll: false });
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(delayDebounceFn);
+  }, [route, router, pathname, searchBranch, searchParams]);
+  const form = useForm({
+    defaultValues: {
+      search: query,
+      category: categoryId,
+      branch: branchId,
+    },
+  });
 
   const handleFetchCategories = async ({
     page,
@@ -82,25 +135,13 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
   };
 
   const handleCategoryChange = (value: string) => {
-    if (value) {
-      const newUrl = formUrlQuery({
-        params: searchParams.toString(),
-        key: "categoryId",
-        value,
-      });
-      router.push(newUrl, { scroll: false });
-    }
+    form.setValue("category", value);
+    setSearchCategory(value);
   };
 
   const handleBranchChange = (value: string) => {
-    if (value) {
-      const newUrl = formUrlQuery({
-        params: searchParams.toString(),
-        key: "branchId",
-        value,
-      });
-      router.push(newUrl, { scroll: false });
-    }
+    form.setValue("branch", value);
+    setSearchBranch(value);
   };
 
   const handleClearSearch = () => {
@@ -110,6 +151,8 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
       branch: "",
     });
     setSearchQuery("");
+    setSearchCategory("");
+    setSearchBranch("");
     const newUrl = removeKeyFromUrlQuery({
       params: searchParams.toString(),
       keyToRemove: ["query", "categoryId", "branchId"],
@@ -139,7 +182,7 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
           fetchData={handleFetchCategories}
           setValue={(name, value) => {
             form.setValue(name, value);
-            if (value) handleCategoryChange(value);
+            handleCategoryChange(value);
           }}
         />
         <FormCombobox

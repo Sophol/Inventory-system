@@ -26,8 +26,8 @@ interface PaginatedSearchParams {
   sort?: string;
 }
 interface ProductSearchParams extends PaginatedSearchParams {
-  categoryId: string;
-  branchId: string;
+  categoryId?: string;
+  branchId?: string;
 }
 
 interface PaginatedSearchParamsInvoice {

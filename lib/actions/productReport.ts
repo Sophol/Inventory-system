@@ -1,24 +1,34 @@
 import { FilterQuery } from "mongoose";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
-import { PaginatedSearchParamsSchema } from "../validations";
 import { Product } from "@/database";
+import { ProductSearchParamsSchema } from "../validations";
+import { ObjectId } from "mongodb";
 
 export async function getProductReports(
-  params: PaginatedSearchParams
+  params: ProductSearchParams
 ): Promise<ActionResponse<{ products: Product[]; isNext: boolean }>> {
   const validatedData = await action({
     params,
-    schema: PaginatedSearchParamsSchema,
+    schema: ProductSearchParamsSchema,
     authorize: true,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { page = 1, pageSize = 10, query, filter } = params;
+  const {
+    page = 1,
+    pageSize = 10,
+    query,
+    filter,
+    categoryId,
+    branchId,
+  } = validatedData.params!;
+  console.log("branchId", branchId);
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   const filterQuery: FilterQuery<typeof Product> = {};
+
   if (query) {
     filterQuery.$or = [
       { title: { $regex: new RegExp(query, "i") } },
@@ -26,6 +36,11 @@ export async function getProductReports(
       { status: { $regex: new RegExp(query, "i") } },
     ];
   }
+
+  if (categoryId) {
+    filterQuery.category = new ObjectId(categoryId);
+  }
+
   let sortCriteria = {};
 
   switch (filter) {
@@ -39,6 +54,7 @@ export async function getProductReports(
       sortCriteria = { createdAt: -1 };
       break;
   }
+
   try {
     const [totalProducts, products] = await Promise.all([
       Product.countDocuments(filterQuery),
@@ -94,6 +110,15 @@ export async function getProductReports(
             qtySmallUnit: { $sum: "$stockDetails.qtySmallUnit" },
           },
         },
+        ...(branchId
+          ? [
+              {
+                $match: {
+                  "stockDetails.branch": new ObjectId(branchId),
+                },
+              },
+            ]
+          : []),
         {
           $group: {
             _id: "$_id",

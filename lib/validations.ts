@@ -7,6 +7,10 @@ export const PaginatedSearchParamsSchema = z.object({
   filter: z.string().optional(),
   sort: z.string().optional(),
 });
+export const ProductSearchParamsSchema = PaginatedSearchParamsSchema.extend({
+  categoryId: z.string().optional(),
+  branchId: z.string().optional(),
+});
 export const SignInSchema = z.object({
   email: z
     .string()

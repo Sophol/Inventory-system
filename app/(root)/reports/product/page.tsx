@@ -7,10 +7,10 @@ import DataRenderer from "@/components/DataRenderer";
 import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { PRODUCT_EMPTY } from "@/constants/states";
-import { getProducts } from "@/lib/actions/product.action";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import ProductSearch from "@/components/search/ProductSearch";
+import { getProductReports } from "@/lib/actions/productReport";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -26,12 +26,16 @@ const ProductReport = async ({ searchParams }: SearchParams) => {
   if (!isAuthorized) {
     return redirect("/unauthorized");
   }
-  const { page, pageSize, query, filter } = await searchParams;
-  const { success, data, error } = await getProducts({
+  const { page, pageSize, query, categoryId, branchId, filter } =
+    await searchParams;
+
+  const { success, data, error } = await getProductReports({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query || "",
     filter: filter || "",
+    categoryId: categoryId || "", // Add appropriate value or variable
+    branchId: branchId || "", // Add appropriate value or variable
   });
   const { products, isNext } = data || {};
 
