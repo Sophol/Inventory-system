@@ -1,38 +1,28 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { FaDollarSign, FaRegArrowAltCircleLeft } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 import PaymentForm from "../forms/PaymentForm";
 import { getPayment } from "@/lib/actions/payment.action";
-import { Button } from "../ui/button";
 
-interface PaymentDrawerProps {
-  sale: Sale;
-}
 
-const PaymentDrawer: React.FC<PaymentDrawerProps> = ({sale }) => {
+const PaymentDrawer = ({ sale }: { sale: Sale }) => {
+
   const [isOpen, setIsOpen] = useState(false);
-  const [payment, setPayment] = useState<any>(null); // Adjust the type as needed
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [payment, setPayment] = useState<Payment>({} as Payment); // Initialize payment state with an empty object
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchPayment = async () => {
-      const {data: payment, success } = await getPayment({ saleId: sale._id });
-      setPayment(success ? payment : null);
-    };
+ // Disable button check logic
+ const isButtonDisabled = sale?.paymentStatus === "completed" || sale?.paid === sale?.balance;
 
-    if (isOpen) {
-      fetchPayment();
+  const toggleDrawer = async () => {
+    if (!isOpen && !isButtonDisabled) { 
+      // Fetch payment data only if not disabled
+      const { data: paymentData, success } = await getPayment({ saleId: sale._id });
+      if (success && paymentData) {
+        setPayment(paymentData); // Update state with payment data
+      }
     }
-  }, [isOpen, sale._id]);
-
-  useEffect(() => {
-    setIsButtonDisabled(payment?.paymentStatus === "completed" || sale?.paymentStatus === "completed" || sale?.paid === sale?.balance);
-  }, [sale, payment]);
-
-  const handleToggleDrawer = () => {
-    if (!isButtonDisabled) {
-      setIsOpen(!isOpen); // Toggle the drawer open/close
-    }
+    setIsOpen(!isOpen); // Toggle the drawer open/close
   };
 
   return (
@@ -40,8 +30,8 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({sale }) => {
       {/* Button to open the drawer */}
       <Button
         disabled={isButtonDisabled}
-        type="button"
-        onClick={handleToggleDrawer}
+        type="submit"
+        onClick={toggleDrawer}
         className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
       >
         <FaDollarSign /> Add Payment
@@ -51,10 +41,9 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({sale }) => {
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={handleToggleDrawer}
+          onClick={toggleDrawer}
         ></div>
       )}
-
       {/* Drawer */}
       <div
         ref={drawerRef}
@@ -66,11 +55,11 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({sale }) => {
           <h1 className="text-xl ">Add Payment</h1>
           <FaRegArrowAltCircleLeft
             className="cursor-pointer text-xl"
-            onClick={handleToggleDrawer}
+            onClick={toggleDrawer}
           />
         </div>
         <hr className="border-t border-gray-300" />
-        <PaymentForm sale={sale} payment={payment} onClose={handleToggleDrawer} />
+        <PaymentForm sale={sale} payment={payment} onClose={toggleDrawer} />
       </div>
     </>
   );

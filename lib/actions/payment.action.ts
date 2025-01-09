@@ -1,10 +1,13 @@
 "use server";
 import { FilterQuery } from "mongoose";
 
-import { Payment } from "@/database";
+import { Payment, Sale } from "@/database";
 
 // import { ISaleDetailDoc } from "@/database/sale-detail.model";
 import { IPaymentDoc } from "@/database/payment.model";
+
+
+import { editSale, getSale } from "@/lib/actions/sale.action";
 
 import action from "../handlers/action";
 import handleError from "../handlers/error";
@@ -26,8 +29,20 @@ export async function createPayment(
     return handleError(validatedData.message) as ErrorResponse;
   }
   try {
-    const customer = await Payment.create(validatedData.params);
-    return { success: true, data: JSON.parse(JSON.stringify(customer)) };
+   
+
+    const success = await Payment.create(validatedData.params);
+    if(success){
+      const saleData = await Sale.findById(params.sale);
+      if (saleData) {
+        saleData.paid = saleData.paid + (params.paidAmount ?? 0);
+        if(saleData.paid == saleData.balance){
+          saleData.paymentStatus = "completed";
+        }
+        await saleData.save();
+      }
+    }
+    return { success: true };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }

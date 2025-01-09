@@ -377,10 +377,13 @@ export const CreatePaymentSchema = z.object({
   description: z.string().optional(),
   paymentDate: z.string().min(1, "Payment date is required"),
   creditAmount: z.number().min(0, "Credit amount must be a positive number"),
-  paidAmount: z.number().min(0, "Paid amount must be a positive number"),
+  paidAmount: z.number().min(0.01, "Paid amount must be a positive number"),
   balance: z.number().min(0, "Balance must be a positive number"),
   paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]),
   paymentStatus: z.enum(["pending", "credit", "completed"]),
+}).refine((data) => data.paidAmount <= data.creditAmount, {
+  message: "Paid amount cannot be higher than credit amount",
+  path: ["paidAmount"], // Path of the error
 });
 export const PaginatedSearchParamsInvoiceSchema =
   PaginatedSearchParamsSchema.extend({

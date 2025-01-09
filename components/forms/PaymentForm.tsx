@@ -17,9 +17,12 @@ import FormSelect from "../formInputs/FormSelect";
 
 interface Params {
   sale: Sale;
+  payment : Payment;
+  onClose: () => void;
 }
 
-const PaymentForm = ({ sale }: Params) => {
+const PaymentForm = ({ sale, payment, onClose }: Params) => {
+  
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof CreatePaymentSchema>>({
     resolver: zodResolver(CreatePaymentSchema),
@@ -28,27 +31,56 @@ const PaymentForm = ({ sale }: Params) => {
       customer: sale?.customer._id,
       branch: sale?.branch._id,
       referenceNo: sale?.referenceNo,
-      description: "",
-      paymentDate: new Date().toISOString(),
-      creditAmount: 0,
+      description: payment?.description || "",
+      paymentDate: payment?.paymentDate || new Date().toISOString(),
+      creditAmount: payment && payment.creditAmount !== undefined 
+      ? payment.creditAmount 
+      : sale && sale.balance !== undefined && sale.paid !== undefined 
+      ? sale.balance - sale.paid 
+      : 0,
       paidAmount: 0,
-      balance: sale?.grandtotal,
+      balance:sale?.balance ,
       paidBy: sale?.paidBy || "Cash",
       paymentStatus: "pending",
     },
   });
-
+// Reset form values when the drawer is closed
+useEffect(() => {
+  if (!isPending) {
+    form.reset({
+      sale: sale?._id,
+      customer: sale?.customer._id,
+      branch: sale?.branch._id,
+      referenceNo: sale?.referenceNo,
+      description: payment?.description || "",
+      paymentDate: payment?.paymentDate || new Date().toISOString(),
+      creditAmount: payment && payment.creditAmount !== undefined 
+          ? payment.creditAmount 
+          : sale && sale.balance !== undefined && sale.paid !== undefined 
+          ? sale.balance - sale.paid 
+          : 0,
+      paidAmount: 0,
+      balance: sale?.balance ||0,
+      paidBy: sale?.paidBy || "Cash",
+      paymentStatus: "pending",
+    });
+  }
+}, [isPending, sale, payment, form.reset]);
   const handleCreatePayment = async (
     data: z.infer<typeof CreatePaymentSchema>
   ) => {
     startTransition(async () => {
       try {
+        data.creditAmount = sale.balance - sale.paid - (payment.paidAmount ?? 0);
+        if(data.creditAmount = 0) data.paymentStatus = "completed";
+        console.log(data)
         const result = await createPayment(data);
         if (result.success) {
           toast({
             title: "success",
             description: "Payment created successfully.",
           });
+          onClose();
           // if (result.data) router.push(ROUTES.SALES);
         } else {
           toast({
