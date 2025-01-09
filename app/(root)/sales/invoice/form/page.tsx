@@ -1,11 +1,11 @@
 import { IoCaretBackOutline } from "react-icons/io5";
 
 import CardContainer from "@/components/cards/CardContainer";
-import SaleForm from "@/components/forms/SaleForm";
 import ROUTES from "@/constants/routes";
 import { getSetting } from "@/lib/actions/setting.action";
 import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
+import InvoiceForm from "@/components/forms/InvoiceForm";
 import { checkAuthorization } from "@/lib/auth";
 
 const page = async () => {
@@ -21,13 +21,16 @@ const page = async () => {
   const { exchangeRateD, exchangeRateT } = setting;
   return (
     <CardContainer
-      title="Create Order"
+      title="Add Sale"
       redirectTitle="BACK"
-      redirectHref={ROUTES.HOME}
+      redirectHref={ROUTES.INVOICES}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"
     >
-      <SaleForm exchangeRateD={exchangeRateD} exchangeRateT={exchangeRateT} />
+      <InvoiceForm
+        exchangeRateD={exchangeRateD}
+        exchangeRateT={exchangeRateT}
+      />
     </CardContainer>
   );
 };

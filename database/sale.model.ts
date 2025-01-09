@@ -3,6 +3,8 @@ import { model, models, Schema, Document, Types } from "mongoose";
 export interface ISale {
   customer: Types.ObjectId;
   branch: Types.ObjectId;
+  seller: Types.ObjectId;
+  sellerName: string;
   referenceNo: string;
   description: string;
   orderDate: any;
@@ -26,6 +28,8 @@ const SaleSchema = new Schema<ISale>(
     referenceNo: { type: String, required: true, unique: true },
     customer: { type: Schema.Types.ObjectId, ref: "Customer", required: true },
     branch: { type: Schema.Types.ObjectId, ref: "Branch", required: true },
+    seller: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    sellerName: { type: String },
     orderDate: { type: Date, default: Date.now() },
     approvedDate: { type: Date, default: Date.now() },
     invoicedDate: { type: Date, default: Date.now() },
@@ -45,7 +49,7 @@ const SaleSchema = new Schema<ISale>(
     },
     orderStatus: {
       type: String,
-      enum: ["pending", "approved", "completed"],
+      enum: ["pending", "approved", "completed", "void"],
       required: true,
       default: "pending",
     },

@@ -8,12 +8,19 @@ import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { SALE_EMPTY } from "@/constants/states";
 import { getOrders } from "@/lib/actions/sale.action";
+import { CiCirclePlus } from "react-icons/ci";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
 const CompleteOrder = async ({ searchParams }: SearchParams) => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { page, pageSize, query, filter } = await searchParams;
   const { success, data, error } = await getOrders({
     orderStatus: "completed",
@@ -26,10 +33,10 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
   return (
     <CardContainer
       title="Invoice"
-      redirectTitle=""
-      redirectHref={""}
-      redirectIcon={undefined}
-      redirectClass="hidden"
+      redirectTitle="ADD"
+      redirectHref={ROUTES.ADDINVOICE}
+      redirectIcon={CiCirclePlus}
+      redirectClass="!text-light-900 primary-gradient"
     >
       <>
         <div className="py-4">

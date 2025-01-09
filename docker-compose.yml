@@ -1,24 +1,21 @@
-version: "3.1"
+version: '3.9'
+
 services:
-  app:
-    container_name: inventory-app
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        MONGODB_URI: ${MONGODB_URI}
-        SETTING_ID: ${SETTING_ID}
-    image: inventory-image-latest
+  nextapp:
+    container_name: inventoryapp
+    image: inventoryapp
     restart: unless-stopped
+    #env_file: .env
+    build: .
     ports:
-      - 3000:3000
-   # networks:
-   #   - my_network
+      - "3000:3000"
+    # environment:
+    #   - AUTH_SECRET=$AUTH_SECRET
+    #   - AUTH_GITHUB_ID=$AUTH_GITHUB_ID
+    #   - AUTH_GITHUB_SECRET=$AUTH_GITHUB_SECRET
+    #   - AUTH_GOOGLE_ID=$AUTH_GOOGLE_ID
+    #   - AUTH_GOOGLE_SECRET=$AUTH_GOOGLE_SECRET
+    #   - MONGODB_URI=$MONGODB_URI
+    #   - SETTING_ID=$SETTING_ID
 
-  # Add more containers below (nginx, postgres, etc.)
 
-# Define a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-#networks:
-#  my_network:
- #   external: true

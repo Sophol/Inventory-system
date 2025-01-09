@@ -4,12 +4,14 @@ import CardContainer from "@/components/cards/CardContainer";
 import SaleForm from "@/components/forms/SaleForm";
 import ROUTES from "@/constants/routes";
 import { getSetting } from "@/lib/actions/setting.action";
-import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
+import { checkAuthorization } from "@/lib/auth";
 
 const page = async () => {
-  const session = await auth();
-  if (!session) return redirect(ROUTES.SIGN_IN);
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { success, data: setting } = await getSetting({
     settingId: process.env.SETTING_ID as string,
   });
@@ -24,10 +26,7 @@ const page = async () => {
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"
     >
-      <SaleForm
-        exchangeRateD={exchangeRateD}
-        exchangeRateT={exchangeRateT}
-      />
+      <SaleForm exchangeRateD={exchangeRateD} exchangeRateT={exchangeRateT} />
     </CardContainer>
   );
 };

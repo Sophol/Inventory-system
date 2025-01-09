@@ -39,7 +39,6 @@ export async function createSale(
     discount,
     subtotal,
     grandtotal,
-    balance,
     paidBy,
     orderStatus,
     paymentStatus,
@@ -48,7 +47,8 @@ export async function createSale(
     exchangeRateT,
     saleType,
   } = validatedData.params!;
-
+  const seller = validatedData?.session?.user?.id;
+  const sellerName = validatedData?.session?.user?.name;
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -64,14 +64,16 @@ export async function createSale(
           discount,
           subtotal,
           grandtotal,
-          paid: grandtotal,
-          balance,
+          paid: 0,
+          balance: grandtotal,
           paidBy,
           orderStatus,
           paymentStatus,
           exchangeRateD,
           exchangeRateT,
           saleType,
+          seller,
+          sellerName,
         },
       ],
       { session }
@@ -146,7 +148,6 @@ export async function editSale(
     if (!sale) {
       throw new Error("Sale not found");
     }
-    console.log("saleType", saleType);
     if (sale.customer !== customer) sale.customer = customer;
     if (sale.branch !== branch) sale.branch = branch;
     if (sale.referenceNo !== referenceNo) sale.referenceNo = referenceNo;
@@ -332,6 +333,7 @@ export async function getSale(
           orderDate: { $first: "$orderDate" },
           approvedDate: { $first: "$approvedDate" },
           invoicedDate: { $first: "$invoicedDate" },
+          dueDate: { $first: "$dueDate" },
           tax: { $first: "$tax" },
           description: { $first: "$description" },
           discount: { $first: "$discount" },
@@ -346,6 +348,7 @@ export async function getSale(
           createdAt: { $first: "$createdAt" },
           updatedAt: { $first: "$updatedAt" },
           saleDetails: { $push: "$details" },
+          sellerName: { $first: "$sellerName" },
         },
       },
     ]);
@@ -469,7 +472,7 @@ export async function getOrders(
         .skip(skip)
         .limit(limit),
     ]);
-    console.log(sales);
+
     const isNext = totalSales > skip + sales.length;
     return {
       success: true,

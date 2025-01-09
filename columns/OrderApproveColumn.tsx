@@ -14,6 +14,8 @@ import ButtonApproveOrder from "@/components/formInputs/ButtonApproveOrder";
 import { deleteSale, updateOrderStatus } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import { getUserRole } from "@/lib/actions/user.action";
 
 // export type Sale = {
 //   _id: string;
@@ -102,6 +104,16 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const sale = row.original;
+      const [userRole, setUserRole] = useState<string | null>(null);
+
+      useEffect(() => {
+        const fetchUserRole = async () => {
+          const role = await getUserRole();
+          setUserRole(role ?? null);
+        };
+
+        fetchUserRole();
+      }, []);
       const handleApproveOrder = async () => {
         const { success } = await updateOrderStatus({ saleId: sale._id });
         if (success) {
@@ -144,20 +156,24 @@ export const SaleColumn: ColumnDef<Sale>[] = [
             ) : (
               // Display the "below" content
               <RedirectButton
+                title="Invoice"
+                href={ROUTES.APPROVEDINVOICE(sale._id)}
+                className="bg-green-500 text-white"
                 Icon={FaFileInvoice}
-                href={ROUTES.INVOICE(sale._id)}
-                isIcon
-                className="text-blue-500"
               />
             )}
           </div>
-          <RedirectButton
-            Icon={FaRegEdit}
-            href={ROUTES.SALE(sale._id)}
-            isIcon
-            className="text-primary-500"
-          />
-          <ButtonDelete onDelete={handleDelete} />
+          {userRole === "admin" && (
+            <>
+              <RedirectButton
+                Icon={FaRegEdit}
+                href={ROUTES.SALE(sale._id)}
+                isIcon
+                className="text-primary-500"
+              />
+              <ButtonDelete onDelete={handleDelete} />
+            </>
+          )}
         </div>
       );
     },

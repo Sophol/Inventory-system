@@ -7,6 +7,10 @@ export const PaginatedSearchParamsSchema = z.object({
   filter: z.string().optional(),
   sort: z.string().optional(),
 });
+export const ProductSearchParamsSchema = PaginatedSearchParamsSchema.extend({
+  categoryId: z.string().optional(),
+  branchId: z.string().optional(),
+});
 export const SignInSchema = z.object({
   email: z
     .string()
@@ -288,6 +292,7 @@ export const CreateSaleSchema = z.object({
   referenceNo: z.string().min(1, "Reference number is required"),
   description: z.string().optional(),
   orderDate: z.date(),
+  dueDate: z.date().optional(),
   approvedDate: z.date(),
   invoicedDate: z.date(),
   tax: z.number().min(0).default(0),
@@ -299,7 +304,9 @@ export const CreateSaleSchema = z.object({
   exchangeRateD: z.number().min(0).default(0),
   exchangeRateT: z.number().min(0).default(0),
   paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]).optional(),
-  orderStatus: z.enum(["pending", "approved", "completed"]).default("pending"),
+  orderStatus: z
+    .enum(["pending", "approved", "completed", "void"])
+    .default("pending"),
   paymentStatus: z.enum(["pending", "credit", "completed"]).default("pending"),
   saleType: z.enum(["retail", "wholesale"]).default("retail"),
   saleDetails: z
@@ -312,6 +319,10 @@ export const EditSaleSchema = CreateSaleSchema.extend({
 });
 export const GetSaleSchema = z.object({
   saleId: z.string().min(1, "Sale ID is required"),
+});
+export const ApprovedInvoiceSchema = z.object({
+  saleId: z.string().min(1, "Sale ID is required"),
+  dueDate: z.date(),
 });
 
 export const CreateSalarySchema = z.object({
@@ -384,6 +395,9 @@ export const CreatePaymentSchema = z.object({
 }).refine((data) => data.paidAmount <= data.creditAmount, {
   message: "Paid amount cannot be higher than credit amount",
   path: ["paidAmount"], // Path of the error
+});
+export const GetPaymentSchema = z.object({
+  saleId: z.string().min(1, { message: "Payment ID is required." }),
 });
 export const PaginatedSearchParamsInvoiceSchema =
   PaginatedSearchParamsSchema.extend({

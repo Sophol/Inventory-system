@@ -5,7 +5,7 @@ import "../invoice.css";
 interface Payment {
   _id: string;
   referenceNo: string;
-  customer: any;
+  customer: string;
   creditAmount: number;
   paymentDate: string;
   description?: string;
@@ -57,8 +57,8 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({
           setError(error ? error.message : "An unknown error occurred");
         }
       } catch (err) {
-        console.log(err);
-        setError("Failed to fetch payments", );
+        console.error(err);
+        setError("Failed to fetch payments");
       } finally {
         setLoading(false);
       }
@@ -130,10 +130,11 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({
                       {payment.referenceNo}
                     </td>
                     <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      {payment.customer?.name || "N/A"}
+                      {payment.customer || "N/A"}
                     </td>
                     <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      {new Date(payment.paymentDate).toLocaleDateString() || "N/A"}
+                      {new Date(payment.paymentDate).toLocaleDateString() ||
+                        "N/A"}
                     </td>
                     <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
                       ${formatCurrency(payment.creditAmount)}

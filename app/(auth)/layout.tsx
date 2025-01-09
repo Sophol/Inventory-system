@@ -14,9 +14,9 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
       >
         <div className="flex item-center justify-between gap-2">
           <div className="space-y-2.5">
-            <h1 className="h2-bold text-dark100_light900">Join DevFlow</h1>
+            <h1 className="h2-bold text-dark100_light900">ERP Inventory</h1>
             <p className="paragraph-regular text-dark500_light400">
-              To get your questions answered
+              welcome to the future of inventory management
             </p>
           </div>
           <Image

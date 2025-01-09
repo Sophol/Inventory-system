@@ -9,12 +9,18 @@ import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { CUSTOMER_EMPTY } from "@/constants/states";
 import { getCustomers } from "@/lib/actions/customer.action";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
 const Customer = async ({ searchParams }: SearchParams) => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { page, pageSize, query, filter } = await searchParams;
   const { success, data, error } = await getCustomers({
     page: Number(page) || 1,

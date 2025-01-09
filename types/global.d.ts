@@ -26,8 +26,8 @@ interface PaginatedSearchParams {
   sort?: string;
 }
 interface ProductSearchParams extends PaginatedSearchParams {
-  categoryId: string;
-  branchId: string;
+  categoryId?: string;
+  branchId?: string;
 }
 
 interface PaginatedSearchParamsInvoice {
@@ -185,7 +185,7 @@ interface Sale {
   description?: string;
   orderDate: string;
   approvedDate: string;
-  dueDate: string;
+  dueDate?: Date;
   invoicedDate: string;
   discount: number;
   subtotal: number;
@@ -196,10 +196,11 @@ interface Sale {
   exchangeRateT?: number;
   tax: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
-  orderStatus: "pending" | "approved" | "completed";
+  orderStatus: "pending" | "approved" | "completed" | "void";
   paymentStatus: "pending" | "credit" | "completed";
   saleType?: "retail" | "wholesale";
   saleDetails: saleDetail[];
+  sellerName?: string;
 }
 
 interface Setting {

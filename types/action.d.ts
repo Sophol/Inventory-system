@@ -184,6 +184,7 @@ interface CreateSaleParams {
   referenceNo: string;
   description?: string;
   saleDate?: Date | string;
+  dueDate?: Date | string;
   discount?: number;
   subtotal?: number;
   grandtotal?: number;
@@ -192,7 +193,7 @@ interface CreateSaleParams {
   exchangeRateD?: number;
   exchangeRateT?: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
-  orderStatus?: "pending" | "approved" | "completed";
+  orderStatus?: "pending" | "approved" | "completed" | "void";
   paymentStatus?: "pending" | "credit" | "completed";
   saleType?: "retail" | "wholesale";
   saleDetails: SaleDetailParams[];
@@ -203,6 +204,10 @@ interface EditSaleParams extends CreateSaleParams {
 }
 interface GetSaleParams {
   saleId: string;
+}
+interface ApprovedInvoiceParams {
+  saleId: string;
+  dueDate: Date;
 }
 interface CreateSalaryParams {
   staffId: string;
@@ -270,6 +275,9 @@ interface CreatePaymentParams {
   balance?: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   paymentStatus?: "pending" | "credit" | "completed";
+}
+interface GetPaymentParams {
+  saleId: string;
 }
 interface UserParams {
   _id: string;

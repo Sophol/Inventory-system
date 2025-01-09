@@ -1,9 +1,7 @@
-import React from "react";
+"use client";
 import "../invoice.css";
-import { getSetting } from "@/lib/actions/setting.action";
-import { checkAuthorization } from "@/lib/auth";
-import { redirect, notFound } from "next/navigation";
 import Image from "next/image";
+import DatePicker from "@/components/formInputs/DatePicker";
 import { format } from "date-fns";
 
 const formatCurrency = (amount: number) => {
@@ -15,18 +13,23 @@ const formatCurrency = (amount: number) => {
     .replace(/\./g, ","); // Replace dot with comma
 };
 
-const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
-  const { success, data: setting } = await getSetting({
-    settingId: process.env.SETTING_ID as string,
-  });
-  console.log("invoice", invoice);
-  if (!success) return notFound();
-  if (!setting) return notFound();
+const InvoiceDetail = ({
+  invoice,
+  onDueDateChange,
+  setting,
+}: {
+  invoice: Sale;
+  onDueDateChange: (date: Date) => void;
+  setting: Setting;
+}) => {
+  const handleChangeDate = (date: Date) => {
+    onDueDateChange(date);
+  };
   return (
     <div className="card80 ">
       <div className="printable-area">
         <div className="flex flex-row justify-between  p-2 invoice-header">
-          <div className="flex flex-col ">
+          <div className="flex flex-col">
             <Image
               src={`/` + setting.companyLogo}
               alt="Company Logo"
@@ -45,10 +48,15 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
             <p className="text-sm">
               Date Issued: {format(invoice.invoicedDate, "PPP")}
             </p>
-            <p className="text-sm">
-              Due Date:
-              {invoice.dueDate ? format(invoice.dueDate, "PPP") : "N/A"}
-            </p>
+            <div className="flex flex-row space-x-1 items-center text-sm">
+              <span>Due Date: </span>
+              <span>
+                <DatePicker
+                  initialDate={new Date()}
+                  onDateChange={handleChangeDate}
+                />
+              </span>
+            </div>
           </div>
         </div>
         <br />
@@ -63,14 +71,13 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
               <div className="flex gap-4">
                 <p className="pb-1 w-1/3">Total Due: </p>
                 <p className="pb-1 w-2/3">
-                  {" "}
                   {invoice.balance ? formatCurrency(invoice.balance) : "N/A"}
                 </p>
               </div>
               <div className="flex gap-4">
                 <p className="pb-1 w-1/3">Paid By: </p>
                 <p className="pb-1 w-2/3">
-                  {invoice.paid === 0 ? "N/A" : invoice.paidBy}
+                  {invoice.balance ? formatCurrency(invoice.balance) : "N/A"}
                 </p>
               </div>
             </div>
@@ -121,7 +128,7 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 <p className="sub-info pb-1 w-1/3">Subtotal:</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
-                  {invoice.subtotal ? formatCurrency(invoice.subtotal) : "N/A"}
+                  {invoice.balance ? formatCurrency(invoice.balance) : "N/A"}
                 </p>
               </div>
               <div className="flex gap-4">

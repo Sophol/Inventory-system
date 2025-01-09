@@ -1,10 +1,10 @@
-"use client";
+"use client";	
+import { useEffect } from "react"; 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-
 import { CreatePaymentSchema } from "@/lib/validations";
 import { createPayment } from "@/lib/actions/payment.action";
 import { toast } from "@/hooks/use-toast";
@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import FormInput from "../formInputs/FormInput";
 import FormDatePicker from "../formInputs/FormDatePicker";
 import FormSelect from "../formInputs/FormSelect";
+
 
 interface Params {
   sale: Sale;
@@ -144,6 +145,16 @@ useEffect(() => {
             { _id: "ABA Bank", title: "ABA Bank" },
             { _id: "ACLEDA Bank", title: "ACLEDA Bank" },
             { _id: "Others", title: "Others" },
+          ]}
+        />
+         <FormSelect
+          name="paymentStatus"
+          label="Select Payment Status"
+          control={form.control}
+          items={[
+            { _id: "pending", title: "Pending" },
+            { _id: "credit", title: "Credit" },
+            { _id: "completed", title: "Completed" },
           ]}
         />
         <div className="mt-2 flex ">

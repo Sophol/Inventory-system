@@ -1,0 +1,99 @@
+.card80 {
+    
+    padding: 50px;
+    border-radius: 5px;
+    color: charcoal;
+    width: 80%;
+    border:1px solid lightgrey;
+  }
+  .invoice-header{
+    padding:30px;
+    background-color: rgba(231, 231, 231, 0.733);
+    border-radius: 5px;
+  }
+
+  .sub-info{
+    color:rgba(47, 43, 61, 0.87);
+  }
+  .button-download-invoice{
+    background-color: #675dd8;
+  }
+  .sale-details {
+    padding: 20px 0 15px 0;
+    border-radius: 5px;
+    color: black;
+    border:1px solid lightgrey;
+  }
+  .card20 {
+    
+    color: black;
+    width: 20%;
+  }
+  .card20-container{
+    width:100%;
+    border:1px solid lightgrey;
+    padding: 30px;
+    border-radius: 5px;
+  }
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    .printable-area, .printable-area * {
+      visibility: visible;
+    }
+    .printable-area {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+    }
+  }
+  .invoice-note{
+    width:76%;
+  }
+  .invoice-total{
+    width:24%;
+  }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem; /* Adjust spacing between bullets */
+  }
+  
+  .loader div {
+    width: 0.5rem; /* Smaller bullet size */
+    height: 0.5rem;
+    background: orange; /* First bullet color */
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+  
+  .loader div:nth-child(2) {
+    background: grey; /* Second bullet color */
+    animation-delay: 0.2s;
+  }
+  
+  .loader div:nth-child(3) {
+    background: orange; /* Third bullet color */
+    animation-delay: 0.4s;
+  }
+  
+  .loader div:nth-child(4) {
+    background: grey; /* Fourth bullet color */
+    animation-delay: 0.6s;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: scale(0.8);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+  
