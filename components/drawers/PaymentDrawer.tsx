@@ -6,9 +6,10 @@ import { Button } from "../ui/button";
 
 interface PaymentDrawerProps {
   sale: Sale;
+  onClose: (updatedPayment: any) => void; // Add the onClose property
 }
 
-const PaymentDrawer: React.FC<PaymentDrawerProps> = ({sale }) => {
+const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale, onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [payment, setPayment] = useState<any>(null); // Adjust the type as needed
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -16,7 +17,7 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({sale }) => {
 
   useEffect(() => {
     const fetchPayment = async () => {
-      const {data: payment, success } = await getPayment({ saleId: sale._id });
+      const { data: payment, success } = await getPayment({ saleId: sale._id });
       setPayment(success ? payment : null);
     };
 
@@ -26,13 +27,29 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({sale }) => {
   }, [isOpen, sale._id]);
 
   useEffect(() => {
-    setIsButtonDisabled(payment?.paymentStatus === "completed" || sale?.paymentStatus === "completed" || sale?.paid === sale?.balance);
+    // Update the button's disabled state based on payment status
+    setIsButtonDisabled(
+      payment?.paymentStatus === "completed" ||
+      sale?.paymentStatus === "completed" ||
+      sale?.paid === sale?.balance
+    );
   }, [sale, payment]);
 
   const handleToggleDrawer = () => {
     if (!isButtonDisabled) {
       setIsOpen(!isOpen); // Toggle the drawer open/close
     }
+  };
+
+  const handlePaymentUpdate = (updatedPayment: any) => {
+    setPayment(updatedPayment);
+    onClose(updatedPayment)
+    // Recalculate the button's disabled state
+    setIsButtonDisabled(
+      updatedPayment?.paymentStatus === "completed" ||
+      sale?.paymentStatus === "completed" ||
+      sale?.paid === sale?.balance
+    );
   };
 
   return (
@@ -70,7 +87,12 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({sale }) => {
           />
         </div>
         <hr className="border-t border-gray-300" />
-        <PaymentForm sale={sale} payment={payment} onClose={handleToggleDrawer} />
+        <PaymentForm
+          sale={sale}
+          payment={payment}
+          onClose={handleToggleDrawer}
+          onUpdate={handlePaymentUpdate} // Pass a callback to handle payment updates
+        />
       </div>
     </>
   );

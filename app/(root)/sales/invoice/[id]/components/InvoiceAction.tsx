@@ -43,6 +43,7 @@ const handleDownload = async () => {
 
 const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [updatedInvoice, setUpdatedInvoice] = useState(invoice); 
   const router = useRouter();
   const handleCallInvoice = async () => {
     const { data: payments } = await getPayments({ sale: invoice._id });
@@ -59,13 +60,18 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
   const hadleBack = () => {
     router.push(ROUTES.INVOICES);
   };
+  const handleDrawerClose = (updatedSale: any) => {
+    console.log(updatedSale)
+    setUpdatedInvoice(updatedSale)// Update the invoice state when the drawer closes
+    console.log("invoice,", updatedInvoice)
+  };
   return (
     <div className="card20">
       <div className="card20-container flex flex-col gap-2">
         <div className="flex">
           <Button
             onClick={handleCallInvoice}
-            disabled={invoice.paid === 0}
+            disabled={updatedInvoice.paymentStatus ==="pending"}
             className="w-full rounded bg-blue-400 px-4 py-2 text-white hover:bg-blue-500"
           >
             <FaHistory className="cursor-pointer text-xl" />
@@ -99,7 +105,7 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
             Back
           </Button>
         </div>
-        <PaymentDrawer sale={invoice} />
+        <PaymentDrawer sale={invoice}  onClose={handleDrawerClose}/>
       </div>
     </div>
   );

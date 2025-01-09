@@ -5,9 +5,6 @@ import { Payment, Sale } from "@/database";
 
 import { IPaymentDoc } from "@/database/payment.model";
 
-
-import { editSale, getSale } from "@/lib/actions/sale.action";
-
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 
@@ -29,20 +26,22 @@ export async function createPayment(
     return handleError(validatedData.message) as ErrorResponse;
   }
   try {
-   
-
+    const saleData = await Sale.findById(params.sale);
+    params.creditAmount = saleData.balance - saleData.paid - (params.paidAmount ?? 0);
+    if(params.creditAmount === 0) params.paymentStatus = "completed";
     const success = await Payment.create(validatedData.params);
     if(success){
-      const saleData = await Sale.findById(params.sale);
       if (saleData) {
         saleData.paid = saleData.paid + (params.paidAmount ?? 0);
         if(saleData.paid == saleData.balance){
           saleData.paymentStatus = "completed";
+        }else{
+          saleData.paymentStatus ="credit"
         }
         await saleData.save();
       }
     }
-    return { success: true };
+    return { success: true, data: JSON.parse(JSON.stringify(saleData)) };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }

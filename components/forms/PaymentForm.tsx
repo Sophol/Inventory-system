@@ -18,11 +18,12 @@ import FormSelect from "../formInputs/FormSelect";
 
 interface Params {
   sale: Sale;
-  payment : Payment;
+  payment: Payment;
   onClose: () => void;
+  onUpdate: (arg0: any) => void;
 }
 
-const PaymentForm = ({ sale, payment, onClose }: Params) => {
+const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
   
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof CreatePaymentSchema>>({
@@ -72,15 +73,13 @@ useEffect(() => {
   ) => {
     startTransition(async () => {
       try {
-        data.creditAmount = sale.balance - sale.paid - (payment.paidAmount ?? 0);
-        if(data.creditAmount = 0) data.paymentStatus = "completed";
-        console.log(data)
         const result = await createPayment(data);
         if (result.success) {
           toast({
             title: "success",
             description: "Payment created successfully.",
           });
+          onUpdate(result.data);
           onClose();
           // if (result.data) router.push(ROUTES.SALES);
         } else {
