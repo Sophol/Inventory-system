@@ -6,10 +6,13 @@ import { getSetting } from "@/lib/actions/setting.action";
 import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
 import InvoiceForm from "@/components/forms/InvoiceForm";
+import { checkAuthorization } from "@/lib/auth";
 
 const page = async () => {
-  const session = await auth();
-  if (!session) return redirect(ROUTES.SIGN_IN);
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { success, data: setting } = await getSetting({
     settingId: process.env.SETTING_ID as string,
   });

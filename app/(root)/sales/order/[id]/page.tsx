@@ -4,15 +4,17 @@ import CardContainer from "@/components/cards/CardContainer";
 import SaleForm from "@/components/forms/SaleForm";
 import ROUTES from "@/constants/routes";
 import { getSetting } from "@/lib/actions/setting.action";
-import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
 import { getSale } from "@/lib/actions/sale.action";
+import { checkAuthorization } from "@/lib/auth";
 
 const EditSale = async ({ params }: RouteParams) => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { id } = await params;
   if (!id) return notFound();
-  const session = await auth();
-  if (!session) return redirect(ROUTES.SIGN_IN);
   const { success: settingSuccess, data: setting } = await getSetting({
     settingId: process.env.SETTING_ID as string,
   });

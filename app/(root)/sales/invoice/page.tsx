@@ -9,12 +9,18 @@ import ROUTES from "@/constants/routes";
 import { SALE_EMPTY } from "@/constants/states";
 import { getOrders } from "@/lib/actions/sale.action";
 import { CiCirclePlus } from "react-icons/ci";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
 const CompleteOrder = async ({ searchParams }: SearchParams) => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { page, pageSize, query, filter } = await searchParams;
   const { success, data, error } = await getOrders({
     orderStatus: "completed",

@@ -6,12 +6,15 @@ import CardContainer from "@/components/cards/CardContainer";
 import CustomerForm from "@/components/forms/CustomerForm";
 import ROUTES from "@/constants/routes";
 import { getCustomer } from "@/lib/actions/customer.action";
+import { checkAuthorization } from "@/lib/auth";
 
 const EditCustomer = async ({ params }: RouteParams) => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
   const { id } = await params;
   if (!id) return notFound();
-  const session = await auth();
-  if (!session) return redirect(ROUTES.SIGN_IN);
   const { data: customer, success } = await getCustomer({ customerId: id });
   if (!success) return notFound();
 

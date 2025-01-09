@@ -71,13 +71,13 @@ const InvoiceDetail = ({
               <div className="flex gap-4">
                 <p className="pb-1 w-1/3">Total Due: </p>
                 <p className="pb-1 w-2/3">
-                  {invoice.paid ? formatCurrency(invoice.paid) : "N/A"}
+                  {invoice.balance ? formatCurrency(invoice.balance) : "N/A"}
                 </p>
               </div>
               <div className="flex gap-4">
                 <p className="pb-1 w-1/3">Paid By: </p>
                 <p className="pb-1 w-2/3">
-                  {invoice.paidBy ? invoice.paidBy : "N/A"}
+                  {invoice.balance ? formatCurrency(invoice.balance) : "N/A"}
                 </p>
               </div>
             </div>
@@ -116,7 +116,8 @@ const InvoiceDetail = ({
         <div className="flex gap-4 invoice-body">
           <div className="pt-3 invoice-note">
             <p>
-              Salesperson: <span className="sub-info">Jenny Parker </span>
+              Salesperson:{" "}
+              <span className="sub-info">{invoice.sellerName} </span>
             </p>
             <p className="sub-info">Thanks for your bussiness</p>
           </div>
@@ -127,7 +128,7 @@ const InvoiceDetail = ({
                 <p className="sub-info pb-1 w-1/3">Subtotal:</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
-                  {invoice.paid ? formatCurrency(invoice.paid) : "N/A"}
+                  {invoice.balance ? formatCurrency(invoice.balance) : "N/A"}
                 </p>
               </div>
               <div className="flex gap-4">

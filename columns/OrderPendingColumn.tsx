@@ -14,16 +14,9 @@ import ButtonApproveOrder from "@/components/formInputs/ButtonApproveOrder";
 import { deleteSale, updateOrderStatus } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
-
-// export type Sale = {
-//   _id: string;
-//   referenceNo: string;
-//   customer: { _id: string; name: string };
-//   branch: { _id: string; title: string };
-//   saleDate: string;
-//   orderStatus: string;
-//   paymentStatus: string;
-// };
+import { auth } from "@/auth";
+import { useEffect, useState } from "react";
+import { getUserRole } from "@/lib/actions/user.action";
 
 const reloadPage = () => {
   window.location.reload();
@@ -95,22 +88,6 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "paymentStatus",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Payment Status" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const status = row.getValue("paymentStatus") as string;
-  //     return (
-  //       <Badge
-  //       className={status === "completed" ? "bg-green-500 uppercase" : status === "credit" ? "bg-blue-500 uppercase" : status === "pending" ? "bg-yellow-500 uppercase" : "bg-red-500 uppercase"}
-  //       >
-  //         {status}
-  //       </Badge>
-  //     );
-  //   },
-  // },
   {
     id: "actions",
     header: ({ column }) => (
@@ -118,6 +95,16 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const sale = row.original;
+      const [userRole, setUserRole] = useState<string | null>(null);
+
+      useEffect(() => {
+        const fetchUserRole = async () => {
+          const role = await getUserRole();
+          setUserRole(role ?? null);
+        };
+
+        fetchUserRole();
+      }, []);
       const handleApproveOrder = async () => {
         const { success } = await updateOrderStatus({ saleId: sale._id });
         if (success) {
@@ -153,9 +140,11 @@ export const SaleColumn: ColumnDef<Sale>[] = [
 
       return (
         <div className="flex items-center space-x-1">
-          <div>
-            <ButtonApproveOrder onPopup={handleApproveOrder} />
-          </div>
+          {userRole === "admin" && (
+            <div>
+              <ButtonApproveOrder onPopup={handleApproveOrder} />
+            </div>
+          )}
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.SALE(sale._id)}

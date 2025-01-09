@@ -16,10 +16,6 @@ const formatCurrency = (amount: number) => {
 };
 
 const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
-  const isAuthorized = await checkAuthorization(["admin", "branch"]);
-  if (!isAuthorized) {
-    return redirect("/unauthorized");
-  }
   const { success, data: setting } = await getSetting({
     settingId: process.env.SETTING_ID as string,
   });
@@ -68,13 +64,13 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 <p className="pb-1 w-1/3">Total Due: </p>
                 <p className="pb-1 w-2/3">
                   {" "}
-                  {invoice.paid ? formatCurrency(invoice.paid) : "N/A"}
+                  {invoice.balance ? formatCurrency(invoice.balance) : "N/A"}
                 </p>
               </div>
               <div className="flex gap-4">
                 <p className="pb-1 w-1/3">Paid By: </p>
                 <p className="pb-1 w-2/3">
-                  {invoice.paidBy ? invoice.paidBy : "N/A"}
+                  {invoice.paid === 0 ? "N/A" : invoice.paidBy}
                 </p>
               </div>
             </div>
@@ -113,7 +109,8 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
         <div className="flex gap-4 invoice-body">
           <div className="pt-3 invoice-note">
             <p>
-              Salesperson: <span className="sub-info">Jenny Parker </span>
+              Salesperson:{" "}
+              <span className="sub-info">{invoice.sellerName} </span>
             </p>
             <p className="sub-info">Thanks for your bussiness</p>
           </div>
@@ -124,7 +121,7 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 <p className="sub-info pb-1 w-1/3">Subtotal:</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
-                  {invoice.paid ? formatCurrency(invoice.paid) : "N/A"}
+                  {invoice.subtotal ? formatCurrency(invoice.subtotal) : "N/A"}
                 </p>
               </div>
               <div className="flex gap-4">

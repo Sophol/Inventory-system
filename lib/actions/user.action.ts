@@ -4,6 +4,7 @@ import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { PaginatedSearchParamsSchema } from "../validations";
 import { User } from "@/database";
+import { auth } from "@/auth";
 
 export async function getUsers(
   params: PaginatedSearchParams
@@ -108,4 +109,8 @@ export async function getStaffs(
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }
+}
+export async function getUserRole() {
+  const user = await auth();
+  return user?.user.role ?? null;
 }

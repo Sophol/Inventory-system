@@ -7,7 +7,7 @@ import Invoice from "./components/Invoice";
 import { checkAuthorization } from "@/lib/auth";
 
 const InvoiceDetailPage = async ({ params }: RouteParams) => {
-  const isAuthorized = await checkAuthorization(["admin", "branch"]);
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
   if (!isAuthorized) {
     return redirect("/unauthorized");
   }

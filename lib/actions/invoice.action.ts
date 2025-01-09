@@ -47,7 +47,8 @@ export async function createInvoice(
     saleType,
     dueDate,
   } = validatedData.params!;
-
+  const seller = validatedData?.session?.user?.id;
+  const sellerName = validatedData?.session?.user?.name;
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -63,8 +64,8 @@ export async function createInvoice(
           discount,
           subtotal,
           grandtotal,
-          paid: grandtotal,
-          balance,
+          paid: 0,
+          balance: grandtotal,
           paidBy,
           orderStatus,
           paymentStatus,
@@ -72,6 +73,8 @@ export async function createInvoice(
           exchangeRateT,
           saleType,
           dueDate,
+          seller,
+          sellerName,
         },
       ],
       { session }
@@ -341,6 +344,7 @@ export async function approvedInvoice(
         }
       }
       invoice.orderStatus = "completed";
+      invoice.invoiceDate = new Date();
       invoice.dueDate = dueDate;
       await invoice.save({ session });
     }

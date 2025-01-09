@@ -200,6 +200,7 @@ interface Sale {
   paymentStatus: "pending" | "credit" | "completed";
   saleType?: "retail" | "wholesale";
   saleDetails: saleDetail[];
+  sellerName?: string;
 }
 
 interface Setting {
