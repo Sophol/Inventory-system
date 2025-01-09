@@ -147,16 +147,6 @@ useEffect(() => {
             { _id: "Others", title: "Others" },
           ]}
         />
-         <FormSelect
-          name="paymentStatus"
-          label="Select Payment Status"
-          control={form.control}
-          items={[
-            { _id: "pending", title: "Pending" },
-            { _id: "credit", title: "Credit" },
-            { _id: "completed", title: "Completed" },
-          ]}
-        />
         <div className="mt-2 flex ">
           <Button
             type="submit"
