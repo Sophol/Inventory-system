@@ -137,7 +137,7 @@ function FormPurchaseDetail<T extends FieldValues>({
         console.error("Error fetching product details:", error);
       }
     },
-    [setValue, fetchProductDetails, calculateTotal]
+    [fetchProductDetails, calculateTotal]
   );
 
   const handleUnitChange = useCallback(
@@ -203,7 +203,7 @@ function FormPurchaseDetail<T extends FieldValues>({
                   fetchSingleItem={(field as any).selectedUnit}
                   parentId={selectedProduct}
                   fetchData={(params) =>
-                    fetchUnits({ ...params, parentId: singleProduct._id })
+                    fetchUnits({ ...params, parentId: selectedProduct })
                   }
                   setValue={(name, value) => {
                     setValue(name, value);

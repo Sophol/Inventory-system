@@ -18,7 +18,7 @@ const CardContainer = ({
   redirectClass,
 }: CardContainerProps) => {
   return (
-    <section>
+    <section className="w-max-6x">
       <div className="flex-1 space-y-4 p-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

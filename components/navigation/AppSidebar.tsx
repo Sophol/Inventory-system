@@ -25,7 +25,6 @@ const AppSidebar = async () => {
   const session = await auth();
   const userId = session?.user?.id;
   const role = session?.user?.role;
-  console.log("role", session?.user);
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>

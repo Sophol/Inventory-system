@@ -1,5 +1,5 @@
-"use client";	
-import { useEffect } from "react"; 
+"use client";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useTransition } from "react";
@@ -15,7 +15,6 @@ import FormInput from "../formInputs/FormInput";
 import FormDatePicker from "../formInputs/FormDatePicker";
 import FormSelect from "../formInputs/FormSelect";
 
-
 interface Params {
   sale: Sale;
   payment: Payment;
@@ -24,7 +23,6 @@ interface Params {
 }
 
 const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
-  
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof CreatePaymentSchema>>({
     resolver: zodResolver(CreatePaymentSchema),
@@ -35,39 +33,41 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
       referenceNo: sale?.referenceNo,
       description: payment?.description || "",
       paymentDate: payment?.paymentDate || new Date().toISOString(),
-      creditAmount: payment && payment.creditAmount !== undefined 
-      ? payment.creditAmount 
-      : sale && sale.balance !== undefined && sale.paid !== undefined 
-      ? sale.balance - sale.paid 
-      : 0,
+      creditAmount:
+        payment && payment.creditAmount !== undefined
+          ? payment.creditAmount
+          : sale && sale.balance !== undefined && sale.paid !== undefined
+            ? sale.balance - sale.paid
+            : 0,
       paidAmount: 0,
-      balance:sale?.balance ,
+      balance: sale?.balance,
       paidBy: sale?.paidBy || "Cash",
       paymentStatus: "pending",
     },
   });
-// Reset form values when the drawer is closed
-useEffect(() => {
-  if (!isPending) {
-    form.reset({
-      sale: sale?._id,
-      customer: sale?.customer._id,
-      branch: sale?.branch._id,
-      referenceNo: sale?.referenceNo,
-      description: payment?.description || "",
-      paymentDate: payment?.paymentDate || new Date().toISOString(),
-      creditAmount: payment && payment.creditAmount !== undefined 
-          ? payment.creditAmount 
-          : sale && sale.balance !== undefined && sale.paid !== undefined 
-          ? sale.balance - sale.paid 
-          : 0,
-      paidAmount: 0,
-      balance: sale?.balance ||0,
-      paidBy: sale?.paidBy || "Cash",
-      paymentStatus: "pending",
-    });
-  }
-}, [isPending, sale, payment, form.reset]);
+  // Reset form values when the drawer is closed
+  useEffect(() => {
+    if (!isPending) {
+      form.reset({
+        sale: sale?._id,
+        customer: sale?.customer._id,
+        branch: sale?.branch._id,
+        referenceNo: sale?.referenceNo,
+        description: payment?.description || "",
+        paymentDate: payment?.paymentDate || new Date().toISOString(),
+        creditAmount:
+          payment && payment.creditAmount !== undefined
+            ? payment.creditAmount
+            : sale && sale.balance !== undefined && sale.paid !== undefined
+              ? sale.balance - sale.paid
+              : 0,
+        paidAmount: 0,
+        balance: sale?.balance || 0,
+        paidBy: sale?.paidBy || "Cash",
+        paymentStatus: "pending",
+      });
+    }
+  }, [isPending, sale, payment, form]);
   const handleCreatePayment = async (
     data: z.infer<typeof CreatePaymentSchema>
   ) => {
@@ -99,7 +99,11 @@ useEffect(() => {
       }
     });
   };
-
+  const handleChangePaidAmount = (value: string) => {
+    const creditAmount = form.getValues("creditAmount");
+    const balance = creditAmount - Number(value);
+    form.setValue("balance", balance);
+  };
   return (
     <Form {...form}>
       <form
@@ -117,6 +121,7 @@ useEffect(() => {
           type="number"
           label="Payment Amount"
           control={form.control}
+          onChange={(value) => handleChangePaidAmount(value)}
         />
         <FormInput
           name="balance"

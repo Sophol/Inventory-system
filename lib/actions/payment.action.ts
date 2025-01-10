@@ -1,5 +1,5 @@
 "use server";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
 import { Payment, Sale } from "@/database";
 
@@ -25,25 +25,67 @@ export async function createPayment(
   if (validatedData instanceof Error) {
     return handleError(validatedData.message) as ErrorResponse;
   }
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
-    const saleData = await Sale.findById(params.sale);
-    params.creditAmount = saleData.balance - saleData.paid - (params.paidAmount ?? 0);
-    if(params.creditAmount === 0) params.paymentStatus = "completed";
-    const success = await Payment.create(validatedData.params);
-    if(success){
-      if (saleData) {
-        saleData.paid = saleData.paid + (params.paidAmount ?? 0);
-        if(saleData.paid == saleData.balance){
-          saleData.paymentStatus = "completed";
-        }else{
-          saleData.paymentStatus ="credit"
-        }
-        await saleData.save();
-      }
+    const {
+      sale,
+      customer,
+      branch,
+      referenceNo,
+      description,
+      paymentDate,
+      paymentStatus,
+      paidBy,
+      paidAmount = 0,
+      creditAmount = 0,
+    } = validatedData.params!;
+    const saleData = await Sale.findById(sale).session(session);
+    if (!saleData) {
+      return handleError("Sale not found") as ErrorResponse;
     }
+
+    if (paidAmount > creditAmount) {
+      return handleError(
+        "Paid amount is greater than credit amount"
+      ) as ErrorResponse;
+    }
+    let status = paymentStatus;
+    const newbalance = creditAmount - paidAmount;
+    if (newbalance === 0) status = "completed";
+    const [payment] = await Payment.create(
+      [
+        {
+          sale,
+          customer,
+          branch,
+          referenceNo,
+          description,
+          paymentDate,
+          paymentStatus: status,
+          paidBy,
+          paidAmount,
+          creditAmount,
+          balance: newbalance,
+        },
+      ],
+      { session }
+    );
+    if (!payment) {
+      return handleError("Payment created failed") as ErrorResponse;
+    }
+    saleData.paid = saleData.paid + paidAmount;
+    saleData.balance = newbalance;
+    saleData.paymentStatus = status;
+    saleData.paidBy = paidBy;
+    await saleData.save({ session });
+    await session.commitTransaction();
     return { success: true, data: JSON.parse(JSON.stringify(saleData)) };
   } catch (error) {
+    await session.abortTransaction();
     return handleError(error) as ErrorResponse;
+  } finally {
+    session.endSession();
   }
 }
 
@@ -62,7 +104,7 @@ export async function getPayments(
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   // sale : params.sale
-  const filterQuery: FilterQuery<typeof Payment> = {sale : params.sale};
+  const filterQuery: FilterQuery<typeof Payment> = { sale: params.sale };
   if (query) {
     filterQuery.$or = [
       { name: { $regex: new RegExp(query, "i") } },
@@ -94,7 +136,6 @@ export async function getPayments(
         .sort(sortCriteria)
         .skip(skip)
         .limit(limit),
-     
     ]);
     console.log("totalPayments, payments", payments);
     const isNext = totalPayments > skip + payments.length;
@@ -121,10 +162,13 @@ export async function getPayment(
   const { saleId } = validatedData.params!;
   try {
     const payment = await Payment.findOne({ sale: saleId })
-    .sort({ createdAt: -1 }) // Sort by paymentDate in descending order
-    .lean();
+      .sort({ createdAt: -1 }) // Sort by paymentDate in descending order
+      .lean();
 
-    return { success: true, data: JSON.parse(JSON.stringify(payment ? payment : [])) };
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(payment ? payment : [])),
+    };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }
