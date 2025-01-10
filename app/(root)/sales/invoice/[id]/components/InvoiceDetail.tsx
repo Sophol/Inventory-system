@@ -1,8 +1,7 @@
 import React from "react";
 import "../invoice.css";
 import { getSetting } from "@/lib/actions/setting.action";
-import { checkAuthorization } from "@/lib/auth";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import { format } from "date-fns";
 
@@ -24,9 +23,9 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
   if (!setting) return notFound();
   return (
     <div className="card80 ">
-      <div className="printable-area">
+      <div className="printable-area card80-container">
         <div className="flex flex-row justify-between  p-2 invoice-header">
-          <div className="flex flex-col ">
+          <div className="flex flex-col logo">
             <Image
               src={`/` + setting.companyLogo}
               alt="Company Logo"
@@ -52,18 +51,21 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
           </div>
         </div>
         <br />
-        <div className="flex gap-4 p-2 invoice-body mb-5">
-          <div className="w-1/2 ">
-            <p className="pb-3">Invoice To:</p>
-            <p className="sub-info">{invoice.customer.title}</p>
-          </div>
-          <div className="w-1/2">
-            <h1 className=" text-lg mb-2">Bill To:</h1>
+        <div className="md:flex p-2 invoice-body mb-5">
+        <div className="flex gap-4 invoice-to">
+                <p className="pb-1 w-1/3">Invoice To: </p>
+                <p className="pb-1 w-2/3">
+
+                  <span className="sub-info">{invoice.customer.title}</span>
+                </p>
+              </div>
+          <div className="bill-to">
+            {/* <p className=" text-lg">Bill To:</p> */}
             <div className="sub-info">
               <div className="flex gap-4">
                 <p className="pb-1 w-1/3">Total Due: </p>
                 <p className="pb-1 w-2/3">
-                  {" "}
+               
                   {invoice.balance ? formatCurrency(invoice.balance) : 0.0}
                 </p>
               </div>

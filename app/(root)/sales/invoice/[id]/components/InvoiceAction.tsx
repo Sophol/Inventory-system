@@ -13,38 +13,13 @@ import PaymentHistory from "../payment/PaymentHistory";
 import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
 
-const handlePrint = () => {
-  window.print();
-};
-
-const handleDownload = async () => {
-  const input = document.querySelector(".printable-area") as HTMLElement;
-  if (!input) return;
-
-  const canvas = await html2canvas(input);
-  const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF("p", "mm", "a4");
-  const imgProps = pdf.getImageProperties(imgData);
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-  const padding = 10;
-
-  pdf.addImage(
-    imgData,
-    "PNG",
-    padding,
-    padding,
-    pdfWidth - 2 * padding,
-    pdfHeight - 2 * padding
-  );
-  pdf.save("invoice.pdf");
-};
-
 const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [updatedInvoice, setUpdatedInvoice] = useState(invoice); 
+  const [updatedInvoice, setUpdatedInvoice] = useState(invoice);
+  const [showPrintOptions, setShowPrintOptions] = useState(false);
+  const [showDownloadOptions, setShowDownloadOptions] = useState(false);
   const router = useRouter();
+
   const handleCallInvoice = async () => {
     const { data: payments } = await getPayments({ sale: invoice._id });
     if (payments) {
@@ -57,21 +32,110 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
       });
     }
   };
-  const hadleBack = () => {
+
+  const handleBack = () => {
     router.push(ROUTES.INVOICES);
   };
+
   const handleDrawerClose = (updatedSale: any) => {
-    console.log(updatedSale)
-    setUpdatedInvoice(updatedSale)// Update the invoice state when the drawer closes
-    console.log("invoice,", updatedInvoice)
+    setUpdatedInvoice(updatedSale);
   };
+
+  const handlePrintWithLogo = () => {
+    const printableArea = document.querySelector(".printable-area") as HTMLElement;
+    const logo = document.querySelector(".logo") as HTMLElement;
+    
+    if (!printableArea) return;
+  
+    // Add a temporary class to show the logo during printing
+    if (logo) logo.classList.add("show-logo");
+    
+    // Trigger the print dialog
+    window.print();
+  
+    // After printing, remove the temporary class to hide the logo again
+    if (logo) logo.classList.remove("show-logo");
+  };
+  
+
+  const handlePrintWithoutLogo = () => {
+    const logo = document.querySelector(".logo") as HTMLElement;
+    if (logo) logo.style.display = "none"; // Hide logo
+    window.print();
+    if (logo) logo.style.display = "block"; // Restore logo after printing
+  };
+
+  const handleDownloadWithLogo = async () => {
+    const input = document.querySelector(".printable-area") as HTMLElement;
+    const logo = document.querySelector(".logo") as HTMLElement;
+  
+    if (!input) return;
+  
+    // Add a temporary class to show the logo
+    if (logo) logo.classList.add("show-logo");
+  
+    const canvas = await html2canvas(input);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  
+    const padding = 10;
+  
+    pdf.addImage(
+      imgData,
+      "PNG",
+      padding,
+      padding,
+      pdfWidth - 2 * padding,
+      pdfHeight - 2 * padding
+    );
+    pdf.save("invoice_with_logo.pdf");
+  
+    // Remove the temporary class
+    if (logo) logo.classList.remove("show-logo");
+  };
+  
+  const handleDownloadWithoutLogo = async () => {
+    const input = document.querySelector(".printable-area") as HTMLElement;
+    const logo = document.querySelector(".logo") as HTMLElement;
+  
+    if (!input) return;
+  
+    // Add a temporary class to hide the logo
+    if (logo) logo.classList.add("hide-logo");
+  
+    const canvas = await html2canvas(input);
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  
+    const padding = 10;
+  
+    pdf.addImage(
+      imgData,
+      "PNG",
+      padding,
+      padding,
+      pdfWidth - 2 * padding,
+      pdfHeight - 2 * padding
+    );
+    pdf.save("invoice_without_logo.pdf");
+  
+    // Remove the temporary class
+    if (logo) logo.classList.remove("hide-logo");
+  };
+
   return (
     <div className="card20">
       <div className="card20-container flex flex-col gap-2">
         <div className="flex">
           <Button
             onClick={handleCallInvoice}
-            disabled={updatedInvoice.paymentStatus ==="pending"}
+            disabled={updatedInvoice.paymentStatus === "pending"}
             className="w-full rounded bg-blue-400 px-4 py-2 text-white hover:bg-blue-500"
           >
             <FaHistory className="cursor-pointer text-xl" />
@@ -86,27 +150,83 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
         )}
         <Button
           type="button"
-          onClick={handleDownload}
+          onClick={() => setShowDownloadOptions(true)}
           className="bg-light-400 hover:bg-light-500 w-full rounded px-4 py-2 text-white"
         >
           <span>Download</span>
         </Button>
         <div className="flex gap-2">
           <Button
-            onClick={handlePrint}
+            onClick={() => setShowPrintOptions(true)}
             className="w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500"
           >
             Print
           </Button>
           <Button
-            onClick={hadleBack}
+            onClick={handleBack}
             className="w-1/2 rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500"
           >
             Back
           </Button>
         </div>
-        <PaymentDrawer sale={invoice}  onClose={handleDrawerClose}/>
+        <PaymentDrawer sale={invoice} onClose={handleDrawerClose} />
       </div>
+
+      {showPrintOptions && (
+        <div className="print-options-overlay">
+          <div className="print-options-container">
+            <h3 className="text-lg font-bold mb-4">Choose Print Option</h3>
+            <div className="flex gap-4">
+              <Button
+                onClick={handlePrintWithLogo}
+                className="w-full rounded bg-green-400 px-4 py-2 text-white hover:bg-green-500"
+              >
+                Print with Logo
+              </Button>
+              <Button
+                onClick={handlePrintWithoutLogo}
+                className="w-full rounded bg-red-400 px-4 py-2 text-white hover:bg-red-500"
+              >
+                Print without Logo
+              </Button>
+            </div>
+            <Button
+              onClick={() => setShowPrintOptions(false)}
+              className="mt-4 w-full rounded bg-gray-400 px-4 py-2 text-white hover:bg-gray-500"
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {showDownloadOptions && (
+        <div className="print-options-overlay">
+          <div className="print-options-container">
+            <h3 className="text-lg font-bold mb-4">Choose Download Option</h3>
+            <div className="flex gap-4">
+              <Button
+                onClick={handleDownloadWithLogo}
+                className="w-full rounded bg-green-400 px-4 py-2 text-white hover:bg-green-500"
+              >
+                Download with Logo
+              </Button>
+              <Button
+                onClick={handleDownloadWithoutLogo}
+                className="w-full rounded bg-red-400 px-4 py-2 text-white hover:bg-red-500"
+              >
+                Download without Logo
+              </Button>
+            </div>
+            <Button
+              onClick={() => setShowDownloadOptions(false)}
+              className="mt-4 w-full rounded bg-gray-400 px-4 py-2 text-white hover:bg-gray-500"
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
