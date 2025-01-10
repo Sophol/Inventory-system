@@ -64,7 +64,7 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 <p className="pb-1 w-1/3">Total Due: </p>
                 <p className="pb-1 w-2/3">
                   {" "}
-                  {invoice.balance ? formatCurrency(invoice.balance) : "N/A"}
+                  {invoice.balance ? formatCurrency(invoice.balance) : 0.0}
                 </p>
               </div>
               <div className="flex gap-4">
