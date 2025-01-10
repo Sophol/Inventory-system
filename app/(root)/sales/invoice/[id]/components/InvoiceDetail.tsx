@@ -24,14 +24,14 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
   return (
     <div className="card80 ">
       <div className="printable-area card80-container">
-        <div className="flex flex-row justify-between  p-2 invoice-header">
+        <div className="sm:flex flex-row justify-between  p-2 invoice-header">
           <div className="flex flex-col logo">
             <Image
               src={`/` + setting.companyLogo}
               alt="Company Logo"
               width={200}
               height={100}
-              className="h-8 w-auto object-contain"
+              className="h-8 w-auto object-contain sm:mx-auto sm:w-full"
             />
             <p className="text-sm pt-4 pb-0">{setting.companyName}</p>
             <p className="text-sm ">
