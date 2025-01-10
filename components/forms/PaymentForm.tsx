@@ -99,7 +99,7 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
       }
     });
   };
-  const handleChangePaidAmount = (value: string) => {
+  const handleChangePaidAmount = (value: string | number) => {
     const creditAmount = form.getValues("creditAmount");
     const balance = creditAmount - Number(value);
     form.setValue("balance", balance);
