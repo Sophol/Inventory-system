@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -8,15 +7,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Bar,
-  BarChart,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from "recharts";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
@@ -28,24 +19,10 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import * as React from "react";
-const salesData = [
-  { name: "Sun", value: 0 },
-  { name: "Mon", value: 0 },
-  { name: "Tue", value: 0 },
-  { name: "Wed", value: 0 },
-  { name: "Thu", value: 0 },
-  { name: "Fri", value: 0 },
-  { name: "Sat", value: 0 },
-];
-
-const revenueData = [
-  { name: "Jun", value: 15000000 },
-  { name: "Jul", value: 4000000 },
-  { name: "Aug", value: 8000000 },
-  { name: "Sep", value: 200000 },
-  { name: "Oct", value: 100000 },
-  { name: "Nov", value: 50000 },
-];
+import { getFirstRowDashboard } from "@/lib/actions/dashboard.action";
+import { checkAuthorization } from "@/lib/auth";
+import { notFound, redirect } from "next/navigation";
+// import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 const recentOrders = [
   {
@@ -89,8 +66,21 @@ const recentOrders = [
     amount: "$600",
   },
 ];
-
-function Home() {
+const revenueData = [
+  { name: "Jun", value: 15000000 },
+  { name: "Jul", value: 4000000 },
+  { name: "Aug", value: 8000000 },
+  { name: "Sep", value: 200000 },
+  { name: "Oct", value: 100000 },
+  { name: "Nov", value: 50000 },
+];
+const Home = async () => {
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
+  const { success, data } = await getFirstRowDashboard();
+  if (!success) return notFound();
   return (
     <>
       <section>
@@ -99,12 +89,31 @@ function Home() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
+                  Total Orders Pending
+                </CardTitle>
+                <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {data.totalOrderPending}
+                </div>
+                <Button
+                  variant="link"
+                  className="px-0 text-xs text-muted-foreground"
+                >
+                  View Details
+                </Button>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
                   Total Sales
                 </CardTitle>
                 <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">83</div>
+                <div className="text-2xl font-bold">{data.totalSales}</div>
                 <Button
                   variant="link"
                   className="px-0 text-xs text-muted-foreground"
@@ -121,7 +130,9 @@ function Home() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">$17,884,143</div>
+                <div className="text-2xl font-bold">
+                  {data.totalSalesAmount}
+                </div>
                 <Button
                   variant="link"
                   className="px-0 text-xs text-muted-foreground"
@@ -130,23 +141,7 @@ function Home() {
                 </Button>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total Orders
-                </CardTitle>
-                <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">31</div>
-                <Button
-                  variant="link"
-                  className="px-0 text-xs text-muted-foreground"
-                >
-                  View Details
-                </Button>
-              </CardContent>
-            </Card>
+
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -155,7 +150,7 @@ function Home() {
                 <Package className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">21</div>
+                <div className="text-2xl font-bold">{data.totalProducts}</div>
                 <Button
                   variant="link"
                   className="px-0 text-xs text-muted-foreground"
@@ -165,100 +160,46 @@ function Home() {
               </CardContent>
             </Card>
           </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0">
-                <div>
-                  <CardTitle className="text-base">Sales Chart</CardTitle>
-                  <p className="text-xs text-muted-foreground">
-                    Sun 27th Oct - Sat 2nd Nov
-                  </p>
-                </div>
-                <Button variant="ghost" className="h-8 text-xs">
-                  View All
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[200px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={salesData}>
-                      <XAxis
-                        dataKey="name"
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                      />
-                      <YAxis
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey="value"
-                        stroke="#f97316"
-                        strokeWidth={2}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  The day with highest sales is{" "}
-                  <span className="font-medium">with 0 sales</span>
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Showing the sales for the last 7 days including today
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0">
-                <div>
-                  <CardTitle className="text-base">
-                    Revenue By Category Chart
-                  </CardTitle>
-                  <p className="text-sm text-muted-foreground">
-                    Total: $17,722,013
-                  </p>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[200px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={revenueData}>
-                      <XAxis
-                        dataKey="name"
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                      />
-                      <YAxis
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                      />
-                      <Bar
-                        dataKey="value"
-                        fill="#f97316"
-                        radius={[4, 4, 0, 0]}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  Leading Month is July and leading Category is Computers
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Showing total revenue for the past 6 months
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          {/* <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
+              <div>
+                <CardTitle className="text-base">
+                  Revenue By Category Chart
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Total: $17,722,013
+                </p>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[200px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={revenueData}>
+                    <XAxis
+                      dataKey="name"
+                      stroke="#888888"
+                      fontSize={12}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <YAxis
+                      stroke="#888888"
+                      fontSize={12}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <Bar dataKey="value" fill="#f97316" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Leading Month is July and leading Category is Computers
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Showing total revenue for the past 6 months
+              </div>
+            </CardContent>
+          </Card> */}
           <Card>
             <CardHeader>
               <Tabs defaultValue="recent-orders" className="w-full">
@@ -339,6 +280,6 @@ function Home() {
       </section>
     </>
   );
-}
+};
 
 export default Home;
