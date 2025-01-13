@@ -52,20 +52,18 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
         </div>
         <br />
         <div className="md:flex p-2 invoice-body mb-5">
-        <div className="flex gap-4 invoice-to">
-                <p className="pb-1 w-1/3">Invoice To: </p>
-                <p className="pb-1 w-2/3">
-
-                  <span className="sub-info">{invoice.customer.title}</span>
-                </p>
-              </div>
+          <div className="flex gap-4 invoice-to">
+            <p className="pb-1 w-1/3">Invoice To: </p>
+            <p className="pb-1 w-2/3">
+              <span className="sub-info">{invoice.customer.title}</span>
+            </p>
+          </div>
           <div className="bill-to">
             {/* <p className=" text-lg">Bill To:</p> */}
             <div className="sub-info">
               <div className="flex gap-4">
                 <p className="pb-1 w-1/3">Total Due: </p>
                 <p className="pb-1 w-2/3">
-               
                   {invoice.balance ? formatCurrency(invoice.balance) : 0.0}
                 </p>
               </div>
@@ -133,9 +131,9 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 </p>
               </div>
               <div className="flex gap-4">
-                <p className="pb-1 w-1/3">Tax: </p>
+                <p className="pb-1 w-1/3">Delivery: </p>
                 <p className="pb-1 w-2/3 text-right font-bold">
-                  {invoice.tax ? invoice.tax : "N/A"}
+                  {invoice.delivery ? invoice.delivery : "N/A"}
                 </p>
               </div>
               <hr className="border-t-2 border-gray-400 my-3" />

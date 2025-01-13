@@ -189,6 +189,7 @@ interface Sale {
   invoicedDate: string;
   discount: number;
   subtotal: number;
+  delivery: number;
   grandtotal: number;
   paid: number;
   balance: number;

@@ -298,6 +298,7 @@ export const CreateSaleSchema = z.object({
   tax: z.number().min(0).default(0),
   discount: z.number().min(0).default(0),
   subtotal: z.number().min(0).default(0),
+  delivery: z.number().min(0).default(0),
   grandtotal: z.number().min(0).default(0),
   paid: z.number().min(0).default(0),
   balance: z.number().min(0).default(0),
@@ -380,22 +381,24 @@ export const GetGeneralExpSchema = z.object({
   generalExpId: z.string().min(1, "General ID is required"),
 });
 
-export const CreatePaymentSchema = z.object({
-  sale: z.string().min(1, "Sale is required"),
-  customer: z.string().min(1, "Customer is required"),
-  branch: z.string().min(1, "Branch is required"),
-  referenceNo: z.string().min(1, "Reference number is required"),
-  description: z.string().optional(),
-  paymentDate: z.string().min(1, "Payment date is required"),
-  creditAmount: z.number().min(0, "Credit amount must be a positive number"),
-  paidAmount: z.number().min(0.01, "Paid amount must be a positive number"),
-  balance: z.number().min(0, "Balance must be a positive number"),
-  paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]),
-  paymentStatus: z.enum(["pending", "credit", "completed"]),
-}).refine((data) => data.paidAmount <= data.creditAmount, {
-  message: "Paid amount cannot be higher than credit amount",
-  path: ["paidAmount"], // Path of the error
-});
+export const CreatePaymentSchema = z
+  .object({
+    sale: z.string().min(1, "Sale is required"),
+    customer: z.string().min(1, "Customer is required"),
+    branch: z.string().min(1, "Branch is required"),
+    referenceNo: z.string().min(1, "Reference number is required"),
+    description: z.string().optional(),
+    paymentDate: z.string().min(1, "Payment date is required"),
+    creditAmount: z.number().min(0, "Credit amount must be a positive number"),
+    paidAmount: z.number().min(0.01, "Paid amount must be a positive number"),
+    balance: z.number().min(0, "Balance must be a positive number"),
+    paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]),
+    paymentStatus: z.enum(["pending", "credit", "completed"]),
+  })
+  .refine((data) => data.paidAmount <= data.creditAmount, {
+    message: "Paid amount cannot be higher than credit amount",
+    path: ["paidAmount"], // Path of the error
+  });
 export const GetPaymentSchema = z.object({
   saleId: z.string().min(1, { message: "Payment ID is required." }),
 });

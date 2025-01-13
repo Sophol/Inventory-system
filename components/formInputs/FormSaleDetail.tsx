@@ -84,15 +84,20 @@ function FormSaleDetail<T extends FieldValues>({
       product: "",
       unit: "",
       qty: 0,
+      cost: 0,
       price: 0,
-      total: 0,
+      totalPrice: 0,
     } as any);
   }, [append]);
 
   const calculateSubTotal = useCallback(() => {
+    console.log("fields", fields);
     const subTotal = fields.reduce((acc, _, index) => {
-      const total = parseFloat(watch(`saleDetails.${index}.total`) || "0");
-      return acc + total;
+      const totalPrice = parseFloat(
+        watch(`saleDetails.${index}.totalPrice`) || "0"
+      );
+
+      return acc + totalPrice;
     }, 0);
 
     setValue(
@@ -104,7 +109,8 @@ function FormSaleDetail<T extends FieldValues>({
   const calculateGrandTotal = useCallback(() => {
     const subTotal = parseFloat(watch("subtotal") || "0");
     const discount = parseFloat(watch("discount") || "0");
-    const grandTotal = subTotal - discount;
+    const delivery = parseFloat(watch("delivery") || "0");
+    const grandTotal = subTotal - discount + delivery;
     setValue(
       "grandtotal" as Path<T>,
       grandTotal as unknown as PathValue<T, Path<T>>
@@ -115,10 +121,10 @@ function FormSaleDetail<T extends FieldValues>({
     (index: number) => {
       const qty = parseFloat(watch(`saleDetails.${index}.qty`) || "0");
       const price = parseFloat(watch(`saleDetails.${index}.price`) || "0");
-      const total = qty * price;
+      const totalPrice = qty * price;
       setValue(
-        `saleDetails.${index}.total` as Path<T>,
-        total as unknown as PathValue<T, Path<T>>
+        `saleDetails.${index}.totalPrice` as Path<T>,
+        totalPrice as unknown as PathValue<T, Path<T>>
       );
       calculateSubTotal();
       calculateGrandTotal();
@@ -147,7 +153,7 @@ function FormSaleDetail<T extends FieldValues>({
         console.error("Error fetching product details:", error);
       }
     },
-    [setValue, fetchProductDetails, calculateTotal]
+    [fetchProductDetails, calculateTotal]
   );
 
   const handleUnitChange = useCallback(
@@ -178,7 +184,7 @@ function FormSaleDetail<T extends FieldValues>({
         }
       }
     },
-    [units, setValue, calculateTotal]
+    [units, setValue, calculateTotal, watch]
   );
   const saleTypeData: SelectData[] = [
     { _id: "retail", title: "Retail" },
@@ -258,7 +264,7 @@ function FormSaleDetail<T extends FieldValues>({
               <div className="col-span-2 md:col-span-2">
                 <FormInput
                   type="number"
-                  name={`${name}.${index}.total` as Path<T>}
+                  name={`${name}.${index}.totalPrice` as Path<T>}
                   label="Total"
                   control={control}
                   readonly={true}
@@ -313,6 +319,20 @@ function FormSaleDetail<T extends FieldValues>({
           <FormInput
             type="number"
             name={"discount" as Path<T>}
+            control={control}
+            onChange={calculateGrandTotal}
+          />
+          <div className="w-14 flex-none"></div>
+        </div>
+      </div>
+      <div className="flex items-center gap-4">
+        <div className="grow text-right">
+          <label className="">Delivery</label>
+        </div>
+        <div className="flex w-[295px]">
+          <FormInput
+            type="number"
+            name={"delivery" as Path<T>}
             control={control}
             onChange={calculateGrandTotal}
           />

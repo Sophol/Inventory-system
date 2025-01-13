@@ -46,10 +46,12 @@ export async function createSale(
     exchangeRateD,
     exchangeRateT,
     saleType,
+    delivery,
   } = validatedData.params!;
   const seller = validatedData?.session?.user?.id;
   const sellerName = validatedData?.session?.user?.name;
   const session = await mongoose.startSession();
+  console.log("delivery", delivery);
   session.startTransaction();
 
   try {
@@ -67,6 +69,7 @@ export async function createSale(
           paid: 0,
           balance: grandtotal,
           paidBy,
+          delivery,
           orderStatus,
           paymentStatus,
           exchangeRateD,
@@ -78,7 +81,7 @@ export async function createSale(
       ],
       { session }
     );
-
+    console.log("sale", sale);
     if (!sale) {
       throw new Error("Failed to create sale");
     }
@@ -132,7 +135,6 @@ export async function editSale(
     subtotal,
     grandtotal,
     paid,
-    balance,
     paidBy,
     orderStatus,
     paymentStatus,
@@ -140,6 +142,7 @@ export async function editSale(
     exchangeRateD,
     exchangeRateT,
     saleType,
+    delivery,
   } = validatedData.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -155,9 +158,13 @@ export async function editSale(
     if (sale.saleDate !== saleDate) sale.saleDate = saleDate;
     if (discount !== sale.discount) sale.discount = discount;
     if (subtotal !== sale.subtotal) sale.subtotal = subtotal;
-    if (grandtotal !== sale.grandtotal) sale.grandtotal = grandtotal;
+    if (delivery !== sale.delivery) sale.delivery = delivery;
+    if (grandtotal !== sale.grandtotal) {
+      sale.grandtotal = grandtotal;
+      sale.balance = grandtotal;
+    }
     if (paid !== sale.paid) sale.paid = paid;
-    if (balance !== sale.balance) sale.balance = balance;
+
     if (exchangeRateD !== sale.exchangeRateD)
       sale.exchangeRateD = exchangeRateD;
     if (exchangeRateT !== sale.exchangeRateT)
@@ -338,6 +345,7 @@ export async function getSale(
           description: { $first: "$description" },
           discount: { $first: "$discount" },
           subtotal: { $first: "$subtotal" },
+          delivery: { $first: "$delivery" },
           grandtotal: { $first: "$grandtotal" },
           paid: { $first: "$paid" },
           balance: { $first: "$balance" },

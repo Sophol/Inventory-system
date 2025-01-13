@@ -192,6 +192,7 @@ interface CreateSaleParams {
   balance?: number;
   exchangeRateD?: number;
   exchangeRateT?: number;
+  delivery?: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   orderStatus?: "pending" | "approved" | "completed" | "void";
   paymentStatus?: "pending" | "credit" | "completed";
