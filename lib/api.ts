@@ -3,7 +3,7 @@ import { IUser } from "@/database/user.model";
 import { fetchHandler } from "./handlers/fetch";
 
 const API_BASE_URL =
-  process.env.NEXT_PUPLIC_API_BASE_URL || "http://localhost:3000/api";
+  process.env.NEXT_PUPLIC_API_BASE_URL || "http://146.190.97.235/api";
 
 export const api = {
   auth: {
