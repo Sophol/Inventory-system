@@ -126,7 +126,6 @@ export async function createPurchase(
       } else {
         stockUpdates[stockKey] = qtySmallUnit;
       }
-      console.log("stockUpdates", stockUpdates);
       purchaseDetailDocuments.push(
         new PurchaseDetail({
           ...detail,

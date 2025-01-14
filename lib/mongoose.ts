@@ -34,6 +34,8 @@ const dbConnect = async (): Promise<Mongoose> => {
     cached.promise = mongoose
       .connect(MONGODB_URI, {
         dbName: "inventory",
+        serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+        socketTimeoutMS: 45000,
       })
       .then((result) => {
         logger.info("Connected to MongoDB");
