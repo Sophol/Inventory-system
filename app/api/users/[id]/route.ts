@@ -97,11 +97,11 @@ export async function PUT(
       phone?: string;
     } = {};
 
-    if (existingUser.name !== slugifiedUsername)
-      updatedData.name = slugifiedUsername;
+    if (existingUser.name !== name) updatedData.name = name;
     if (existingUser.image !== image) updatedData.image = image;
     if (existingUser.email !== email) updatedData.email = email;
-    if (existingUser.username !== username) updatedData.username = username;
+    if (existingUser.username !== slugifiedUsername)
+      updatedData.username = slugifiedUsername;
     if (existingUser.branch !== branch) updatedData.branch = branch;
     if (existingUser.salary !== salary) updatedData.salary = salary;
     if (existingUser.role !== role) updatedData.role = role;

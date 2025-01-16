@@ -96,7 +96,12 @@ function FormPurchaseDetail<T extends FieldValues>({
   const calculateGrandTotal = useCallback(() => {
     const subTotal = parseFloat(watch("subtotal") || "0");
     const discount = parseFloat(watch("discount") || "0");
-    const grandTotal = subTotal - discount;
+    const deliveryIn = parseFloat(watch("deliveryIn") || "0");
+    const deliveryOut = parseFloat(watch("deliveryOut") || "0");
+    const shippingFee = parseFloat(watch("shippingFee") || "0");
+    const serviceFee = parseFloat(watch("serviceFee") || "0");
+    const grandTotal =
+      subTotal + deliveryIn + deliveryOut + shippingFee + serviceFee - discount;
     setValue("grandtotal" as Path<T>, grandTotal as PathValue<T, Path<T>>);
   }, [watch, setValue]);
 
@@ -261,6 +266,36 @@ function FormPurchaseDetail<T extends FieldValues>({
         >
           <Plus className="mr-2 size-4" /> Add Unit
         </Button>
+      </div>
+      <div className="grid grid-cols-4 gap-4 md:grid-cols-4">
+        <FormInput
+          type="number"
+          name={"deliveryOut" as Path<T>}
+          control={control}
+          label="Delivery Out"
+          onChange={calculateGrandTotal}
+        />
+        <FormInput
+          type="number"
+          name={"shippingFee" as Path<T>}
+          control={control}
+          label="Shipping Fee"
+          onChange={calculateGrandTotal}
+        />
+        <FormInput
+          type="number"
+          name={"serviceFee" as Path<T>}
+          control={control}
+          label="Service Fee"
+          onChange={calculateGrandTotal}
+        />
+        <FormInput
+          type="number"
+          name={"deliveryIn" as Path<T>}
+          control={control}
+          label="Delivery In"
+          onChange={calculateGrandTotal}
+        />
       </div>
       <div className="flex items-center gap-4">
         <div className="grow text-right">

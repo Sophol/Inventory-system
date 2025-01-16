@@ -66,12 +66,6 @@ export const GeneralExpColumn: ColumnDef<GeneralExp>[] = [
     ),
   },
   {
-    accessorKey: "description",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Description" />
-    ),
-  },
-  {
     id: "actions",
     cell: ({ row }) => {
       const generalExp = row.original;

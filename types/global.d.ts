@@ -29,6 +29,16 @@ interface ProductSearchParams extends PaginatedSearchParams {
   categoryId?: string;
   branchId?: string;
 }
+interface PurchaseSearchParams extends PaginatedSearchParams {
+  supplierId?: string;
+  branchId?: string;
+  dateRange?: string;
+}
+interface SaleSearchParams extends PaginatedSearchParams {
+  customerId?: string;
+  branchId?: string;
+  dateRange?: string;
+}
 
 interface PaginatedSearchParamsInvoice {
   orderStatus?: "pending" | "approved" | "completed";
@@ -151,6 +161,10 @@ interface Purchase {
   grandtotal: number;
   paid: number;
   balance: number;
+  deliveryIn: number;
+  deliveryOut: number;
+  shippingFee: number;
+  serviceFee: number;
   exchangeRateD?: number;
   exchangeRateT?: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
@@ -245,7 +259,7 @@ interface Salary {
 }
 interface Mission {
   _id: string;
-  staffId: Types.ObjectId;
+  staffName: string;
   branch: Types.ObjectId;
   description?: string;
   missionDate: Date | string;

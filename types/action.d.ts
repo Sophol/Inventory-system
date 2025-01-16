@@ -135,6 +135,10 @@ interface CreatePurchaseParams {
   balance?: number;
   exchangeRateD?: number;
   exchangeRateT?: number;
+  deliveryIn?: number;
+  deliveryOut?: number;
+  shippingFee?: number;
+  serviceFee?: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   orderStatus?: "pending" | "approved" | "completed";
   paymentStatus?: "pending" | "credit" | "completed";
@@ -230,7 +234,7 @@ interface GetSalaryParams {
   salaryId: string;
 }
 interface CreateMissionParams {
-  staffId: string;
+  staffName: string;
   branch: string;
   description?: string;
   missionDate: Date;

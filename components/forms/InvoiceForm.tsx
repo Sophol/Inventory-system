@@ -277,11 +277,13 @@ const InvoiceForm = ({
             name="exchangeRateD"
             label="ExchangeRate Dollar"
             control={form.control}
+            type="number"
           />
           <FormInput
             name="exchangeRateT"
             label="ExchangeRate Thai"
             control={form.control}
+            type="number"
           />
         </div>
 

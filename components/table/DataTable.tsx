@@ -26,6 +26,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isNext: boolean | undefined;
+  summaryRow?: React.ReactNode;
   refreshData?: () => void;
 }
 
@@ -33,6 +34,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   isNext,
+  summaryRow,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -98,6 +100,7 @@ export function DataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             )}
+            {summaryRow}
           </TableBody>
         </Table>
       </div>

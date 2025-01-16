@@ -48,7 +48,7 @@ export async function editMission(
 
   try {
     const {
-      staffId,
+      staffName,
       branch,
       description,
       missionDate,
@@ -60,7 +60,8 @@ export async function editMission(
     if (!existingMission) {
       return handleError("Mission not found") as ErrorResponse;
     }
-    if (existingMission.staffId != staffId) existingMission.staffId = staffId;
+    if (existingMission.staffId != staffName)
+      existingMission.staffName = staffName;
     if (existingMission.branch != branch) existingMission.branch = branch;
     if (existingMission.description != description)
       existingMission.description = description;
@@ -94,14 +95,7 @@ export async function getMission(
     const { missionId } = validatedData.params!;
     const mission = await Mission.aggregate([
       { $match: { _id: new ObjectId(missionId) } },
-      {
-        $lookup: {
-          from: "users",
-          localField: "staffId",
-          foreignField: "_id",
-          as: "staff",
-        },
-      },
+
       {
         $lookup: {
           from: "branches",
@@ -110,12 +104,11 @@ export async function getMission(
           as: "branch",
         },
       },
-      { $unwind: "$staff" },
       { $unwind: "$branch" },
       {
         $project: {
           _id: 1,
-          staffId: { _id: "$staff._id", title: "$staff.username" },
+          staffName: 1,
           branch: { _id: "$branch._id", title: "$branch.title" },
           description: 1,
           missionDate: 1,
@@ -173,7 +166,6 @@ export async function getMissions(
     const [totalMissions, missions] = await Promise.all([
       Mission.countDocuments(filterQuery),
       Mission.find(filterQuery)
-        .populate("staffId", "username")
         .populate("branch", "title")
         .lean()
         .sort(sortCriteria)

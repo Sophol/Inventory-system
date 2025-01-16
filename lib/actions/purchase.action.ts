@@ -45,12 +45,20 @@ export async function createPurchase(
     purchaseDetails,
     exchangeRateD,
     exchangeRateT,
+    deliveryIn,
+    deliveryOut,
+    shippingFee,
+    serviceFee,
   } = validatedData.params!;
 
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
+    const existingPurchase = await Purchase.findOne({
+      referenceNo: referenceNo,
+    });
+    if (existingPurchase) throw new Error("Reference number already exists");
     const [purchase] = await Purchase.create(
       [
         {
@@ -69,6 +77,10 @@ export async function createPurchase(
           paymentStatus,
           exchangeRateD,
           exchangeRateT,
+          deliveryIn,
+          deliveryOut,
+          shippingFee,
+          serviceFee,
         },
       ],
       { session }
@@ -205,6 +217,10 @@ export async function editPurchase(
     purchaseDetails,
     exchangeRateD,
     exchangeRateT,
+    deliveryIn,
+    deliveryOut,
+    shippingFee,
+    serviceFee,
   } = validatedData.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -221,13 +237,17 @@ export async function editPurchase(
     if (discount !== undefined) purchase.discount = discount;
     if (subtotal !== undefined) purchase.subtotal = subtotal;
     if (grandtotal !== undefined) purchase.grandtoal = grandtotal;
-    if (paid !== undefined) purchase.paid = paid;
+    if (paid !== undefined) purchase.paid = grandtotal;
     if (balance !== undefined) purchase.balance = balance;
     if (exchangeRateD) purchase.exchangeRateD = exchangeRateD;
     if (exchangeRateT) purchase.exchangeRateT = exchangeRateT;
     if (paidBy) purchase.paidBy = paidBy;
     if (orderStatus) purchase.orderStatus = orderStatus;
     if (paymentStatus) purchase.paymentStatus = paymentStatus;
+    if (deliveryIn !== undefined) purchase.deliveryIn = deliveryIn;
+    if (deliveryOut !== undefined) purchase.deliveryOut = deliveryOut;
+    if (shippingFee !== undefined) purchase.shippingFee = shippingFee;
+    if (serviceFee !== undefined) purchase.serviceFee = serviceFee;
     await purchase.save({ session });
 
     if (purchaseDetails) {
@@ -521,6 +541,10 @@ export async function getPurchase(
           paid: { $first: "$paid" },
           balance: { $first: "$balance" },
           paidBy: { $first: "$paidBy" },
+          deliveryIn: { $first: "$deliveryIn" },
+          deliveryOut: { $first: "$deliveryOut" },
+          shippingFee: { $first: "$shippingFee" },
+          serviceFee: { $first: "$serviceFee" },
           orderStatus: { $first: "$orderStatus" },
           paymentStatus: { $first: "$paymentStatus" },
           createdAt: { $first: "$createdAt" },

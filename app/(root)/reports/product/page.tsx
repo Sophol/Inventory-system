@@ -1,7 +1,6 @@
 "use server";
 import { CiCirclePlus } from "react-icons/ci";
 
-import { ProductColumn } from "@/columns/ProductColumn";
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
 import { DataTable } from "@/components/table/DataTable";
@@ -11,6 +10,7 @@ import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import ProductSearch from "@/components/search/ProductSearch";
 import { getProductReports } from "@/lib/actions/productReport";
+import { ProductReportColumn } from "@/columns/ProductReportColumn";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -58,7 +58,7 @@ const ProductReport = async ({ searchParams }: SearchParams) => {
           empty={PRODUCT_EMPTY}
           render={() => (
             <DataTable
-              columns={ProductColumn}
+              columns={ProductReportColumn}
               data={products!}
               isNext={isNext}
             />

@@ -1,7 +1,7 @@
 import { model, models, Schema, Document, Types } from "mongoose";
 
 export interface IMission {
-  staffId: Types.ObjectId;
+  staffName: string;
   branch: Types.ObjectId;
   description: string;
   missionDate: Date;
@@ -12,7 +12,7 @@ export interface IMission {
 export interface IMissionDoc extends IMission, Document {}
 const MissionSchema = new Schema<IMission>(
   {
-    staffId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    staffName: { type: String, required: true },
     branch: { type: Schema.Types.ObjectId, ref: "Branch", required: true },
     missionDate: { type: Date, default: Date.now() },
     description: { type: String },

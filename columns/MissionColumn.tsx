@@ -15,7 +15,7 @@ import { deleteMission } from "@/lib/actions/mission.action";
 export interface Mission {
   _id: string;
   missionDate: Date;
-  staffId: { _id: string; username: string };
+  staffName: string;
   branch: { _id: string; title: string };
   amount: number;
   exchangeRateD: number;
@@ -32,14 +32,10 @@ export const MissionColumn: ColumnDef<Mission>[] = [
     cell: ({ row }) => format(new Date(row.original.missionDate), "dd/MM/yyyy"),
   },
   {
-    accessorKey: "staffId",
+    accessorKey: "staffName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Staff" />
     ),
-    cell: ({ row }) => {
-      const user = row.original;
-      return <span>{user.staffId.username}</span>;
-    },
   },
   {
     accessorKey: "branch",
@@ -67,12 +63,6 @@ export const MissionColumn: ColumnDef<Mission>[] = [
     accessorKey: "exchangeRateT",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Exchange Rate Thai" />
-    ),
-  },
-  {
-    accessorKey: "description",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Description" />
     ),
   },
   {

@@ -13,6 +13,10 @@ export interface IPurchase {
   exchangeRateT: number;
   paid: number;
   balance: number;
+  deliveryIn: number;
+  deliveryOut: number;
+  shippingFee: number;
+  serviceFee: number;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   orderStatus: "pending" | "approved" | "completed";
   paymentStatus: "pending" | "credit" | "completed";
@@ -32,6 +36,10 @@ const PurchaseSchema = new Schema<IPurchase>(
     exchangeRateT: { type: Number, default: 0 },
     paid: { type: Number, default: 0 },
     balance: { type: Number, default: 0 },
+    deliveryIn: { type: Number, default: 0 },
+    deliveryOut: { type: Number, default: 0 },
+    serviceFee: { type: Number, default: 0 },
+    shippingFee: { type: Number, default: 0 },
     paidBy: {
       type: String,
       enum: ["Cash", "ABA Bank", "ACLEDA Bank", "Others"],

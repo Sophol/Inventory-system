@@ -11,6 +11,16 @@ export const ProductSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   categoryId: z.string().optional(),
   branchId: z.string().optional(),
 });
+export const PurchaseSearchParamsSchema = PaginatedSearchParamsSchema.extend({
+  supplierId: z.string().optional(),
+  branchId: z.string().optional(),
+  dateRange: z.string().optional(),
+});
+export const SaleSearchParamsSchema = PaginatedSearchParamsSchema.extend({
+  customerId: z.string().optional(),
+  branchId: z.string().optional(),
+  dateRange: z.string().optional(),
+});
 export const SignInSchema = z.object({
   email: z
     .string()
@@ -243,6 +253,10 @@ export const CreatePurchaseSchema = z.object({
   balance: z.number().min(0).default(0),
   exchangeRateD: z.number().min(0).default(0),
   exchangeRateT: z.number().min(0).default(0),
+  deliveryIn: z.number().min(0).default(0),
+  deliveryOut: z.number().min(0).default(0),
+  shippingFee: z.number().min(0).default(0),
+  serviceFee: z.number().min(0).default(0),
   paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]).optional(),
   orderStatus: z.enum(["pending", "approved", "completed"]).default("pending"),
   paymentStatus: z.enum(["pending", "credit", "completed"]).default("pending"),
@@ -347,7 +361,7 @@ export const GetSalarySchema = z.object({
 });
 
 export const CreateMissionSchema = z.object({
-  staffId: z.string().min(1, { message: "Staff ID is required." }),
+  staffName: z.string().min(1, { message: "Staff Name is required." }),
   branch: z.string().min(1, { message: "Branch ID is required." }),
   description: z.string().optional(),
   missionDate: z.date().default(new Date()),

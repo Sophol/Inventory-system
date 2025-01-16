@@ -54,6 +54,10 @@ const PurchaseForm = ({
       discount: purchase?.discount || 0,
       subtotal: purchase?.subtotal || 0,
       grandtotal: purchase?.grandtotal || 0,
+      deliveryIn: purchase?.deliveryIn || 0,
+      deliveryOut: purchase?.deliveryOut || 0,
+      shippingFee: purchase?.shippingFee || 0,
+      serviceFee: purchase?.serviceFee || 0,
       exchangeRateD: purchase?.exchangeRateD || exchangeRateD || 0,
       exchangeRateT: purchase?.exchangeRateT || exchangeRateT || 0,
       paid: purchase?.paid || 0,
@@ -276,11 +280,13 @@ const PurchaseForm = ({
             name="exchangeRateD"
             label="ExchangeRate Dollar"
             control={form.control}
+            type="number"
           />
           <FormInput
             name="exchangeRateT"
             label="ExchangeRate Thai"
             control={form.control}
+            type="number"
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-1">

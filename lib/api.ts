@@ -1,10 +1,9 @@
 import { IAccount } from "@/database/account.model";
 import { IUser } from "@/database/user.model";
 import { fetchHandler } from "./handlers/fetch";
-
 const API_BASE_URL =
   process.env.NEXT_PUPLIC_API_BASE_URL || "http://146.190.97.235/api";
-
+console.log("aa", API_BASE_URL);
 export const api = {
   auth: {
     oAuthSignIn: ({

@@ -16,7 +16,6 @@ import FormDatePicker from "../formInputs/FormDatePicker";
 import FormInput from "../formInputs/FormInput";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
-import { getStaffs } from "@/lib/actions/user.action";
 import { Types } from "mongoose";
 import { createMission, editMission } from "@/lib/actions/mission.action";
 
@@ -38,7 +37,7 @@ const MissionForm = ({
   const form = useForm<z.infer<typeof CreateMissionSchema>>({
     resolver: zodResolver(CreateMissionSchema),
     defaultValues: {
-      staffId: mission?.staffId._id || new Types.ObjectId(),
+      staffName: mission?.staffName || "",
       branch: mission?.branch._id || new Types.ObjectId(),
       description: mission?.description || "",
       missionDate: mission?.missionDate
@@ -109,28 +108,6 @@ const MissionForm = ({
     }
     return { data: [], isNext: false };
   };
-  const fetchStaffs = async ({
-    page,
-    query,
-  }: {
-    page: number;
-    query: string;
-  }) => {
-    const { success, data } = await getStaffs({
-      page: Number(page) || 1,
-      pageSize: 10,
-      query: query || "",
-    });
-    if (success) {
-      const users =
-        data?.users.map((user) => ({
-          _id: user._id,
-          title: user.username,
-        })) || [];
-      return { data: users, isNext: data?.isNext || false };
-    }
-    return { data: [], isNext: false };
-  };
 
   return (
     <Form {...form}>
@@ -139,14 +116,10 @@ const MissionForm = ({
         onSubmit={form.handleSubmit(handleCreateMission)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <FormCombobox
+          <FormInput
+            name="staffName"
+            label="Staff Name"
             control={form.control}
-            name="staffId"
-            label="Staff"
-            placeholder="Select Staff"
-            fetchSingleItem={mission ? mission.staffId : null}
-            fetchData={fetchStaffs}
-            setValue={form.setValue}
           />
           <FormCombobox
             control={form.control}
