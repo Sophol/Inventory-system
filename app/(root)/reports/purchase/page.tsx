@@ -14,7 +14,7 @@ import { getPurchaseReports } from "@/lib/actions/purchaseReport";
 import { TableCell, TableRow } from "@/components/ui/table";
 
 interface SearchParams {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string }>;
 }
 
 const PurchaseReport = async ({ searchParams }: SearchParams) => {
@@ -24,7 +24,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
   }
 
   const { page, pageSize, query, filter, supplierId, branchId, dateRange } =
-    searchParams;
+    await searchParams;
   const { success, data, error } = await getPurchaseReports({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
@@ -40,6 +40,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
     summary: { count: 0, totalGrandtotal: 0 },
     isNext: false,
   };
+
   const summaryRow = (
     <TableRow>
       <TableCell colSpan={3} className="text-right">
@@ -50,6 +51,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
       </TableCell>
     </TableRow>
   );
+
   return (
     <CardContainer
       title="Purchase"

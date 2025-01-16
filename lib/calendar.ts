@@ -1,31 +1,7 @@
-import { DateRange } from 'react-day-picker';
-import { Booking } from '@/utils/types';
-
+import { DateRange } from "react-day-picker";
 export const defaultSelected: DateRange = {
   from: undefined,
   to: undefined,
-};
-
-export const generateBlockedPeriods = ({
-  bookings,
-  today,
-}: {
-  bookings: Booking[];
-  today: Date;
-}) => {
-  today.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000
-
-  const disabledDays: DateRange[] = [
-    ...bookings.map((booking) => ({
-      from: booking.checkIn,
-      to: booking.checkOut,
-    })),
-    {
-      from: new Date(0), // This is 01 January 1970 00:00:00 UTC.
-      to: new Date(today.getTime() - 24 * 60 * 60 * 1000), // This is yesterday.
-    },
-  ];
-  return disabledDays;
 };
 
 export const generateDateRange = (range: DateRange | undefined): string[] => {
@@ -36,7 +12,7 @@ export const generateDateRange = (range: DateRange | undefined): string[] => {
   const dateRange: string[] = [];
 
   while (currentDate <= endDate) {
-    const dateString = currentDate.toISOString().split('T')[0];
+    const dateString = currentDate.toISOString().split("T")[0];
     dateRange.push(dateString);
     currentDate.setDate(currentDate.getDate() + 1);
   }
@@ -64,7 +40,7 @@ export const generateDisabledDates = (
         currentDate.setDate(currentDate.getDate() + 1);
         continue;
       }
-      const dateString = currentDate.toISOString().split('T')[0];
+      const dateString = currentDate.toISOString().split("T")[0];
       disabledDates[dateString] = true;
       currentDate.setDate(currentDate.getDate() + 1);
     }
