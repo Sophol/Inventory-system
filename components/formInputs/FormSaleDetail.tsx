@@ -39,14 +39,12 @@ interface FormSaleDetailProps<T extends FieldValues> {
     query: string;
     parentId?: string;
   }) => Promise<{ data: SelectData[]; isNext: boolean }>;
-
   fetchProductDetails: (
     productId: string
   ) => Promise<{ data: SelectData[]; isNext: boolean }>;
   name: ArrayPath<T>;
   defaultValue?: string;
 }
-
 function FormSaleDetail<T extends FieldValues>({
   control,
   setValue,
@@ -91,7 +89,6 @@ function FormSaleDetail<T extends FieldValues>({
   }, [append]);
 
   const calculateSubTotal = useCallback(() => {
-    console.log("fields", fields);
     const subTotal = fields.reduce((acc, _, index) => {
       const totalPrice = parseFloat(
         watch(`saleDetails.${index}.totalPrice`) || "0"
@@ -144,7 +141,6 @@ function FormSaleDetail<T extends FieldValues>({
         const productDetails = await fetchProductDetails(productId);
         setUnits(Array.isArray(productDetails.data) ? productDetails.data : []);
         calculateTotal(index);
-        // Update the selectedProducts state
         setSelectedProducts((prev) => ({
           ...prev,
           [index]: productId,
@@ -160,9 +156,8 @@ function FormSaleDetail<T extends FieldValues>({
     async (index: number, unitId: string) => {
       if (unitId) {
         const unit = units.find((unit) => unit._id === unitId);
-        console.log("price", unit?.price);
         if (unit) {
-          const saleType = watch("saleType"); // Watch the saleType value
+          const saleType = watch("saleType");
 
           if (saleType === "wholesale") {
             setValue(
@@ -175,7 +170,6 @@ function FormSaleDetail<T extends FieldValues>({
               unit.price as unknown as PathValue<T, Path<T>>
             );
           }
-          console.log(unit.cost);
           setValue(
             `saleDetails.${index}.cost` as Path<T>,
             unit.cost as unknown as PathValue<T, Path<T>>
@@ -186,49 +180,62 @@ function FormSaleDetail<T extends FieldValues>({
     },
     [units, setValue, calculateTotal, watch]
   );
+
   const saleTypeData: SelectData[] = [
     { _id: "retail", title: "Retail" },
     { _id: "wholesale", title: "Whole Sale" },
   ];
+
   return (
-    <div className="flex flex-col justify-start gap-4">
-      <div className="flex items-center gap-4 w-36">
-        <FormSelect
-          name={"saleType" as Path<T>}
-          items={saleTypeData}
-          label="Sale Type"
-          defaultValue={defaultValue}
-          control={control}
-        />
+    <div className="flex flex-col justify-start gap-3 text-sm md:text-base">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <div className="w-full md:w-60">
+          <FormSelect
+            name={"saleType" as Path<T>}
+            items={saleTypeData}
+            label="Sale Type"
+            defaultValue={defaultValue}
+            control={control}
+          />
+        </div>
+        <Button
+          type="button"
+          className="bg-green-600 hover:bg-green-500 text-white flex items-center justify-center w-full md:w-40 sm:mt-0 sm:mb-3 md:mb-0  md:mt-5"
+          onClick={handleAddUnit}
+        >
+          <Plus className="mr-2 size-4" /> Add Unit
+        </Button>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-11">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-11"> {/* Adjusted grid for smaller screens */}
         {fields.map((field, index) => {
           const selectedProduct = selectedProducts[index];
           return (
             <React.Fragment key={field.id}>
-              <div className="col-span-2 md:col-span-3">
+              <div className="col-span-2 sm:col-span-1 md:col-span-3">
                 <Input type="hidden" value={field.id} disabled />
                 <FormCombobox
                   control={control}
                   name={`${name}.${index}.product` as Path<T>}
-                  label="Product"
+                  label={"Product"}
                   placeholder="Select Product"
                   fetchSingleItem={(field as any).selectedProduct}
                   fetchData={fetchProducts}
+           
                   setValue={(name, value) => {
                     setValue(name, value);
                     handleProductChange(index, value as string);
                   }}
                 />
               </div>
-              <div className="col-span-2 md:col-span-2">
+              <div className="col-span-2 sm:col-span-1 md:col-span-2">
                 <FormCombobox
                   control={control}
                   name={`${name}.${index}.unit` as Path<T>}
-                  label="Unit"
+                  label={"Unit"}
                   placeholder="Select unit"
                   fetchSingleItem={(field as any).selectedUnit}
                   parentId={selectedProduct}
+          
                   fetchData={(params) =>
                     fetchUnits({ ...params, parentId: selectedProduct })
                   }
@@ -241,118 +248,110 @@ function FormSaleDetail<T extends FieldValues>({
               <FormInput
                 type="number"
                 name={`${name}.${index}.qty` as Path<T>}
-                label="Qty"
+                label={"Qty"}
                 control={control}
                 onChange={() => calculateTotal(index)}
               />
-              <div className="col-span-1 md:col-span-2">
+              <div className={`col-span-2 sm:col-span-2 md:col-span-2`} >
                 <FormInput
                   type="number"
                   name={`${name}.${index}.price` as Path<T>}
-                  label="Price"
+                  label={"Price"}
                   control={control}
                   onChange={() => calculateTotal(index)}
+                  
                 />
                 <FormInput
                   type="hidden"
                   name={`${name}.${index}.cost` as Path<T>}
-                  label="Total"
                   control={control}
-                  readonly={true}
                 />
               </div>
-              <div className="col-span-2 md:col-span-2">
+              <div className={`col-span-2 sm:col-span-1 md:col-span-2`}>
                 <FormInput
                   type="number"
                   name={`${name}.${index}.totalPrice` as Path<T>}
-                  label="Total"
+                  label={ "Total"}
                   control={control}
                   readonly={true}
                 />
               </div>
-              <div className="col-span-1 md:col-end-auto">
+              <div className="col-span-2 md:col-span-1 flex flex-col justify-end md:col-end-auto w-full sm:w-full mt-3">
                 <Button
                   type="button"
-                  variant="ghost"
+                  variant="outline"
                   size="icon"
                   onClick={() => remove(index)}
                   disabled={index === 0}
-                  className="mt-7"
+                  className="w-full text-red-600 border-red-300 hover:bg-red-50 hover:border-red-500 flex items-center gap-2"
                   aria-label={`Remove sale detail ${index + 1}`}
                 >
-                  <Trash2 className="h-4 w-4 text-red-500" />
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
+
             </React.Fragment>
           );
         })}
       </div>
-      <div className="flex justify-start">
-        <Button
-          type="button"
-          className="bg-green-600 hover:bg-green-500 text-white"
-          onClick={handleAddUnit}
-        >
-          <Plus className="mr-2 size-4" /> Add Unit
-        </Button>
-      </div>
-      <div className="flex items-center gap-4">
+
+
+      <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="">Sub Total</label>
+          <label className="text-sm">Sub Total</label>
         </div>
-        <div className="flex w-[295px]">
+        <div className="flex w-full sm:w-[275px]">
           <FormInput
             type="number"
             name={"subtotal" as Path<T>}
             control={control}
             readonly={true}
           />
-          <div className="w-14 flex-none"></div>
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="">Discount</label>
+          <label className="text-sm">Discount</label>
         </div>
-        <div className="flex w-[295px]">
+        <div className="flex w-full sm:w-[275px]">
           <FormInput
             type="number"
             name={"discount" as Path<T>}
             control={control}
             onChange={calculateGrandTotal}
           />
-          <div className="w-14 flex-none"></div>
         </div>
       </div>
-      <div className="flex items-center gap-4">
+
+      <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="">Delivery</label>
+          <label className="text-sm">Delivery</label>
         </div>
-        <div className="flex w-[295px]">
+        <div className="flex w-full sm:w-[275px]">
           <FormInput
             type="number"
             name={"delivery" as Path<T>}
             control={control}
             onChange={calculateGrandTotal}
           />
-          <div className="w-14 flex-none"></div>
         </div>
       </div>
-      <div className="flex items-center gap-4">
+
+      <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="">Grand Total</label>
+          <label className="text-sm">Grand Total</label>
         </div>
-        <div className="flex w-[295px]">
+        <div className="flex w-full sm:w-[275px]">
           <FormInput
             type="number"
             name={"grandtotal" as Path<T>}
             control={control}
             readonly={true}
           />
-          <div className="w-14 flex-none"></div>
         </div>
       </div>
+
     </div>
   );
 }

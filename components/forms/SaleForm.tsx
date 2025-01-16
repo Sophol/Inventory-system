@@ -254,10 +254,10 @@ const SaleForm = ({
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-8"
+        className="flex flex-col gap-4 text-sm" 
         onSubmit={form.handleSubmit(handleCreateSale)}
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3"> 
           <FormInput
             name="referenceNo"
             label="Reference No"
@@ -270,7 +270,7 @@ const SaleForm = ({
             placeholder="Select Customer"
             fetchSingleItem={sale ? sale.customer : null}
             fetchData={fetchCustomers}
-            setValue={form.setValue} // Replace with actual customer data
+            setValue={form.setValue}
           />
           <FormCombobox
             control={form.control}
@@ -279,10 +279,10 @@ const SaleForm = ({
             placeholder="Select Branch"
             fetchSingleItem={sale ? sale.branch : null}
             fetchData={fetchBranches}
-            setValue={form.setValue} // Replace with actual branch data
+            setValue={form.setValue}
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
           <FormDatePicker
             name="orderDate"
             label="Order Date"
@@ -302,8 +302,7 @@ const SaleForm = ({
             type="number"
           />
         </div>
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-1"> 
           <FormInput
             name="description"
             label="Description"
@@ -312,12 +311,12 @@ const SaleForm = ({
           />
         </div>
         <div className="grid grid-cols-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Product</CardTitle>
+          <Card className="text-sm">
+            <CardHeader className="pt-4 pb-2 text-lg">
+              <CardTitle className="py-0">Product</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="container mx-auto py-4">
+              <div className="container mx-auto py-2">
                 <FormSaleDetail
                   name="saleDetails"
                   control={form.control}
@@ -335,7 +334,7 @@ const SaleForm = ({
           <Button
             type="submit"
             disabled={isPending}
-            className="primary-gradient w-fit uppercase !text-light-900"
+            className="primary-gradient w-fit uppercase !text-light-900 text-sm"
           >
             {isPending ? (
               <>
