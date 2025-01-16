@@ -73,7 +73,7 @@ export function convertFromSmallUnitQty(
   for (const unit of units) {
     const unitQty = Math.floor(remainingQty / unit.qty);
     if (unitQty > 0) {
-      result.push(`${unitQty} ${unit.unitTitle}${unitQty > 1 ? "s" : ""}`);
+      result.push(`${unitQty} ${unit.unitTitle}`);
       remainingQty %= unit.qty;
     }
   }
