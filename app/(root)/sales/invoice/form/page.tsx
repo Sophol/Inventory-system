@@ -3,7 +3,6 @@ import { IoCaretBackOutline } from "react-icons/io5";
 import CardContainer from "@/components/cards/CardContainer";
 import ROUTES from "@/constants/routes";
 import { getSetting } from "@/lib/actions/setting.action";
-import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
 import InvoiceForm from "@/components/forms/InvoiceForm";
 import { checkAuthorization } from "@/lib/auth";

@@ -48,19 +48,37 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader column={column} title="Branch" />
     ),
   },
-  {
-    accessorKey: "subtotal",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Sub Total" />
-    ),
-  },
+
   {
     accessorKey: "grandtotal",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Grand Total" />
     ),
   },
-
+  {
+    accessorKey: "discount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Discount" />
+    ),
+  },
+  {
+    accessorKey: "delivery",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Delivery" />
+    ),
+  },
+  {
+    accessorKey: "paid",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Paid" />
+    ),
+  },
+  {
+    accessorKey: "balance",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Balance" />
+    ),
+  },
   {
     accessorKey: "orderStatus",
     header: ({ column }) => (

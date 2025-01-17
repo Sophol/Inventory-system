@@ -46,7 +46,7 @@ const Salary = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary.totalAmount}</strong>
+        <strong>{summary?.totalAmount}</strong>
       </TableCell>
     </TableRow>
   );

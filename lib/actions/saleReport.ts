@@ -1,9 +1,9 @@
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { SaleSearchParamsSchema } from "../validations";
 import { Sale } from "@/database";
-
+const ObjectId = mongoose.Types.ObjectId;
 export async function getSaleReports(params: SaleSearchParams): Promise<
   ActionResponse<{
     sales: Sale[];
@@ -47,11 +47,11 @@ export async function getSaleReports(params: SaleSearchParams): Promise<
     ];
   }
   if (customerId) {
-    filterQuery.customer = customerId;
+    filterQuery.customer = new ObjectId(customerId);
   }
 
   if (branchId) {
-    filterQuery.branch = branchId;
+    filterQuery.branch = new ObjectId(branchId);
   }
 
   if (dateRange) {

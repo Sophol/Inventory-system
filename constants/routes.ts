@@ -33,6 +33,7 @@ const ROUTES = {
   SALES: "/sales/order",
   ADDSALE: "/sales/order/form",
   SALE: (_id: string) => `/sales/order/${_id}`,
+  APPROVEDSALES: "/sales/approved",
   APPROVEDSALE: (_id: string) => `/sales/approved/${_id}`,
   ADDINVOICE: "/sales/invoice/form",
   INVOICES: "/sales/invoice",

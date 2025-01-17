@@ -14,7 +14,6 @@ import ButtonApproveOrder from "@/components/formInputs/ButtonApproveOrder";
 import { deleteSale, updateOrderStatus } from "@/lib/actions/sale.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
-import { auth } from "@/auth";
 import { useEffect, useState } from "react";
 import { getUserRole } from "@/lib/actions/user.action";
 
@@ -60,7 +59,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("orderDate") as string;
-      const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
+      const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss "); // Customize format as needed
       return <span>{formattedDate}</span>;
     },
   },

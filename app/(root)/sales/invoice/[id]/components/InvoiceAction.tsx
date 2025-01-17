@@ -40,7 +40,9 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
   };
 
   const handlePrintWithLogo = () => {
-    const printableArea = document.querySelector(".printable-area") as HTMLElement;
+    const printableArea = document.querySelector(
+      ".printable-area"
+    ) as HTMLElement;
     const logo = document.querySelector(".logo") as HTMLElement;
 
     if (!printableArea) return;
@@ -54,7 +56,6 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
     // After printing, remove the temporary class to hide the logo again
     if (logo) logo.classList.remove("show-logo");
   };
-
 
   const handlePrintWithoutLogo = () => {
     const logo = document.querySelector(".logo") as HTMLElement;
@@ -133,7 +134,7 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
         <div className="flex gap-2">
           <Button
             onClick={handleCallInvoice}
-            disabled={updatedInvoice.paymentStatus === "pending"}
+            disabled={updatedInvoice.paid === 0}
             className="w-full rounded bg-blue-400 px-4 py-2 text-white hover:bg-blue-500"
           >
             <FaHistory className="cursor-pointer text-xl" />
@@ -154,41 +155,40 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
           />
         )}
 
-<div className="flex gap-2">
-      {/* Direct download buttons */}
-      <Button
-        onClick={handleDownloadWithLogo}
-        className="w-1/2 rounded bg-green-400 px-4 py-2 text-white hover:bg-green-500"
-      >
-        <FaCloudDownloadAlt className="cursor-pointer text-xl" /> Logo
-      </Button>
-      <Button
-        onClick={handleDownloadWithoutLogo}
-        className="w-1/2 rounded bg-red-400 px-4 py-2 text-white hover:bg-red-500"
-      >
-         <FaCloudDownloadAlt className="cursor-pointer text-xl" /> No Logo
-      </Button>
-    </div>
+        <div className="flex gap-2">
+          {/* Direct download buttons */}
+          <Button
+            onClick={handleDownloadWithLogo}
+            className="w-1/2 rounded bg-green-400 px-4 py-2 text-white hover:bg-green-500"
+          >
+            <FaCloudDownloadAlt className="cursor-pointer text-xl" /> Logo
+          </Button>
+          <Button
+            onClick={handleDownloadWithoutLogo}
+            className="w-1/2 rounded bg-red-400 px-4 py-2 text-white hover:bg-red-500"
+          >
+            <FaCloudDownloadAlt className="cursor-pointer text-xl" /> No Logo
+          </Button>
+        </div>
 
         <div className="flex gap-4">
           <Button
             onClick={handlePrintWithLogo}
             className="w-full rounded bg-green-400 px-4 py-2 text-white hover:bg-green-500"
           >
-              <FaPrint className="cursor-pointer text-xl" />  Logo
+            <FaPrint className="cursor-pointer text-xl" /> Logo
           </Button>
           <Button
             onClick={handlePrintWithoutLogo}
             className="w-full rounded bg-red-400 px-4 py-2 text-white hover:bg-red-500"
           >
-              <FaPrint className="cursor-pointer text-xl" />  No Logo
+            <FaPrint className="cursor-pointer text-xl" /> No Logo
           </Button>
         </div>
 
         <PaymentDrawer sale={invoice} onClose={handleDrawerClose} />
       </div>
     </div>
-
   );
 };
 

@@ -7,10 +7,12 @@ import LocalSearch from "@/components/search/LocalSearch";
 import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { SALE_EMPTY } from "@/constants/states";
-import { getOrders } from "@/lib/actions/sale.action";
 import { CiCirclePlus } from "react-icons/ci";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { getInvoices } from "@/lib/actions/invoice.action";
+import { TableCell, TableRow } from "@/components/ui/table";
+import SaleSearch from "@/components/search/SaleSearch";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -21,15 +23,53 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
   if (!isAuthorized) {
     return redirect("/unauthorized");
   }
-  const { page, pageSize, query, filter } = await searchParams;
-  const { success, data, error } = await getOrders({
-    orderStatus: "completed",
+  const { page, pageSize, query, filter, customerId, branchId, dateRange } =
+    await searchParams;
+  const { success, data, error } = await getInvoices({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query || "",
     filter: filter || "",
+    customerId: customerId || "",
+    branchId: branchId || "",
+    dateRange: dateRange || "",
   });
-  const { sales, isNext } = data || ({} as { sales: Sale[]; isNext: boolean });
+  const { sales, summary, isNext } =
+    data ||
+    ({} as {
+      sales: Sale[];
+      summary: {
+        count: 0;
+        totalGrandtotal: 0;
+        totalDiscount: 0;
+        totalDelivery: 0;
+        totalPaid: 0;
+        totalBalance: 0;
+      };
+      isNext: boolean;
+    });
+  const summaryRow = (
+    <TableRow>
+      <TableCell colSpan={4} className="text-right">
+        <strong>Total:</strong>
+      </TableCell>
+      <TableCell>
+        <strong>{summary.totalGrandtotal}</strong>
+      </TableCell>
+      <TableCell>
+        <strong>{summary.totalDiscount}</strong>
+      </TableCell>
+      <TableCell>
+        <strong>{summary.totalDelivery}</strong>
+      </TableCell>
+      <TableCell>
+        <strong>{summary.totalPaid}</strong>
+      </TableCell>
+      <TableCell>
+        <strong>{summary.totalBalance}</strong>
+      </TableCell>
+    </TableRow>
+  );
   return (
     <CardContainer
       title="Invoice"
@@ -40,7 +80,7 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
     >
       <>
         <div className="py-4">
-          <LocalSearch route={ROUTES.SALES} placeholder="Search..." />
+          <SaleSearch route={ROUTES.SALES} />
         </div>
         <DataRenderer
           success={success}
@@ -48,7 +88,12 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
           data={sales}
           empty={SALE_EMPTY}
           render={() => (
-            <DataTable columns={SaleColumn} data={sales!} isNext={isNext} />
+            <DataTable
+              columns={SaleColumn}
+              data={sales!}
+              summaryRow={summaryRow}
+              isNext={isNext}
+            />
           )}
         />
       </>

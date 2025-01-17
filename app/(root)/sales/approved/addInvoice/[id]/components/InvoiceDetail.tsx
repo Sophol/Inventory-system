@@ -86,7 +86,7 @@ const InvoiceDetail = ({
         <div className="sale-details bg-white rounded-lg shadow-sm">
           <div className="flex gap-4 border-b pb-4 px-7  ">
             <p className="w-2/6">ITEM</p>
-            <p className="w-2/6">COST</p>
+            <p className="w-2/6">PRICE</p>
             <p className="w-1/6">QTY</p>
             <p className="w-1/6">TOTAL</p>
           </div>

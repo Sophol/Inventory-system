@@ -29,9 +29,7 @@ export function DataTablePagination<TData>({
   const page = searchParams.get("page");
   const pageSize = searchParams.get("pageSize");
   const currentPage = page ? parseInt(page) : 1;
-  const currentPageSize = pageSize
-    ? parseInt(pageSize)
-    : table.getState().pagination.pageSize;
+  const currentPageSize = pageSize ? parseInt(pageSize) : 10;
 
   const handleNavigation = (type: string) => {
     const nextPageNumber = type === "prev" ? currentPage - 1 : currentPage + 1;

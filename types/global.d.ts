@@ -288,7 +288,7 @@ interface Payment {
   branch: string;
   sale: string;
   referenceNo: string;
-  paymentDate: string;
+  paymentDate: Date;
   creditAmount: number;
   paidAmount: number;
   balance: number;

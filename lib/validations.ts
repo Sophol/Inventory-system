@@ -407,7 +407,7 @@ export const CreatePaymentSchema = z
     branch: z.string().min(1, "Branch is required"),
     referenceNo: z.string().min(1, "Reference number is required"),
     description: z.string().optional(),
-    paymentDate: z.string().min(1, "Payment date is required"),
+    paymentDate: z.date().default(new Date()),
     creditAmount: z.number().min(0, "Credit amount must be a positive number"),
     paidAmount: z.number().min(0.01, "Paid amount must be a positive number"),
     balance: z.number().min(0, "Balance must be a positive number"),

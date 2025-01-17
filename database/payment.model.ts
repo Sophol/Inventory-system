@@ -6,7 +6,7 @@ export interface IPayment {
   sale: Types.ObjectId;
   referenceNo: string;
   description: string;
-  paymentDate: any;
+  paymentDate: Date;
   creditAmount: number;
   paidAmount: number;
   balance: number;

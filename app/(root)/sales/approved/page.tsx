@@ -3,25 +3,57 @@ import React from "react";
 import { SaleColumn } from "@/columns/OrderApproveColumn";
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
-import LocalSearch from "@/components/search/LocalSearch";
 import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { SALE_EMPTY } from "@/constants/states";
 import { getApprovedOrder } from "@/lib/actions/sale.action";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { checkAuthorization } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import SaleSearch from "@/components/search/SaleSearch";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
 const ApprovedOrder = async ({ searchParams }: SearchParams) => {
-  const { page, pageSize, query, filter } = await searchParams;
+  const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
+  if (!isAuthorized) {
+    return redirect("/unauthorized");
+  }
+  const { page, pageSize, query, filter, customerId, branchId, dateRange } =
+    await searchParams;
   const { success, data, error } = await getApprovedOrder({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query || "",
     filter: filter || "",
+    customerId: customerId || "",
+    branchId: branchId || "",
+    dateRange: dateRange || "",
   });
-  const { sales, isNext } = data || ({} as { sales: Sale[]; isNext: boolean });
+  const { sales, summary, isNext } =
+    data ||
+    ({} as {
+      sales: Sale[];
+      summary: {
+        count: 0;
+        totalGrandtotal: 0;
+        totalDiscount: 0;
+        totalDelivery: 0;
+      };
+      isNext: boolean;
+    });
+  const summaryRow = (
+    <TableRow>
+      <TableCell colSpan={4} className="text-right">
+        <strong>Total:</strong>
+      </TableCell>
+      <TableCell>
+        <strong>{summary?.totalGrandtotal}</strong>
+      </TableCell>
+    </TableRow>
+  );
   return (
     <CardContainer
       title="Approved Order"
@@ -32,7 +64,7 @@ const ApprovedOrder = async ({ searchParams }: SearchParams) => {
     >
       <>
         <div className="py-4">
-          <LocalSearch route={ROUTES.SALES} placeholder="Search..." />
+          <SaleSearch route={ROUTES.APPROVEDSALES} />
         </div>
         <DataRenderer
           success={success}
@@ -40,7 +72,12 @@ const ApprovedOrder = async ({ searchParams }: SearchParams) => {
           data={sales}
           empty={SALE_EMPTY}
           render={() => (
-            <DataTable columns={SaleColumn} data={sales!} isNext={isNext} />
+            <DataTable
+              columns={SaleColumn}
+              data={sales!}
+              summaryRow={summaryRow}
+              isNext={isNext}
+            />
           )}
         />
       </>

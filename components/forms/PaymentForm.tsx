@@ -32,13 +32,8 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
       branch: sale?.branch._id,
       referenceNo: sale?.referenceNo,
       description: payment?.description || "",
-      paymentDate: payment?.paymentDate || new Date().toISOString(),
-      creditAmount:
-        payment && payment.creditAmount !== undefined
-          ? payment.creditAmount
-          : sale && sale.balance !== undefined && sale.paid !== undefined
-            ? sale.balance - sale.paid
-            : 0,
+      paymentDate: payment?.paymentDate || new Date(),
+      creditAmount: sale?.balance || 0,
       paidAmount: 0,
       balance: sale?.balance,
       paidBy: sale?.paidBy || "Cash",
@@ -54,13 +49,8 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
         branch: sale?.branch._id,
         referenceNo: sale?.referenceNo,
         description: payment?.description || "",
-        paymentDate: payment?.paymentDate || new Date().toISOString(),
-        creditAmount:
-          payment && payment.creditAmount !== undefined
-            ? payment.creditAmount
-            : sale && sale.balance !== undefined && sale.paid !== undefined
-              ? sale.balance - sale.paid
-              : 0,
+        paymentDate: payment?.paymentDate || new Date(),
+        creditAmount: sale.balance || 0,
         paidAmount: 0,
         balance: sale?.balance || 0,
         paidBy: sale?.paidBy || "Cash",

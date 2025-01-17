@@ -14,6 +14,7 @@ import {
   GetSaleSchema,
   PaginatedSearchParamsSchema,
   PaginatedSearchParamsInvoiceSchema,
+  SaleSearchParamsSchema,
 } from "../validations";
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -491,18 +492,34 @@ export async function getOrders(
   }
 }
 
-export async function getApprovedOrder(
-  params: PaginatedSearchParams
-): Promise<ActionResponse<{ sales: Sale[]; isNext: boolean }>> {
+export async function getApprovedOrder(params: SaleSearchParams): Promise<
+  ActionResponse<{
+    sales: Sale[];
+    summary: {
+      totalGrandtotal: 0;
+      totalDiscount: 0;
+      totalDelivery: 0;
+    };
+    isNext: boolean;
+  }>
+> {
   const validatedData = await action({
     params,
-    schema: PaginatedSearchParamsSchema,
+    schema: SaleSearchParamsSchema,
     authorize: true,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { page = 1, pageSize = 10, query, filter } = params;
+  const {
+    page = 1,
+    pageSize = 10,
+    query,
+    filter,
+    customerId,
+    branchId,
+    dateRange,
+  } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   const filterQuery: FilterQuery<typeof Sale> = { orderStatus: "approved" };
@@ -514,6 +531,21 @@ export async function getApprovedOrder(
       { paymentStatus: { $regex: new RegExp(query, "i") } },
     ];
   }
+  if (customerId) {
+    filterQuery.customer = new ObjectId(customerId);
+  }
+
+  if (branchId) {
+    filterQuery.branch = new ObjectId(branchId);
+  }
+
+  if (dateRange) {
+    const [from, to] = dateRange.split("_");
+    filterQuery.approvedDate = {
+      $gte: new Date(from),
+      $lte: new Date(to),
+    };
+  }
   let sortCriteria = {};
 
   switch (filter) {
@@ -532,7 +564,18 @@ export async function getApprovedOrder(
   }
   try {
     const [totalSales, sales] = await Promise.all([
-      Sale.countDocuments(filterQuery),
+      Sale.aggregate([
+        { $match: filterQuery },
+        {
+          $group: {
+            _id: null,
+            count: { $sum: 1 },
+            grandtotal: { $sum: "$grandtotal" },
+            discount: { $sum: "$discount" },
+            delivery: { $sum: "$delivery" },
+          },
+        },
+      ]),
       Sale.find(filterQuery)
         .populate("customer", "name")
         .populate("branch", "title")
@@ -541,29 +584,57 @@ export async function getApprovedOrder(
         .skip(skip)
         .limit(limit),
     ]);
-    console.log(sales);
-    const isNext = totalSales > skip + sales.length;
+    const count = totalSales[0]?.count || 0;
+    const totalGrandtotal = totalSales[0]?.grandtotal || 0;
+    const totalDiscount = totalSales[0]?.discount || 0;
+    const totalDelivery = totalSales[0]?.delivery || 0;
+    const isNext = count > skip + sales.length;
+    const summaryData = {
+      totalGrandtotal,
+      totalDiscount,
+      totalDelivery,
+    };
     return {
       success: true,
-      data: { sales: JSON.parse(JSON.stringify(sales)), isNext },
+      data: {
+        sales: JSON.parse(JSON.stringify(sales)),
+        summary: JSON.parse(JSON.stringify(summaryData)),
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }
 }
 
-export async function getPendingOrder(
-  params: PaginatedSearchParams
-): Promise<ActionResponse<{ sales: Sale[]; isNext: boolean }>> {
+export async function getPendingOrder(params: SaleSearchParams): Promise<
+  ActionResponse<{
+    sales: Sale[];
+    summary: {
+      totalGrandtotal: 0;
+      totalDiscount: 0;
+      totalDelivery: 0;
+    };
+    isNext: boolean;
+  }>
+> {
   const validatedData = await action({
     params,
-    schema: PaginatedSearchParamsSchema,
+    schema: SaleSearchParamsSchema,
     authorize: true,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { page = 1, pageSize = 10, query, filter } = params;
+  const {
+    page = 1,
+    pageSize = 10,
+    query,
+    filter,
+    customerId,
+    branchId,
+    dateRange,
+  } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   const filterQuery: FilterQuery<typeof Sale> = { orderStatus: "pending" };
@@ -575,6 +646,21 @@ export async function getPendingOrder(
       { paymentStatus: { $regex: new RegExp(query, "i") } },
     ];
   }
+  if (customerId) {
+    filterQuery.customer = new ObjectId(customerId);
+  }
+
+  if (branchId) {
+    filterQuery.branch = new ObjectId(branchId);
+  }
+
+  if (dateRange) {
+    const [from, to] = dateRange.split("_");
+    filterQuery.orderDate = {
+      $gte: new Date(from),
+      $lte: new Date(to),
+    };
+  }
   let sortCriteria = {};
 
   switch (filter) {
@@ -593,7 +679,18 @@ export async function getPendingOrder(
   }
   try {
     const [totalSales, sales] = await Promise.all([
-      Sale.countDocuments(filterQuery),
+      Sale.aggregate([
+        { $match: filterQuery },
+        {
+          $group: {
+            _id: null,
+            count: { $sum: 1 },
+            grandtotal: { $sum: "$grandtotal" },
+            discount: { $sum: "$discount" },
+            delivery: { $sum: "$delivery" },
+          },
+        },
+      ]),
       Sale.find(filterQuery)
         .populate("customer", "name")
         .populate("branch", "title")
@@ -602,11 +699,23 @@ export async function getPendingOrder(
         .skip(skip)
         .limit(limit),
     ]);
-    console.log(sales);
-    const isNext = totalSales > skip + sales.length;
+    const count = totalSales[0]?.count || 0;
+    const totalGrandtotal = totalSales[0]?.grandtotal || 0;
+    const totalDiscount = totalSales[0]?.discount || 0;
+    const totalDelivery = totalSales[0]?.delivery || 0;
+    const isNext = count > skip + sales.length;
+    const summaryData = {
+      totalGrandtotal,
+      totalDiscount,
+      totalDelivery,
+    };
     return {
       success: true,
-      data: { sales: JSON.parse(JSON.stringify(sales)), isNext },
+      data: {
+        sales: JSON.parse(JSON.stringify(sales)),
+        summary: JSON.parse(JSON.stringify(summaryData)),
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

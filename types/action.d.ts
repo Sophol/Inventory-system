@@ -274,7 +274,7 @@ interface CreatePaymentParams {
   branch: string;
   referenceNo: string;
   description?: string;
-  paymentDate?: Date | string;
+  paymentDate?: Date;
   creditAmount?: number;
   paidAmount?: number;
   balance?: number;
