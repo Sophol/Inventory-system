@@ -9,7 +9,6 @@ import { formUrlQuery, removeKeyFromUrlQuery } from "@/lib/url";
 import FormCombobox from "../formInputs/FormCombobox";
 import FormInput from "../formInputs/FormInput";
 import { Button } from "../ui/button";
-import { getSuppliers } from "@/lib/actions/supplier.action";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import { DateRange } from "react-day-picker";
 import { endOfMonth, startOfMonth } from "date-fns";
@@ -19,15 +18,13 @@ interface ProductSearchProps {
   otherClasses?: string;
 }
 
-const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
+const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
-  const supplierId = searchParams.get("supplierId") || "";
   const branchId = searchParams.get("branchId") || "";
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState(query);
-  const [searchSupplier, setSearchSupplier] = useState(supplierId);
   const [searchBranch, setSearchBranch] = useState(branchId);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: startOfMonth(new Date()),
@@ -56,29 +53,6 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
     }, 1000);
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, route, router, searchParams, pathname]);
-
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (searchSupplier) {
-        const newUrl = formUrlQuery({
-          params: searchParams.toString(),
-          key: "supplierId",
-          value: searchSupplier,
-        });
-
-        router.push(newUrl, { scroll: false });
-      } else {
-        if (pathname === route) {
-          const newUrl = removeKeyFromUrlQuery({
-            params: searchParams.toString(),
-            keyToRemove: ["supplierId"],
-          });
-          router.push(newUrl, { scroll: false });
-        }
-      }
-    }, 1000);
-    return () => clearTimeout(delayDebounceFn);
-  }, [route, router, pathname, searchSupplier, searchParams]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -129,34 +103,9 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const form = useForm({
     defaultValues: {
       search: query,
-      supplier: supplierId,
       branch: branchId,
     },
   });
-
-  const handleFetchSuppliers = async ({
-    page,
-    query,
-  }: {
-    page: number;
-    query: string;
-    parentId?: string;
-  }) => {
-    const { success, data } = await getSuppliers({
-      page,
-      pageSize: 10,
-      query,
-    });
-    return {
-      data: success
-        ? data?.suppliers.map((supplier: Supplier) => ({
-            _id: supplier._id,
-            title: supplier.name,
-          })) || []
-        : [],
-      isNext: data?.isNext || false,
-    };
-  };
 
   const handleFetchBranches = async ({
     page,
@@ -173,11 +122,6 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
     };
   };
 
-  const handleSupplierChange = (value: string) => {
-    form.setValue("supplier", value);
-    setSearchSupplier(value);
-  };
-
   const handleBranchChange = (value: string) => {
     form.setValue("branch", value);
     setSearchBranch(value);
@@ -190,16 +134,14 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const handleClearSearch = () => {
     form.reset({
       search: "",
-      supplier: "",
       branch: "",
     });
     setSearchQuery("");
-    setSearchSupplier("");
     setSearchBranch("");
     setDateRange(undefined);
     const newUrl = removeKeyFromUrlQuery({
       params: searchParams.toString(),
-      keyToRemove: ["query", "supplierId", "branchId", "dateRange"],
+      keyToRemove: ["query", "branchId", "dateRange"],
     });
     router.push(newUrl, { scroll: false });
   };
@@ -214,19 +156,6 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
           isRequired={false}
           onChange={() => {
             setSearchQuery(form.getValues("search"));
-          }}
-        />
-        <FormCombobox
-          control={form.control}
-          name="supplier"
-          label="Supplier"
-          placeholder="Select Supplier"
-          fetchSingleItem={null}
-          isRequired={false}
-          fetchData={handleFetchSuppliers}
-          setValue={(name, value) => {
-            form.setValue(name, value);
-            handleSupplierChange(value);
           }}
         />
         <FormCombobox
@@ -254,4 +183,4 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
   );
 };
 
-export default PurchaseSearch;
+export default GeneralExpSearch;

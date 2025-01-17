@@ -24,7 +24,6 @@ export async function getProductReports(
     categoryId,
     branchId,
   } = validatedData.params!;
-  console.log("branchId", branchId);
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   const filterQuery: FilterQuery<typeof Product> = {};

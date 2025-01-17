@@ -29,7 +29,8 @@ export const GeneralExpColumn: ColumnDef<GeneralExp>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date" />
     ),
-    cell: ({ row }) => format(new Date(row.original.generalDate), "dd/MM/yyyy"),
+    cell: ({ row }) =>
+      format(new Date(row.original.generalDate), "yyyy-MM-dd HH:mm:ss"),
   },
   {
     accessorKey: "title",

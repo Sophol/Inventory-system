@@ -1,9 +1,10 @@
 import { IAccount } from "@/database/account.model";
 import { IUser } from "@/database/user.model";
 import { fetchHandler } from "./handlers/fetch";
+
 const API_BASE_URL =
-  process.env.NEXT_PUPLIC_API_BASE_URL || "http://146.190.97.235/api";
-console.log("aa", API_BASE_URL);
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://146.190.97.235/api";
+
 export const api = {
   auth: {
     oAuthSignIn: ({
@@ -18,7 +19,9 @@ export const api = {
   },
   users: {
     getAll: () => fetchHandler(`${API_BASE_URL}/users`),
-    getById: (id: string) => fetchHandler(`${API_BASE_URL}/users/${id}`),
+    getById: (id: string) => {
+      return fetchHandler(`${API_BASE_URL}/users/${id}`);
+    },
     getByEmail: (email: string) =>
       fetchHandler(`${API_BASE_URL}/users/email`, {
         method: "POST",

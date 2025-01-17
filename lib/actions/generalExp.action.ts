@@ -8,8 +8,8 @@ import handleError from "../handlers/error";
 import {
   CreateGeneralExpSchema,
   EditGeneralExpSchema,
+  ExpenseSearchParamsSchema,
   GetGeneralExpSchema,
-  PaginatedSearchParamsSchema,
 } from "../validations";
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -129,26 +129,49 @@ export async function getGeneralExp(
   }
 }
 
-export async function getGeneralExps(
-  params: PaginatedSearchParams
-): Promise<ActionResponse<{ generalExps: GeneralExp[]; isNext: boolean }>> {
+export async function getGeneralExps(params: ExpenseSearchParams): Promise<
+  ActionResponse<{
+    generalExps: GeneralExp[];
+    summary: { count: 0; totalAmount: 0 };
+    isNext: boolean;
+  }>
+> {
   const validatedData = await action({
     params,
-    schema: PaginatedSearchParamsSchema,
+    schema: ExpenseSearchParamsSchema,
     authorize: true,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { page = 1, pageSize = 10, query, filter } = params;
+  const {
+    page = 1,
+    pageSize = 10,
+    query,
+    filter,
+    branchId,
+    dateRange,
+  } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   const filterQuery: FilterQuery<typeof GeneralExp> = {};
   if (query) {
     filterQuery.$or = [
+      { title: { $regex: new RegExp(query, "i") } },
       { description: { $regex: new RegExp(query, "i") } },
       { amount: { $regex: new RegExp(query, "i") } },
     ];
+  }
+  if (branchId) {
+    filterQuery.branch = new ObjectId(branchId);
+  }
+
+  if (dateRange) {
+    const [from, to] = dateRange.split("_");
+    filterQuery.generalDate = {
+      $gte: new Date(from),
+      $lte: new Date(to),
+    };
   }
   let sortCriteria = {};
 
@@ -165,7 +188,16 @@ export async function getGeneralExps(
   }
   try {
     const [totalGeneralExps, generalExps] = await Promise.all([
-      GeneralExp.countDocuments(filterQuery),
+      GeneralExp.aggregate([
+        { $match: filterQuery },
+        {
+          $group: {
+            _id: null,
+            count: { $sum: 1 },
+            totalAmount: { $sum: "$amount" },
+          },
+        },
+      ]),
       GeneralExp.find(filterQuery)
         .populate("branch", "title")
         .lean()
@@ -173,11 +205,18 @@ export async function getGeneralExps(
         .skip(skip)
         .limit(limit),
     ]);
-    const isNext = totalGeneralExps > skip + generalExps.length;
+    const count = totalGeneralExps[0]?.count || 0;
+    const isNext = count > skip + generalExps.length;
+    const totalAmount = totalGeneralExps[0]?.totalAmount || 0;
 
+    const totalCount = { count, totalAmount };
     return {
       success: true,
-      data: { generalExps: JSON.parse(JSON.stringify(generalExps)), isNext },
+      data: {
+        generalExps: JSON.parse(JSON.stringify(generalExps)),
+        summary: JSON.parse(JSON.stringify(totalCount)),
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

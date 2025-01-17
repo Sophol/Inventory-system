@@ -29,7 +29,8 @@ export const SalaryColumn: ColumnDef<Salary>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date" />
     ),
-    cell: ({ row }) => format(new Date(row.original.salaryDate), "dd/MM/yyyy"),
+    cell: ({ row }) =>
+      format(new Date(row.original.salaryDate), "yyyy-MM-dd HH:mm:ss"),
   },
   {
     accessorKey: "staffId",

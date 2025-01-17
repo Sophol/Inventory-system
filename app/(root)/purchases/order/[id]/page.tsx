@@ -26,7 +26,6 @@ const EditPurchase = async ({ params }: RouteParams) => {
     purchaseId: id,
   });
   if (!purchaseSuccess) return notFound();
-  console.log(purchase);
   return (
     <CardContainer
       title="Add Purchase"

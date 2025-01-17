@@ -160,6 +160,15 @@ const SalaryForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormCombobox
             control={form.control}
+            name="branch"
+            label="Branch"
+            placeholder="Select Branch"
+            fetchSingleItem={salary ? salary.branch : null}
+            fetchData={fetchBranches}
+            setValue={form.setValue} // Replace with actual branch data
+          />
+          <FormCombobox
+            control={form.control}
             name="staffId"
             label="Staff"
             placeholder="Select Staff"
@@ -172,15 +181,7 @@ const SalaryForm = ({
               }
             }} // Replace with actual supplier data
           />
-          <FormCombobox
-            control={form.control}
-            name="branch"
-            label="Branch"
-            placeholder="Select Branch"
-            fetchSingleItem={salary ? salary.branch : null}
-            fetchData={fetchBranches}
-            setValue={form.setValue} // Replace with actual branch data
-          />
+
           <FormInput
             name="salary"
             label="Salary"

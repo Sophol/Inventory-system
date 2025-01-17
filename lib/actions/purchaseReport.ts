@@ -1,12 +1,11 @@
-import { FilterQuery } from "mongoose";
+"use server";
+import mongoose, { FilterQuery } from "mongoose";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { PurchaseSearchParamsSchema } from "../validations";
 import { Purchase } from "@/database";
-
-export async function getPurchaseReports(
-  params: PurchaseSearchParams
-): Promise<
+const ObjectId = mongoose.Types.ObjectId;
+export async function getPurchaseReports(params: PurchaseSearchParams): Promise<
   ActionResponse<{
     purchases: Purchase[];
     summary: { count: 0; totalGrandtotal: 0 };
@@ -44,11 +43,11 @@ export async function getPurchaseReports(
   }
 
   if (supplierId) {
-    filterQuery.supplier = supplierId;
+    filterQuery.supplier = new ObjectId(supplierId);
   }
 
   if (branchId) {
-    filterQuery.branch = branchId;
+    filterQuery.branch = new ObjectId(branchId);
   }
 
   if (dateRange) {

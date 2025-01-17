@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Control, FieldValues, Path } from "react-hook-form";
@@ -28,6 +29,7 @@ interface FormDatePickerProps<T extends FieldValues> {
   isRequired?: boolean;
   defaultValue?: Date;
 }
+
 const FormDatePicker = <T extends FieldValues>({
   label,
   name,
@@ -35,6 +37,19 @@ const FormDatePicker = <T extends FieldValues>({
   isRequired = true,
   defaultValue,
 }: FormDatePickerProps<T>) => {
+  const [clientDate, setClientDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    if (defaultValue) {
+      const currentTime = new Date().toLocaleTimeString("en-US", {
+        hour12: false,
+      });
+      const dateString = defaultValue.toISOString().split("T")[0];
+      const dateTimeString = `${dateString}T${currentTime}`;
+      setClientDate(new Date(dateTimeString));
+    }
+  }, [defaultValue]);
+
   return (
     <FormField
       control={control}
@@ -54,11 +69,13 @@ const FormDatePicker = <T extends FieldValues>({
                     !field.value && "text-muted-foreground"
                   )}
                 >
-                  {field.value ? (
-                    format(field.value as Date, "PPP")
+                  {field.value || clientDate ? (
+                    format(field.value || clientDate!, "yyyy-MM-d HH:mm:ss")
                   ) : (
                     <span>
-                      {defaultValue ? format(defaultValue, "PPP") : ""}
+                      {defaultValue
+                        ? format(defaultValue, "yyyy-MM-d HH:mm:ss")
+                        : ""}
                     </span>
                   )}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -69,10 +86,26 @@ const FormDatePicker = <T extends FieldValues>({
               <Calendar
                 mode="single"
                 selected={field.value as Date}
-                onSelect={field.onChange}
-                disabled={(date) =>
-                  date > new Date() || date < new Date("1900-01-01")
-                }
+                onSelect={(date) => {
+                  if (date) {
+                    const currentDate = new Date();
+                    const currentTime = currentDate.toLocaleTimeString(
+                      "en-US",
+                      { hour12: false }
+                    );
+                    const [hours, minutes, seconds] = currentTime.split(":");
+                    const selectedDate = new Date(date);
+                    selectedDate.setHours(
+                      parseInt(hours),
+                      parseInt(minutes),
+                      parseInt(seconds)
+                    );
+                    field.onChange(selectedDate);
+                  }
+                }}
+                // disabled={(date) =>
+                //   date > new Date("") || date < new Date("1900-01-01")
+                // }
                 initialFocus
               />
             </PopoverContent>

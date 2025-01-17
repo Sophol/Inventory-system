@@ -3,7 +3,6 @@ import { CiCirclePlus } from "react-icons/ci";
 
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
-import LocalSearch from "@/components/search/LocalSearch";
 import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { GENERALEXP_EMPTY } from "@/constants/states";
@@ -12,6 +11,8 @@ import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { GeneralExpColumn } from "@/columns/GeneralExpColumn";
 import { ColumnDef } from "@tanstack/react-table";
+import GeneralExpSearch from "@/components/search/GeneralExpSearch";
+import { TableCell, TableRow } from "@/components/ui/table";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -22,15 +23,33 @@ const GeneralExp = async ({ searchParams }: SearchParams) => {
   if (!isAuthorized) {
     return redirect("/unauthorized");
   }
-  const { page, pageSize, query, filter } = await searchParams;
+  const { page, pageSize, query, filter, branchId, dateRange } =
+    await searchParams;
   const { success, data, error } = await getGeneralExps({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query || "",
     filter: filter || "",
+    branchId: branchId?.toString() || "",
+    dateRange: dateRange?.toString() || "",
   });
-  const { generalExps, isNext } =
-    data || ({} as { generalExps: GeneralExp[]; isNext: boolean });
+  const { generalExps, summary, isNext } =
+    data ||
+    ({} as {
+      generalExps: GeneralExp[];
+      summary: { count: 0; totalAmount: 0 };
+      isNext: boolean;
+    });
+  const summaryRow = (
+    <TableRow>
+      <TableCell colSpan={3} className="text-right">
+        <strong>Total:</strong>
+      </TableCell>
+      <TableCell>
+        <strong>{summary.totalAmount}</strong>
+      </TableCell>
+    </TableRow>
+  );
   return (
     <CardContainer
       title="General Expenses"
@@ -41,7 +60,7 @@ const GeneralExp = async ({ searchParams }: SearchParams) => {
     >
       <>
         <div className="py-4">
-          <LocalSearch route={ROUTES.GENERALEXPS} placeholder="Search..." />
+          <GeneralExpSearch route={ROUTES.GENERALEXPS} />
         </div>
         <DataRenderer
           success={success}
@@ -52,6 +71,7 @@ const GeneralExp = async ({ searchParams }: SearchParams) => {
             <DataTable
               columns={GeneralExpColumn as ColumnDef<GeneralExp, unknown>[]}
               data={generalExps!}
+              summaryRow={summaryRow}
               isNext={isNext}
             />
           )}

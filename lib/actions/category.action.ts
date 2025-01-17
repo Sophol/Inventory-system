@@ -16,7 +16,6 @@ import {
 export async function createCategory(
   params: CreateCategoryParams
 ): Promise<ActionResponse<ICategoryDoc>> {
-  console.log(params);
   const validatedData = await action({
     params,
     schema: CreateCategorySchema,

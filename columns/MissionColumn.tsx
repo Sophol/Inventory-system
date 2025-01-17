@@ -29,7 +29,8 @@ export const MissionColumn: ColumnDef<Mission>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date" />
     ),
-    cell: ({ row }) => format(new Date(row.original.missionDate), "dd/MM/yyyy"),
+    cell: ({ row }) =>
+      format(new Date(row.original.missionDate), "yyyy-MM-dd HH:mm:ss"),
   },
   {
     accessorKey: "staffName",

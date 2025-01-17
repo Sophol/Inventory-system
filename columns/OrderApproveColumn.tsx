@@ -17,16 +17,6 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { getUserRole } from "@/lib/actions/user.action";
 
-// export type Sale = {
-//   _id: string;
-//   referenceNo: string;
-//   customer: { _id: string; name: string };
-//   branch: { _id: string; title: string };
-//   saleDate: string;
-//   orderStatus: string;
-//   paymentStatus: string;
-// };
-
 const reloadPage = () => {
   window.location.reload();
 };
@@ -69,7 +59,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("orderDate") as string;
-      const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
+      const formattedDate = format(new Date(date), "yyy-mm-d hh:mm:ss "); // Customize format as needed
       return <span>{formattedDate}</span>;
     },
   },

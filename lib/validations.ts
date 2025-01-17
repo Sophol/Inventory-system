@@ -21,6 +21,11 @@ export const SaleSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   branchId: z.string().optional(),
   dateRange: z.string().optional(),
 });
+export const ExpenseSearchParamsSchema = PaginatedSearchParamsSchema.extend({
+  staffId: z.string().optional(),
+  branchId: z.string().optional(),
+  dateRange: z.string().optional(),
+});
 export const SignInSchema = z.object({
   email: z
     .string()

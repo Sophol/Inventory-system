@@ -11,6 +11,7 @@ import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import { deletePurchase } from "@/lib/actions/purchase.action";
 import { toast } from "@/hooks/use-toast";
+import { format } from "date-fns";
 
 const reloadPage = () => {
   window.location.reload();
@@ -40,6 +41,10 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Purchase Date" />
     ),
+    cell: ({ row }) => {
+      const date = row.getValue("purchaseDate") as Date;
+      return format(new Date(date), "yyyy-MM-dd HH:mm:ss");
+    },
   },
   {
     accessorKey: "orderStatus",

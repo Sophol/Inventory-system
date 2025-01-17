@@ -71,7 +71,6 @@ export async function getStaffs(
     schema: PaginatedSearchParamsSchema,
     authorize: true,
   });
-  console.log(validatedData);
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
@@ -101,7 +100,7 @@ export async function getStaffs(
       User.find(filterQuery).lean().sort(sortCriteria).skip(skip).limit(limit),
     ]);
     const isNext = totalUsers > skip + users.length;
-    console.log(users);
+
     return {
       success: true,
       data: { users: JSON.parse(JSON.stringify(users)), isNext },

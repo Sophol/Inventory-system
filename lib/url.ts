@@ -25,7 +25,6 @@ export const removeKeyFromUrlQuery = ({
   keyToRemove.forEach((key) => {
     delete queryString[key];
   });
-  console.log(queryString);
   return qs.stringifyUrl(
     {
       url: window.location.pathname,

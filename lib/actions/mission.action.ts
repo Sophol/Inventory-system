@@ -8,8 +8,8 @@ import handleError from "../handlers/error";
 import {
   CreateMissionSchema,
   EditMissionSchema,
+  ExpenseSearchParamsSchema,
   GetMissionSchema,
-  PaginatedSearchParamsSchema,
 } from "../validations";
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -128,30 +128,56 @@ export async function getMission(
   }
 }
 
-export async function getMissions(
-  params: PaginatedSearchParams
-): Promise<ActionResponse<{ missions: Mission[]; isNext: boolean }>> {
+export async function getMissions(params: ExpenseSearchParams): Promise<
+  ActionResponse<{
+    missions: Mission[];
+    summary: { count: 0; totalAmount: 0 };
+    isNext: boolean;
+  }>
+> {
   const validatedData = await action({
     params,
-    schema: PaginatedSearchParamsSchema,
+    schema: ExpenseSearchParamsSchema,
     authorize: true,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { page = 1, pageSize = 10, query, filter } = params;
+  const {
+    page = 1,
+    pageSize = 10,
+    query,
+    filter,
+    branchId,
+    dateRange,
+  } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   const filterQuery: FilterQuery<typeof Mission> = {};
   if (query) {
     filterQuery.$or = [
+      { staffName: { $regex: new RegExp(query, "i") } },
       { description: { $regex: new RegExp(query, "i") } },
       { amount: { $regex: new RegExp(query, "i") } },
     ];
   }
+  if (branchId) {
+    filterQuery.branch = new ObjectId(branchId);
+  }
+
+  if (dateRange) {
+    const [from, to] = dateRange.split("_");
+    filterQuery.missionDate = {
+      $gte: new Date(from),
+      $lte: new Date(to),
+    };
+  }
   let sortCriteria = {};
 
   switch (filter) {
+    case "staffName":
+      sortCriteria = { staffName: -1 };
+      break;
     case "description":
       sortCriteria = { description: -1 };
       break;
@@ -164,7 +190,16 @@ export async function getMissions(
   }
   try {
     const [totalMissions, missions] = await Promise.all([
-      Mission.countDocuments(filterQuery),
+      Mission.aggregate([
+        { $match: filterQuery },
+        {
+          $group: {
+            _id: null,
+            count: { $sum: 1 },
+            totalAmount: { $sum: "$amount" },
+          },
+        },
+      ]),
       Mission.find(filterQuery)
         .populate("branch", "title")
         .lean()
@@ -172,11 +207,17 @@ export async function getMissions(
         .skip(skip)
         .limit(limit),
     ]);
-    const isNext = totalMissions > skip + missions.length;
-
+    const count = totalMissions[0]?.count || 0;
+    const isNext = count > skip + missions.length;
+    const totalAmount = totalMissions[0]?.totalAmount || 0;
+    const totalCount = { count, totalAmount };
     return {
       success: true,
-      data: { missions: JSON.parse(JSON.stringify(missions)), isNext },
+      data: {
+        missions: JSON.parse(JSON.stringify(missions)),
+        summary: JSON.parse(JSON.stringify(totalCount)),
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

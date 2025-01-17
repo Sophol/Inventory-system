@@ -8,8 +8,8 @@ import handleError from "../handlers/error";
 import {
   CreateSalarySchema,
   EditSalarySchema,
+  ExpenseSearchParamsSchema,
   GetSalarySchema,
-  PaginatedSearchParamsSchema,
 } from "../validations";
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -146,18 +146,30 @@ export async function getSalary(
     return handleError(error) as ErrorResponse;
   }
 }
-export async function getSalaries(
-  params: PaginatedSearchParams
-): Promise<ActionResponse<{ salaries: Salary[]; isNext: boolean }>> {
+export async function getSalaries(params: ExpenseSearchParams): Promise<
+  ActionResponse<{
+    salaries: Salary[];
+    summary: { count: 0; totalAmount: 0 };
+    isNext: boolean;
+  }>
+> {
   const validatedData = await action({
     params,
-    schema: PaginatedSearchParamsSchema,
+    schema: ExpenseSearchParamsSchema,
     authorize: true,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { page = 1, pageSize = 10, query, filter } = params;
+  const {
+    page = 1,
+    pageSize = 10,
+    query,
+    filter,
+    staffId,
+    branchId,
+    dateRange,
+  } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   const filterQuery: FilterQuery<typeof Salary> = {};
@@ -168,6 +180,20 @@ export async function getSalaries(
       { allowance: { $regex: new RegExp(query, "i") } },
       { deduction: { $regex: new RegExp(query, "i") } },
     ];
+  }
+  if (staffId) {
+    filterQuery.staffId = new ObjectId(staffId);
+  }
+  if (branchId) {
+    filterQuery.branch = new ObjectId(branchId);
+  }
+
+  if (dateRange) {
+    const [from, to] = dateRange.split("_");
+    filterQuery.salaryDate = {
+      $gte: new Date(from),
+      $lte: new Date(to),
+    };
   }
   let sortCriteria = {};
 
@@ -190,7 +216,16 @@ export async function getSalaries(
   }
   try {
     const [totalSalaries, salaries] = await Promise.all([
-      Salary.countDocuments(filterQuery),
+      Salary.aggregate([
+        { $match: filterQuery },
+        {
+          $group: {
+            _id: null,
+            count: { $sum: 1 },
+            totalAmount: { $sum: "$netSalary" },
+          },
+        },
+      ]),
       Salary.find(filterQuery)
         .populate("staffId", "username")
         .populate("branch", "title")
@@ -199,11 +234,17 @@ export async function getSalaries(
         .skip(skip)
         .limit(limit),
     ]);
-    const isNext = totalSalaries > skip + salaries.length;
-
+    const count = totalSalaries[0]?.count || 0;
+    const isNext = count > skip + salaries.length;
+    const totalAmount = totalSalaries[0]?.totalAmount || 0;
+    const totalCount = { count, totalAmount };
     return {
       success: true,
-      data: { salaries: JSON.parse(JSON.stringify(salaries)), isNext },
+      data: {
+        salaries: JSON.parse(JSON.stringify(salaries)),
+        summary: JSON.parse(JSON.stringify(totalCount)),
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

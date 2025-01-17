@@ -39,6 +39,11 @@ interface SaleSearchParams extends PaginatedSearchParams {
   branchId?: string;
   dateRange?: string;
 }
+interface ExpenseSearchParams extends PaginatedSearchParams {
+  staffId?: string;
+  branchId?: string;
+  dateRange?: string;
+}
 
 interface PaginatedSearchParamsInvoice {
   orderStatus?: "pending" | "approved" | "completed";
