@@ -42,13 +42,9 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({
       try {
         const { data, success, error } = await getPayments({
           sale: invoiceId,
-          page: 1,
-          pageSize: 10,
-          query: "",
-          filter: "",
         });
         if (success) {
-          if (data && data.payment) {
+          if (data && data.payment && Array.isArray(data.payment)) {
             setPayments(data.payment);
           } else {
             setError("No payment data found");

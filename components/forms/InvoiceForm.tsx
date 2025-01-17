@@ -60,6 +60,7 @@ const InvoiceForm = ({
       discount: sale?.discount || 0,
       subtotal: sale?.subtotal || 0,
       delivery: sale?.delivery || 0,
+      isLogo : sale?.isLogo || "true",
       grandtotal: sale?.grandtotal || 0,
       exchangeRateD: sale?.exchangeRateD || exchangeRateD || 0,
       exchangeRateT: sale?.exchangeRateT || exchangeRateT || 0,

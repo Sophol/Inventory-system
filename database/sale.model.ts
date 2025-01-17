@@ -22,6 +22,7 @@ export interface ISale {
   orderStatus: "pending" | "approved" | "completed";
   paymentStatus: "pending" | "credit" | "completed";
   saleType: "retail" | "wholesale";
+  isLogo: string;
 }
 export interface ISaleDoc extends ISale, Document {}
 const SaleSchema = new Schema<ISale>(
@@ -43,6 +44,12 @@ const SaleSchema = new Schema<ISale>(
     grandtotal: { type: Number, default: 0 },
     paid: { type: Number, default: 0 },
     balance: { type: Number, default: 0 },
+    isLogo: {
+      type: String,
+      enum: ["true", "false"],
+      required: true,
+      default: "true",
+    },
     paidBy: {
       type: String,
       enum: ["Cash", "ABA Bank", "ACLEDA Bank", "Others"],

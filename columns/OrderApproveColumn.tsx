@@ -105,7 +105,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
         fetchUserRole();
       }, []);
       const handleApproveOrder = async () => {
-        const { success } = await updateOrderStatus({ saleId: sale._id });
+        const { success } = await updateOrderStatus({ saleId: sale._id, isLogo: sale.isLogo });
         if (success) {
           toast({
             title: "success",

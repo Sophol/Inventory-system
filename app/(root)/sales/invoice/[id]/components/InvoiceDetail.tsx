@@ -18,20 +18,19 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
   const { success, data: setting } = await getSetting({
     settingId: process.env.SETTING_ID as string,
   });
-  console.log("invoice", invoice);
   if (!success) return notFound();
   if (!setting) return notFound();
   return (
     <div className="card80 ">
       <div className="printable-area card80-container">
-        <div className="sm:flex flex-row justify-between  p-2 invoice-header">
+        <div className="sm:flex flex-row justify-between invoice-header">
           <div className="flex flex-col logo">
             <Image
               src={`/` + setting.companyLogo}
               alt="Company Logo"
-              width={200}
+              width={100}
               height={100}
-              className="h-8 w-auto object-contain sm:mx-auto sm:w-full"
+              className="w-auto h-20 object-contain sm:mx-auto"
             />
             <p className="text-sm pt-4 pb-0">{setting.companyName}</p>
             <p className="text-sm ">
@@ -42,11 +41,13 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
             <h1 className="font-bold text-lg"># {invoice.referenceNo}</h1>
             <br />
             <p className="text-sm">
-              Date Issued: {format(invoice.invoicedDate, "PPP")}
+              <span className="pr-2">Date Issued:</span>
+              { invoice.dueDate ? format(new Date(invoice.invoicedDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
             <p className="text-sm">
-              Due Date:
-              {invoice.dueDate ? format(invoice.dueDate, "PPP") : "N/A"}
+            <span className="pr-2">  Due Date:</span>
+            
+              { invoice.dueDate ? format(new Date(invoice.dueDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
           </div>
         </div>
