@@ -9,6 +9,7 @@ interface CardContainerProps {
   redirectIcon?: React.ElementType;
   redirectClass: string;
 }
+
 const CardContainer = ({
   children,
   title,
@@ -18,11 +19,13 @@ const CardContainer = ({
   redirectClass,
 }: CardContainerProps) => {
   return (
-    <section className="container mx-auto py-4">
-      <div className="flex-wrap space-y-4 p-4">
+    <section className="container mx-auto py-0">
+
+      <div className="flex-wrap space-y-4 p-4 sm:px-4 md:px-8">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="paragraph-semibold text-dark400_light800">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+
+            <CardTitle className="text-xl text-dark400_light800 mr-4">
               {title}
             </CardTitle>
             <RedirectButton
@@ -33,11 +36,12 @@ const CardContainer = ({
             />
           </CardHeader>
           <CardContent>
-            <div className="container mx-auto py-4">{children}</div>
+            <div className="container mx-auto py-1">{children}</div>
           </CardContent>
         </Card>
       </div>
     </section>
   );
 };
+
 export default CardContainer;
