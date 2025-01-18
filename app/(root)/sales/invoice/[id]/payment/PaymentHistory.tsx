@@ -49,7 +49,12 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({
         });
         if (success) {
           if (data && data.payment) {
-            setPayments(data.payment);
+            setPayments(
+              data.payment.map((payment: any) => ({
+                ...payment,
+                paymentDate: new Date(payment.paymentDate).toISOString(),
+              }))
+            );
           } else {
             setError("No payment data found");
           }
@@ -58,7 +63,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({
         }
       } catch (err) {
         console.log(err);
-        setError("Failed to fetch payments", );
+        setError("Failed to fetch payments");
       } finally {
         setLoading(false);
       }
@@ -133,7 +138,8 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({
                       {payment.customer?.name || "N/A"}
                     </td>
                     <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      {new Date(payment.paymentDate).toLocaleDateString() || "N/A"}
+                      {new Date(payment.paymentDate).toLocaleDateString() ||
+                        "N/A"}
                     </td>
                     <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
                       ${formatCurrency(payment.creditAmount)}

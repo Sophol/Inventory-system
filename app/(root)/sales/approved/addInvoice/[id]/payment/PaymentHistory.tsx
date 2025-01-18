@@ -49,7 +49,12 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({
         });
         if (success) {
           if (data && data.payment) {
-            setPayments(data.payment);
+            setPayments(
+              data.payment.map((payment: any) => ({
+                ...payment,
+                paymentDate: new Date(payment.paymentDate).toISOString(),
+              }))
+            );
           } else {
             setError("No payment data found");
           }
