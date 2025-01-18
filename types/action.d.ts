@@ -202,6 +202,7 @@ interface CreateSaleParams {
   paymentStatus?: "pending" | "credit" | "completed";
   saleType?: "retail" | "wholesale";
   saleDetails: SaleDetailParams[];
+  isLogo?:string;
 }
 
 interface EditSaleParams extends CreateSaleParams {
@@ -209,6 +210,9 @@ interface EditSaleParams extends CreateSaleParams {
 }
 interface GetSaleParams {
   saleId: string;
+}
+interface GetSaleAndLogoParams extends GetSaleParams {
+  isLogo: string;
 }
 interface ApprovedInvoiceParams {
   saleId: string;

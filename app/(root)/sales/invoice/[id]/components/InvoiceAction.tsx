@@ -131,23 +131,16 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
   return (
     <div className="card20">
       <div className="card20-container flex flex-col gap-2">
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Button
             onClick={handleCallInvoice}
-            disabled={updatedInvoice.paid === 0}
-            className="w-full rounded bg-blue-400 px-4 py-2 text-white hover:bg-blue-500"
+            // disabled={updatedInvoice.paymentStatus === "pending"}
+            className="w-full rounded bg-blue-400 px-4 py-2 text-sm text-white hover:bg-blue-500"
           >
-            <FaHistory className="cursor-pointer text-xl" />
-            <span className="ml-2">Payment History</span>
+            <span>Payment History</span>
           </Button>
-          <Button
-            onClick={handleBack}
-            className="w-full rounded bg-light-400 px-4 py-2 text-white hover:bg-light-500"
-          >
-            Back
-          </Button>
-        </div>
 
+        </div>
         {isDialogOpen && (
           <PaymentHistory
             invoiceId={invoice._id}
@@ -158,31 +151,25 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
         <div className="flex gap-2">
           {/* Direct download buttons */}
           <Button
-            onClick={handleDownloadWithLogo}
-            className="w-1/2 rounded bg-green-400 px-4 py-2 text-white hover:bg-green-500"
-          >
-            <FaCloudDownloadAlt className="cursor-pointer text-xl" /> Logo
-          </Button>
-          <Button
-            onClick={handleDownloadWithoutLogo}
+            onClick={invoice.isLogo=="true" ? handleDownloadWithLogo : handleDownloadWithoutLogo}
             className="w-1/2 rounded bg-red-400 px-4 py-2 text-white hover:bg-red-500"
           >
-            <FaCloudDownloadAlt className="cursor-pointer text-xl" /> No Logo
+            <FaCloudDownloadAlt className="cursor-pointer text-xl" /> Download
+          </Button>
+          <Button
+            onClick={handleBack}
+            className="w-1/2 rounded bg-light-400 px-4 py-2 text-sm text-white hover:bg-light-500"
+          >
+            Back
           </Button>
         </div>
 
         <div className="flex gap-4">
-          <Button
-            onClick={handlePrintWithLogo}
+        <Button
+             onClick={invoice.isLogo=="true" ? handlePrintWithLogo : handlePrintWithoutLogo}
             className="w-full rounded bg-green-400 px-4 py-2 text-white hover:bg-green-500"
           >
-            <FaPrint className="cursor-pointer text-xl" /> Logo
-          </Button>
-          <Button
-            onClick={handlePrintWithoutLogo}
-            className="w-full rounded bg-red-400 px-4 py-2 text-white hover:bg-red-500"
-          >
-            <FaPrint className="cursor-pointer text-xl" /> No Logo
+            <FaPrint className="cursor-pointer text-xl" /> Print
           </Button>
         </div>
 

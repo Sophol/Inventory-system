@@ -46,6 +46,7 @@ export async function createInvoice(
     exchangeRateT,
     saleType,
     dueDate,
+    isLogo,
   } = validatedData.params!;
   const seller = validatedData?.session?.user?.id;
   const sellerName = validatedData?.session?.user?.name;
@@ -75,6 +76,7 @@ export async function createInvoice(
           dueDate,
           seller,
           sellerName,
+          isLogo
         },
       ],
       { session }

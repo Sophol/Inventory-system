@@ -332,6 +332,7 @@ export const CreateSaleSchema = z.object({
   saleDetails: z
     .array(SaleDetailSchema)
     .min(1, { message: "At least one Unit is required." }),
+  isLogo:z.string().default('true')
 });
 
 export const EditSaleSchema = CreateSaleSchema.extend({

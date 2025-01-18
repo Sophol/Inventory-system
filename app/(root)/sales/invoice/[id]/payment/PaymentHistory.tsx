@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getPayments } from "@/lib/actions/payment.action";
+import { format } from "date-fns";
 import "../invoice.css";
 
 interface Payment {
@@ -126,38 +127,51 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({
                 </tr>
               </thead>
               <tbody>
-                {payments.map((payment, index) => (
-                  <tr
-                    key={payment._id}
-                    className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition duration-150`}
-                  >
-                    <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      {payment.referenceNo}
-                    </td>
-                    <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      {payment.customer?.name || "N/A"}
-                    </td>
-                    <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      {new Date(payment.paymentDate).toLocaleDateString() ||
-                        "N/A"}
-                    </td>
-                    <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      ${formatCurrency(payment.creditAmount)}
-                    </td>
-                    <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      ${formatCurrency(payment.paidAmount)}
-                    </td>
-                    <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      ${formatCurrency(payment.balance)}
-                    </td>
-                    <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      {payment.description || "N/A"}
-                    </td>
-                    <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
-                      {payment.paidBy}
+                {payments.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={8}
+                      className="py-3 px-4 text-center text-gray-700"
+                    >
+                      No data available
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  payments.map((payment, index) => (
+                    <tr
+                      key={payment._id}
+                      className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-gray-100 transition duration-150`}
+                    >
+                      <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
+                        {payment.referenceNo}
+                      </td>
+                      <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
+                        {payment.customer?.name || "N/A"}
+                      </td>
+                      <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
+                        {format(
+                          new Date(payment.paymentDate),
+                          "dd/MM/yyyy hh:mm:ss "
+                        ) || "N/A"}
+                      </td>
+                      <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
+                        ${formatCurrency(payment.creditAmount)}
+                      </td>
+                      <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
+                        ${formatCurrency(payment.paidAmount)}
+                      </td>
+                      <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
+                        ${formatCurrency(payment.balance)}
+                      </td>
+                      <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
+                        {payment.description || "N/A"}
+                      </td>
+                      <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
+                        {payment.paidBy}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

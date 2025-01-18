@@ -215,6 +215,7 @@ interface Sale {
   exchangeRateD?: number;
   exchangeRateT?: number;
   tax: number;
+  isLogo:string;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   orderStatus: "pending" | "approved" | "completed" | "void";
   paymentStatus: "pending" | "credit" | "completed";
@@ -288,7 +289,7 @@ interface Payment {
   branch: string;
   sale: string;
   referenceNo: string;
-  paymentDate: Date;
+  paymentDate: string;
   creditAmount: number;
   paidAmount: number;
   balance: number;

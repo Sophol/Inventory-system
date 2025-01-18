@@ -48,6 +48,7 @@ export async function createSale(
     exchangeRateT,
     saleType,
     delivery,
+    isLogo
   } = validatedData.params!;
   const seller = validatedData?.session?.user?.id;
   const sellerName = validatedData?.session?.user?.name;
@@ -78,6 +79,7 @@ export async function createSale(
           saleType,
           seller,
           sellerName,
+          isLogo
         },
       ],
       { session }
@@ -358,6 +360,7 @@ export async function getSale(
           updatedAt: { $first: "$updatedAt" },
           saleDetails: { $push: "$details" },
           sellerName: { $first: "$sellerName" },
+          isLogo: {$first : '$isLogo'}
         },
       },
     ]);
@@ -809,7 +812,7 @@ export async function deleteSale(
   }
 }
 export async function updateOrderStatus(
-  params: GetSaleParams
+  params: GetSaleAndLogoParams
 ): Promise<ActionResponse> {
   const validatedData = await action({
     params,
@@ -829,15 +832,20 @@ export async function updateOrderStatus(
     }
     if (sale.orderStatus !== "pending" && sale.orderStatus !== "approved") {
       return { success: false };
-    } else if (sale.orderStatus === "pending") {
+    }
+
+    // Update orderStatus
+    if (sale.orderStatus === "pending") {
       sale.orderStatus = "approved";
-      await sale.save({});
-      return { success: true };
     } else {
       sale.orderStatus = "completed";
-      await sale.save({});
-      return { success: true };
     }
+
+    // Update the isLogo field
+    sale.isLogo = params.isLogo;
+
+    await sale.save({});
+    return { success: true };
   } catch (error) {
     await session.abortTransaction();
     return handleError(error) as ErrorResponse;

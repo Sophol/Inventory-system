@@ -32,7 +32,9 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
       branch: sale?.branch._id,
       referenceNo: sale?.referenceNo,
       description: payment?.description || "",
-      paymentDate: payment?.paymentDate || new Date(),
+      paymentDate:   payment?.paymentDate 
+      ? new Date(payment?.paymentDate) 
+      : new Date(),
       creditAmount: sale?.balance || 0,
       paidAmount: 0,
       balance: sale?.balance,
@@ -49,7 +51,9 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
         branch: sale?.branch._id,
         referenceNo: sale?.referenceNo,
         description: payment?.description || "",
-        paymentDate: payment?.paymentDate || new Date(),
+        paymentDate:   payment?.paymentDate 
+        ? new Date(payment?.paymentDate) 
+        : new Date(),
         creditAmount: sale.balance || 0,
         paidAmount: 0,
         balance: sale?.balance || 0,
@@ -156,7 +160,7 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
               <>Send</>
             )}
           </Button>
-          <Button
+          {/* <Button
             type="reset"
             className="ml-3 w-fit bg-light-400 hover:bg-light-500 !text-light-900 px-7"
           >
@@ -167,7 +171,7 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
             ) : (
               <>Cancel</>
             )}
-          </Button>
+          </Button> */}
         </div>
       </form>
     </Form>
