@@ -35,7 +35,7 @@ export const MissionColumn: ColumnDef<Mission>[] = [
   {
     accessorKey: "staffName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Staff" />
+      <DataTableColumnHeader column={column} title="Title" />
     ),
   },
   {

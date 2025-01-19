@@ -116,11 +116,6 @@ const MissionForm = ({
         onSubmit={form.handleSubmit(handleCreateMission)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <FormInput
-            name="staffName"
-            label="Staff Name"
-            control={form.control}
-          />
           <FormCombobox
             control={form.control}
             name="branch"
@@ -130,6 +125,8 @@ const MissionForm = ({
             fetchData={fetchBranches}
             setValue={form.setValue}
           />
+          <FormInput name="staffName" label="Title" control={form.control} />
+
           <FormInput
             name="amount"
             label="Amount"

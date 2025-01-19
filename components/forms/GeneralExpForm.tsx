@@ -119,12 +119,6 @@ const GeneralExpForm = ({
         onSubmit={form.handleSubmit(handleCreateGeneralExp)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <FormInput
-            name="title"
-            label="Title"
-            type="text"
-            control={form.control}
-          />
           <FormCombobox
             control={form.control}
             name="branch"
@@ -134,6 +128,13 @@ const GeneralExpForm = ({
             fetchData={fetchBranches}
             setValue={form.setValue}
           />
+          <FormInput
+            name="title"
+            label="Title"
+            type="text"
+            control={form.control}
+          />
+
           <FormInput
             name="amount"
             label="Amount"
