@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
+import { format } from "date-fns";
 
 export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
@@ -29,6 +30,10 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Purchase Date" />
     ),
+    cell: ({ row }) => {
+      const date = row.getValue("purchaseDate") as Date;
+      return format(new Date(date), "yyyy-MM-dd HH:mm:ss");
+    },
   },
   {
     accessorKey: "orderStatus",

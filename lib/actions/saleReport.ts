@@ -3,6 +3,7 @@ import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { SaleSearchParamsSchema } from "../validations";
 import { Sale } from "@/database";
+import { endOfMonth, startOfMonth } from "date-fns";
 const ObjectId = mongoose.Types.ObjectId;
 export async function getSaleReports(params: SaleSearchParams): Promise<
   ActionResponse<{
@@ -53,12 +54,18 @@ export async function getSaleReports(params: SaleSearchParams): Promise<
   if (branchId) {
     filterQuery.branch = new ObjectId(branchId);
   }
-
+  const start = startOfMonth(new Date());
+  const end = endOfMonth(new Date());
   if (dateRange) {
     const [from, to] = dateRange.split("_");
     filterQuery.invoicedDate = {
       $gte: new Date(from),
       $lte: new Date(to),
+    };
+  } else {
+    filterQuery.invoicedDate = {
+      $gte: start,
+      $lte: end,
     };
   }
   let sortCriteria = {};

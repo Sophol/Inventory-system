@@ -11,6 +11,7 @@ import {
   ExpenseSearchParamsSchema,
   GetGeneralExpSchema,
 } from "../validations";
+import { endOfMonth, startOfMonth } from "date-fns";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -171,6 +172,11 @@ export async function getGeneralExps(params: ExpenseSearchParams): Promise<
     filterQuery.generalDate = {
       $gte: new Date(from),
       $lte: new Date(to),
+    };
+  } else {
+    filterQuery.generalDate = {
+      $gte: startOfMonth(new Date()),
+      $lte: endOfMonth(new Date()),
     };
   }
   let sortCriteria = {};

@@ -17,22 +17,35 @@ import {
 interface DatePickerWithRangeProps
   extends React.HTMLAttributes<HTMLDivElement> {
   onDateChange: (date: DateRange | undefined) => void;
+  reset?: boolean;
 }
 
 export function DatePickerWithRange({
   className,
   onDateChange,
+  reset,
 }: DatePickerWithRangeProps) {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: startOfMonth(new Date()),
     to: endOfMonth(new Date()),
   });
+  const defaultDateRange = React.useMemo(
+    () => ({
+      from: startOfMonth(new Date()),
+      to: endOfMonth(new Date()),
+    }),
+    []
+  );
 
   const handleDateChange = (selectedDate: DateRange | undefined) => {
     setDate(selectedDate);
     onDateChange(selectedDate);
   };
-
+  React.useEffect(() => {
+    if (reset) {
+      setDate(defaultDateRange);
+    }
+  }, [reset, defaultDateRange]);
   return (
     <div className={cn("grid gap-2", className)}>
       <span className="paragraph-semibold text-dark400_light800">

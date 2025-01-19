@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   description:
     "ERP System is a modern inventory management system that helps you manage your business with ease.",
   icons: {
-    icon: "/images/site-logo.svg",
+    icon: "/images/logo.png",
   },
 };
 

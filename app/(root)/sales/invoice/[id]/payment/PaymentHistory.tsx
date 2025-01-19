@@ -151,7 +151,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({
                       <td className="py-3 px-4 border-b border-gray-200 text-gray-700">
                         {format(
                           new Date(payment.paymentDate),
-                          "dd/MM/yyyy hh:mm:ss "
+                          "yyyy-MM-dd hh:mm:ss "
                         ) || "N/A"}
                       </td>
                       <td className="py-3 px-4 border-b border-gray-200 text-gray-700">

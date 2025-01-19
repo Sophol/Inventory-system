@@ -34,8 +34,13 @@ const AppSidebar = async () => {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary-500 text-sidebar-primary-foreground">
-                <GalleryVerticalEnd className="size-4" />
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-transparent text-sidebar-primary-foreground">
+                <Image
+                  src="/images/logo.png"
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">ERP SYSTEM</span>

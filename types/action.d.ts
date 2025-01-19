@@ -188,6 +188,8 @@ interface CreateSaleParams {
   referenceNo: string;
   description?: string;
   saleDate?: Date | string;
+  orderDate?: Date | string;
+  approvedDate?: Date | string;
   dueDate?: Date | string;
   discount?: number;
   subtotal?: number;
@@ -202,7 +204,7 @@ interface CreateSaleParams {
   paymentStatus?: "pending" | "credit" | "completed";
   saleType?: "retail" | "wholesale";
   saleDetails: SaleDetailParams[];
-  isLogo?:string;
+  isLogo?: string;
 }
 
 interface EditSaleParams extends CreateSaleParams {

@@ -11,6 +11,7 @@ import {
   ExpenseSearchParamsSchema,
   GetSalarySchema,
 } from "../validations";
+import { endOfMonth, startOfMonth } from "date-fns";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -193,6 +194,11 @@ export async function getSalaries(params: ExpenseSearchParams): Promise<
     filterQuery.salaryDate = {
       $gte: new Date(from),
       $lte: new Date(to),
+    };
+  } else {
+    filterQuery.salaryDate = {
+      $gte: startOfMonth(new Date()),
+      $lte: endOfMonth(new Date()),
     };
   }
   let sortCriteria = {};

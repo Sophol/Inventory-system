@@ -43,11 +43,11 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
 
   const summaryRow = (
     <TableRow>
-      <TableCell colSpan={3} className="text-right">
+      <TableCell colSpan={6} className="text-right">
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary.totalGrandtotal}</strong>
+        <strong>{summary?.totalGrandtotal}</strong>
       </TableCell>
     </TableRow>
   );

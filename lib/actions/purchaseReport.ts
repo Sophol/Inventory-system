@@ -4,6 +4,7 @@ import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { PurchaseSearchParamsSchema } from "../validations";
 import { Purchase } from "@/database";
+import { endOfMonth, startOfMonth } from "date-fns";
 const ObjectId = mongoose.Types.ObjectId;
 export async function getPurchaseReports(params: PurchaseSearchParams): Promise<
   ActionResponse<{
@@ -55,6 +56,11 @@ export async function getPurchaseReports(params: PurchaseSearchParams): Promise<
     filterQuery.purchaseDate = {
       $gte: new Date(from),
       $lte: new Date(to),
+    };
+  } else {
+    filterQuery.purchaseDate = {
+      $gte: startOfMonth(new Date()),
+      $lte: endOfMonth(new Date()),
     };
   }
 

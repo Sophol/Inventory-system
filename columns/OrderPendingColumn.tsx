@@ -105,7 +105,10 @@ export const SaleColumn: ColumnDef<Sale>[] = [
         fetchUserRole();
       }, []);
       const handleApproveOrder = async (isLogo: string) => {
-        const { success } = await updateOrderStatus({ saleId: sale._id, isLogo });
+        const { success } = await updateOrderStatus({
+          saleId: sale._id,
+          isLogo,
+        });
         if (success) {
           toast({
             title: "success",
@@ -141,7 +144,9 @@ export const SaleColumn: ColumnDef<Sale>[] = [
         <div className="flex items-center space-x-1">
           {userRole === "admin" && (
             <div>
-              <ButtonApproveOrder onPopup={(isLogo) => handleApproveOrder(isLogo)} />
+              <ButtonApproveOrder
+                onPopup={(isLogo) => handleApproveOrder(isLogo)}
+              />
             </div>
           )}
           <RedirectButton

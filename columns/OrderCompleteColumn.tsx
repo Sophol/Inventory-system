@@ -32,7 +32,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("invoicedDate") as string;
-      const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
+      const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss "); // Customize format as needed
       return <span>{formattedDate}</span>;
     },
   },

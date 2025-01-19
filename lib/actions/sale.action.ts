@@ -16,6 +16,7 @@ import {
   PaginatedSearchParamsInvoiceSchema,
   SaleSearchParamsSchema,
 } from "../validations";
+import { endOfMonth, startOfMonth } from "date-fns";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -48,7 +49,8 @@ export async function createSale(
     exchangeRateT,
     saleType,
     delivery,
-    isLogo
+    isLogo,
+    orderDate,
   } = validatedData.params!;
   const seller = validatedData?.session?.user?.id;
   const sellerName = validatedData?.session?.user?.name;
@@ -79,7 +81,8 @@ export async function createSale(
           saleType,
           seller,
           sellerName,
-          isLogo
+          isLogo,
+          orderDate,
         },
       ],
       { session }
@@ -360,7 +363,7 @@ export async function getSale(
           updatedAt: { $first: "$updatedAt" },
           saleDetails: { $push: "$details" },
           sellerName: { $first: "$sellerName" },
-          isLogo: {$first : '$isLogo'}
+          isLogo: { $first: "$isLogo" },
         },
       },
     ]);
@@ -541,12 +544,18 @@ export async function getApprovedOrder(params: SaleSearchParams): Promise<
   if (branchId) {
     filterQuery.branch = new ObjectId(branchId);
   }
-
+  const start = startOfMonth(new Date());
+  const end = endOfMonth(new Date());
   if (dateRange) {
     const [from, to] = dateRange.split("_");
     filterQuery.approvedDate = {
       $gte: new Date(from),
       $lte: new Date(to),
+    };
+  } else {
+    filterQuery.approvedDate = {
+      $gte: new Date(start),
+      $lte: new Date(end),
     };
   }
   let sortCriteria = {};
@@ -656,12 +665,18 @@ export async function getPendingOrder(params: SaleSearchParams): Promise<
   if (branchId) {
     filterQuery.branch = new ObjectId(branchId);
   }
-
+  const start = startOfMonth(new Date());
+  const end = endOfMonth(new Date());
   if (dateRange) {
     const [from, to] = dateRange.split("_");
     filterQuery.orderDate = {
       $gte: new Date(from),
       $lte: new Date(to),
+    };
+  } else {
+    filterQuery.orderDate = {
+      $gte: new Date(start),
+      $lte: new Date(end),
     };
   }
   let sortCriteria = {};

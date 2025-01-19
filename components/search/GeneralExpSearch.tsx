@@ -11,7 +11,6 @@ import FormInput from "../formInputs/FormInput";
 import { Button } from "../ui/button";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import { DateRange } from "react-day-picker";
-import { endOfMonth, startOfMonth } from "date-fns";
 
 interface ProductSearchProps {
   route: string;
@@ -26,11 +25,8 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState(query);
   const [searchBranch, setSearchBranch] = useState(branchId);
-  const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: startOfMonth(new Date()),
-    to: endOfMonth(new Date()),
-  });
-
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
+  const [resetData, setResetData] = useState(false);
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchQuery) {
@@ -129,6 +125,7 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
 
   const handleDateRangeChange = (date: DateRange | undefined) => {
     setDateRange(date);
+    setResetData(false);
   };
 
   const handleClearSearch = () => {
@@ -139,6 +136,7 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
     setSearchQuery("");
     setSearchBranch("");
     setDateRange(undefined);
+    setResetData(true);
     const newUrl = removeKeyFromUrlQuery({
       params: searchParams.toString(),
       keyToRemove: ["query", "branchId", "dateRange"],
@@ -171,7 +169,10 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
             handleBranchChange(value);
           }}
         />
-        <DatePickerWithRange onDateChange={handleDateRangeChange} />
+        <DatePickerWithRange
+          onDateChange={handleDateRangeChange}
+          reset={resetData}
+        />
         <Button
           onClick={handleClearSearch}
           className="ml-2 mt-[30px] bg-red-600"
