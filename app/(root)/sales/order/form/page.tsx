@@ -4,7 +4,6 @@ import CardContainer from "@/components/cards/CardContainer";
 import SaleForm from "@/components/forms/SaleForm";
 import ROUTES from "@/constants/routes";
 import { getSetting } from "@/lib/actions/setting.action";
-import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
 import { checkAuthorization } from "@/lib/auth";
 
