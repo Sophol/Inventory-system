@@ -1,4 +1,5 @@
 "use client";
+
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import {
@@ -8,6 +9,7 @@ import {
 } from "@radix-ui/react-collapsible";
 import { ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useMemo, useCallback, useState } from "react";
 
 import {
   SidebarMenuButton,
@@ -21,8 +23,33 @@ import { getSidebarLinks } from "@/constants/index";
 const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
   const pathname = usePathname();
   const sidebarLinks = getSidebarLinks(role);
-  const isActiveRoute = (route: string) =>
-    (pathname.includes(route) && route.length > 1) || pathname === route;
+  const [openItem, setOpenItem] = useState<string | null>(null);
+
+  const isActiveRoute = useCallback(
+    (route: string) =>
+      (pathname.includes(route) && route.length > 1) || pathname === route,
+    [pathname]
+  );
+
+  const initialOpenItem = useMemo(() => {
+    for (const item of sidebarLinks) {
+      if (
+        item.items &&
+        item.items.some((subItem) => isActiveRoute(subItem.url))
+      ) {
+        return item.title;
+      }
+    }
+    return null;
+  }, [sidebarLinks, isActiveRoute]);
+
+  useState(() => {
+    setOpenItem(initialOpenItem);
+  });
+
+  const handleCollapsibleChange = (title: string, isOpen: boolean) => {
+    setOpenItem(isOpen ? title : null);
+  };
 
   return (
     <>
@@ -36,8 +63,10 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
         return (
           <Collapsible
             key={item.title}
-            asChild
-            defaultOpen={item.isActive}
+            open={openItem === item.title}
+            onOpenChange={(isOpen) =>
+              handleCollapsibleChange(item.title, isOpen)
+            }
             className="group/collapsible uppercase"
           >
             <SidebarMenuItem>
@@ -70,7 +99,6 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
                                 )}
                               >
                                 {subItem.icon && <subItem.icon />}
-
                                 <span>{subItem.title}</span>
                               </Link>
                             </SidebarMenuSubButton>
