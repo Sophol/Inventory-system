@@ -29,6 +29,7 @@ interface FormComboboxProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
   label: string;
+  labelClass? :string;
   placeholder: string;
   setValue: UseFormSetValue<T>;
   fetchData: (params: {
@@ -45,6 +46,7 @@ function FormCombobox<T extends FieldValues>({
   control,
   name,
   label,
+  labelClass,
   placeholder,
   fetchSingleItem,
   fetchData,
@@ -100,7 +102,7 @@ function FormCombobox<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className="flex w-full flex-col">
-          <FormLabel className="paragraph-semibold text-dark400_light800">
+        <FormLabel className={`paragraph-semibold text-dark400_light800 ${labelClass}`} >
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Popover>

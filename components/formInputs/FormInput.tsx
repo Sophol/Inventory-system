@@ -16,6 +16,7 @@ type FormInputProps<T extends FieldValues> = {
   label?: string;
   message?: string;
   type?: string;
+  labelClass? :string;
   control: Control<T>;
   isRequired?: boolean;
   placeholder?: string;
@@ -28,6 +29,7 @@ function FormInput<T extends FieldValues>({
   name,
   message,
   control,
+  labelClass,
   type = "text",
   isRequired = true,
   placeholder,
@@ -55,9 +57,9 @@ function FormInput<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex w-full flex-col">
+        <FormItem className="flex w-full flex-col mt-0">
           {label && (
-            <FormLabel className="paragraph-semibold text-dark400_light800">
+            <FormLabel className={`paragraph-semibold text-dark400_light800 ${labelClass}`} >
               {label}
               {isRequired && <span className="text-primary-500">*</span>}
             </FormLabel>
