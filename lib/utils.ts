@@ -89,3 +89,13 @@ export const generateUniqueReference = ({
   const timestamp = Date.now().toString(36); // Convert current timestamp to base-36 string
   return `${prefix}-${timestamp}`.toUpperCase(); // Return the reference number
 };
+export const formatCurrency = (
+  amount: number,
+  locale: string = "km-KH"
+): string => {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "KHR",
+    maximumFractionDigits: 0,
+  }).format(amount);
+};
