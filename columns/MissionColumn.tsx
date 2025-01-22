@@ -25,6 +25,16 @@ export interface Mission {
 
 export const MissionColumn: ColumnDef<Mission>[] = [
   {
+    accessorKey: "branch",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Branch" />
+    ),
+    cell: ({ row }) => {
+      const user = row.original;
+      return <span>{user.branch.title}</span>;
+    },
+  },
+  {
     accessorKey: "missionDate",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date" />
@@ -38,32 +48,11 @@ export const MissionColumn: ColumnDef<Mission>[] = [
       <DataTableColumnHeader column={column} title="Title" />
     ),
   },
-  {
-    accessorKey: "branch",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch" />
-    ),
-    cell: ({ row }) => {
-      const user = row.original;
-      return <span>{user.branch.title}</span>;
-    },
-  },
+
   {
     accessorKey: "amount",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Amount" />
-    ),
-  },
-  {
-    accessorKey: "exchangeRateD",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Exchange Rate Dollar" />
-    ),
-  },
-  {
-    accessorKey: "exchangeRateT",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Exchange Rate Thai" />
     ),
   },
   {

@@ -25,6 +25,16 @@ export interface Salary {
 
 export const SalaryColumn: ColumnDef<Salary>[] = [
   {
+    accessorKey: "branch",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="branch" />
+    ),
+    cell: ({ row }) => {
+      const user = row.original;
+      return <span>{user.branch.title}</span>;
+    },
+  },
+  {
     accessorKey: "salaryDate",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date" />
@@ -42,16 +52,7 @@ export const SalaryColumn: ColumnDef<Salary>[] = [
       return <span>{user.staffId.username}</span>;
     },
   },
-  {
-    accessorKey: "branch",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="branch" />
-    ),
-    cell: ({ row }) => {
-      const user = row.original;
-      return <span>{user.branch.title}</span>;
-    },
-  },
+
   {
     accessorKey: "salary",
     header: ({ column }) => (

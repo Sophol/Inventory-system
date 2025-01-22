@@ -25,6 +25,16 @@ export interface GeneralExp {
 
 export const GeneralExpColumn: ColumnDef<GeneralExp>[] = [
   {
+    accessorKey: "branch",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Branch" />
+    ),
+    cell: ({ row }) => {
+      const user = row.original;
+      return <span>{user.branch.title}</span>;
+    },
+  },
+  {
     accessorKey: "generalDate",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date" />
@@ -38,32 +48,11 @@ export const GeneralExpColumn: ColumnDef<GeneralExp>[] = [
       <DataTableColumnHeader column={column} title="Title" />
     ),
   },
-  {
-    accessorKey: "branch",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch" />
-    ),
-    cell: ({ row }) => {
-      const user = row.original;
-      return <span>{user.branch.title}</span>;
-    },
-  },
+
   {
     accessorKey: "amount",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Amount" />
-    ),
-  },
-  {
-    accessorKey: "exchangeRateD",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Exchange Rate Dollar" />
-    ),
-  },
-  {
-    accessorKey: "exchangeRateT",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Exchange Rate Thai" />
     ),
   },
   {
