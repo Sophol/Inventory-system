@@ -330,7 +330,7 @@ const SaleForm = ({
             </CardContent>
           </Card>
         </div>
-        <div className="mt-2 flex justify-end">
+        <div className="mb-3 flex justify-end">
           <Button
             type="submit"
             disabled={isPending}
