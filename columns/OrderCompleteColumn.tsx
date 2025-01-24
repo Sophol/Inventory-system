@@ -79,30 +79,30 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader column={column} title="Balance" />
     ),
   },
-  {
-    accessorKey: "orderStatus",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Order Status" />
-    ),
-    cell: ({ row }) => {
-      const status = row.getValue("orderStatus") as string;
-      return (
-        <Badge
-          className={
-            status === "completed"
-              ? "bg-green-500 uppercase"
-              : status === "approved"
-                ? "bg-blue-500 uppercase"
-                : status === "pending"
-                  ? "bg-yellow-500 uppercase"
-                  : "bg-red-500 uppercase"
-          }
-        >
-          {status}
-        </Badge>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "orderStatus",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Order Status" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const status = row.getValue("orderStatus") as string;
+  //     return (
+  //       <Badge
+  //         className={
+  //           status === "completed"
+  //             ? "bg-green-500 uppercase"
+  //             : status === "approved"
+  //               ? "bg-blue-500 uppercase"
+  //               : status === "pending"
+  //                 ? "bg-yellow-500 uppercase"
+  //                 : "bg-red-500 uppercase"
+  //         }
+  //       >
+  //         {status}
+  //       </Badge>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "paymentStatus",
     header: ({ column }) => (
