@@ -149,11 +149,50 @@ export async function getCustomers(
   try {
     const [totalCustomers, customers] = await Promise.all([
       Customer.countDocuments(filterQuery),
-      Customer.find(filterQuery)
-        .lean()
-        .sort(sortCriteria)
-        .skip(skip)
-        .limit(limit),
+      Customer.aggregate([
+        { $match: filterQuery },
+        {
+          $lookup: {
+            from: "sales",
+            localField: "_id",
+            foreignField: "customer",
+            as: "sales",
+          },
+        },
+        {
+          $addFields: {
+            balance: {
+              $sum: {
+                $map: {
+                  input: {
+                    $filter: {
+                      input: "$sales",
+                      as: "sale",
+                      cond: { $eq: ["$$sale.orderStatus", "completed"] },
+                    },
+                  },
+                  as: "completedSale",
+                  in: "$$completedSale.balance",
+                },
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            phone: 1,
+            location: 1,
+            status: 1,
+            createdAt: 1,
+            balance: 1,
+          },
+        },
+        { $sort: sortCriteria },
+        { $skip: skip },
+        { $limit: limit },
+      ]),
     ]);
     const isNext = totalCustomers > skip + customers.length;
 

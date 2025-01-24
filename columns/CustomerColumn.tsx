@@ -8,13 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
+import { formatCurrency } from "@/lib/utils";
 
 export type Customer = {
   _id: string;
   name: string;
   phone: string;
   location: string;
-  socialLink?: string;
+  balance: string | number;
   status: string;
 };
 
@@ -52,10 +53,18 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
     ),
   },
   {
-    accessorKey: "socialLink",
+    accessorKey: "balance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="SocialLink" />
+      <DataTableColumnHeader column={column} title="Balance" />
     ),
+    cell: ({ row }) => {
+      const customer = row.original;
+      const balance =
+        typeof customer.balance === "number"
+          ? customer.balance
+          : parseFloat(customer.balance) || 0;
+      return <span suppressHydrationWarning>{formatCurrency(balance)}</span>;
+    },
   },
   {
     id: "actions",
