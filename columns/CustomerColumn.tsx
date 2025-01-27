@@ -15,7 +15,7 @@ export type Customer = {
   name: string;
   phone: string;
   location: string;
-  balance: string | number;
+  balance?: string | number;
   status: string;
 };
 
@@ -62,7 +62,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
       const balance =
         typeof customer.balance === "number"
           ? customer.balance
-          : parseFloat(customer.balance) || 0;
+          : parseFloat(customer.balance ?? "0") || 0;
       return <span suppressHydrationWarning>{formatCurrency(balance)}</span>;
     },
   },
