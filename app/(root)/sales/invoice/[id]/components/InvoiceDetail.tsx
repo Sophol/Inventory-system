@@ -41,7 +41,7 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
           </div>
             )}
           <div className="flex flex-col">
-            <h1 className="font-bold text-lg pt-5 md:pt-0 mx-auto sm:mx-0 pb-3"># {invoice.referenceNo}</h1>
+            <h1 className="font-bold text-lg pt-5 mx-auto sm:mx-0 pb-3"># {invoice.referenceNo}</h1>
             <p className="text-sm">
               <span className="pr-2">Date Issued:</span>
               { invoice.dueDate ? format(new Date(invoice.invoicedDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
@@ -53,8 +53,8 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
             </p>
           </div>
         </div>
-        <br />
-        <div className="md:flex p-2 invoice-body mb-5">
+   
+        <div className="md:flex p-2 invoice-body my-1">
           <div className="bill-to">
             {/* <p className=" text-lg">Bill To:</p> */}
             <div className="sub-info">
@@ -144,14 +144,14 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
           </div>
           
         </div>
-        <div className="flex p-2 invoice-body  ">
-          <div className="invoice-to pt-10 text-center">
+        <div className="flex p-2 invoice-body pt-12 ">
+          <div className="invoice-to  text-center">
             <p className="pb-1 w-full">Sender(អ្នកប្រគល់): </p>
             <p className="pb-5 w-full">
               <span className="">{invoice.sellerName}</span>
             </p>
           </div>
-          <div className="bill-to pt-10">
+          <div className="bill-to">
             <div className=" text-center">
                 <p className="pb-1 w-full">Receiver(អ្នកទទួល): </p>
                 <p className="pb-5 w-full">
