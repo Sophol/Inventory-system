@@ -100,7 +100,6 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
             title: "success",
             description: "Purchase deleted successfully.",
           });
-          // Provide an alternative way to refresh the table data
           reloadPage();
         } else {
           toast({
