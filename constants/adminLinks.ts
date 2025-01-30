@@ -198,6 +198,12 @@ export const adminLinks: Link[] = [
         icon: GrMoney,
         permissions: ["admin", "report", "auditReport", "branch"],
       },
+      {
+        title: "Alet Qty Report",
+        url: "/reports/alertQty",
+        icon: GrMoney,
+        permissions: ["admin", "report", "auditReport", "branch"],
+      },
     ],
   },
   {
