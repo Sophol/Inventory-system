@@ -170,6 +170,7 @@ export async function getProfitAndLossReport(params: SaleSearchParams): Promise<
         category: string;
         productName: string;
         totalCOGS: number;
+        salesIncome?: number;
       }[];
     };
   }>

@@ -8,10 +8,10 @@ import ROUTES from "@/constants/routes";
 import { PURCHASE_EMPTY } from "@/constants/states";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { PurchaseReportColumn } from "@/columns/PurchaseReportColumn";
 import PurchaseSearch from "@/components/search/PurchaseSearch";
 import { getPurchaseReports } from "@/lib/actions/purchaseReport";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { PurchaseColumn } from "@/columns/PurchaseColumn";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -70,7 +70,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
         empty={PURCHASE_EMPTY}
         render={() => (
           <DataTable
-            columns={PurchaseReportColumn}
+            columns={PurchaseColumn}
             data={purchases}
             summaryRow={summaryRow}
             isNext={isNext}

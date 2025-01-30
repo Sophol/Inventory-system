@@ -21,7 +21,7 @@ const Profit = async () => {
     <DataRenderer
       success={success}
       error={error}
-      data={data?.details?.saleDetails || []}
+      data={data?.details?.purchaseDetails || []}
       empty={DEFAULT_EMPTY}
       render={() => (
         <ProfitLoss
