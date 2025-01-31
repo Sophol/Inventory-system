@@ -200,6 +200,7 @@ interface Sale {
   _id: string;
   customer: { _id: string; title: string };
   branch: { _id: string; title: string };
+  seller: { _id: string; title: string };
   referenceNo: string;
   description?: string;
   orderDate: string;
@@ -215,7 +216,7 @@ interface Sale {
   exchangeRateD?: number;
   exchangeRateT?: number;
   tax: number;
-  isLogo:string;
+  isLogo: string;
   paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
   orderStatus: "pending" | "approved" | "completed" | "void";
   paymentStatus: "pending" | "credit" | "completed";

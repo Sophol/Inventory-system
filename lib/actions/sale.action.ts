@@ -1,7 +1,7 @@
 "use server";
 import mongoose, { FilterQuery } from "mongoose";
 
-import { ProductUnit, Sale, SaleDetail, Stock } from "@/database";
+import { ProductUnit, Sale, SaleDetail, Stock, User } from "@/database";
 import { ISaleDetailDoc } from "@/database/sale-detail.model";
 import { ISaleDoc } from "@/database/sale.model";
 
@@ -51,14 +51,23 @@ export async function createSale(
     delivery,
     isLogo,
     orderDate,
+    seller,
   } = validatedData.params!;
-  const seller = validatedData?.session?.user?.id;
-  const sellerName = validatedData?.session?.user?.name;
+  let sellerId = validatedData?.session?.user?.id;
+  let sellerName = validatedData?.session?.user?.name;
+  if (seller) {
+    const user = await User.findById(new ObjectId(seller));
+    sellerId = user?._id;
+    sellerName = user?.name;
+  }
+
   const session = await mongoose.startSession();
-  console.log("delivery", delivery);
+
   session.startTransaction();
 
   try {
+    const existingSale = await Sale.findOne({ referenceNo });
+    if (existingSale) throw new Error("លេខវិកាយ័បត្រ មានរួចហើយ");
     const [sale] = await Sale.create(
       [
         {
@@ -79,7 +88,7 @@ export async function createSale(
           exchangeRateD,
           exchangeRateT,
           saleType,
-          seller,
+          seller: sellerId,
           sellerName,
           isLogo,
           orderDate,
@@ -87,7 +96,6 @@ export async function createSale(
       ],
       { session }
     );
-    console.log("sale", sale);
     if (!sale) {
       throw new Error("Failed to create sale");
     }
@@ -149,6 +157,7 @@ export async function editSale(
     exchangeRateT,
     saleType,
     delivery,
+    seller,
   } = validatedData.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -156,6 +165,13 @@ export async function editSale(
     const sale = await Sale.findById(saleId);
     if (!sale) {
       throw new Error("Sale not found");
+    }
+    let sellerId = validatedData?.session?.user?.id;
+    let sellerName = validatedData?.session?.user?.name;
+    if (seller) {
+      const user = await User.findById(new ObjectId(seller));
+      sellerId = user?._id;
+      sellerName = user?.name;
     }
     if (sale.customer !== customer) sale.customer = customer;
     if (sale.branch !== branch) sale.branch = branch;
@@ -165,6 +181,8 @@ export async function editSale(
     if (discount !== sale.discount) sale.discount = discount;
     if (subtotal !== sale.subtotal) sale.subtotal = subtotal;
     if (delivery !== sale.delivery) sale.delivery = delivery;
+    if (sellerId !== sale.seller) sale.seller = seller;
+    if (sellerName !== sale.sellerName) sale.sellerName = sellerName;
     if (grandtotal !== sale.grandtotal) {
       sale.grandtotal = grandtotal;
       sale.balance = grandtotal;
@@ -338,11 +356,31 @@ export async function getSale(
         },
       },
       {
+        $lookup: {
+          from: "users",
+          localField: "seller",
+          foreignField: "_id",
+          as: "userDetails",
+        },
+      },
+      {
+        $unwind: { path: "$userDetails", preserveNullAndEmptyArrays: true },
+      },
+      {
+        $addFields: {
+          seller: {
+            _id: "$userDetails._id",
+            title: "$userDetails.name",
+          },
+        },
+      },
+      {
         $group: {
           _id: "$_id",
           referenceNo: { $first: "$referenceNo" },
           customer: { $first: "$customer" },
           branch: { $first: "$branch" },
+          seller: { $first: "$seller" },
           orderDate: { $first: "$orderDate" },
           approvedDate: { $first: "$approvedDate" },
           invoicedDate: { $first: "$invoicedDate" },

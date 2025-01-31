@@ -186,6 +186,7 @@ interface CreateSaleParams {
   customer: string;
   branch: string;
   referenceNo: string;
+  seller?: string;
   description?: string;
   saleDate?: Date | string;
   orderDate?: Date | string;

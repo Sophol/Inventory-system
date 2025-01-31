@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { notFound, useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { Fragment, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -24,12 +24,14 @@ import FormSaleDetail from "../formInputs/FormSaleDetail";
 import { getProduct, getProducts } from "@/lib/actions/product.action";
 import { getUnits } from "@/lib/actions/unit.action";
 import { generateUniqueReference } from "@/lib/utils";
+import { getStaffs } from "@/lib/actions/user.action";
 
 interface Params {
   sale?: Sale;
   isEdit?: boolean;
   exchangeRateD?: number;
   exchangeRateT?: number;
+  isSeller?: boolean;
 }
 
 const SaleForm = ({
@@ -37,6 +39,7 @@ const SaleForm = ({
   isEdit = false,
   exchangeRateD,
   exchangeRateT,
+  isSeller = false,
 }: Params) => {
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
@@ -46,6 +49,7 @@ const SaleForm = ({
     defaultValues: {
       customer: sale?.customer._id || "",
       branch: sale?.branch._id || "",
+      seller: sale?.seller._id || "",
       referenceNo:
         sale?.referenceNo || generateUniqueReference({ prefix: "SO" }),
       description: sale?.description || "",
@@ -251,13 +255,35 @@ const SaleForm = ({
     }
     return { data: [], isNext: false };
   };
+  const fetchStaffs = async ({
+    page,
+    query,
+  }: {
+    page: number;
+    query: string;
+  }) => {
+    const { success, data } = await getStaffs({
+      page: Number(page) || 1,
+      pageSize: 10,
+      query: query || "",
+    });
+    if (success) {
+      const users =
+        data?.users.map((user) => ({
+          _id: user._id,
+          title: user.username,
+        })) || [];
+      return { data: users, isNext: data?.isNext || false };
+    }
+    return { data: [], isNext: false };
+  };
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-4 text-sm" 
+        className="flex flex-col gap-4 text-sm"
         onSubmit={form.handleSubmit(handleCreateSale)}
       >
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3"> 
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
           <FormInput
             name="referenceNo"
             label="Reference No"
@@ -302,14 +328,38 @@ const SaleForm = ({
             type="number"
           />
         </div>
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-1"> 
-          <FormInput
-            name="description"
-            label="Description"
-            control={form.control}
-            isRequired={false}
-          />
-        </div>
+        {isSeller && (
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-1">
+            <FormInput
+              name="description"
+              label="Description"
+              control={form.control}
+              isRequired={false}
+            />
+          </div>
+        )}
+        {!isSeller && (
+          <div className="grid grid-cols-3 gap-2 md:grid-cols-3">
+            <FormCombobox
+              control={form.control}
+              name="seller"
+              label="Seller"
+              placeholder="Select Seller"
+              fetchSingleItem={sale ? sale.seller : null}
+              fetchData={fetchStaffs}
+              setValue={form.setValue}
+            />
+            <div className="col-span-2">
+              <FormInput
+                name="description"
+                label="Description"
+                control={form.control}
+                isRequired={false}
+              />
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1">
           <Card className="text-sm">
             <CardHeader className="pt-4 pb-2 text-lg">

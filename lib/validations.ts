@@ -308,6 +308,7 @@ export const CreateSaleDetailSchema = SaleDetailSchema.extend({
 export const CreateSaleSchema = z.object({
   customer: z.string().min(1, "Customer is required"),
   branch: z.string().min(1, "Branch is required"),
+  seller: z.string().min(1, "Seller is required"),
   referenceNo: z.string().min(1, "Reference number is required"),
   description: z.string().optional(),
   orderDate: z.date(),
@@ -332,7 +333,7 @@ export const CreateSaleSchema = z.object({
   saleDetails: z
     .array(SaleDetailSchema)
     .min(1, { message: "At least one Unit is required." }),
-  isLogo:z.string().default('true')
+  isLogo: z.string().default("true"),
 });
 
 export const EditSaleSchema = CreateSaleSchema.extend({
