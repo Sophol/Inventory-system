@@ -32,9 +32,9 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
       branch: sale?.branch._id,
       referenceNo: sale?.referenceNo,
       description: payment?.description || "",
-      paymentDate:   payment?.paymentDate 
-      ? new Date(payment?.paymentDate) 
-      : new Date(),
+      paymentDate: payment?.paymentDate
+        ? new Date(payment?.paymentDate)
+        : new Date(),
       creditAmount: sale?.balance || 0,
       paidAmount: 0,
       balance: sale?.balance,
@@ -51,9 +51,9 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
         branch: sale?.branch._id,
         referenceNo: sale?.referenceNo,
         description: payment?.description || "",
-        paymentDate:   payment?.paymentDate 
-        ? new Date(payment?.paymentDate) 
-        : new Date(),
+        paymentDate: payment?.paymentDate
+          ? new Date(payment?.paymentDate)
+          : new Date(),
         creditAmount: sale.balance || 0,
         paidAmount: 0,
         balance: sale?.balance || 0,
@@ -142,6 +142,8 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
             { _id: "Cash", title: "Cash" },
             { _id: "ABA Bank", title: "ABA Bank" },
             { _id: "ACLEDA Bank", title: "ACLEDA Bank" },
+            { _id: "Sathapna Bank", title: "Sathapna Bank" },
+            { _id: "Vatanak Bank", title: "Vatanak Bank" },
             { _id: "Others", title: "Others" },
           ]}
         />

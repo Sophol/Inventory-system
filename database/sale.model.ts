@@ -18,7 +18,13 @@ export interface ISale {
   paid: number;
   balance: number;
   delivery: number;
-  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  paidBy?:
+    | "Cash"
+    | "ABA Bank"
+    | "ACLEDA Bank"
+    | "Sathapna Bank"
+    | "Vatanak Bank"
+    | "Others";
   orderStatus: "pending" | "approved" | "completed";
   paymentStatus: "pending" | "credit" | "completed";
   saleType: "retail" | "wholesale";
@@ -52,7 +58,14 @@ const SaleSchema = new Schema<ISale>(
     },
     paidBy: {
       type: String,
-      enum: ["Cash", "ABA Bank", "ACLEDA Bank", "Others"],
+      enum: [
+        "Cash",
+        "ABA Bank",
+        "ACLEDA Bank",
+        "Sathapna Bank",
+        "Vatanak Bank",
+        "Others",
+      ],
       required: true,
       default: "Cash",
     },

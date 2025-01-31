@@ -200,7 +200,13 @@ interface CreateSaleParams {
   exchangeRateD?: number;
   exchangeRateT?: number;
   delivery?: number;
-  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  paidBy?:
+    | "Cash"
+    | "ABA Bank"
+    | "ACLEDA Bank"
+    | "Sathapna Bank"
+    | "Vatanak Bank"
+    | "Others";
   orderStatus?: "pending" | "approved" | "completed" | "void";
   paymentStatus?: "pending" | "credit" | "completed";
   saleType?: "retail" | "wholesale";
@@ -285,7 +291,13 @@ interface CreatePaymentParams {
   creditAmount?: number;
   paidAmount?: number;
   balance?: number;
-  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  paidBy?:
+    | "Cash"
+    | "ABA Bank"
+    | "ACLEDA Bank"
+    | "Sathapna Bank"
+    | "Vatanak Bank"
+    | "Others";
   paymentStatus?: "pending" | "credit" | "completed";
 }
 interface GetPaymentParams {

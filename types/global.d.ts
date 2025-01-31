@@ -217,7 +217,13 @@ interface Sale {
   exchangeRateT?: number;
   tax: number;
   isLogo: string;
-  paidBy?: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  paidBy?:
+    | "Cash"
+    | "ABA Bank"
+    | "ACLEDA Bank"
+    | "Sathapna Bank"
+    | "Vatanak Bank"
+    | "Others";
   orderStatus: "pending" | "approved" | "completed" | "void";
   paymentStatus: "pending" | "credit" | "completed";
   saleType?: "retail" | "wholesale";
@@ -295,6 +301,12 @@ interface Payment {
   paidAmount: number;
   balance: number;
   description?: string;
-  paidBy: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  paidBy:
+    | "Cash"
+    | "ABA Bank"
+    | "ACLEDA Bank"
+    | "Sathapna Bank"
+    | "Vatanak Bank"
+    | "Others";
   paymentStatus: "pending" | "credit" | "completed";
 }

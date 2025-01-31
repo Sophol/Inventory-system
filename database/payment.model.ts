@@ -10,7 +10,13 @@ export interface IPayment {
   creditAmount: number;
   paidAmount: number;
   balance: number;
-  paidBy: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  paidBy:
+    | "Cash"
+    | "ABA Bank"
+    | "ACLEDA Bank"
+    | "Sathapna Bank"
+    | "Vatanak Bank"
+    | "Others";
   paymentStatus: "pending" | "credit" | "completed";
 }
 export interface IPaymentDoc extends IPayment, Document {}
@@ -27,7 +33,14 @@ const PaymentSchema = new Schema<IPayment>(
     balance: { type: Number, default: 0 },
     paidBy: {
       type: String,
-      enum: ["Cash", "ABA Bank", "ACLEDA Bank", "Others"],
+      enum: [
+        "Cash",
+        "ABA Bank",
+        "ACLEDA Bank",
+        "Sathapna Bank",
+        "Vatanak Bank",
+        "Others",
+      ],
       required: true,
       default: "Cash",
     },

@@ -324,7 +324,16 @@ export const CreateSaleSchema = z.object({
   balance: z.number().min(0).default(0),
   exchangeRateD: z.number().min(0).default(0),
   exchangeRateT: z.number().min(0).default(0),
-  paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]).optional(),
+  paidBy: z
+    .enum([
+      "Cash",
+      "ABA Bank",
+      "ACLEDA Bank",
+      "Sathapna Bank",
+      "Vatanak Bank",
+      "Others",
+    ])
+    .optional(),
   orderStatus: z
     .enum(["pending", "approved", "completed", "void"])
     .default("pending"),
@@ -413,7 +422,14 @@ export const CreatePaymentSchema = z
     creditAmount: z.number().min(0, "Credit amount must be a positive number"),
     paidAmount: z.number().min(0.01, "Paid amount must be a positive number"),
     balance: z.number().min(0, "Balance must be a positive number"),
-    paidBy: z.enum(["Cash", "ABA Bank", "ACLEDA Bank", "Others"]),
+    paidBy: z.enum([
+      "Cash",
+      "ABA Bank",
+      "ACLEDA Bank",
+      "Sathapna Bank",
+      "Vatanak Bank",
+      "Others",
+    ]),
     paymentStatus: z.enum(["pending", "credit", "completed"]),
   })
   .refine((data) => data.paidAmount <= data.creditAmount, {
