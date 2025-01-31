@@ -24,12 +24,14 @@ import { getProduct, getProducts } from "@/lib/actions/product.action";
 import { getUnits } from "@/lib/actions/unit.action";
 import { generateUniqueReference } from "@/lib/utils";
 import { createInvoice } from "@/lib/actions/invoice.action";
+import { getStaffs } from "@/lib/actions/user.action";
 
 interface Params {
   sale?: Sale;
   isEdit?: boolean;
   exchangeRateD?: number;
   exchangeRateT?: number;
+  isSeller?: boolean;
 }
 
 const InvoiceForm = ({
@@ -37,6 +39,7 @@ const InvoiceForm = ({
   isEdit = false,
   exchangeRateD,
   exchangeRateT,
+  isSeller = false,
 }: Params) => {
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
@@ -45,6 +48,7 @@ const InvoiceForm = ({
     defaultValues: {
       customer: sale?.customer._id || "",
       branch: sale?.branch._id || "",
+      seller: sale?.seller._id || "",
       referenceNo:
         sale?.referenceNo || generateUniqueReference({ prefix: "INV" }),
       description: sale?.description || "",
@@ -60,7 +64,7 @@ const InvoiceForm = ({
       discount: sale?.discount || 0,
       subtotal: sale?.subtotal || 0,
       delivery: sale?.delivery || 0,
-      isLogo : sale?.isLogo || "true",
+      isLogo: sale?.isLogo || "true",
       grandtotal: sale?.grandtotal || 0,
       exchangeRateD: sale?.exchangeRateD || exchangeRateD || 0,
       exchangeRateT: sale?.exchangeRateT || exchangeRateT || 0,
@@ -231,6 +235,28 @@ const InvoiceForm = ({
     }
     return { data: [], isNext: false };
   };
+  const fetchStaffs = async ({
+    page,
+    query,
+  }: {
+    page: number;
+    query: string;
+  }) => {
+    const { success, data } = await getStaffs({
+      page: Number(page) || 1,
+      pageSize: 10,
+      query: query || "",
+    });
+    if (success) {
+      const users =
+        data?.users.map((user) => ({
+          _id: user._id,
+          title: user.username,
+        })) || [];
+      return { data: users, isNext: data?.isNext || false };
+    }
+    return { data: [], isNext: false };
+  };
   return (
     <Form {...form}>
       <form
@@ -289,14 +315,37 @@ const InvoiceForm = ({
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
-          <FormInput
-            name="description"
-            label="Description"
-            control={form.control}
-            isRequired={false}
-          />
-        </div>
+        {isSeller && (
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-1">
+            <FormInput
+              name="description"
+              label="Description"
+              control={form.control}
+              isRequired={false}
+            />
+          </div>
+        )}
+        {!isSeller && (
+          <div className="grid grid-cols-3 gap-2 md:grid-cols-3">
+            <FormCombobox
+              control={form.control}
+              name="seller"
+              label="Seller"
+              placeholder="Select Seller"
+              fetchSingleItem={sale ? sale.seller : null}
+              fetchData={fetchStaffs}
+              setValue={form.setValue}
+            />
+            <div className="col-span-2">
+              <FormInput
+                name="description"
+                label="Description"
+                control={form.control}
+                isRequired={false}
+              />
+            </div>
+          </div>
+        )}
         <div className="grid grid-cols-1">
           <Card>
             <CardHeader>

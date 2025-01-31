@@ -9,6 +9,11 @@ import { checkAuthorization } from "@/lib/auth";
 import { auth } from "@/auth";
 
 const page = async () => {
+  const session = await auth();
+  if (!session) return redirect("/login");
+  let isSeller = false;
+  if (session.user.role === "seller") isSeller = true;
+
   const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
   if (!isAuthorized) {
     return redirect("/unauthorized");
@@ -19,10 +24,7 @@ const page = async () => {
   if (!success) return notFound();
   if (!setting) return notFound();
   const { exchangeRateD, exchangeRateT } = setting;
-  const session = await auth();
-  if (!session) return redirect("/login");
-  let isSeller = false;
-  if (session.user.role === "seller") isSeller = true;
+
   return (
     <CardContainer
       title="Add Sale"

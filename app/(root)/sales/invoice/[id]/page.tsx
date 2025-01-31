@@ -16,10 +16,9 @@ const InvoiceDetailPage = async ({ params }: RouteParams) => {
   if (!success) return notFound();
   if (!invoice) return notFound();
   return (
-
     <div className="flex gap-4 invoice-container">
-        <InvoiceDetail invoice={invoice} />
-        <InvoiceAction invoice={invoice} />
+      <InvoiceDetail invoice={invoice} />
+      <InvoiceAction invoice={invoice} />
     </div>
   );
 };

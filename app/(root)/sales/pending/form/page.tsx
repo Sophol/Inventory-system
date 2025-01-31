@@ -6,8 +6,14 @@ import ROUTES from "@/constants/routes";
 import { getSetting } from "@/lib/actions/setting.action";
 import { notFound, redirect } from "next/navigation";
 import { checkAuthorization } from "@/lib/auth";
+import { auth } from "@/auth";
 
 const page = async () => {
+  const session = await auth();
+  if (!session) return redirect("/login");
+  let isSeller = false;
+  if (session.user.role === "seller") isSeller = true;
+  console.log("isSeller", isSeller);
   const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
   if (!isAuthorized) {
     return redirect("/unauthorized");
@@ -26,7 +32,11 @@ const page = async () => {
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"
     >
-      <SaleForm exchangeRateD={exchangeRateD} exchangeRateT={exchangeRateT} />
+      <SaleForm
+        exchangeRateD={exchangeRateD}
+        exchangeRateT={exchangeRateT}
+        isSeller={isSeller}
+      />
     </CardContainer>
   );
 };

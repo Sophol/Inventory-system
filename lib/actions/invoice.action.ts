@@ -1,7 +1,7 @@
 "use server";
 import mongoose, { FilterQuery } from "mongoose";
 
-import { ProductUnit, Sale, SaleDetail, Stock } from "@/database";
+import { ProductUnit, Sale, SaleDetail, Stock, User } from "@/database";
 import { ISaleDetailDoc } from "@/database/sale-detail.model";
 import { ISaleDoc } from "@/database/sale.model";
 
@@ -47,13 +47,21 @@ export async function createInvoice(
     saleType,
     dueDate,
     isLogo,
+    seller,
   } = validatedData.params!;
-  const seller = validatedData?.session?.user?.id;
-  const sellerName = validatedData?.session?.user?.name;
+  let sellerId = validatedData?.session?.user?.id;
+  let sellerName = validatedData?.session?.user?.name;
+  if (seller) {
+    const user = await User.findById(new ObjectId(seller));
+    sellerId = user?._id;
+    sellerName = user?.name;
+  }
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
+    const existingSale = await Sale.findOne({ referenceNo });
+    if (existingSale) throw new Error("លេខវិកាយ័បត្រ មានរួចហើយ");
     const [sale] = await Sale.create(
       [
         {
@@ -74,9 +82,9 @@ export async function createInvoice(
           exchangeRateT,
           saleType,
           dueDate,
-          seller,
-          sellerName,
-          isLogo
+          seller: sellerId,
+          sellerName: sellerName,
+          isLogo,
         },
       ],
       { session }

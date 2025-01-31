@@ -7,6 +7,7 @@ import { getSetting } from "@/lib/actions/setting.action";
 import { notFound, redirect } from "next/navigation";
 import { getSale } from "@/lib/actions/sale.action";
 import { checkAuthorization } from "@/lib/auth";
+import { auth } from "@/auth";
 
 const EditSale = async ({ params }: RouteParams) => {
   const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
@@ -25,7 +26,10 @@ const EditSale = async ({ params }: RouteParams) => {
     saleId: id,
   });
   if (!saleSuccess) return notFound();
-  console.log(sale);
+  const session = await auth();
+  if (!session) return redirect("/login");
+  let isSeller = false;
+  if (session.user.role === "seller") isSeller = true;
   return (
     <CardContainer
       title="Add Sale"
@@ -39,6 +43,7 @@ const EditSale = async ({ params }: RouteParams) => {
         isEdit
         exchangeRateD={exchangeRateD}
         exchangeRateT={exchangeRateT}
+        isSeller={isSeller}
       />
     </CardContainer>
   );
