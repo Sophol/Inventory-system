@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { notFound, useRouter } from "next/navigation";
-import { Fragment, useTransition } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -98,6 +98,7 @@ const SaleForm = ({
             title: "success",
             description: "Sale updated successfully.",
           });
+          form.reset();
           if (result.data) router.push(ROUTES.SALES);
         } else {
           toast({
@@ -115,6 +116,41 @@ const SaleForm = ({
           title: "success",
           description: "Sale created successfully.",
         });
+        form.reset({
+          customer: form.getValues("customer"),
+          branch: form.getValues("branch"),
+          seller: form.getValues("seller"),
+          referenceNo: generateUniqueReference({ prefix: "SO" }),
+          description: "",
+          orderDate: new Date(),
+          approvedDate: new Date(),
+          invoicedDate: new Date(),
+          tax: 0,
+          discount: 0,
+          subtotal: 0,
+          delivery: 0,
+          grandtotal: 0,
+          exchangeRateD: exchangeRateD || 0,
+          exchangeRateT: exchangeRateT || 0,
+          paid: 0,
+          balance: 0,
+          paidBy: "Cash",
+          orderStatus: "pending",
+          paymentStatus: "pending",
+          saleType: "retail",
+          saleDetails: [
+            {
+              product: "",
+              unit: "",
+              qty: 0,
+              cost: 0,
+              price: 0,
+              totalCost: 0,
+              totalPrice: 0,
+            },
+          ],
+        });
+
         if (result.data) router.push(ROUTES.SALES);
       } else {
         toast({

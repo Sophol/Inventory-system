@@ -59,7 +59,7 @@ const PendingOrder = async ({ searchParams }: SearchParams) => {
     <CardContainer
       title="Pening Order"
       redirectTitle="ADD"
-      redirectHref={ROUTES.ADDSALE}
+      redirectHref={ROUTES.SALES}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"
     >

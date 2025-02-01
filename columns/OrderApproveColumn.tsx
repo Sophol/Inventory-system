@@ -105,7 +105,10 @@ export const SaleColumn: ColumnDef<Sale>[] = [
         fetchUserRole();
       }, []);
       const handleApproveOrder = async () => {
-        const { success } = await updateOrderStatus({ saleId: sale._id, isLogo: sale.isLogo });
+        const { success } = await updateOrderStatus({
+          saleId: sale._id,
+          isLogo: sale.isLogo,
+        });
         if (success) {
           toast({
             title: "success",
@@ -157,7 +160,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
             <>
               <RedirectButton
                 Icon={FaRegEdit}
-                href={ROUTES.SALE(sale._id)}
+                href={ROUTES.APPROVEDSALE(sale._id)}
                 isIcon
                 className="text-primary-500"
               />

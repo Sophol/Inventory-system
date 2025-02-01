@@ -31,7 +31,8 @@ const ROUTES = {
   SETTING: (_id: string) => `/settings/setting/${_id}`,
 
   SALES: "/sales/order",
-  ADDSALE: "/sales/order/form",
+  SALEPENDINGS: "/sales/pending",
+  ADDSALE: "/sales/pending/form",
   SALE: (_id: string) => `/sales/order/${_id}`,
   APPROVEDSALES: "/sales/approved",
   APPROVEDSALE: (_id: string) => `/sales/approved/${_id}`,

@@ -27,7 +27,7 @@ const page = async () => {
 
   return (
     <CardContainer
-      title="Add Sale"
+      title="Add Sale Order"
       redirectTitle="BACK"
       redirectHref={ROUTES.SALES}
       redirectIcon={IoCaretBackOutline}
