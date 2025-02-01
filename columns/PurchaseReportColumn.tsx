@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import { format } from "date-fns";
+import RedirectButton from "@/components/formInputs/RedirectButton";
+import ROUTES from "@/constants/routes";
 
 export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
@@ -72,5 +74,24 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Grand Total" />
     ),
+  },
+  {
+    id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Actions" />
+    ),
+    cell: ({ row }) => {
+      const purchase = row.original;
+
+      return (
+        <div className="flex items-center space-x-1">
+          <RedirectButton
+            title="Preview"
+            href={ROUTES.PREVIEWPURCHASE(purchase._id)}
+            className="bg-green-500 text-white"
+          />
+        </div>
+      );
+    },
   },
 ];

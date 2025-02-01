@@ -10,8 +10,8 @@ import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import PurchaseSearch from "@/components/search/PurchaseSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { PurchaseColumn } from "@/columns/PurchaseColumn";
-import { getPurchases } from "@/lib/actions/purchase.action";
+import { getPurchaseReports } from "@/lib/actions/purchaseReport";
+import { PurchaseReportColumn } from "@/columns/PurchaseReportColumn";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -25,7 +25,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
 
   const { page, pageSize, query, filter, supplierId, branchId, dateRange } =
     await searchParams;
-  const { success, data, error } = await getPurchases({
+  const { success, data, error } = await getPurchaseReports({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query?.toString() || "",
@@ -70,7 +70,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
         empty={PURCHASE_EMPTY}
         render={() => (
           <DataTable
-            columns={PurchaseColumn}
+            columns={PurchaseReportColumn}
             data={purchases}
             summaryRow={summaryRow}
             isNext={isNext}

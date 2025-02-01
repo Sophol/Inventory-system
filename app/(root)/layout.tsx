@@ -5,7 +5,10 @@ import NavBar from "@/components/navigation/navbar/index";
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <main className="background-light850_dark100 realtive">
+    <main
+      className="background-light850_dark100 realtive"
+      suppressHydrationWarning
+    >
       <div className="flex">
         <SidebarProvider>
           <AppSidebar />

@@ -9,10 +9,11 @@ import action from "../handlers/action";
 import handleError from "../handlers/error";
 import { convertToSmallUnit } from "../utils";
 import {
+  ApprovedPurchaseSchema,
   CreatePurchaseSchema,
   EditPurchaseSchema,
   GetPurchaseSchema,
-  PaginatedSearchParamsSchema,
+  PurchaseSearchParamsSchema,
 } from "../validations";
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -91,7 +92,7 @@ export async function createPurchase(
     }
 
     const purchaseDetailDocuments: IPurchaseDetailDoc[] = [];
-    const stockUpdates: { [key: string]: number } = {};
+    //const stockUpdates: { [key: string]: number } = {};
     for (const detail of purchaseDetails) {
       if (detail.qty !== undefined) {
         if (detail.cost !== undefined) {
@@ -104,40 +105,40 @@ export async function createPurchase(
       }
       detail.exchangeRateD = exchangeRateD;
       detail.exchangeRateT = exchangeRateT;
-      const productUnits = await ProductUnit.find({
-        product: new ObjectId(detail.product),
-      });
+      // const productUnits = await ProductUnit.find({
+      //   product: new ObjectId(detail.product),
+      // });
 
       // Find the smallest unit (level = 1)
-      const smallestUnit = productUnits.find((pu) => pu.level === 1);
-      if (!smallestUnit) {
-        throw new Error(
-          `Smallest unit not found for product ${detail.product}`
-        );
-      }
+      // const smallestUnit = productUnits.find((pu) => pu.level === 1);
+      // if (!smallestUnit) {
+      //   throw new Error(
+      //     `Smallest unit not found for product ${detail.product}`
+      //   );
+      // }
 
       // Find the selected unit
-      const selectedUnit = productUnits.find(
-        (pu) => pu.unit.toString() === detail.unit.toString()
-      );
+      // const selectedUnit = productUnits.find(
+      //   (pu) => pu.unit.toString() === detail.unit.toString()
+      // );
 
-      if (!selectedUnit) {
-        throw new Error(
-          `Selected unit not found for product ${detail.product}`
-        );
-      }
-      const qtySmallUnit = convertToSmallUnit({
-        level: selectedUnit.level,
-        smallqty: smallestUnit.qty,
-        selectedQty: selectedUnit.qty,
-        qty: detail.qty!,
-      });
-      const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
-      if (stockUpdates[stockKey]) {
-        stockUpdates[stockKey] += qtySmallUnit;
-      } else {
-        stockUpdates[stockKey] = qtySmallUnit;
-      }
+      // if (!selectedUnit) {
+      //   throw new Error(
+      //     `Selected unit not found for product ${detail.product}`
+      //   );
+      // }
+      // const qtySmallUnit = convertToSmallUnit({
+      //   level: selectedUnit.level,
+      //   smallqty: smallestUnit.qty,
+      //   selectedQty: selectedUnit.qty,
+      //   qty: detail.qty!,
+      // });
+      // const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
+      // if (stockUpdates[stockKey]) {
+      //   stockUpdates[stockKey] += qtySmallUnit;
+      // } else {
+      //   stockUpdates[stockKey] = qtySmallUnit;
+      // }
       purchaseDetailDocuments.push(
         new PurchaseDetail({
           ...detail,
@@ -145,36 +146,36 @@ export async function createPurchase(
         })
       );
     }
-    for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
-      const [branchId, productId, unitId, cost, price] = key.split("_");
+    // for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
+    //   const [branchId, productId, unitId, cost, price] = key.split("_");
 
-      const existingStock = await Stock.findOne({
-        branch: new ObjectId(branchId),
-        product: new ObjectId(productId),
-        unit: new ObjectId(unitId),
-      });
+    //   const existingStock = await Stock.findOne({
+    //     branch: new ObjectId(branchId),
+    //     product: new ObjectId(productId),
+    //     unit: new ObjectId(unitId),
+    //   });
 
-      if (existingStock) {
-        // Update the existing stock entry
-        existingStock.qtySmallUnit += qtySmallUnit;
-        await existingStock.save({ session });
-      } else {
-        // Create a new stock entry
-        await Stock.create(
-          [
-            {
-              branch: new ObjectId(branchId),
-              product: new ObjectId(productId),
-              unit: new ObjectId(unitId),
-              qtySmallUnit,
-              cost: parseFloat(cost), // Set appropriate cost
-              price: parseFloat(price), // Set appropriate price
-            },
-          ],
-          { session }
-        );
-      }
-    }
+    //   if (existingStock) {
+    //     // Update the existing stock entry
+    //     existingStock.qtySmallUnit += qtySmallUnit;
+    //     await existingStock.save({ session });
+    //   } else {
+    //     // Create a new stock entry
+    //     await Stock.create(
+    //       [
+    //         {
+    //           branch: new ObjectId(branchId),
+    //           product: new ObjectId(productId),
+    //           unit: new ObjectId(unitId),
+    //           qtySmallUnit,
+    //           cost: parseFloat(cost), // Set appropriate cost
+    //           price: parseFloat(price), // Set appropriate price
+    //         },
+    //       ],
+    //       { session }
+    //     );
+    //   }
+    // }
 
     await PurchaseDetail.insertMany(purchaseDetailDocuments, { session });
     await session.commitTransaction();
@@ -229,63 +230,72 @@ export async function editPurchase(
     if (!purchase) {
       throw new Error("Purchase not found");
     }
-    if (supplier) purchase.supplier = supplier;
-    if (branch) purchase.branch = branch;
-    if (referenceNo) purchase.referenceNo = referenceNo;
-    if (description) purchase.description = description;
-    if (purchaseDate) purchase.purchaseDate = purchaseDate;
-    if (discount !== undefined) purchase.discount = discount;
-    if (subtotal !== undefined) purchase.subtotal = subtotal;
-    if (grandtotal !== undefined) purchase.grandtoal = grandtotal;
-    if (paid !== undefined) purchase.paid = grandtotal;
-    if (balance !== undefined) purchase.balance = balance;
-    if (exchangeRateD) purchase.exchangeRateD = exchangeRateD;
-    if (exchangeRateT) purchase.exchangeRateT = exchangeRateT;
-    if (paidBy) purchase.paidBy = paidBy;
-    if (orderStatus) purchase.orderStatus = orderStatus;
-    if (paymentStatus) purchase.paymentStatus = paymentStatus;
-    if (deliveryIn !== undefined) purchase.deliveryIn = deliveryIn;
-    if (deliveryOut !== undefined) purchase.deliveryOut = deliveryOut;
-    if (shippingFee !== undefined) purchase.shippingFee = shippingFee;
-    if (serviceFee !== undefined) purchase.serviceFee = serviceFee;
+    if (supplier !== purchase.supplier) purchase.supplier = supplier;
+    if (branch !== purchase.branch) purchase.branch = branch;
+    if (referenceNo !== purchase.referenceNo)
+      purchase.referenceNo = referenceNo;
+    if (description !== purchase.description)
+      purchase.description = description;
+    if (purchaseDate !== purchase.purchaseDate)
+      purchase.purchaseDate = purchaseDate;
+    if (discount !== purchase.discount) purchase.discount = discount;
+    if (subtotal !== purchase.subtotal) purchase.subtotal = subtotal;
+    if (grandtotal !== purchase.grandtotal) purchase.grandtotal = grandtotal;
+    if (paid !== purchase.grandtotal) purchase.paid = grandtotal;
+    if (balance !== purchase.balance) purchase.balance = balance;
+    if (exchangeRateD !== purchase.exchangeRateD)
+      purchase.exchangeRateD = exchangeRateD;
+    if (exchangeRateT !== purchase.exchangeRateT)
+      purchase.exchangeRateT = exchangeRateT;
+    if (paidBy !== purchase.paidBy) purchase.paidBy = paidBy;
+    if (orderStatus !== purchase.orderStatus)
+      purchase.orderStatus = orderStatus;
+    if (paymentStatus !== purchase.paymentStatus)
+      purchase.paymentStatus = paymentStatus;
+    if (deliveryIn !== purchase.deliveryIn) purchase.deliveryIn = deliveryIn;
+    if (deliveryOut !== purchase.deliveryOut)
+      purchase.deliveryOut = deliveryOut;
+    if (shippingFee !== purchase.shippingFee)
+      purchase.shippingFee = shippingFee;
+    if (serviceFee !== purchase.serviceFee) purchase.serviceFee = serviceFee;
     await purchase.save({ session });
 
     if (purchaseDetails) {
       const newDetailDocuments = [];
-      const stockUpdates: { [key: string]: number } = {};
-      const stockRemoves: { [key: string]: number } = {};
+      //const stockUpdates: { [key: string]: number } = {};
+      //const stockRemoves: { [key: string]: number } = {};
       for (const detail of purchaseDetails) {
-        const productUnits = await ProductUnit.find({
-          product: new ObjectId(detail.product),
-        });
+        // const productUnits = await ProductUnit.find({
+        //   product: new ObjectId(detail.product),
+        // });
         // Find the smallest unit (level = 1)
-        const smallestUnit = productUnits.find((pu) => pu.level === 1);
-        if (!smallestUnit) {
-          throw new Error(
-            `Smallest unit not found for product ${detail.product}`
-          );
-        }
+        // const smallestUnit = productUnits.find((pu) => pu.level === 1);
+        // if (!smallestUnit) {
+        //   throw new Error(
+        //     `Smallest unit not found for product ${detail.product}`
+        //   );
+        // }
         // Find the selected unit
-        const selectedUnit = productUnits.find(
-          (pu) => pu.unit.toString() === detail.unit.toString()
-        );
-        if (!selectedUnit) {
-          throw new Error(
-            `Selected unit not found for product ${detail.product}`
-          );
-        }
-        const qtySmallUnit = convertToSmallUnit({
-          level: selectedUnit.level,
-          smallqty: smallestUnit.qty,
-          selectedQty: selectedUnit.qty,
-          qty: detail.qty!,
-        });
-        const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
-        if (stockUpdates[stockKey]) {
-          stockUpdates[stockKey] += qtySmallUnit;
-        } else {
-          stockUpdates[stockKey] = qtySmallUnit;
-        }
+        // const selectedUnit = productUnits.find(
+        //   (pu) => pu.unit.toString() === detail.unit.toString()
+        // );
+        // if (!selectedUnit) {
+        //   throw new Error(
+        //     `Selected unit not found for product ${detail.product}`
+        //   );
+        // }
+        // const qtySmallUnit = convertToSmallUnit({
+        //   level: selectedUnit.level,
+        //   smallqty: smallestUnit.qty,
+        //   selectedQty: selectedUnit.qty,
+        //   qty: detail.qty!,
+        // });
+        // const stockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
+        // if (stockUpdates[stockKey]) {
+        //   stockUpdates[stockKey] += qtySmallUnit;
+        // } else {
+        //   stockUpdates[stockKey] = qtySmallUnit;
+        // }
 
         const existingDetail = await PurchaseDetail.findOne({
           purchase: purchaseId,
@@ -293,18 +303,18 @@ export async function editPurchase(
           unit: detail.unit,
         }).session(session);
         if (existingDetail) {
-          const existingSmallQty = convertToSmallUnit({
-            level: selectedUnit.level,
-            smallqty: smallestUnit.qty,
-            selectedQty: selectedUnit.qty,
-            qty: existingDetail.qty,
-          });
-          const deleteStockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
-          if (stockRemoves[deleteStockKey]) {
-            stockRemoves[deleteStockKey] += existingSmallQty;
-          } else {
-            stockRemoves[deleteStockKey] = existingSmallQty;
-          }
+          // const existingSmallQty = convertToSmallUnit({
+          //   level: selectedUnit.level,
+          //   smallqty: smallestUnit.qty,
+          //   selectedQty: selectedUnit.qty,
+          //   qty: existingDetail.qty,
+          // });
+          // const deleteStockKey = `${branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
+          // if (stockRemoves[deleteStockKey]) {
+          //   stockRemoves[deleteStockKey] += existingSmallQty;
+          // } else {
+          //   stockRemoves[deleteStockKey] = existingSmallQty;
+          // }
 
           if (detail.qty !== existingDetail.qty)
             existingDetail.qty = detail.qty;
@@ -334,36 +344,36 @@ export async function editPurchase(
         const detailIdsToRemove = [];
         for (const rmd of detailsToRemove) {
           detailIdsToRemove.push(rmd._id);
-          const productUnitRm = await ProductUnit.find({
-            product: new ObjectId(rmd.product),
-          });
-          const smallestUnitRm = productUnitRm.find((pu) => pu.level === 1);
-          if (!smallestUnitRm) {
-            throw new Error(
-              `Smallest unit not found for product ${rmd.product}`
-            );
-          }
+          // const productUnitRm = await ProductUnit.find({
+          //   product: new ObjectId(rmd.product),
+          // });
+          // const smallestUnitRm = productUnitRm.find((pu) => pu.level === 1);
+          // if (!smallestUnitRm) {
+          //   throw new Error(
+          //     `Smallest unit not found for product ${rmd.product}`
+          //   );
+          // }
           // Find the selected unit
-          const selectedUnitRm = productUnitRm.find(
-            (pu) => pu.unit.toString() === rmd.unit.toString()
-          );
-          if (!selectedUnitRm) {
-            throw new Error(
-              `Selected unit not found for product ${rmd.product}`
-            );
-          }
-          const existingSmallQtyRm = convertToSmallUnit({
-            level: selectedUnitRm.level,
-            smallqty: smallestUnitRm.qty,
-            selectedQty: selectedUnitRm.qty,
-            qty: rmd.qty,
-          });
-          const deleteStockKeyRm = `${branch}_${rmd.product}_${smallestUnitRm.unit}_${smallestUnitRm.cost}_${smallestUnitRm.price}`;
-          if (stockRemoves[deleteStockKeyRm]) {
-            stockRemoves[deleteStockKeyRm] += existingSmallQtyRm;
-          } else {
-            stockRemoves[deleteStockKeyRm] = existingSmallQtyRm;
-          }
+          // const selectedUnitRm = productUnitRm.find(
+          //   (pu) => pu.unit.toString() === rmd.unit.toString()
+          // );
+          // if (!selectedUnitRm) {
+          //   throw new Error(
+          //     `Selected unit not found for product ${rmd.product}`
+          //   );
+          // }
+          // const existingSmallQtyRm = convertToSmallUnit({
+          //   level: selectedUnitRm.level,
+          //   smallqty: smallestUnitRm.qty,
+          //   selectedQty: selectedUnitRm.qty,
+          //   qty: rmd.qty,
+          // });
+          // const deleteStockKeyRm = `${branch}_${rmd.product}_${smallestUnitRm.unit}_${smallestUnitRm.cost}_${smallestUnitRm.price}`;
+          // if (stockRemoves[deleteStockKeyRm]) {
+          //   stockRemoves[deleteStockKeyRm] += existingSmallQtyRm;
+          // } else {
+          //   stockRemoves[deleteStockKeyRm] = existingSmallQtyRm;
+          // }
         }
 
         await PurchaseDetail.deleteMany(
@@ -371,56 +381,56 @@ export async function editPurchase(
           { session }
         );
       }
-      for (const [key, qtySmallUnitRm] of Object.entries(stockRemoves)) {
-        const [branchId, productId, unitId] = key.split("_");
+      // for (const [key, qtySmallUnitRm] of Object.entries(stockRemoves)) {
+      //   const [branchId, productId, unitId] = key.split("_");
 
-        const existingStockRm = await Stock.findOne({
-          branch: new ObjectId(branchId),
-          product: new ObjectId(productId),
-          unit: new ObjectId(unitId),
-        }).session(session);
-        if (existingStockRm) {
-          // Update the existing stock entry
-          existingStockRm.qtySmallUnit = Math.max(
-            0,
-            existingStockRm.qtySmallUnit - qtySmallUnitRm
-          );
+      //   const existingStockRm = await Stock.findOne({
+      //     branch: new ObjectId(branchId),
+      //     product: new ObjectId(productId),
+      //     unit: new ObjectId(unitId),
+      //   }).session(session);
+      //   if (existingStockRm) {
+      //     // Update the existing stock entry
+      //     existingStockRm.qtySmallUnit = Math.max(
+      //       0,
+      //       existingStockRm.qtySmallUnit - qtySmallUnitRm
+      //     );
 
-          await existingStockRm.save({ session });
-        }
-      }
-      for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
-        const [branchId, productId, unitId, cost, price] = key.split("_");
+      //     await existingStockRm.save({ session });
+      //   }
+      // }
+      // for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
+      //   const [branchId, productId, unitId, cost, price] = key.split("_");
 
-        const existingStock = await Stock.findOne({
-          branch: new ObjectId(branchId),
-          product: new ObjectId(productId),
-          unit: new ObjectId(unitId),
-        }).session(session);
+      //   const existingStock = await Stock.findOne({
+      //     branch: new ObjectId(branchId),
+      //     product: new ObjectId(productId),
+      //     unit: new ObjectId(unitId),
+      //   }).session(session);
 
-        if (existingStock) {
-          // Update the existing stock entry
-          existingStock.qtySmallUnit =
-            existingStock.qtySmallUnit + qtySmallUnit;
+      //   if (existingStock) {
+      //     // Update the existing stock entry
+      //     existingStock.qtySmallUnit =
+      //       existingStock.qtySmallUnit + qtySmallUnit;
 
-          await existingStock.save({ session });
-        } else {
-          // Create a new stock entry
-          await Stock.create(
-            [
-              {
-                branch: new ObjectId(branchId),
-                product: new ObjectId(productId),
-                unit: new ObjectId(unitId),
-                qtySmallUnit,
-                cost: parseFloat(cost), // Set appropriate cost
-                price: parseFloat(price), // Set appropriate price
-              },
-            ],
-            { session }
-          );
-        }
-      }
+      //     await existingStock.save({ session });
+      //   } else {
+      //     // Create a new stock entry
+      //     await Stock.create(
+      //       [
+      //         {
+      //           branch: new ObjectId(branchId),
+      //           product: new ObjectId(productId),
+      //           unit: new ObjectId(unitId),
+      //           qtySmallUnit,
+      //           cost: parseFloat(cost), // Set appropriate cost
+      //           price: parseFloat(price), // Set appropriate price
+      //         },
+      //       ],
+      //       { session }
+      //     );
+      //   }
+      // }
       if (newDetailDocuments.length > 0) {
         await PurchaseDetail.insertMany(newDetailDocuments, { session });
       }
@@ -562,21 +572,36 @@ export async function getPurchase(
     return handleError(error) as ErrorResponse;
   }
 }
-export async function getPurchases(
-  params: PaginatedSearchParams
-): Promise<ActionResponse<{ purchases: Purchase[]; isNext: boolean }>> {
+export async function getPurchases(params: PurchaseSearchParams): Promise<
+  ActionResponse<{
+    purchases: Purchase[];
+    summary: { count: 0; totalGrandtotal: 0 };
+    isNext: boolean;
+  }>
+> {
   const validatedData = await action({
     params,
-    schema: PaginatedSearchParamsSchema,
+    schema: PurchaseSearchParamsSchema,
     authorize: true,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { page = 1, pageSize = 10, query, filter } = params;
+  const {
+    page = 1,
+    pageSize = 10,
+    query,
+    filter,
+    supplierId,
+    branchId,
+    dateRange,
+  } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
-  const filterQuery: FilterQuery<typeof Purchase> = {};
+  const filterQuery: FilterQuery<typeof Purchase> = {
+    orderStatus: "pending",
+  };
+
   if (query) {
     filterQuery.$or = [
       { referenceNo: { $regex: new RegExp(query, "i") } },
@@ -585,6 +610,23 @@ export async function getPurchases(
       { paymentStatus: { $regex: new RegExp(query, "i") } },
     ];
   }
+
+  if (supplierId) {
+    filterQuery.supplier = new ObjectId(supplierId);
+  }
+
+  if (branchId) {
+    filterQuery.branch = new ObjectId(branchId);
+  }
+
+  if (dateRange) {
+    const [from, to] = dateRange.split("_");
+    filterQuery.purchaseDate = {
+      $gte: new Date(from),
+      $lte: new Date(to),
+    };
+  }
+
   let sortCriteria = {};
 
   switch (filter) {
@@ -601,9 +643,19 @@ export async function getPurchases(
       sortCriteria = { createdAt: -1 };
       break;
   }
+
   try {
-    const [totalPurchases, purchases] = await Promise.all([
-      Purchase.countDocuments(filterQuery),
+    const [aggregationResult, purchases] = await Promise.all([
+      Purchase.aggregate([
+        { $match: filterQuery },
+        {
+          $group: {
+            _id: null,
+            count: { $sum: 1 },
+            totalGrandtotal: { $sum: "$grandtotal" },
+          },
+        },
+      ]),
       Purchase.find(filterQuery)
         .populate("supplier", "name")
         .populate("branch", "title")
@@ -612,16 +664,23 @@ export async function getPurchases(
         .skip(skip)
         .limit(limit),
     ]);
-
-    const isNext = totalPurchases > skip + purchases.length;
+    const count = aggregationResult[0]?.count || 0;
+    const totalGrandtotal = aggregationResult[0]?.totalGrandtotal || 0;
+    const isNext = count > skip + purchases.length;
+    const totalCount = { count, totalGrandtotal };
     return {
       success: true,
-      data: { purchases: JSON.parse(JSON.stringify(purchases)), isNext },
+      data: {
+        purchases: JSON.parse(JSON.stringify(purchases)),
+        summary: JSON.parse(JSON.stringify(totalCount)),
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }
 }
+
 export async function deletePurchase(
   params: GetPurchaseParams
 ): Promise<ActionResponse> {
@@ -641,38 +700,38 @@ export async function deletePurchase(
     if (!purchase) {
       throw new Error("Purchase not found");
     }
-    const stockRemoves: { [key: string]: number } = {};
+    //const stockRemoves: { [key: string]: number } = {};
     const detailsToRemove = await PurchaseDetail.find({ purchase: purchaseId });
     if (detailsToRemove.length > 0) {
       const detailIdsToRemove = [];
       for (const rmd of detailsToRemove) {
         detailIdsToRemove.push(rmd._id);
-        const productUnitRm = await ProductUnit.find({
-          product: new ObjectId(rmd.product),
-        });
-        const smallestUnitRm = productUnitRm.find((pu) => pu.level === 1);
-        if (!smallestUnitRm) {
-          throw new Error(`Smallest unit not found for product ${rmd.product}`);
-        }
-        // Find the selected unit
-        const selectedUnitRm = productUnitRm.find(
-          (pu) => pu.unit.toString() === rmd.unit.toString()
-        );
-        if (!selectedUnitRm) {
-          throw new Error(`Selected unit not found for product ${rmd.product}`);
-        }
-        const existingSmallQtyRm = convertToSmallUnit({
-          level: selectedUnitRm.level,
-          smallqty: smallestUnitRm.qty,
-          selectedQty: selectedUnitRm.qty,
-          qty: rmd.qty,
-        });
-        const deleteStockKeyRm = `${purchase.branch}_${rmd.product}_${smallestUnitRm.unit}`;
-        if (stockRemoves[deleteStockKeyRm]) {
-          stockRemoves[deleteStockKeyRm] += existingSmallQtyRm;
-        } else {
-          stockRemoves[deleteStockKeyRm] = existingSmallQtyRm;
-        }
+        //   const productUnitRm = await ProductUnit.find({
+        //     product: new ObjectId(rmd.product),
+        //   });
+        //   const smallestUnitRm = productUnitRm.find((pu) => pu.level === 1);
+        //   if (!smallestUnitRm) {
+        //     throw new Error(`Smallest unit not found for product ${rmd.product}`);
+        //   }
+        //   // Find the selected unit
+        //   const selectedUnitRm = productUnitRm.find(
+        //     (pu) => pu.unit.toString() === rmd.unit.toString()
+        //   );
+        //   if (!selectedUnitRm) {
+        //     throw new Error(`Selected unit not found for product ${rmd.product}`);
+        //   }
+        //   const existingSmallQtyRm = convertToSmallUnit({
+        //     level: selectedUnitRm.level,
+        //     smallqty: smallestUnitRm.qty,
+        //     selectedQty: selectedUnitRm.qty,
+        //     qty: rmd.qty,
+        //   });
+        //   const deleteStockKeyRm = `${purchase.branch}_${rmd.product}_${smallestUnitRm.unit}`;
+        //   if (stockRemoves[deleteStockKeyRm]) {
+        //     stockRemoves[deleteStockKeyRm] += existingSmallQtyRm;
+        //   } else {
+        //     stockRemoves[deleteStockKeyRm] = existingSmallQtyRm;
+        //   }
       }
 
       await PurchaseDetail.deleteMany(
@@ -680,24 +739,24 @@ export async function deletePurchase(
         { session }
       );
     }
-    for (const [key, qtySmallUnitRm] of Object.entries(stockRemoves)) {
-      const [branchId, productId, unitId] = key.split("_");
+    // for (const [key, qtySmallUnitRm] of Object.entries(stockRemoves)) {
+    //   const [branchId, productId, unitId] = key.split("_");
 
-      const existingStockRm = await Stock.findOne({
-        branch: new ObjectId(branchId),
-        product: new ObjectId(productId),
-        unit: new ObjectId(unitId),
-      }).session(session);
-      if (existingStockRm) {
-        // Update the existing stock entry
-        existingStockRm.qtySmallUnit = Math.max(
-          0,
-          existingStockRm.qtySmallUnit - qtySmallUnitRm
-        );
+    //   const existingStockRm = await Stock.findOne({
+    //     branch: new ObjectId(branchId),
+    //     product: new ObjectId(productId),
+    //     unit: new ObjectId(unitId),
+    //   }).session(session);
+    //   if (existingStockRm) {
+    //     // Update the existing stock entry
+    //     existingStockRm.qtySmallUnit = Math.max(
+    //       0,
+    //       existingStockRm.qtySmallUnit - qtySmallUnitRm
+    //     );
 
-        await existingStockRm.save({ session });
-      }
-    }
+    //     await existingStockRm.save({ session });
+    //   }
+    // }
     await Purchase.deleteOne({ _id: purchaseId }).session(session);
     await session.commitTransaction();
     return { success: true };
@@ -707,4 +766,121 @@ export async function deletePurchase(
   } finally {
     await session.endSession();
   }
+}
+
+export async function approvedPurchase(
+  params: ApprovedPurchaseParams
+): Promise<ActionResponse<Purchase>> {
+  const validatedData = await action({
+    params,
+    schema: ApprovedPurchaseSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { purchaseId } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const purchase = await Purchase.findById(purchaseId).session(session);
+    if (!purchase) {
+      throw new Error("Purchase not found");
+    }
+    if (purchase.orderStatus !== "pending") {
+      throw new Error("Purchase already approved");
+    }
+    const purchaseDetails = await PurchaseDetail.find({
+      purchase: purchase._id,
+    }).session(session);
+    if (purchaseDetails.length === 0) {
+      throw new Error("Purchase details not found");
+    }
+    const stockUpdates: { [key: string]: number } = {};
+    for (const detail of purchaseDetails) {
+      if (detail.qty !== undefined) {
+        if (detail.cost !== undefined) {
+          detail.total = detail.qty * detail.cost - (detail.discount ?? 0);
+        } else {
+          throw new Error(`Cost is undefined for product ${detail.product}`);
+        }
+      } else {
+        throw new Error(`Quantity is undefined for product ${detail.product}`);
+      }
+
+      const productUnits = await ProductUnit.find({
+        product: new ObjectId(detail.product),
+      });
+
+      // Find the smallest unit (level = 1)
+      const smallestUnit = productUnits.find((pu) => pu.level === 1);
+      if (!smallestUnit) {
+        throw new Error(
+          `Smallest unit not found for product ${detail.product}`
+        );
+      }
+      // Find the selected unit
+      const selectedUnit = productUnits.find(
+        (pu) => pu.unit.toString() === detail.unit.toString()
+      );
+
+      if (!selectedUnit) {
+        throw new Error(
+          `Selected unit not found for product ${detail.product}`
+        );
+      }
+      const qtySmallUnit = convertToSmallUnit({
+        level: selectedUnit.level,
+        smallqty: smallestUnit.qty,
+        selectedQty: selectedUnit.qty,
+        qty: detail.qty!,
+      });
+      const stockKey = `${purchase.branch}_${detail.product}_${smallestUnit.unit}_${smallestUnit.cost}_${smallestUnit.price}`;
+      if (stockUpdates[stockKey]) {
+        stockUpdates[stockKey] += qtySmallUnit;
+      } else {
+        stockUpdates[stockKey] = qtySmallUnit;
+      }
+    }
+    for (const [key, qtySmallUnit] of Object.entries(stockUpdates)) {
+      const [branchId, productId, unitId, cost, price] = key.split("_");
+
+      const existingStock = await Stock.findOne({
+        branch: new ObjectId(branchId),
+        product: new ObjectId(productId),
+        unit: new ObjectId(unitId),
+      });
+
+      if (existingStock) {
+        // Update the existing stock entry
+        existingStock.qtySmallUnit += qtySmallUnit;
+        await existingStock.save({ session });
+      } else {
+        // Create a new stock entry
+        await Stock.create(
+          [
+            {
+              branch: new ObjectId(branchId),
+              product: new ObjectId(productId),
+              unit: new ObjectId(unitId),
+              qtySmallUnit,
+              cost: parseFloat(cost), // Set appropriate cost
+              price: parseFloat(price), // Set appropriate price
+            },
+          ],
+          { session }
+        );
+      }
+    }
+    purchase.orderStatus = "approved";
+    await purchase.save({ session });
+    await session.commitTransaction();
+    return { success: true, data: JSON.parse(JSON.stringify(purchase)) };
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    session.endSession();
+  }
+  return { success: true };
 }

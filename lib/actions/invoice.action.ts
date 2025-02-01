@@ -361,7 +361,10 @@ export async function approvedInvoice(
     await session.commitTransaction();
     return { success: true, data: JSON.parse(JSON.stringify(invoice)) };
   } catch (error) {
+    await session.abortTransaction();
     return handleError(error) as ErrorResponse;
+  } finally {
+    session.endSession();
   }
 }
 export async function getInvoice(

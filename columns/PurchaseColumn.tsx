@@ -112,6 +112,11 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
       return (
         <div className="flex items-center space-x-1">
           <RedirectButton
+            title="Approve"
+            href={ROUTES.APPROVEDPURCHASE(purchase._id)}
+            className="bg-green-500 text-white"
+          />
+          <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.PURCHASE(purchase._id)}
             isIcon

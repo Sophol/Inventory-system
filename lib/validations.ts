@@ -276,6 +276,9 @@ export const EditPurchaseSchema = CreatePurchaseSchema.extend({
 export const GetPurchaseSchema = z.object({
   purchaseId: z.string().min(1, "Purchase ID is required"),
 });
+export const ApprovedPurchaseSchema = z.object({
+  purchaseId: z.string().min(1, "Purchase ID is required"),
+});
 
 export const GetSettingSchema = z.object({
   settingId: z.string().min(1, "Setting ID is required"),

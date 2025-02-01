@@ -94,8 +94,8 @@ export const formatCurrency = (
   locale: string = "km-KH"
 ): string => {
   return new Intl.NumberFormat(locale, {
-    style: "currency",
     currency: "KHR",
     maximumFractionDigits: 0,
+    style: "currency",
   }).format(amount);
 };

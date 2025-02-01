@@ -1,0 +1,163 @@
+.card80 {
+  padding: 30px;
+  border-radius: 5px;
+  color: charcoal;
+  width: 80%;
+  border: 1px solid lightgrey;
+  
+}
+
+.card20 {
+  color: black;
+  width: 20%;
+}
+
+
+  .invoice-header{
+    padding:15px 25px 15px 25px;
+    background-color: rgba(231, 231, 231, 0.733);
+    border-radius: 5px;
+  }
+
+  .sub-info{
+    color:rgba(47, 43, 61, 0.87);
+  }
+  .button-download-invoice{
+    background-color: #675dd8;
+  }
+  .sale-details {
+    padding: 5px 0 5px 0;
+    border-radius: 5px;
+    color: black;
+    border:1px solid lightgrey;
+  }
+  .card20-container{
+    width:100%;
+    border:1px solid lightgrey;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    .printable-area, .printable-area * {
+      visibility: visible;
+    }
+    .printable-area {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+    }
+  }
+  .invoice-note{
+    width:76%;
+  }
+  .invoice-total{
+    width:24%;
+  }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem; /* Adjust spacing between bullets */
+  }
+  
+  .loader div {
+    width: 0.5rem; /* Smaller bullet size */
+    height: 0.5rem;
+    background: orange; /* First bullet color */
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+  
+  .loader div:nth-child(2) {
+    background: grey; /* Second bullet color */
+    animation-delay: 0.2s;
+  }
+  
+  .loader div:nth-child(3) {
+    background: orange; /* Third bullet color */
+    animation-delay: 0.4s;
+  }
+  
+  .loader div:nth-child(4) {
+    background: grey; /* Fourth bullet color */
+    animation-delay: 0.6s;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: scale(0.8);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+  .print-options-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .print-options-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  /* CSS to control logo visibility during download */
+.show-logo {
+  display: block !important;
+}
+
+.hide-logo {
+  display: none !important;
+}
+.invoice-to, .bill-to{
+  width:50%;
+}
+.invoice-container {
+  padding:15px; /* Stack elements vertically */
+}
+
+/* For small screens (mobile-first) */
+@media (max-width: 768px) {
+  .invoice-to, .bill-to{
+    width:100%;
+  }
+  .invoice-note {
+    width: 100%;
+}  .invoice-total {
+    width:100%;
+  }
+  .invoice-container {
+    display: flex;
+    flex-direction: column;
+    padding:15px; /* Stack elements vertically */
+  }
+
+  .card20{
+    width: 100%; /* Full width */
+    order: 1;
+  }
+  .card80 {
+    width: 100%; /* Full width */
+    order: 2;
+    padding:10px;
+  }
+  .card20-container{
+    padding: 10px;
+  }
+}

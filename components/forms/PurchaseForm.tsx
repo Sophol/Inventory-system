@@ -63,7 +63,7 @@ const PurchaseForm = ({
       paid: purchase?.paid || 0,
       balance: purchase?.balance || 0,
       paidBy: purchase?.paidBy || "Cash",
-      orderStatus: purchase?.orderStatus || "completed",
+      orderStatus: purchase?.orderStatus || "pending",
       paymentStatus: purchase?.paymentStatus || "completed",
       purchaseDetails: purchase?.purchaseDetails || [
         { product: "", unit: "", qty: 0, cost: 0, total: 0 },

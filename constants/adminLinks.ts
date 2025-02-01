@@ -86,8 +86,14 @@ export const adminLinks: Link[] = [
     permissions: ["admin", "stock", "branch"],
     items: [
       {
-        title: "Purchase Order",
+        title: "Order Pending",
         url: ROUTES.PURCHASES,
+        icon: ShoppingBasket,
+        permissions: ["admin", "stock", "branch"],
+      },
+      {
+        title: "Order Completed",
+        url: ROUTES.PURCHASECOMPLETES,
         icon: ShoppingBasket,
         permissions: ["admin", "stock", "branch"],
       },

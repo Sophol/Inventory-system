@@ -151,6 +151,9 @@ interface EditPurchaseParams extends CreatePurchaseParams {
 interface GetPurchaseParams {
   purchaseId: string;
 }
+interface ApprovedPurchaseParams {
+  purchaseId: string;
+}
 
 interface GetSettingParams {
   settingId: string;
