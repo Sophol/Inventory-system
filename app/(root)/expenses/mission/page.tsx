@@ -73,6 +73,7 @@ const Mission = async ({ searchParams }: SearchParams) => {
               data={missions!}
               summaryRow={summaryRow}
               isNext={isNext}
+              totalCount={summary.count}
             />
           )}
         />

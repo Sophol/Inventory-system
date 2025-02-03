@@ -33,7 +33,7 @@ const Branch = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
-  const { branches, isNext } = data || {};
+  const { branches, totalCount, isNext } = data || {};
   return (
     <CardContainer
       title="Branch"
@@ -56,6 +56,7 @@ const Branch = async ({ searchParams }: SearchParams) => {
               columns={BranchColumn}
               data={branches!}
               isNext={isNext}
+              totalCount={totalCount}
             />
           )}
         />

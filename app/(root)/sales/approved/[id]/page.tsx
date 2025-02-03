@@ -23,7 +23,6 @@ const EditSale = async ({ params }: RouteParams) => {
     saleId: id,
   });
   if (!saleSuccess) return notFound();
-  console.log(sale);
   return (
     <CardContainer
       title="Add Sale"

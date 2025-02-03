@@ -13,7 +13,6 @@ const page = async () => {
   if (!session) return redirect("/login");
   let isSeller = false;
   if (session.user.role === "seller") isSeller = true;
-  console.log("isSeller", isSeller);
   const isAuthorized = await checkAuthorization(["admin", "branch", "seller"]);
   if (!isAuthorized) {
     return redirect("/unauthorized");

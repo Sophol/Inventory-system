@@ -92,6 +92,7 @@ const SaleReport = async ({ searchParams }: SearchParams) => {
               data={sales!}
               summaryRow={summaryRow}
               isNext={isNext}
+              totalCount={summary.count}
             />
           )}
         />

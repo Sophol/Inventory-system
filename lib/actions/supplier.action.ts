@@ -16,7 +16,6 @@ import {
 export async function createSupplier(
   params: CreateSupplierParams
 ): Promise<ActionResponse<ISupplierDoc>> {
-  console.log(params);
   const validatedData = await action({
     params,
     schema: CreateSupplierSchema,
@@ -111,7 +110,9 @@ export async function getSupplier(
 
 export async function getSuppliers(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ suppliers: Supplier[]; isNext: boolean }>> {
+): Promise<
+  ActionResponse<{ suppliers: Supplier[]; totalCount: number; isNext: boolean }>
+> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -160,7 +161,11 @@ export async function getSuppliers(
 
     return {
       success: true,
-      data: { suppliers: JSON.parse(JSON.stringify(suppliers)), isNext },
+      data: {
+        suppliers: JSON.parse(JSON.stringify(suppliers)),
+        totalCount: totalSuppliers,
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

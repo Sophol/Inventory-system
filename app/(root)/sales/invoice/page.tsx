@@ -3,7 +3,6 @@ import React from "react";
 import { SaleColumn } from "@/columns/OrderCompleteColumn";
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
-import LocalSearch from "@/components/search/LocalSearch";
 import { DataTable } from "@/components/table/DataTable";
 import ROUTES from "@/constants/routes";
 import { SALE_EMPTY } from "@/constants/states";
@@ -93,6 +92,7 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
               data={sales!}
               summaryRow={summaryRow}
               isNext={isNext}
+              totalCount={summary.count}
             />
           )}
         />

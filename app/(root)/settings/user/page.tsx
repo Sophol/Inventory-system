@@ -28,7 +28,7 @@ const User = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
-  const { users, isNext } = data || {};
+  const { users, totalCount, isNext } = data || {};
   return (
     <CardContainer
       title="User"
@@ -47,7 +47,12 @@ const User = async ({ searchParams }: SearchParams) => {
           data={users}
           empty={USER_EMPTY}
           render={() => (
-            <DataTable columns={UserColumn} data={users!} isNext={isNext} />
+            <DataTable
+              columns={UserColumn}
+              data={users!}
+              totalCount={totalCount}
+              isNext={isNext}
+            />
           )}
         />
       </>

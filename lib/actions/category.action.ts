@@ -80,9 +80,13 @@ export async function getCategory(
     return handleError(error) as ErrorResponse;
   }
 }
-export async function getCategories(
-  params: PaginatedSearchParams
-): Promise<ActionResponse<{ categories: Category[]; isNext: boolean }>> {
+export async function getCategories(params: PaginatedSearchParams): Promise<
+  ActionResponse<{
+    categories: Category[];
+    totalCount: number;
+    isNext: boolean;
+  }>
+> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -127,7 +131,11 @@ export async function getCategories(
 
     return {
       success: true,
-      data: { categories: JSON.parse(JSON.stringify(categories)), isNext },
+      data: {
+        categories: JSON.parse(JSON.stringify(categories)),
+        totalCount: totalCategories,
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

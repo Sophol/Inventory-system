@@ -16,7 +16,6 @@ import {
   PaginatedSearchParamsInvoiceSchema,
   SaleSearchParamsSchema,
 } from "../validations";
-import { endOfMonth, startOfMonth } from "date-fns";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -464,7 +463,6 @@ export async function getSales(
         .skip(skip)
         .limit(limit),
     ]);
-    console.log(sales);
     const isNext = totalSales > skip + sales.length;
     return {
       success: true,
@@ -540,6 +538,7 @@ export async function getApprovedOrder(params: SaleSearchParams): Promise<
   ActionResponse<{
     sales: Sale[];
     summary: {
+      count: 0;
       totalGrandtotal: 0;
       totalDiscount: 0;
       totalDelivery: 0;
@@ -582,18 +581,11 @@ export async function getApprovedOrder(params: SaleSearchParams): Promise<
   if (branchId) {
     filterQuery.branch = new ObjectId(branchId);
   }
-  const start = startOfMonth(new Date());
-  const end = endOfMonth(new Date());
   if (dateRange) {
     const [from, to] = dateRange.split("_");
     filterQuery.approvedDate = {
       $gte: new Date(from),
       $lte: new Date(to),
-    };
-  } else {
-    filterQuery.approvedDate = {
-      $gte: new Date(start),
-      $lte: new Date(end),
     };
   }
   let sortCriteria = {};
@@ -640,6 +632,7 @@ export async function getApprovedOrder(params: SaleSearchParams): Promise<
     const totalDelivery = totalSales[0]?.delivery || 0;
     const isNext = count > skip + sales.length;
     const summaryData = {
+      count,
       totalGrandtotal,
       totalDiscount,
       totalDelivery,
@@ -661,6 +654,7 @@ export async function getPendingOrder(params: SaleSearchParams): Promise<
   ActionResponse<{
     sales: Sale[];
     summary: {
+      count: 0;
       totalGrandtotal: 0;
       totalDiscount: 0;
       totalDelivery: 0;
@@ -703,18 +697,11 @@ export async function getPendingOrder(params: SaleSearchParams): Promise<
   if (branchId) {
     filterQuery.branch = new ObjectId(branchId);
   }
-  const start = startOfMonth(new Date());
-  const end = endOfMonth(new Date());
   if (dateRange) {
     const [from, to] = dateRange.split("_");
     filterQuery.orderDate = {
       $gte: new Date(from),
       $lte: new Date(to),
-    };
-  } else {
-    filterQuery.orderDate = {
-      $gte: new Date(start),
-      $lte: new Date(end),
     };
   }
   let sortCriteria = {};
@@ -761,6 +748,7 @@ export async function getPendingOrder(params: SaleSearchParams): Promise<
     const totalDelivery = totalSales[0]?.delivery || 0;
     const isNext = count > skip + sales.length;
     const summaryData = {
+      count,
       totalGrandtotal,
       totalDiscount,
       totalDelivery,

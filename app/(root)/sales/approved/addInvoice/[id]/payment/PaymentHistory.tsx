@@ -11,7 +11,13 @@ interface Payment {
   description?: string;
   paidAmount: number;
   balance: number;
-  paidBy: "Cash" | "ABA Bank" | "ACLEDA Bank" | "Others";
+  paidBy:
+    | "Cash"
+    | "ABA Bank"
+    | "ACLEDA Bank"
+    | "Sathapna Bank"
+    | "Vatanak Bank"
+    | "Others";
   paymentStatus: "pending" | "credit" | "completed";
 }
 

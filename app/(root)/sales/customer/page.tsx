@@ -28,7 +28,7 @@ const Customer = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
-  const { customers, isNext } = data || {};
+  const { customers, totalCount, isNext } = data || {};
   return (
     <CardContainer
       title="Customer"
@@ -51,6 +51,7 @@ const Customer = async ({ searchParams }: SearchParams) => {
               columns={CustomerColumn}
               data={customers!}
               isNext={isNext}
+              totalCount={totalCount}
             />
           )}
         />

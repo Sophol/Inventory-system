@@ -7,7 +7,9 @@ import { ObjectId } from "mongodb";
 
 export async function getProductReports(
   params: ProductSearchParams
-): Promise<ActionResponse<{ products: Product[]; isNext: boolean }>> {
+): Promise<
+  ActionResponse<{ products: Product[]; totalCount: number; isNext: boolean }>
+> {
   const validatedData = await action({
     params,
     schema: ProductSearchParamsSchema,
@@ -145,7 +147,11 @@ export async function getProductReports(
     const isNext = totalProducts > skip + products.length;
     return {
       success: true,
-      data: { products: JSON.parse(JSON.stringify(products)), isNext },
+      data: {
+        products: JSON.parse(JSON.stringify(products)),
+        totalCount: totalProducts,
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
@@ -154,7 +160,9 @@ export async function getProductReports(
 
 export async function getAlertQtyReports(
   params: ProductSearchParams
-): Promise<ActionResponse<{ products: Product[]; isNext: boolean }>> {
+): Promise<
+  ActionResponse<{ products: Product[]; totalCount: number; isNext: boolean }>
+> {
   const validatedData = await action({
     params,
     schema: ProductSearchParamsSchema,
@@ -293,11 +301,14 @@ export async function getAlertQtyReports(
         { $limit: limit },
       ]),
     ]);
-    console.log(products);
     const isNext = totalProducts > skip + products.length;
     return {
       success: true,
-      data: { products: JSON.parse(JSON.stringify(products)), isNext },
+      data: {
+        products: JSON.parse(JSON.stringify(products)),
+        totalCount: totalProducts,
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

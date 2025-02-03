@@ -249,7 +249,6 @@ export async function voidInvoice(
           product: new ObjectId(productId),
           unit: new ObjectId(unitId),
         });
-        console.log("existingStock", existingStock);
         if (existingStock) {
           existingStock.qtySmallUnit += qtySmallUnit;
           await existingStock.save({ session });

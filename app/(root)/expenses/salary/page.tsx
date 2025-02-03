@@ -73,6 +73,7 @@ const Salary = async ({ searchParams }: SearchParams) => {
               data={salaries!}
               summaryRow={summaryRow}
               isNext={isNext}
+              totalCount={summary.count}
             />
           )}
         />

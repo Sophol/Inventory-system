@@ -27,7 +27,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   isNext: boolean | undefined;
   summaryRow?: React.ReactNode;
-  refreshData?: () => void;
+  totalCount?: number;
 }
 
 export function DataTable<TData, TValue>({
@@ -35,6 +35,7 @@ export function DataTable<TData, TValue>({
   data,
   isNext,
   summaryRow,
+  totalCount = 0,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -104,7 +105,11 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} isNext={isNext} />
+      <DataTablePagination
+        table={table}
+        isNext={isNext}
+        totalCount={totalCount}
+      />
     </>
   );
 }

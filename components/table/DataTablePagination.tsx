@@ -17,11 +17,13 @@ import { formUrlQuery } from "@/lib/url";
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
   isNext: boolean | undefined;
+  totalCount?: number;
 }
 
 export function DataTablePagination<TData>({
   table,
   isNext,
+  totalCount = 0,
 }: DataTablePaginationProps<TData>) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -30,7 +32,7 @@ export function DataTablePagination<TData>({
   const pageSize = searchParams.get("pageSize");
   const currentPage = page ? parseInt(page) : 1;
   const currentPageSize = pageSize ? parseInt(pageSize) : 10;
-
+  const pageCount = Math.ceil(totalCount / currentPageSize);
   const handleNavigation = (type: string) => {
     const nextPageNumber = type === "prev" ? currentPage - 1 : currentPage + 1;
 
@@ -55,12 +57,12 @@ export function DataTablePagination<TData>({
     router.push(newUrl);
     table.setPageSize(Number(value));
   };
-
+  const startEntry = (currentPage - 1) * currentPageSize + 1;
+  const endEntry = Math.min(currentPage * currentPageSize, totalCount);
   return (
     <div className="flex items-center justify-between px-2 mt-5">
-      <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
+      <div className="hidden sm:flex flex-1 text-sm text-muted-foreground">
+        Showing {startEntry} to {endEntry} of {totalCount} entries
       </div>
       {(isNext || currentPage > 1 || currentPageSize >= 10) && (
         <div className="flex items-center space-x-6 lg:space-x-8">
@@ -83,8 +85,7 @@ export function DataTablePagination<TData>({
             </Select>
           </div>
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+            Page {currentPage} of {pageCount}
           </div>
           <div className="flex items-center space-x-2">
             <Button

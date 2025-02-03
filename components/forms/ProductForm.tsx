@@ -91,7 +91,6 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
   const handleCreateProduct = async (
     data: z.infer<typeof CreateProductSchema>
   ) => {
-    console.log(data);
     startTransaction(async () => {
       if (isEdit && product) {
         const result = await editProduct({

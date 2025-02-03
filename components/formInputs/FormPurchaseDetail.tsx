@@ -149,7 +149,7 @@ function FormPurchaseDetail<T extends FieldValues>({
     async (index: number, unitId: string) => {
       if (unitId) {
         const unit = units.find((unit) => unit._id === unitId);
-        console.log("unit", unit);
+
         if (unit) {
           setValue(
             `purchaseDetails.${index}.cost` as Path<T>,
@@ -163,7 +163,7 @@ function FormPurchaseDetail<T extends FieldValues>({
             Array.isArray(productDetails.data) ? productDetails.data : []
           );
           const unit = units.find((unit) => unit._id === unitId);
-          console.log("unit", unit);
+
           if (unit) {
             setValue(
               `purchaseDetails.${index}.cost` as Path<T>,

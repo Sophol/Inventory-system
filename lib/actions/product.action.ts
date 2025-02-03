@@ -273,7 +273,9 @@ export async function getProduct(
 }
 export async function getProducts(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ products: Product[]; isNext: boolean }>> {
+): Promise<
+  ActionResponse<{ products: Product[]; totalCount: number; isNext: boolean }>
+> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -388,7 +390,11 @@ export async function getProducts(
     const isNext = totalProducts > skip + products.length;
     return {
       success: true,
-      data: { products: JSON.parse(JSON.stringify(products)), isNext },
+      data: {
+        products: JSON.parse(JSON.stringify(products)),
+        totalCount: totalProducts,
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

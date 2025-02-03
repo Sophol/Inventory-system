@@ -7,6 +7,9 @@ import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader
 import { format } from "date-fns";
 import RedirectButton from "@/components/formInputs/RedirectButton";
 import ROUTES from "@/constants/routes";
+import { deletePurchaseApproved } from "@/lib/actions/purchase.action";
+import { toast } from "@/hooks/use-toast";
+import ButtonDelete from "@/components/formInputs/ButtonDelete";
 
 export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
@@ -82,7 +85,25 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
     ),
     cell: ({ row }) => {
       const purchase = row.original;
-
+      const handleDelete = async () => {
+        // Add your delete logic here
+        const { success } = await deletePurchaseApproved({
+          purchaseId: purchase._id,
+        });
+        if (success) {
+          toast({
+            title: "success",
+            description: "Purchase deleted successfully.",
+          });
+          window.location.reload();
+        } else {
+          toast({
+            title: "error",
+            description: "Something went wrong.",
+            variant: "destructive",
+          });
+        }
+      };
       return (
         <div className="flex items-center space-x-1">
           <RedirectButton
@@ -90,6 +111,7 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
             href={ROUTES.PREVIEWPURCHASE(purchase._id)}
             className="bg-green-500 text-white"
           />
+          <ButtonDelete onDelete={handleDelete} />
         </div>
       );
     },

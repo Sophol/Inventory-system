@@ -8,7 +8,9 @@ import { auth } from "@/auth";
 
 export async function getUsers(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ users: User[]; isNext: boolean }>> {
+): Promise<
+  ActionResponse<{ users: User[]; totalCount: number; isNext: boolean }>
+> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -57,7 +59,11 @@ export async function getUsers(
 
     return {
       success: true,
-      data: { users: JSON.parse(JSON.stringify(users)), isNext },
+      data: {
+        users: JSON.parse(JSON.stringify(users)),
+        totalCount: totalUsers,
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

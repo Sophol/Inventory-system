@@ -58,7 +58,6 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
           key: "branchId",
           value: searchBranch,
         });
-        console.log("newUrl", newUrl);
         router.push(newUrl, { scroll: false });
       } else {
         if (pathname === route) {

@@ -37,7 +37,7 @@ const ProductReport = async ({ searchParams }: SearchParams) => {
     categoryId: categoryId || "", // Add appropriate value or variable
     branchId: branchId || "", // Add appropriate value or variable
   });
-  const { products, isNext } = data || {};
+  const { products, totalCount, isNext } = data || {};
 
   return (
     <CardContainer
@@ -61,6 +61,7 @@ const ProductReport = async ({ searchParams }: SearchParams) => {
               columns={ProductReportColumn}
               data={products!}
               isNext={isNext}
+              totalCount={totalCount}
             />
           )}
         />

@@ -16,7 +16,6 @@ import {
 export async function createCustomer(
   params: CreateCustomerParams
 ): Promise<ActionResponse<ICustomerDoc>> {
-  console.log(params);
   const validatedData = await action({
     params,
     schema: CreateCustomerSchema,
@@ -114,7 +113,9 @@ export async function getCustomer(
 
 export async function getCustomers(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ customers: Customer[]; isNext: boolean }>> {
+): Promise<
+  ActionResponse<{ customers: Customer[]; totalCount: number; isNext: boolean }>
+> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -198,7 +199,11 @@ export async function getCustomers(
 
     return {
       success: true,
-      data: { customers: JSON.parse(JSON.stringify(customers)), isNext },
+      data: {
+        customers: JSON.parse(JSON.stringify(customers)),
+        totalCount: totalCustomers,
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

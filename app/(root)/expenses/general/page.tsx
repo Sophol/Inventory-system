@@ -73,6 +73,7 @@ const GeneralExp = async ({ searchParams }: SearchParams) => {
               data={generalExps!}
               summaryRow={summaryRow}
               isNext={isNext}
+              totalCount={summary.count}
             />
           )}
         />

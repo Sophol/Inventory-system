@@ -11,7 +11,6 @@ import {
   ExpenseSearchParamsSchema,
   GetMissionSchema,
 } from "../validations";
-import { endOfMonth, startOfMonth } from "date-fns";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -171,11 +170,6 @@ export async function getMissions(params: ExpenseSearchParams): Promise<
     filterQuery.missionDate = {
       $gte: new Date(from),
       $lte: new Date(to),
-    };
-  } else {
-    filterQuery.missionDate = {
-      $gte: startOfMonth(new Date()),
-      $lte: endOfMonth(new Date()),
     };
   }
   let sortCriteria = {};

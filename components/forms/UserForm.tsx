@@ -53,7 +53,6 @@ const UserForm = ({ user, isEdit = false }: Params) => {
     },
   });
   const handleCreateUser = async (data: z.infer<typeof UserSchema>) => {
-    console.log(data);
     startTransaction(async () => {
       if (isEdit && user) {
         const result = await api.users.update(user?._id, data);

@@ -74,6 +74,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
             data={purchases}
             summaryRow={summaryRow}
             isNext={isNext}
+            totalCount={summary?.count}
           />
         )}
       />

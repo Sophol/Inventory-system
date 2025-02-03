@@ -137,7 +137,6 @@ export async function getPayments(
         .skip(skip)
         .limit(limit),
     ]);
-    console.log("totalPayments, payments", payments);
     const isNext = totalPayments > skip + payments.length;
 
     return {

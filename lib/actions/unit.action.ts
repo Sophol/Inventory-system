@@ -13,7 +13,6 @@ import {
 export async function createUnit(
   params: CreateUnitParams
 ): Promise<ActionResponse<Unit>> {
-  console.log(params);
   const validatedData = await action({
     params,
     schema: CreateUnitSchema,
@@ -80,7 +79,9 @@ export async function getUnit(
 }
 export async function getUnits(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ units: Unit[]; isNext: boolean }>> {
+): Promise<
+  ActionResponse<{ units: Unit[]; totalCount: number; isNext: boolean }>
+> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -121,7 +122,11 @@ export async function getUnits(
 
     return {
       success: true,
-      data: { units: JSON.parse(JSON.stringify(units)), isNext },
+      data: {
+        units: JSON.parse(JSON.stringify(units)),
+        totalCount: totalUnits,
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

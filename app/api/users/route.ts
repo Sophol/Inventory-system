@@ -68,7 +68,6 @@ export async function POST(request: Request) {
       ],
       { session }
     );
-    console.log("newUser", newUser);
     const hashPassword = await bcrypt.hash(password, 12);
     await Account.create(
       [

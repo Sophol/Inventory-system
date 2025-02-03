@@ -25,7 +25,7 @@ const Unit = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
-  const { units, isNext } = data || {};
+  const { units, totalCount, isNext } = data || {};
   return (
     <CardContainer
       title="UNIT"
@@ -44,7 +44,12 @@ const Unit = async ({ searchParams }: SearchParams) => {
           data={units}
           empty={UNIT_EMPTY}
           render={() => (
-            <DataTable columns={UnitColumn} data={units!} isNext={isNext} />
+            <DataTable
+              columns={UnitColumn}
+              data={units!}
+              totalCount={totalCount}
+              isNext={isNext}
+            />
           )}
         />
       </>

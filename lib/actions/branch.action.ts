@@ -16,7 +16,6 @@ import {
 export async function createBranch(
   params: CreateBranchParams
 ): Promise<ActionResponse<IBranchDoc>> {
-  console.log(params);
   const validatedData = await action({
     params,
     schema: CreateBranchSchema,
@@ -94,7 +93,9 @@ export async function getBranch(
 }
 export async function getBranches(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ branches: Branch[]; isNext: boolean }>> {
+): Promise<
+  ActionResponse<{ branches: Branch[]; totalCount: number; isNext: boolean }>
+> {
   const validatedData = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -147,7 +148,11 @@ export async function getBranches(
 
     return {
       success: true,
-      data: { branches: JSON.parse(JSON.stringify(branches)), isNext },
+      data: {
+        branches: JSON.parse(JSON.stringify(branches)),
+        totalCount: totalBranches,
+        isNext,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

@@ -64,5 +64,10 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="AlertQty" />
     ),
+    cell: ({ row }) => {
+      const product = row.original;
+      const qty = convertFromSmallUnitQty(product.alertQty ?? 0, product.units);
+      return qty;
+    },
   },
 ];
