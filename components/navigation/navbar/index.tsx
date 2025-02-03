@@ -1,5 +1,3 @@
-import Theme from "./Theme";
-
 import { auth } from "@/auth";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -13,7 +11,7 @@ const NavBar = async () => {
       <div className="flex-1">
         <Input placeholder="Search products..." className="max-w-sm" />
       </div>
-      <Theme />
+      {/* <Theme /> */}
       {session?.user?.id && (
         <UserAvatar
           id={session.user.id}
