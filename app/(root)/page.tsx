@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Package, ShoppingCart } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
+import { formatCurrency } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -65,7 +65,7 @@ const Home = async () => {
                 <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{data.totalSales}</div>
+                <div className="text-2xl font-bold">{formatCurrency(data.totalSales)}</div>
                 <Button
                   variant="link"
                   className="px-0 text-xs text-muted-foreground"
@@ -83,7 +83,7 @@ const Home = async () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {data.totalSalesAmount}
+                  {formatCurrency(data.totalSalesAmount)}
                 </div>
                 <Button
                   variant="link"
@@ -132,7 +132,7 @@ const Home = async () => {
                       </TableCell>
                       <TableCell>
                         <div className="text-2xl">
-                          {expenseData.data.totalPurchase}
+                          {formatCurrency(expenseData.data.totalPurchase)}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -142,7 +142,7 @@ const Home = async () => {
                       </TableCell>
                       <TableCell>
                         <div className="text-2xl">
-                          {expenseData.data.totalMission}
+                          {formatCurrency(expenseData.data.totalMission)}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -152,7 +152,7 @@ const Home = async () => {
                       </TableCell>
                       <TableCell>
                         <div className="text-2xl">
-                          {expenseData.data.totalSalary}
+                          {formatCurrency(expenseData.data.totalSalary)}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -162,7 +162,7 @@ const Home = async () => {
                       </TableCell>
                       <TableCell>
                         <div className="text-2xl">
-                          {expenseData.data.totalGeneral}
+                          {formatCurrency(expenseData.data.totalGeneral)}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -174,7 +174,7 @@ const Home = async () => {
                       </TableCell>
                       <TableCell>
                         <div className="text-2xl">
-                          {expenseData.data.totalExpenses}
+                          {formatCurrency(expenseData.data.totalExpenses)}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -219,7 +219,7 @@ const Home = async () => {
                         </Badge>
                       </TableCell>
                       <TableCell>{order.date}</TableCell>
-                      <TableCell>{order.amount}</TableCell>
+                      <TableCell>{formatCurrency(parseInt(order.amount))}</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm">
                           View

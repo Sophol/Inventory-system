@@ -208,7 +208,7 @@ export const getRecentOrders = async () => {
       status: order.orderStatus,
       branch: order.branch.title,
       date: order.orderDate.toISOString().split("T")[0],
-      amount: `$${order.grandtotal.toFixed(2)}`,
+      amount: `${order.grandtotal}`,
     }));
   } catch (error) {
     console.error(error);
