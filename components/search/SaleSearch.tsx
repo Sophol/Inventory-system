@@ -204,21 +204,26 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
 
   return (
     <FormProvider {...form}>
-      <div className={`flex min-h-[36px] gap-3 rounded-[10px] ${otherClasses}`}>
-        <FormInput
-          name="search"
-          label="Search"
-          control={form.control}
-          isRequired={false}
-          onChange={() => {
-            setSearchQuery(form.getValues("search"));
-          }}
-        />
+    <div
+      className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}
+    >
+
+      <FormInput
+        name="search"
+        label="Search"
+        control={form.control}
+        isRequired={false}
+        onChange={() => {
+          setSearchQuery(form.getValues("search"));
+        }}
+      />
+
+      <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
+
         <FormCombobox
           control={form.control}
           name="customer"
           label="Customer"
-          // placeholder="Select Customer"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchCustomers}
@@ -231,7 +236,7 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
           control={form.control}
           name="branch"
           label="Branch"
-          // placeholder="Select branch"
+          labelClass="mt-3 sm:mt-0"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchBranches}
@@ -240,18 +245,25 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
             handleBranchChange(value);
           }}
         />
-        <DatePickerWithRange
-          onDateChange={handleDateRangeChange}
-          reset={resetData}
-        />
-        <Button
-          onClick={handleClearSearch}
-          className="ml-2 mt-[30px] bg-red-600"
-        >
-          Clear Search
-        </Button>
       </div>
-    </FormProvider>
+  
+
+      <DatePickerWithRange
+        onDateChange={handleDateRangeChange}
+        reset={resetData}
+        className="w-full sm:w-auto"
+      />
+  
+      <Button
+        onClick={handleClearSearch}
+        className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-7 "
+      >
+        Clear Search
+      </Button>
+    </div>
+  </FormProvider>
+  
+
   );
 };
 

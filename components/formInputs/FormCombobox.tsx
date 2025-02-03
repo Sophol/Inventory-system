@@ -98,7 +98,7 @@ function FormCombobox<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex w-full flex-col">
+        <FormItem className="flex w-full flex-col ">
           <FormLabel className={`paragraph-semibold text-dark400_light800 ${labelClass}`}>
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
@@ -110,7 +110,7 @@ function FormCombobox<T extends FieldValues>({
                     variant="outline"
                     role="combobox"
                     ref={buttonRef}
-                    className="paragraph-regular justify-between light-border-3 text-dark300_light700 no-focus min-h-[36px] border"
+                    className="paragraph-regular justify-between light-border-3 text-dark300_light700 no-focus min-h-[36px] border "
                   >
                     {selectedItem.title}
                     <ChevronDown className="opacity-50" />
@@ -125,7 +125,7 @@ function FormCombobox<T extends FieldValues>({
                       !field.value && "text-muted-foreground"
                     )}
                   >
-                    {/* Remove placeholder rendering */}
+                    
                     <div className="flex justify-between items-center w-full">
                       {field.value ? data.find((item) => item._id === field.value)?.title : ''}
                       <ChevronDown className={`opacity-50 ${!field.value ? 'ml-auto' : ''}`} />

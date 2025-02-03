@@ -31,11 +31,13 @@ const DatePicker = ({
         <Button
           variant={"outline"}
           className={cn(
-            "w-[150px] justify-start text-left font-normal",
+            "w-[180px] justify-start text-left font-normal",
             !date && "text-muted-foreground"
           )}
         >
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date
+            ? format(date, "dd/MM/yyyy hh:mm:ss") // Display date and time
+            : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

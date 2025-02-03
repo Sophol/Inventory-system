@@ -63,7 +63,7 @@ const ApprovedOrder = async ({ searchParams }: SearchParams) => {
       redirectClass="hidden"
     >
       <>
-        <div className="py-4">
+        <div className="pb-4">
           <SaleSearch route={ROUTES.APPROVEDSALES} />
         </div>
         <DataRenderer

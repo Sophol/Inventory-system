@@ -25,6 +25,9 @@ const InvoiceDetail = ({
   const handleChangeDate = (date: Date) => {
     onDueDateChange(date);
   };
+  const formattedDate = invoice.dueDate
+    ? format(new Date(invoice.dueDate), "dd/MM/yyyy hh:mm:ss")
+    : "N/A";
   return (
     <div className="card80 ">
       <div className="printable-area">
@@ -64,6 +67,7 @@ const InvoiceDetail = ({
                 <DatePicker
                   initialDate={new Date()}
                   onDateChange={handleChangeDate}
+                  
                 />
               </span>
             </p>

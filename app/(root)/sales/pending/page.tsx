@@ -64,7 +64,7 @@ const PendingOrder = async ({ searchParams }: SearchParams) => {
       redirectClass="!text-light-900 primary-gradient"
     >
       <>
-        <div className="py-4">
+        <div className="pb-4">
           <SaleSearch route={ROUTES.SALES} />
         </div>
         <DataRenderer
