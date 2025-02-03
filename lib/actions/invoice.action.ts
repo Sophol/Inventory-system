@@ -280,10 +280,10 @@ export async function approvedInvoice(
   try {
     const invoice = await Sale.findById(saleId);
     if (!invoice) {
-      throw new Error("Invoice not found");
+      throw new Error("Invoice មិនទាន់មាន");
     }
     if (invoice.orderStatus !== "approved") {
-      throw new Error("Invoice not approved yet");
+      throw new Error("Invoice មិនទាន់បានអនុម័ត្ត");
     }
     const saleDetails = await SaleDetail.find({ sale: saleId });
     if (saleDetails.length > 0) {
@@ -294,17 +294,13 @@ export async function approvedInvoice(
         });
         const smallestUnit = productUnits.find((pu) => pu.level === 1);
         if (!smallestUnit) {
-          throw new Error(
-            `Smallest unit not found for product ${detail.product}`
-          );
+          throw new Error(`ជ្រើសរើសខ្នាត មិនត្រឹមត្រូវ`);
         }
         const selectedUnit = productUnits.find(
           (pu) => pu.unit.toString() === detail.unit.toString()
         );
         if (!selectedUnit) {
-          throw new Error(
-            `Selected unit not found for product ${detail.product}`
-          );
+          throw new Error(`ជ្រើសរើសខ្នាត មិនត្រឹមត្រូវ`);
         }
         const qtySmallUnit = convertToSmallUnit({
           level: selectedUnit.level,
@@ -330,9 +326,7 @@ export async function approvedInvoice(
         });
 
         if (!existingStock || existingStock.qtySmallUnit < -qtySmallUnit) {
-          throw new Error(
-            `Insufficient stock for product ${productId} in branch ${branchId}`
-          );
+          throw new Error(`មិនមាន ស្តុកគ្រប់គ្រាន់`);
         }
       }
 

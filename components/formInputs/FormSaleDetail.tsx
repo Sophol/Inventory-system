@@ -59,7 +59,9 @@ function FormSaleDetail<T extends FieldValues>({
     control,
     name,
   });
-  const [selectedProducts, setSelectedProducts] = useState<{ [key: number]: string }>({});
+  const [selectedProducts, setSelectedProducts] = useState<{
+    [key: number]: string;
+  }>({});
   const [units, setUnits] = useState<SelectData[]>([]);
 
   const watchSaleDetails = watch("saleDetails");
@@ -88,11 +90,16 @@ function FormSaleDetail<T extends FieldValues>({
 
   const calculateSubTotal = useCallback(() => {
     const subTotal = fields.reduce((acc, _, index) => {
-      const totalPrice = parseFloat(watch(`saleDetails.${index}.totalPrice`) || "0");
+      const totalPrice = parseFloat(
+        watch(`saleDetails.${index}.totalPrice`) || "0"
+      );
       return acc + totalPrice;
     }, 0);
 
-    setValue("subtotal" as Path<T>, subTotal as unknown as PathValue<T, Path<T>>);
+    setValue(
+      "subtotal" as Path<T>,
+      subTotal as unknown as PathValue<T, Path<T>>
+    );
   }, [fields, watch, setValue]);
 
   const calculateGrandTotal = useCallback(() => {
@@ -100,7 +107,10 @@ function FormSaleDetail<T extends FieldValues>({
     const discount = parseFloat(watch("discount") || "0");
     const delivery = parseFloat(watch("delivery") || "0");
     const grandTotal = subTotal - discount + delivery;
-    setValue("grandtotal" as Path<T>, grandTotal as unknown as PathValue<T, Path<T>>);
+    setValue(
+      "grandtotal" as Path<T>,
+      grandTotal as unknown as PathValue<T, Path<T>>
+    );
   }, [watch, setValue]);
 
   const calculateTotal = useCallback(
@@ -108,7 +118,10 @@ function FormSaleDetail<T extends FieldValues>({
       const qty = parseFloat(watch(`saleDetails.${index}.qty`) || "0");
       const price = parseFloat(watch(`saleDetails.${index}.price`) || "0");
       const totalPrice = qty * price;
-      setValue(`saleDetails.${index}.totalPrice` as Path<T>, totalPrice as unknown as PathValue<T, Path<T>>);
+      setValue(
+        `saleDetails.${index}.totalPrice` as Path<T>,
+        totalPrice as unknown as PathValue<T, Path<T>>
+      );
       calculateSubTotal();
       calculateGrandTotal();
     },
@@ -146,11 +159,20 @@ function FormSaleDetail<T extends FieldValues>({
           const saleType = watch("saleType");
 
           if (saleType === "wholesale") {
-            setValue(`saleDetails.${index}.price` as Path<T>, unit.wholeSalePrice as unknown as PathValue<T, Path<T>>);
+            setValue(
+              `saleDetails.${index}.price` as Path<T>,
+              unit.wholeSalePrice as unknown as PathValue<T, Path<T>>
+            );
           } else {
-            setValue(`saleDetails.${index}.price` as Path<T>, unit.price as unknown as PathValue<T, Path<T>>);
+            setValue(
+              `saleDetails.${index}.price` as Path<T>,
+              unit.price as unknown as PathValue<T, Path<T>>
+            );
           }
-          setValue(`saleDetails.${index}.cost` as Path<T>, unit.cost as unknown as PathValue<T, Path<T>>);
+          setValue(
+            `saleDetails.${index}.cost` as Path<T>,
+            unit.cost as unknown as PathValue<T, Path<T>>
+          );
           calculateTotal(index);
         }
       }
@@ -187,13 +209,22 @@ function FormSaleDetail<T extends FieldValues>({
 
       {/* Header Row - Static labels */}
       <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 md:grid-cols-11 text-sm font-semibold hidden lg:grid leading-[0] mt-3">
-        <div className="col-span-2 sm:col-span-1 md:col-span-3">Product<span className="text-primary-500 pl-1">*</span></div>
-        <div className="col-span-2 sm:col-span-1 md:col-span-2">Unit<span className="text-primary-500 pl-1">*</span></div>
-        <div className="col-span-1 sm:col-span-1 md:col-span-1">Qty<span className="text-primary-500 pl-1">*</span></div>
-        <div className="col-span-2 sm:col-span-1 md:col-span-2 text-left">Price<span className="text-primary-500 pl-1">*</span></div>
-        <div className="col-span-2 sm:col-span-1 md:col-span-2">Total<span className="text-primary-500 pl-1">*</span></div>
+        <div className="col-span-2 sm:col-span-1 md:col-span-3">
+          Product<span className="text-primary-500 pl-1">*</span>
+        </div>
+        <div className="col-span-2 sm:col-span-1 md:col-span-2">
+          Unit<span className="text-primary-500 pl-1">*</span>
+        </div>
+        <div className="col-span-1 sm:col-span-1 md:col-span-1">
+          Qty<span className="text-primary-500 pl-1">*</span>
+        </div>
+        <div className="col-span-2 sm:col-span-1 md:col-span-2 text-left">
+          Price<span className="text-primary-500 pl-1">*</span>
+        </div>
+        <div className="col-span-2 sm:col-span-1 md:col-span-2">
+          Total<span className="text-primary-500 pl-1">*</span>
+        </div>
       </div>
-
 
       {/* Product Detail Rows */}
       {fields.map((field, index) => {
@@ -252,7 +283,11 @@ function FormSaleDetail<T extends FieldValues>({
                   control={control}
                   onChange={() => calculateTotal(index)}
                 />
-                <FormInput type="hidden" name={`${name}.${index}.cost` as Path<T>} control={control} />
+                <FormInput
+                  type="hidden"
+                  name={`${name}.${index}.cost` as Path<T>}
+                  control={control}
+                />
               </div>
               <div className={`col-span-2 sm:col-span-1 md:col-span-2`}>
                 <FormInput

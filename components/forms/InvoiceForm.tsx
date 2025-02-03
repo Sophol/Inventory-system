@@ -25,6 +25,7 @@ import { getUnits } from "@/lib/actions/unit.action";
 import { generateUniqueReference } from "@/lib/utils";
 import { createInvoice } from "@/lib/actions/invoice.action";
 import { getStaffs } from "@/lib/actions/user.action";
+import FormSelect from "../formInputs/FormSelect";
 
 interface Params {
   sale?: Sale;
@@ -257,13 +258,17 @@ const InvoiceForm = ({
     }
     return { data: [], isNext: false };
   };
+  const printData: SelectData[] = [
+    { _id: "true", title: "Yes" },
+    { _id: "false", title: "No" },
+  ];
   return (
     <Form {...form}>
       <form
         className="flex flex-col gap-8"
         onSubmit={form.handleSubmit(handleCreateSale)}
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <FormInput
             name="referenceNo"
             label="Reference No"
@@ -287,13 +292,19 @@ const InvoiceForm = ({
             fetchData={fetchBranches}
             setValue={form.setValue} // Replace with actual branch data
           />
-        </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <FormDatePicker
             name="invoicedDate"
             label="Invoice Date"
             control={form.control}
             defaultValue={new Date()}
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          <FormSelect
+            name="isLogo"
+            label="Print Logo"
+            control={form.control}
+            items={printData}
           />
           <FormDatePicker
             name="dueDate"
