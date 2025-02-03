@@ -19,6 +19,13 @@ const spaceGrotesk = localFont({
   weight: "300 400 500 600 700",
 });
 
+// Add Koh Santepheap font import
+const kohSantepheap = localFont({
+  src: "./fonts/KohSantepheap-Regular.ttf", 
+  variable: "--font-koh-santepheap",
+  weight: "400",
+});
+
 export const metadata: Metadata = {
   title: "ERP System",
   description:
@@ -41,7 +48,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
       </head>
       <SessionProvider session={session}>
         <body
-          className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}
+          className={`${inter.variable} ${spaceGrotesk.variable} ${kohSantepheap.variable} antialiased`}
         >
           <ThemeProvider
             attribute="class"

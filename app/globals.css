@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif, var(--font-koh-santepheap);
 }
 :root {
   border-radius: 8px;
