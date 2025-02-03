@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import { format } from "date-fns";
+import { formatCurrency } from '@/lib/utils';
 
 export const SaleReportColumn: ColumnDef<Sale>[] = [
   {
@@ -36,13 +37,16 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader column={column} title="Branch" />
     ),
   },
-
   {
-    accessorKey: "grandtotal",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Grand Total" />
-    ),
-  },
+     accessorKey: "grandtotal",
+     header: ({ column }) => (
+       <DataTableColumnHeader column={column} title="Grand Total" />
+     ),
+     cell: ({ row }) => {
+       const grandtotal = row.getValue("grandtotal") as number;
+       return <span>{formatCurrency(grandtotal)}</span>;
+     },
+   },
   {
     accessorKey: "discount",
     header: ({ column }) => (

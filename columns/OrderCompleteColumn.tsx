@@ -13,6 +13,7 @@ import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { voidInvoice } from "@/lib/actions/invoice.action";
+import { formatCurrency } from '@/lib/utils';
 
 const reloadPage = () => {
   window.location.reload();
@@ -32,7 +33,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("invoicedDate") as string;
-      const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss "); // Customize format as needed
+      const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss ");
       return <span>{formattedDate}</span>;
     },
   },
@@ -48,12 +49,15 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader column={column} title="Branch" />
     ),
   },
-
   {
     accessorKey: "grandtotal",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Grand Total" />
     ),
+    cell: ({ row }) => {
+      const grandtotal = row.getValue("grandtotal") as number;
+      return <span>{formatCurrency(grandtotal)}</span>;
+    },
   },
   {
     accessorKey: "discount",
@@ -66,43 +70,33 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Delivery" />
     ),
+    cell: ({ row }) => {
+      const delivery = row.getValue("delivery") as number;
+      return <span>{formatCurrency(delivery)}</span>;
+    },
   },
   {
     accessorKey: "paid",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Paid" />
     ),
+    cell: ({ row }) => {
+      const paid = row.getValue("paid") as number;
+      return <span>{formatCurrency(paid)}</span>;
+    },
   },
+
   {
     accessorKey: "balance",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Balance" />
     ),
+    cell: ({ row }) => {
+      const balance = row.getValue("balance") as number;
+      return <span>{formatCurrency(balance)}</span>;
+    },
   },
-  // {
-  //   accessorKey: "orderStatus",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Order Status" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const status = row.getValue("orderStatus") as string;
-  //     return (
-  //       <Badge
-  //         className={
-  //           status === "completed"
-  //             ? "bg-green-500 uppercase"
-  //             : status === "approved"
-  //               ? "bg-blue-500 uppercase"
-  //               : status === "pending"
-  //                 ? "bg-yellow-500 uppercase"
-  //                 : "bg-red-500 uppercase"
-  //         }
-  //       >
-  //         {status}
-  //       </Badge>
-  //     );
-  //   },
-  // },
+
   {
     accessorKey: "paymentStatus",
     header: ({ column }) => (

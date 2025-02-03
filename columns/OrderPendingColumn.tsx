@@ -16,7 +16,7 @@ import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { getUserRole } from "@/lib/actions/user.action";
-
+import { formatCurrency } from '@/lib/utils';
 const reloadPage = () => {
   window.location.reload();
 };
@@ -45,13 +45,22 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Sub Total" />
     ),
+    cell: ({ row }) => {
+      const subtotal = row.getValue("subtotal") as number;
+      return <span>{formatCurrency(subtotal)}</span>;
+    },
   },
   {
     accessorKey: "grandtotal",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Grand Total" />
     ),
+    cell: ({ row }) => {
+      const grandtotal = row.getValue("grandtotal") as number;
+      return <span>{formatCurrency(grandtotal)}</span>;
+    },
   },
+  
   {
     accessorKey: "orderDate", // Assuming saleDate is the date field you want to format
     header: ({ column }) => (
