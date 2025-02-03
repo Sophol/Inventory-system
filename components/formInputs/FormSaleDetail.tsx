@@ -208,7 +208,7 @@ function FormSaleDetail<T extends FieldValues>({
                   name={`${name}.${index}.product` as Path<T>}
                   label={"Product"}
                   labelClass={"block lg:hidden"}
-                  placeholder="Select Product"
+                  // placeholder="Select Product"
                   fetchSingleItem={(field as any).selectedProduct}
                   fetchData={fetchProducts}
                   setValue={(name, value) => {
@@ -223,7 +223,7 @@ function FormSaleDetail<T extends FieldValues>({
                   name={`${name}.${index}.unit` as Path<T>}
                   label={"Unit"}
                   labelClass={"block lg:hidden"}
-                  placeholder="Select unit"
+                  // placeholder="Select unit"
                   fetchSingleItem={(field as any).selectedUnit}
                   parentId={selectedProduct}
                   fetchData={(params) =>

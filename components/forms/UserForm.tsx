@@ -150,7 +150,7 @@ const UserForm = ({ user, isEdit = false }: Params) => {
             control={form.control}
             name="branch"
             label="Branch"
-            placeholder="Select Branch"
+            // placeholder="Select Branch"
             fetchSingleItem={user ? user.branch : null}
             fetchData={fetchBranches}
             setValue={form.setValue} // Replace with actual branch data

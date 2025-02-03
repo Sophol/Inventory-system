@@ -55,7 +55,7 @@ function FormUnitVariant<T extends FieldValues>({
                 control={control}
                 name={`${name}.${index}.unit` as Path<T>}
                 label="Unit"
-                placeholder="Select unit"
+                // placeholder="Select unit"
                 fetchSingleItem={selectedData}
                 fetchData={fetchUnits}
                 setValue={setValue}

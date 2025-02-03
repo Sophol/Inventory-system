@@ -159,7 +159,7 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
           control={form.control}
           name="branch"
           label="Branch"
-          placeholder="Select branch"
+          // placeholder="Select branch"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchBranches}

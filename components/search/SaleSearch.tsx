@@ -218,7 +218,7 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
           control={form.control}
           name="customer"
           label="Customer"
-          placeholder="Select Customer"
+          // placeholder="Select Customer"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchCustomers}
@@ -231,7 +231,7 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
           control={form.control}
           name="branch"
           label="Branch"
-          placeholder="Select branch"
+          // placeholder="Select branch"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchBranches}

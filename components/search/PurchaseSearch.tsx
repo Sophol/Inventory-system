@@ -218,7 +218,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
           control={form.control}
           name="supplier"
           label="Supplier"
-          placeholder="Select Supplier"
+          // placeholder="Select Supplier"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchSuppliers}
@@ -231,7 +231,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
           control={form.control}
           name="branch"
           label="Branch"
-          placeholder="Select branch"
+          // placeholder="Select branch"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchBranches}

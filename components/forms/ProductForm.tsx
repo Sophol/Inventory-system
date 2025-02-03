@@ -141,7 +141,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
             control={form.control}
             name="category"
             label="Category"
-            placeholder="Select category"
+            // placeholder="Select category"
             fetchSingleItem={selectedData}
             fetchData={fetchCategories}
             setValue={form.setValue}

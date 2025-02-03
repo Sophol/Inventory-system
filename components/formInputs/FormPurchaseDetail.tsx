@@ -190,7 +190,7 @@ function FormPurchaseDetail<T extends FieldValues>({
                   control={control}
                   name={`${name}.${index}.product` as Path<T>}
                   label="Product"
-                  placeholder="Select Product"
+                  // placeholder="Select Product"
                   fetchSingleItem={singleProduct}
                   fetchData={fetchProducts}
                   setValue={(name, value) => {
@@ -204,7 +204,7 @@ function FormPurchaseDetail<T extends FieldValues>({
                   control={control}
                   name={`${name}.${index}.unit` as Path<T>}
                   label="Unit"
-                  placeholder="Select unit"
+                  // placeholder="Select unit"
                   fetchSingleItem={(field as any).selectedUnit}
                   parentId={selectedProduct}
                   fetchData={(params) =>

@@ -29,9 +29,7 @@ interface FormComboboxProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
   label: string;
-  labelClass? :string;
-  placeholder: string;
-  setValue: UseFormSetValue<T>;
+  labelClass?: string;
   fetchData: (params: {
     page: number;
     query: string;
@@ -40,6 +38,7 @@ interface FormComboboxProps<T extends FieldValues> {
   fetchSingleItem: SelectData | null;
   isRequired?: boolean;
   parentId?: string;
+  setValue: UseFormSetValue<T>;
 }
 
 function FormCombobox<T extends FieldValues>({
@@ -47,7 +46,6 @@ function FormCombobox<T extends FieldValues>({
   name,
   label,
   labelClass,
-  placeholder,
   fetchSingleItem,
   fetchData,
   setValue,
@@ -60,9 +58,7 @@ function FormCombobox<T extends FieldValues>({
   const [isNext, setIsNext] = useState(false);
   const [query, setQuery] = useState("");
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [popoverWidth, setPopoverWidth] = useState<string | undefined>(
-    undefined
-  );
+  const [popoverWidth, setPopoverWidth] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (buttonRef.current) {
@@ -74,6 +70,7 @@ function FormCombobox<T extends FieldValues>({
       handleFetchData(1, "");
     }
   }, [buttonRef.current, parentId]);
+
   const handleFetchData = async (
     page: number,
     query: string,
@@ -102,7 +99,7 @@ function FormCombobox<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className="flex w-full flex-col">
-        <FormLabel className={`paragraph-semibold text-dark400_light800 ${labelClass}`} >
+          <FormLabel className={`paragraph-semibold text-dark400_light800 ${labelClass}`}>
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Popover>
@@ -128,11 +125,13 @@ function FormCombobox<T extends FieldValues>({
                       !field.value && "text-muted-foreground"
                     )}
                   >
-                    {field.value
-                      ? data.find((item) => item._id === field.value)?.title
-                      : placeholder}
-                    <ChevronDown className="opacity-50" />
+                    {/* Remove placeholder rendering */}
+                    <div className="flex justify-between items-center w-full">
+                      {field.value ? data.find((item) => item._id === field.value)?.title : ''}
+                      <ChevronDown className={`opacity-50 ${!field.value ? 'ml-auto' : ''}`} />
+                    </div>
                   </Button>
+
                 )}
               </FormControl>
             </PopoverTrigger>

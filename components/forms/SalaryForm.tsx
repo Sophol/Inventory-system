@@ -162,7 +162,7 @@ const SalaryForm = ({
             control={form.control}
             name="branch"
             label="Branch"
-            placeholder="Select Branch"
+            // placeholder="Select Branch"
             fetchSingleItem={salary ? salary.branch : null}
             fetchData={fetchBranches}
             setValue={form.setValue} // Replace with actual branch data
@@ -171,7 +171,7 @@ const SalaryForm = ({
             control={form.control}
             name="staffId"
             label="Staff"
-            placeholder="Select Staff"
+            // placeholder="Select Staff"
             fetchSingleItem={salary ? salary.staffId : null}
             fetchData={fetchStaffs}
             setValue={(name, value) => {

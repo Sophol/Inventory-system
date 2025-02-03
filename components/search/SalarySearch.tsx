@@ -219,7 +219,7 @@ const SalarySearch = ({ route, otherClasses }: ProductSearchProps) => {
           control={form.control}
           name="staffId"
           label="Staff"
-          placeholder="Select Staff"
+          // placeholder="Select Staff"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchStaffs}
@@ -232,7 +232,7 @@ const SalarySearch = ({ route, otherClasses }: ProductSearchProps) => {
           control={form.control}
           name="branch"
           label="Branch"
-          placeholder="Select branch"
+          // placeholder="Select branch"
           fetchSingleItem={null}
           isRequired={false}
           fetchData={handleFetchBranches}
