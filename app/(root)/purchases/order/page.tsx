@@ -60,7 +60,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"
     >
-      <div className="py-4">
+      <div className="pb-4">
         <PurchaseSearch route={ROUTES.PURCHASEREPORT} />
       </div>
       <DataRenderer
