@@ -12,7 +12,7 @@ import PurchaseSearch from "@/components/search/PurchaseSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { getPurchaseReports } from "@/lib/actions/purchaseReport";
 import { PurchaseReportColumn } from "@/columns/PurchaseReportColumn";
-
+import { formatCurrency } from '@/lib/utils';
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -47,7 +47,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary?.totalGrandtotal}</strong>
+        <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
       </TableCell>
     </TableRow>
   );
@@ -60,7 +60,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"
     >
-      <div className="py-4">
+      <div className="pb-4">
         <PurchaseSearch route={ROUTES.PURCHASEREPORT} />
       </div>
       <DataRenderer

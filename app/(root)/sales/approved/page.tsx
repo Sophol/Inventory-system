@@ -11,7 +11,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import SaleSearch from "@/components/search/SaleSearch";
-
+import { formatCurrency } from '@/lib/utils';
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -50,7 +50,7 @@ const ApprovedOrder = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary?.totalGrandtotal}</strong>
+        <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
       </TableCell>
     </TableRow>
   );

@@ -12,7 +12,7 @@ import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import SaleSearch from "@/components/search/SaleSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-
+import { formatCurrency } from '@/lib/utils';
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -51,7 +51,7 @@ const PendingOrder = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary?.totalGrandtotal}</strong>
+        <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
       </TableCell>
     </TableRow>
   );

@@ -10,6 +10,7 @@ import ROUTES from "@/constants/routes";
 import { deletePurchaseApproved } from "@/lib/actions/purchase.action";
 import { toast } from "@/hooks/use-toast";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
+import { formatCurrency } from '@/lib/utils';
 
 export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
@@ -77,6 +78,10 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Grand Total" />
     ),
+    cell: ({ row }) => {
+      const grandtotal = row.getValue("grandtotal") as number;
+      return <span>{formatCurrency(grandtotal)}</span>;
+    },
   },
   {
     id: "actions",

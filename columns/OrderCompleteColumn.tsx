@@ -59,11 +59,16 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       return <span>{formatCurrency(grandtotal)}</span>;
     },
   },
+
   {
     accessorKey: "discount",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Discount" />
     ),
+    cell: ({ row }) => {
+      const discount = row.getValue("discount") as number;
+      return <span>{formatCurrency(discount)}</span>;
+    },
   },
   {
     accessorKey: "delivery",
