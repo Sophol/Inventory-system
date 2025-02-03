@@ -48,7 +48,7 @@ const ProductReport = async ({ searchParams }: SearchParams) => {
       redirectClass="!text-light-900 primary-gradient"
     >
       <>
-        <div className="py-4">
+        <div className="pb-4">
           <ProductSearch route={ROUTES.PRODUCTREPORT} />
         </div>
         <DataRenderer

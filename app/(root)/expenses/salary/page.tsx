@@ -59,7 +59,7 @@ const Salary = async ({ searchParams }: SearchParams) => {
       redirectClass="!text-light-900 primary-gradient"
     >
       <>
-        <div className="py-4">
+        <div className="pb-4">
           <SalarySearch route={ROUTES.SALARYEXPS} />
         </div>
         <DataRenderer

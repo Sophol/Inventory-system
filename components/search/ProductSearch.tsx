@@ -161,7 +161,7 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
 
   return (
     <FormProvider {...form}>
-      <div className={`flex min-h-[36px] gap-3 rounded-[10px] ${otherClasses}`}>
+           <div className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}>
         <FormInput
           name="search"
           label="Search"
@@ -171,6 +171,7 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
             setSearchQuery(form.getValues("search"));
           }}
         />
+         <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
         <FormCombobox
           control={form.control}
           name="category"
@@ -197,9 +198,10 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
             handleBranchChange(value);
           }}
         />
+        </div>
         <Button
           onClick={handleClearSearch}
-          className="ml-2 mt-[30px] bg-red-600"
+             className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-7 "
         >
           Clear Search
         </Button>
