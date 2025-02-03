@@ -6,7 +6,7 @@ import {
   Salary,
   Sale,
 } from "@/database";
-import { endOfMonth, startOfMonth, subMonths } from "date-fns";
+import { format , endOfMonth, startOfMonth, subMonths } from "date-fns";
 import handleError from "../handlers/error";
 import dbConnect from "../mongoose";
 
@@ -207,7 +207,7 @@ export const getRecentOrders = async () => {
       referenceNo: order.referenceNo,
       status: order.orderStatus,
       branch: order.branch.title,
-      date: order.orderDate.toISOString().split("T")[0],
+      date: format(new Date(order.orderDate), "dd/MM/yyyy HH:mm:ss"),
       amount: `${order.grandtotal}`,
     }));
   } catch (error) {
