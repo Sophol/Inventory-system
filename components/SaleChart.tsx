@@ -36,14 +36,14 @@ const SaleChart = ({ saleByDate }: SaleChartProps) => {
         <CardTitle>Bar Chart</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={saleByDate}>
+      <CardContent className="p-5">
+        <ChartContainer config={chartConfig} className="w-full max-h-[250] py-2">
+          <BarChart  accessibilityLayer data={saleByDate}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
               tickLine={false}
-              tickMargin={10}
+              tickMargin={5}
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
@@ -59,7 +59,7 @@ const SaleChart = ({ saleByDate }: SaleChartProps) => {
         <div className="flex gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
+        <div className="leading-none text-muted-foreground pb-2">
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>

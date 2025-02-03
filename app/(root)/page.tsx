@@ -46,7 +46,7 @@ const Home = async () => {
                 <ShoppingCart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-lg font-bold">
                   {data.totalOrderPending}
                 </div>
                 <Button
@@ -65,7 +65,7 @@ const Home = async () => {
                 <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(data.totalSales)}</div>
+                <div className="text-lg font-bold">{formatCurrency(data.totalSales)}</div>
                 <Button
                   variant="link"
                   className="px-0 text-xs text-muted-foreground"
@@ -82,7 +82,7 @@ const Home = async () => {
                 <span className="paragraph-meduim">៛</span>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-lg font-bold">
                   {formatCurrency(data.totalSalesAmount)}
                 </div>
                 <Button
@@ -102,7 +102,7 @@ const Home = async () => {
                 <Package className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{data.totalProducts}</div>
+                <div className="text-lg font-bold">{data.totalProducts}</div>
                 <Button
                   variant="link"
                   className="px-0 text-xs text-muted-foreground"
@@ -128,40 +128,40 @@ const Home = async () => {
                   <TableBody>
                     <TableRow>
                       <TableCell>
-                        <div className="text-2xl p-3">Purchase Expense</div>
+                        <div className="text-lg p-3">Purchase Expense</div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-2xl">
+                        <div className="text-lg">
                           {formatCurrency(expenseData.data.totalPurchase)}
                         </div>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <div className="text-2xl p-3">Mission Expense</div>
+                        <div className="text-lg p-3">Mission Expense</div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-2xl">
+                        <div className="text-lg">
                           {formatCurrency(expenseData.data.totalMission)}
                         </div>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <div className="text-2xl p-3">Salary Expense</div>
+                        <div className="text-lg p-3">Salary Expense</div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-2xl">
+                        <div className="text-lg">
                           {formatCurrency(expenseData.data.totalSalary)}
                         </div>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <div className="text-2xl p-3">General Expense</div>
+                        <div className="text-lg p-3">General Expense</div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-2xl">
+                        <div className="text-lg">
                           {formatCurrency(expenseData.data.totalGeneral)}
                         </div>
                       </TableCell>
@@ -170,10 +170,10 @@ const Home = async () => {
                   <TableFooter>
                     <TableRow>
                       <TableCell>
-                        <div className="text-2xl">Total: </div>
+                        <div className="text-lg">Total: </div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-2xl">
+                        <div className="text-lg">
                           {formatCurrency(expenseData.data.totalExpenses)}
                         </div>
                       </TableCell>
