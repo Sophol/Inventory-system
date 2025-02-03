@@ -205,7 +205,7 @@ const SalarySearch = ({ route, otherClasses }: ProductSearchProps) => {
 
   return (
     <FormProvider {...form}>
-      <div className={`flex min-h-[36px] gap-3 rounded-[10px] ${otherClasses}`}>
+      <div className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}>
         <FormInput
           name="search"
           label="Search"
@@ -215,6 +215,7 @@ const SalarySearch = ({ route, otherClasses }: ProductSearchProps) => {
             setSearchQuery(form.getValues("search"));
           }}
         />
+             <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
         <FormCombobox
           control={form.control}
           name="staffId"
@@ -241,13 +242,15 @@ const SalarySearch = ({ route, otherClasses }: ProductSearchProps) => {
             handleBranchChange(value);
           }}
         />
+        </div>
         <DatePickerWithRange
           onDateChange={handleDateRangeChange}
           reset={resetData}
+           className="w-full sm:w-auto"
         />
         <Button
           onClick={handleClearSearch}
-          className="ml-2 mt-[30px] bg-red-600"
+          className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-7 "
         >
           Clear Search
         </Button>
