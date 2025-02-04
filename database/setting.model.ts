@@ -2,6 +2,7 @@ import { model, models, Schema, Document } from "mongoose";
 
 export interface ISetting {
   companyName: string;
+  companyNameEnglish: string;
   companyLogo: string;
   address: string;
   phone: string;
@@ -12,6 +13,7 @@ export interface ISettingDoc extends ISetting, Document {}
 const AccountSchema = new Schema<ISetting>(
   {
     companyName: { type: String, required: true },
+    companyNameEnglish: { type: String, required: true },
     companyLogo: { type: String, required: true },
     address: { type: String },
     phone: { type: String, required: true },

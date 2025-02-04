@@ -234,6 +234,7 @@ interface Sale {
 interface Setting {
   _id: string;
   companyName: string;
+  companyNameEnglish: string;
   companyLogo: string;
   address: string;
   phone: string;
