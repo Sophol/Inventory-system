@@ -40,6 +40,7 @@ export async function editSetting(
   }
   const {
     companyName,
+    companyNameEnglish,
     companyLogo,
     address,
     phone,
@@ -54,6 +55,7 @@ export async function editSetting(
     }
     if (
       setting.companyName !== companyName ||
+      setting.companyNameEnglish !== companyNameEnglish ||
       setting.companyLogo !== companyLogo ||
       setting.address !== address ||
       setting.phone !== phone ||
@@ -61,6 +63,7 @@ export async function editSetting(
       setting.exchangeRateT !== exchangeRateT
     ) {
       setting.companyName = companyName;
+      setting.companyNameEnglish = companyNameEnglish;
       setting.companyLogo = companyLogo;
       setting.address = address;
       setting.phone = phone;

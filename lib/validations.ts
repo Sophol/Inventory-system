@@ -287,6 +287,7 @@ export const GetSettingSchema = z.object({
 export const EditSettingSchema = z.object({
   settingId: z.string().min(1, "Setting ID is required"),
   companyName: z.string().min(1, "Company Name is required"),
+  companyNameEnglish: z.string().min(1, "Company Name In English is required"),
   companyLogo: z.string().min(1, "Company Logo is required"),
   address: z.string().min(1, "Address is required"),
   phone: z.string().min(1, "Phone is required"),

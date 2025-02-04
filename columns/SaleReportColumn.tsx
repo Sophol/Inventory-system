@@ -52,24 +52,40 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Discount" />
     ),
+    cell: ({ row }) => {
+      const discount = row.getValue("discount") as number;
+      return <span>{formatCurrency(discount)}</span>;
+    },
   },
   {
     accessorKey: "delivery",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Delivery" />
     ),
+    cell: ({ row }) => {
+      const delivery = row.getValue("delivery") as number;
+      return <span>{formatCurrency(delivery)}</span>;
+    },
   },
   {
     accessorKey: "paid",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Paid" />
     ),
+    cell: ({ row }) => {
+      const paid = row.getValue("paid") as number;
+      return <span>{formatCurrency(paid)}</span>;
+    },
   },
   {
     accessorKey: "balance",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Balance" />
     ),
+    cell: ({ row }) => {
+      const balance = row.getValue("balance") as number;
+      return <span>{formatCurrency(balance)}</span>;
+    },
   },
   {
     accessorKey: "orderStatus",

@@ -162,6 +162,7 @@ interface GetSettingParams {
 interface EditSettingParams {
   settingId: string;
   companyName: string;
+  companyNameEnglish: string;
   companyLogo: string;
   address: string;
   phone: string;

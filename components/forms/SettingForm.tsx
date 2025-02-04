@@ -29,6 +29,7 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
     defaultValues: {
       settingId: setting?._id,
       companyName: setting?.companyName || "",
+      companyNameEnglish: setting?.companyNameEnglish || "",
       companyLogo: setting?.companyLogo || "",
       address: setting?.address || "",
       phone: setting?.phone || "",
@@ -64,10 +65,15 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
         className="flex flex-col gap-8"
         onSubmit={form.handleSubmit(handleEditSetting)}
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           <FormInput
             name="companyName"
             label="Company Name"
+            control={form.control}
+          />
+             <FormInput
+            name="companyNameEnglish"
+            label="Company Name In English"
             control={form.control}
           />
           <FormInput

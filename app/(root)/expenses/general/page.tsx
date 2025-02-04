@@ -13,7 +13,7 @@ import { GeneralExpColumn } from "@/columns/GeneralExpColumn";
 import { ColumnDef } from "@tanstack/react-table";
 import GeneralExpSearch from "@/components/search/GeneralExpSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-
+import { formatCurrency } from '@/lib/utils';
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -46,7 +46,7 @@ const GeneralExp = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary?.totalAmount}</strong>
+        <strong>{formatCurrency(summary?.totalAmount)}</strong>
       </TableCell>
     </TableRow>
   );
