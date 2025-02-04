@@ -58,7 +58,7 @@ function FormPurchaseDetail<T extends FieldValues>({
   const [selectedProducts, setSelectedProducts] = useState<{
     [key: number]: string;
   }>({});
-  const [units, setUnits] = useState<SelectData[]>([]);
+  const [units, setUnits] = useState<{ [key: number]: SelectData[] }>({});
 
   const watchPurchaseDetails = watch("purchaseDetails");
 
@@ -84,6 +84,7 @@ function FormPurchaseDetail<T extends FieldValues>({
       total: 0,
     } as any);
   }, [append]);
+
   const calculateSubTotal = useCallback(() => {
     const subTotal = fields.reduce((acc, _, index) => {
       const total = parseFloat(watch(`purchaseDetails.${index}.total`) || "0");
@@ -130,7 +131,12 @@ function FormPurchaseDetail<T extends FieldValues>({
     async (index: number, productId: string) => {
       try {
         const productDetails = await fetchProductDetails(productId);
-        setUnits(Array.isArray(productDetails.data) ? productDetails.data : []);
+        setUnits((prevUnits) => ({
+          ...prevUnits,
+          [index]: Array.isArray(productDetails.data)
+            ? productDetails.data
+            : [],
+        }));
         calculateTotal(index);
 
         // Update the selectedProducts state
@@ -148,7 +154,7 @@ function FormPurchaseDetail<T extends FieldValues>({
   const handleUnitChange = useCallback(
     async (index: number, unitId: string) => {
       if (unitId) {
-        const unit = units.find((unit) => unit._id === unitId);
+        const unit = units[index]?.find((unit) => unit._id === unitId);
 
         if (unit) {
           setValue(
@@ -159,10 +165,13 @@ function FormPurchaseDetail<T extends FieldValues>({
         } else {
           const productId = watch(`purchaseDetails.${index}.product`);
           const productDetails = await fetchProductDetails(productId);
-          setUnits(
-            Array.isArray(productDetails.data) ? productDetails.data : []
-          );
-          const unit = units.find((unit) => unit._id === unitId);
+          setUnits((prevUnits) => ({
+            ...prevUnits,
+            [index]: Array.isArray(productDetails.data)
+              ? productDetails.data
+              : [],
+          }));
+          const unit = units[index]?.find((unit) => unit._id === unitId);
 
           if (unit) {
             setValue(
@@ -176,6 +185,7 @@ function FormPurchaseDetail<T extends FieldValues>({
     },
     [watch, fetchProductDetails, units, setValue, calculateTotal]
   );
+
   return (
     <div className="flex flex-col justify-start gap-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-11">

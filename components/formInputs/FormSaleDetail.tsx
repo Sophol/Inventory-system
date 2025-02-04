@@ -62,7 +62,7 @@ function FormSaleDetail<T extends FieldValues>({
   const [selectedProducts, setSelectedProducts] = useState<{
     [key: number]: string;
   }>({});
-  const [units, setUnits] = useState<SelectData[]>([]);
+  const [units, setUnits] = useState<{ [key: number]: SelectData[] }>({});
 
   const watchSaleDetails = watch("saleDetails");
 
@@ -138,7 +138,12 @@ function FormSaleDetail<T extends FieldValues>({
     async (index: number, productId: string) => {
       try {
         const productDetails = await fetchProductDetails(productId);
-        setUnits(Array.isArray(productDetails.data) ? productDetails.data : []);
+        setUnits((prevUnits) => ({
+          ...prevUnits,
+          [index]: Array.isArray(productDetails.data)
+            ? productDetails.data
+            : [],
+        }));
         calculateTotal(index);
         setSelectedProducts((prev) => ({
           ...prev,
@@ -154,7 +159,7 @@ function FormSaleDetail<T extends FieldValues>({
   const handleUnitChange = useCallback(
     async (index: number, unitId: string) => {
       if (unitId) {
-        const unit = units.find((unit) => unit._id === unitId);
+        const unit = units[index]?.find((unit) => unit._id === unitId);
         if (unit) {
           const saleType = watch("saleType");
 
