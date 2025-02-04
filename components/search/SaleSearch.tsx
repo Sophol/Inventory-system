@@ -205,7 +205,7 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
   return (
     <FormProvider {...form}>
     <div
-      className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}
+      className={`flex text-[11px] flex-wrap sm:flex-nowrap items-center gap-3 min-h-[30px] rounded-sm ${otherClasses}`}
     >
 
       <FormInput
@@ -251,12 +251,12 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
       <DatePickerWithRange
         onDateChange={handleDateRangeChange}
         reset={resetData}
-        className="w-full sm:w-auto"
+        className="w-full sm:w-auto text-[11px] "
       />
   
       <Button
         onClick={handleClearSearch}
-        className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-7 "
+        className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-6 text-[11px]  min-h-[26px] h-[26px]"
       >
         Clear Search
       </Button>

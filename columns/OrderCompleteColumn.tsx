@@ -25,6 +25,10 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Reference No" />
     ),
+    cell: ({ row }) => {
+      const referenceNo = row.getValue("referenceNo") as string;
+      return <span className="text-[10px]">{referenceNo}</span>;
+    },
   },
   {
     accessorKey: "invoicedDate", // Assuming saleDate is the date field you want to format
@@ -34,7 +38,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const date = row.getValue("invoicedDate") as string;
       const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss ");
-      return <span>{formattedDate}</span>;
+      return <span className="text-[10px] min-w-[120px] flex">{formattedDate}</span>;
     },
   },
   {
@@ -113,12 +117,12 @@ export const SaleColumn: ColumnDef<Sale>[] = [
         <Badge
           className={
             status === "completed"
-              ? "bg-green-500 uppercase"
+              ? "bg-green-500 uppercase text-[10px] h-[23px] min-w-[85px] justify-center"
               : status === "approved"
-                ? "bg-blue-500 uppercase"
+                ? "bg-blue-500 uppercase text-[10px] h-[23px] min-w-[85px] justify-center"
                 : status === "pending"
-                  ? "bg-yellow-500 uppercase"
-                  : "bg-red-500 uppercase"
+                  ? "bg-yellow-500 uppercase text-[10px] h-[23px] min-w-[85px] justify-center"
+                  : "bg-red-500 uppercase text-[10px] h-[23px] min-w-[85px] justify-center"
           }
         >
           {status}
@@ -129,7 +133,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" />
+      <DataTableColumnHeader column={column} title="Actions" className="uppercase" />
     ),
     cell: ({ row }) => {
       const sale = row.original;
@@ -150,7 +154,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center ">
           <div>
             <RedirectButton
               Icon={FaFileInvoice}

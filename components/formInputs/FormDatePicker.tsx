@@ -56,7 +56,7 @@ const FormDatePicker = <T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className="flex w-full flex-col">
-          <FormLabel className="paragraph-semibold text-dark400_light800">
+          <FormLabel className="text-[11px]  text-dark400_light800">
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Popover>
@@ -65,7 +65,7 @@ const FormDatePicker = <T extends FieldValues>({
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "paragraph-regular light-border-3 text-dark300_light700 no-focus min-h-[36px] border",
+                    "text-[11px] light-border-3 text-dark300_light700 no-focus min-h-[36px] border",
                     !field.value && "text-muted-foreground"
                   )}
                 >

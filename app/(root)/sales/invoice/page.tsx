@@ -48,8 +48,8 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
       isNext: boolean;
     });
   const summaryRow = (
-    <TableRow >
-      <TableCell colSpan={4} className="text-right">
+    <TableRow className="bg-blue-200 dark:bg-slate-800">
+      <TableCell colSpan={4} className="text-right ">
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
@@ -66,6 +66,12 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
       </TableCell>
       <TableCell>
         <strong>{formatCurrency(summary.totalBalance)}</strong>
+      </TableCell>
+      <TableCell>
+        
+      </TableCell>
+      <TableCell>
+        
       </TableCell>
     </TableRow>
   );

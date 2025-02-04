@@ -26,39 +26,39 @@ export function DataTableColumnHeader<TData, TValue>({
     return <div className={cn(className)}>{title}</div>;
   }
   return (
-    <div className={cn("flex items-center space-x-2 ", className)}>
+    <div className={cn("flex items-center space-x-1 ", className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8 data-[state=open]:bg-accent"
+            className="-ml-4 h-7 data-[state=open]:bg-accent text-sm "
           >
-            <span className="body-semibold text-dark400_light800 uppercase">
+            <span className="text-[10px] text-dark400_light800 uppercase">
               {title}
             </span>
-            {column.getIsSorted() === "desc" ? (
-              <ArrowDown />
+            {/* {column.getIsSorted() === "desc" ? (
+              <ArrowDown  />
             ) : column.getIsSorted() === "asc" ? (
               <ArrowUp />
             ) : (
               <ChevronsUpDown />
-            )}
+            )} */}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUp className="h-3.5 w-3.5 text-muted-foreground/70" />
-            Asc
+            <ArrowUp className="h-2 w-2 text-muted-foreground/70 " />
+            <span className="text-[10px]">Asc</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDown className="h-3.5 w-3.5 text-muted-foreground/70" />
-            Desc
+            <ArrowDown className="h-2 w-2 text-muted-foreground/70" />
+            <span className="text-[10px]"> Desc</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <EyeOff className="h-3.5 w-3.5 text-muted-foreground/70" />
-            Hide
+            <EyeOff className="h-2 w-2 text-muted-foreground/70" />
+            <span className="text-[10px]"> Hide </span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

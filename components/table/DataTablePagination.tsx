@@ -61,18 +61,19 @@ export function DataTablePagination<TData>({
   const endEntry = Math.min(currentPage * currentPageSize, totalCount);
   return (
     <div className="flex items-center justify-between px-2 mt-5">
-      <div className="hidden sm:flex flex-1 text-sm text-muted-foreground">
+      <div className="hidden sm:flex flex-1 text-[10px] text-muted-foreground">
         Showing {startEntry} to {endEntry} of {totalCount} entries
       </div>
       {(isNext || currentPage > 1 || currentPageSize >= 10) && (
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">Rows per page</p>
+            <p className="text-[10px] font-medium">Rows per page</p>
             <Select
               value={`${currentPageSize}`}
               onValueChange={handlePageSizeChange}
+              
             >
-              <SelectTrigger className="h-8 w-[70px]">
+              <SelectTrigger className="h-6 w-[60px]  text-[10px]">
                 <SelectValue placeholder={currentPageSize} />
               </SelectTrigger>
               <SelectContent side="top">
@@ -84,13 +85,13 @@ export function DataTablePagination<TData>({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex w-[100px] items-center justify-center text-[10px] font-medium">
             Page {currentPage} of {pageCount}
           </div>
           <div className="flex items-center space-x-2">
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              className="h-6 w-6 p-0"
               onClick={() => handleNavigation("prev")}
               disabled={currentPage == 1}
             >

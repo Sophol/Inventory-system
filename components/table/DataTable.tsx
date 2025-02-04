@@ -54,14 +54,14 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="border light-border-3 shadow rounded-md px-2 ">
+      <div className="border light-border-3 shadow rounded-sm ">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="light-border-3 ">
+            {table.getHeaderGroups().map((headerGroup, index) => (
+              <TableRow key={headerGroup.id}  className={`light-border-3 text-[10px] `}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id}  className={` ${index === 0 ? 'pl-3' : ''}`}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -81,8 +81,8 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                  {row.getVisibleCells().map((cell, index) => (
+                    <TableCell key={cell.id} className={`text-[10px] ${index === 0 ? 'pl-2' : ''}`}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

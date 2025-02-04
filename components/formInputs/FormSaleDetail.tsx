@@ -191,9 +191,9 @@ function FormSaleDetail<T extends FieldValues>({
   ];
 
   return (
-    <div className="flex flex-col justify-start gap-2 text-sm md:text-base">
+    <div className="flex flex-col justify-start gap-1 text-[12px] md:text-base">
       {/* Sale Type Selector */}
-      <div className="flex items-center justify-between gap-2 flex-wrap">
+      <div className="flex items-center justify-between gap-1 flex-wrap">
         <div className="w-full md:w-60">
           <FormSelect
             name={"saleType" as Path<T>}
@@ -205,16 +205,16 @@ function FormSaleDetail<T extends FieldValues>({
         </div>
         <Button
           type="button"
-          className="bg-green-600 hover:bg-green-500 text-white flex items-center justify-center w-full md:w-40 sm:mt-0 sm:mb-3 md:mb-0  md:mt-5"
+          className="bg-green-600 text-[12px] hover:bg-green-500 text-white flex items-center justify-center w-full md:w-[100px] sm:mt-0 sm:mb-3 md:mb-0  md:mt-5"
           onClick={handleAddUnit}
         >
-          <Plus className="mr-2 size-4" /> Add Unit
+          <Plus className="mr-1 size-3 " /> Add Unit
         </Button>
       </div>
 
       {/* Header Row - Static labels */}
-      <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 md:grid-cols-11 text-sm font-semibold hidden lg:grid leading-[0] mt-3">
-        <div className="col-span-2 sm:col-span-1 md:col-span-3">
+      <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 md:grid-cols-11 text-[12px] font-semibold hidden lg:grid leading-[0] mt-3">
+        <div className="col-span-2 sm:col-span-1 md:col-span-3  ">
           Product<span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-2 sm:col-span-1 md:col-span-2">

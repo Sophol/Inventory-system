@@ -20,12 +20,10 @@ const CardContainer = ({
 }: CardContainerProps) => {
   return (
     <section className="container mx-auto py-0">
-
-      <div className="flex-wrap space-y-4 p-4 sm:px-4 md:px-8">
+      <div className="flex-wrap space-y-4 p-4 sm:px-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-
-            <CardTitle className="text-xl text-dark400_light800 mr-4">
+            <CardTitle className="text-sm text-dark400_light800 mr-4">
               {title}
             </CardTitle>
             <RedirectButton

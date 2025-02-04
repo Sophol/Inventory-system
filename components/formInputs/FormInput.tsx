@@ -59,7 +59,7 @@ function FormInput<T extends FieldValues>({
       render={({ field }) => (
         <FormItem className="flex w-full flex-col mt-0">
           {label && (
-            <FormLabel className={`paragraph-semibold text-dark400_light800 ${labelClass}`} >
+            <FormLabel className={`text-[11px] text-dark400_light800 ${labelClass}`} >
               {label}
               {isRequired && <span className="text-primary-500">*</span>}
             </FormLabel>
@@ -67,7 +67,7 @@ function FormInput<T extends FieldValues>({
           <FormControl>
             <Input
               type={type}
-              className="paragraph-regular mt-auto light-border-3 text-dark300_light700 no-focus min-h-[36px] border"
+              className="text-[11px]  mt-auto light-border-3 text-dark300_light700 no-focus  min-h-[28px] h-[28px] border"
               placeholder={placeholder}
               readOnly={readonly}
               autoComplete="off"
@@ -77,7 +77,7 @@ function FormInput<T extends FieldValues>({
             />
           </FormControl>
           {message && (
-            <FormDescription className="body-regular mt-2.5 text-light-500">
+            <FormDescription className="text-[11px] mt-2.5 text-light-500">
               {message}
             </FormDescription>
           )}

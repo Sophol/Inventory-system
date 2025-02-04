@@ -397,9 +397,9 @@ const SaleForm = ({
         )}
 
         <div className="grid grid-cols-1">
-          <Card className="text-sm">
+          <Card className="text-[12px]">
             <CardHeader className="pt-4 pb-2 text-lg">
-              <CardTitle className="py-0">Product</CardTitle>
+              <CardTitle className="py-0 text-[12px]">Product</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="container mx-auto py-2">

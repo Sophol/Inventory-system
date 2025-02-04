@@ -41,7 +41,7 @@ function FormSelect<T extends FieldValues>({
       defaultValue={defaultValue as PathValue<T, Path<T>>}
       render={({ field }) => (
         <FormItem className="flex w-full flex-col">
-          <FormLabel className="paragraph-semibold text-dark400_light800">
+          <FormLabel className="text-[12px] text-dark400_light800">
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Select
@@ -49,7 +49,7 @@ function FormSelect<T extends FieldValues>({
             defaultValue={field.value as string | undefined}
           >
             <FormControl>
-              <SelectTrigger className="paragraph-regular light-border-3 text-dark300_light700 no-focus min-h-[36px] border">
+              <SelectTrigger className="text-[12px] light-border-3 text-dark300_light700 no-focus h-[30px] min-h-[30px] border">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>

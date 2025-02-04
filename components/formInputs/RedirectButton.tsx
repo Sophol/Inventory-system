@@ -26,10 +26,10 @@ const RedirectButton = ({
         </Button>
       ) : (
         <Button
-          className={`flex items-center justify-start gap-1 bg-transparent body-semibold ${className}`}
+          className={`flex items-center justify-start gap-1 bg-transparent body-semibold ${className} px-2 h-7`}
         >
           {Icon && <Icon />}
-          {title && <span>{title}</span>}
+          {title && <span className="text-[11px]">{title} </span>}
         </Button>
       )}
     </Link>

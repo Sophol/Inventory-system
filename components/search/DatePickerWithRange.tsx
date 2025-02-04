@@ -48,7 +48,7 @@ export function DatePickerWithRange({
   }, [reset, defaultDateRange]);
   return (
     <div className={cn("grid gap-2", className)}>
-      <span className="paragraph-semibold text-dark400_light800">
+      <span className="text-[11px]  text-dark400_light800">
         Date Range
       </span>
       <Popover>
@@ -57,7 +57,7 @@ export function DatePickerWithRange({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-full md:w-[250] lg:w-[250] xl:w-[280] justify-start text-left font-normal",
+              "w-full md:w-[250] lg:w-[250] xl:w-[280] justify-start text-left text-[11px]  min-h-[28px] h-[28px]",
               !date && "text-muted-foreground"
             )}
           >

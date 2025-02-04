@@ -98,8 +98,8 @@ function FormCombobox<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex w-full flex-col ">
-          <FormLabel className={`paragraph-semibold text-dark400_light800 ${labelClass}`}>
+        <FormItem className="text-[11px] flex w-full flex-col ">
+          <FormLabel className={`text-[11px] text-dark400_light800 ${labelClass}`}>
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Popover>
@@ -110,7 +110,7 @@ function FormCombobox<T extends FieldValues>({
                     variant="outline"
                     role="combobox"
                     ref={buttonRef}
-                    className="paragraph-regular justify-between light-border-3 text-dark300_light700 no-focus min-h-[36px] border "
+                    className="text-[12px] h-[20px] justify-between light-border-3 text-dark300_light700 no-focus min-h-[20px] border "
                   >
                     {selectedItem.title}
                     <ChevronDown className="opacity-50" />
@@ -121,14 +121,13 @@ function FormCombobox<T extends FieldValues>({
                     role="combobox"
                     ref={buttonRef}
                     className={cn(
-                      "paragraph-regular justify-between light-border-3 text-dark300_light700 no-focus min-h-[36px] border",
+                      "text-[10px]  justify-between light-border-3 text-dark300_light700 no-focus min-h-[28px] h-[28px] border",
                       !field.value && "text-muted-foreground"
                     )}
                   >
-                    
-                    <div className="flex justify-between items-center w-full">
-                      {field.value ? data.find((item) => item._id === field.value)?.title : ''}
-                      <ChevronDown className={`opacity-50 ${!field.value ? 'ml-auto' : ''}`} />
+                    <div className="flex justify-between items-center w-full ">
+                      <span className=" text-[10px]">{field.value ? data.find((item) => item._id === field.value)?.title : ''}</span>
+                      <ChevronDown className={`opacity-50 text-[10px]  ${!field.value ? 'ml-auto' : ''}`} />
                     </div>
                   </Button>
 
@@ -143,7 +142,7 @@ function FormCombobox<T extends FieldValues>({
               <Command>
                 <CommandInput
                   placeholder={`Search ${label.toLowerCase()}...`}
-                  className="h-9"
+                  className="h-[30px] min-h-[30px] text-[11px]"
                   onInput={(e) => handleSearch(e.currentTarget.value)}
                 />
                 <CommandList>
@@ -151,6 +150,7 @@ function FormCombobox<T extends FieldValues>({
                   <CommandGroup>
                     {data.map((item) => (
                       <CommandItem
+                      className="text-[11px]"
                         value={item.title}
                         key={item._id}
                         onSelect={() => {
