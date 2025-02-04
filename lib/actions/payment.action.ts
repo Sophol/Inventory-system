@@ -53,6 +53,7 @@ export async function createPayment(
     let status = paymentStatus;
     const newbalance = creditAmount - paidAmount;
     if (newbalance === 0) status = "completed";
+    if (newbalance > 0) status = "credit";
     const [payment] = await Payment.create(
       [
         {

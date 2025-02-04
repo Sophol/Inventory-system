@@ -2,7 +2,7 @@
 
 import jsPDF from "jspdf";
 import React, { useState } from "react";
-import { FaCloudDownloadAlt, FaPrint, FaHistory } from "react-icons/fa";
+import { FaCloudDownloadAlt, FaPrint } from "react-icons/fa";
 import "../invoice.css";
 import { getPayments } from "@/lib/actions/payment.action";
 import { toast } from "@/hooks/use-toast";
@@ -15,7 +15,6 @@ import ROUTES from "@/constants/routes";
 
 const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [updatedInvoice, setUpdatedInvoice] = useState(invoice);
   const router = useRouter();
 
   const handleCallInvoice = async () => {
@@ -33,10 +32,6 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
 
   const handleBack = () => {
     router.push(ROUTES.INVOICES);
-  };
-
-  const handleDrawerClose = (updatedSale: any) => {
-    setUpdatedInvoice(updatedSale);
   };
 
   const handlePrintWithLogo = () => {
@@ -134,12 +129,11 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
         <div className="flex flex-col sm:flex-row gap-2">
           <Button
             onClick={handleCallInvoice}
-            // disabled={updatedInvoice.paymentStatus === "pending"}
+            disabled={invoice.paid === 0}
             className="w-full rounded bg-blue-400 px-4 py-2 text-sm text-white hover:bg-blue-500"
           >
             <span>Payment History</span>
           </Button>
-
         </div>
         {isDialogOpen && (
           <PaymentHistory
@@ -151,7 +145,11 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
         <div className="flex gap-2">
           {/* Direct download buttons */}
           <Button
-            onClick={invoice.isLogo=="true" ? handleDownloadWithLogo : handleDownloadWithoutLogo}
+            onClick={
+              invoice.isLogo == "true"
+                ? handleDownloadWithLogo
+                : handleDownloadWithoutLogo
+            }
             className="w-1/2 rounded bg-red-400 px-4 py-2 text-white hover:bg-red-500"
           >
             <FaCloudDownloadAlt className="cursor-pointer text-xl" /> Download
@@ -165,15 +163,19 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
         </div>
 
         <div className="flex gap-4">
-        <Button
-             onClick={invoice.isLogo=="true" ? handlePrintWithLogo : handlePrintWithoutLogo}
+          <Button
+            onClick={
+              invoice.isLogo == "true"
+                ? handlePrintWithLogo
+                : handlePrintWithoutLogo
+            }
             className="w-full rounded bg-green-400 px-4 py-2 text-white hover:bg-green-500"
           >
             <FaPrint className="cursor-pointer text-xl" /> Print
           </Button>
         </div>
 
-        <PaymentDrawer sale={invoice} onClose={handleDrawerClose} />
+        <PaymentDrawer sale={invoice} />
       </div>
     </div>
   );

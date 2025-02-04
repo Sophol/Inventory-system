@@ -6,10 +6,9 @@ import { Button } from "../ui/button";
 
 interface PaymentDrawerProps {
   sale: Sale;
-  onClose: (updatedPayment: any) => void; // Add the onClose property
 }
 
-const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale, onClose }) => {
+const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [payment, setPayment] = useState<any>(null); // Adjust the type as needed
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -30,8 +29,8 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale, onClose }) => {
     // Update the button's disabled state based on payment status
     setIsButtonDisabled(
       payment?.paymentStatus === "completed" ||
-      sale?.paymentStatus === "completed" ||
-      sale?.paid === sale?.balance
+        sale?.paymentStatus === "completed" ||
+        sale?.paid === sale?.balance
     );
   }, [sale, payment]);
 
@@ -41,16 +40,16 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale, onClose }) => {
     }
   };
 
-  const handlePaymentUpdate = (updatedPayment: any) => {
-    setPayment(updatedPayment);
-    onClose(updatedPayment)
-    // Recalculate the button's disabled state
-    setIsButtonDisabled(
-      updatedPayment?.paymentStatus === "completed" ||
-      sale?.paymentStatus === "completed" ||
-      sale?.paid === sale?.balance
-    );
-  };
+  // const handlePaymentUpdate = (updatedPayment: any) => {
+  //   setPayment(updatedPayment);
+  //   onClose(updatedPayment);
+  //   // Recalculate the button's disabled state
+  //   setIsButtonDisabled(
+  //     updatedPayment?.paymentStatus === "completed" ||
+  //       sale?.paymentStatus === "completed" ||
+  //       sale?.paid === sale?.balance
+  //   );
+  // };
 
   return (
     <>
@@ -91,7 +90,6 @@ const PaymentDrawer: React.FC<PaymentDrawerProps> = ({ sale, onClose }) => {
           sale={sale}
           payment={payment}
           onClose={handleToggleDrawer}
-          onUpdate={handlePaymentUpdate} // Pass a callback to handle payment updates
         />
       </div>
     </>

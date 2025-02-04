@@ -14,15 +14,17 @@ import { Button } from "../ui/button";
 import FormInput from "../formInputs/FormInput";
 import FormDatePicker from "../formInputs/FormDatePicker";
 import FormSelect from "../formInputs/FormSelect";
+import { useRouter } from "next/navigation";
+import ROUTES from "@/constants/routes";
 
 interface Params {
   sale: Sale;
   payment: Payment;
   onClose: () => void;
-  onUpdate: (arg0: any) => void;
 }
 
-const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
+const PaymentForm = ({ sale, payment, onClose }: Params) => {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof CreatePaymentSchema>>({
     resolver: zodResolver(CreatePaymentSchema),
@@ -73,9 +75,8 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
             title: "success",
             description: "Payment created successfully.",
           });
-          onUpdate(result.data);
           onClose();
-          // if (result.data) router.push(ROUTES.SALES);
+          if (result.data) router.push(ROUTES.INVOICE(sale._id));
         } else {
           toast({
             title: "error",
@@ -109,6 +110,7 @@ const PaymentForm = ({ sale, payment, onClose, onUpdate }: Params) => {
           type="number"
           label="Credit Amount"
           control={form.control}
+          readonly
         />
         <FormInput
           name="paidAmount"
