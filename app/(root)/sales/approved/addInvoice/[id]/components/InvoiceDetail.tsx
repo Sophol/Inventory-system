@@ -34,23 +34,27 @@ const InvoiceDetail = ({
         <div className="sm:flex flex-row justify-between invoice-header">
           {/* Conditionally render logo if invoice.isLogo is true */}
           {invoice.isLogo !== "false" && (
-            <div className="flex flex-col logo">
-              <Image
-                src={`/` + setting.companyLogo}
-                alt="Company Logo"
-                width={100}
-                height={100}
-                className="w-auto h-20 object-contain sm:mx-auto"
-              />
-              <p className="text-sm pt-4 pb-0 mx-auto sm:mx-0">{setting.companyName}</p>
-              <p className="text-sm mx-auto sm:mx-0">
-                {setting.address}, {setting.phone}
-              </p>
-            </div>
+              <div className="flex flex-col logo">
+                       <Image
+                         src={`/` + setting.companyLogo}
+                         alt="Company Logo"
+                         width={100}
+                         height={100}
+                         className="w-auto sm:w-[100] h-20 object-contain"
+                       />
+                       <p className="text-sm pb-1 pb-0 mx-auto sm:mx-0">{setting.companyName}</p>
+                       <p className="text-sm pb-1 mx-auto sm:mx-0">{setting.companyNameEnglish}</p>
+                       <p className="text-sm pb-1 mx-auto sm:mx-0">
+                         {setting.address}
+                       </p>
+                       <p className="text-sm mx-auto sm:mx-0">
+                        {setting.phone}
+                       </p>
+                     </div>
           )}
           <div className="flex flex-col">
             <h1
-              className={`font-bold text-lg pb-3 ${invoice.isLogo !== "false" ? "pt-5" : "sm:pt-0 pt-5"
+              className={`font-bold text-lg pb-3 ${invoice.isLogo !== "false" ? "pt-0" : "sm:pt-0 pt-5"
                 } mx-auto sm:mx-0`}
             >
               # {invoice.referenceNo}
@@ -71,10 +75,17 @@ const InvoiceDetail = ({
                 />
               </span>
             </p>
+                       <Image
+                          src={`/images/company_telegram_qr.jpg`}
+                          alt="Company Telegram QR"
+                          width={100}
+                          height={100}
+                          className="w-auto sm:w-[100] h-20 object-contain mx-auto pt-2"
+                        />
           </div>
         </div>
         
-        <div className="md:flex p-2 invoice-body mt-2 mb-1">
+        <div className="md:flex p-2 invoice-body mb-1">
           <div className="bill-to">
             {/* <p className=" text-lg">Bill To:</p> */}
             <div className="sub-info">

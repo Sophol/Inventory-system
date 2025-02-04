@@ -11,7 +11,7 @@ const Invoice = ({ invoice, setting }: { invoice: Sale; setting: Setting }) => {
   };
 
   return (
-    <div className="flex gap-4 p-7">
+    <div className="flex gap-4 invoice-container">
       <InvoiceDetail
         invoice={invoice}
         onDueDateChange={handleDueDateChange}
