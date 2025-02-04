@@ -32,28 +32,37 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
               alt="Company Logo"
               width={100}
               height={100}
-              className="w-auto h-20 object-contain sm:mx-auto"
+              className="w-auto sm:w-[100] h-20 object-contain"
             />
-            <p className="text-sm pt-4 pb-0 mx-auto sm:mx-0">{setting.companyName}</p>
+            <p className="text-sm pt-2 pb-0 mx-auto sm:mx-0">{setting.companyName}</p>
+            <p className="text-sm pb-0 mx-auto sm:mx-0">{setting.companyNameEnglish}</p>
             <p className="text-sm mx-auto sm:mx-0">
-              {setting.address}, {setting.phone}
+              {setting.address}
+            </p>
+            <p className="text-sm mx-auto sm:mx-0">
+             {setting.phone}
             </p>
           </div>
             )}
           <div className="flex flex-col">
-            <h1 className="font-bold text-lg pt-5 mx-auto sm:mx-0 pb-3"># {invoice.referenceNo}</h1>
+            <h1 className="font-bold text-lg pt-2 mx-auto sm:mx-0 pb-3"># {invoice.referenceNo}</h1>
             <p className="text-sm">
               <span className="pr-2">Date Issued:</span>
               { invoice.dueDate ? format(new Date(invoice.invoicedDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
             <p className="text-sm">
             <span className="pr-2">  Due Date:</span>
-            
               { invoice.dueDate ? format(new Date(invoice.dueDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
+            <Image
+              src={`/images/company_telegram_qr.jpg`}
+              alt="Company Telegram QR"
+              width={100}
+              height={100}
+              className="w-auto sm:w-[100] h-20 object-contain mx-auto pt-2"
+            />
           </div>
         </div>
-   
         <div className="md:flex p-2 invoice-body my-1">
           <div className="bill-to">
             {/* <p className=" text-lg">Bill To:</p> */}
