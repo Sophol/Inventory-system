@@ -22,20 +22,27 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
           </div>
         </div>
 
-        <div className="md:flex p-2 invoice-body mt-2 mb-1">
+        <div className="flex p-2 invoice-body mt-2 mb-1">
           <div className="bill-to">
-            {/* <p className=" text-lg">Bill To:</p> */}
-            <div className="sub-info">
-              <div className="flex gap-2">
-                <p className="pb-1 w-1/3">Total Amount: </p>
-                <p className="pb-1 w-2/3">
-                  <Currency amount={purchase.grandtotal} />
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <p className="pb-1 w-1/3">Paid By: </p>
-                <p className="pb-1 w-2/3">{purchase.paidBy}</p>
-              </div>
+            <div className="flex gap-2">
+              <p className="pb-1">Supplier: </p>
+              <p className="pb-1">{purchase.supplier.title}</p>
+            </div>
+            <div className="flex gap-2">
+              <p className="pb-1">Branch: </p>
+              <p className="pb-1">{purchase.branch.title}</p>
+            </div>
+          </div>
+          <div className="sub-info">
+            <div className="flex gap-2">
+              <p className="pb-1">Total Amount: </p>
+              <p className="pb-1">
+                <Currency amount={purchase.grandtotal} />
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <p className="pb-1">Paid By: </p>
+              <p className="pb-1">{purchase.paidBy}</p>
             </div>
           </div>
         </div>
@@ -89,6 +96,50 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
                   )}
                 </p>
               </div>
+              <div className="flex gap-2">
+                <p className="sub-info pb-1 w-1/3">DeliveryIn:</p>
+                <p className="pb-1 w-2/3 text-right font-bold">
+                  {" "}
+                  {purchase.deliveryIn ? (
+                    <Currency amount={purchase.deliveryIn} />
+                  ) : (
+                    "0.00"
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <p className="sub-info pb-1 w-1/3">DeliveryOut:</p>
+                <p className="pb-1 w-2/3 text-right font-bold">
+                  {" "}
+                  {purchase.deliveryOut ? (
+                    <Currency amount={purchase.deliveryOut} />
+                  ) : (
+                    "0.00"
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <p className="sub-info pb-1 w-1/3">ServiceFee:</p>
+                <p className="pb-1 w-2/3 text-right font-bold">
+                  {" "}
+                  {purchase.serviceFee ? (
+                    <Currency amount={purchase.serviceFee} />
+                  ) : (
+                    "0.00"
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <p className="sub-info pb-1 w-1/3">ShippingFee:</p>
+                <p className="pb-1 w-2/3 text-right font-bold">
+                  {" "}
+                  {purchase.shippingFee ? (
+                    <Currency amount={purchase.shippingFee} />
+                  ) : (
+                    "0.00"
+                  )}
+                </p>
+              </div>
               <hr className="border-t-2 border-gray-400 my-3" />
               <div className="flex gap-2">
                 <p className="pb-1 w-1/3">Total: </p>
@@ -96,7 +147,7 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
                   {purchase.grandtotal ? (
                     <Currency amount={purchase.grandtotal} />
                   ) : (
-                    "N/A"
+                    "0.00"
                   )}
                 </p>
               </div>
