@@ -75,31 +75,31 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton
                       tooltip={item.title}
-                      className="flex items-center justify-start gap-4 bg-transparent p-4 uppercase"
+                      className="flex items-center justify-start gap-1 bg-transparent p-2 uppercase text-[10px]"
                     >
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
-                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 "  size={9}/>
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
-                    <SidebarMenuSub>
+                    <SidebarMenuSub className="text-xs">
                       {item.items.map((subItem) => {
                         const isSubActive = isActiveRoute(subItem.url);
                         return (
                           <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton asChild>
+                            <SidebarMenuSubButton asChild >
                               <Link
                                 href={subItem.url}
                                 className={cn(
                                   isSubActive
                                     ? "primary-gradient rounded-lg  !text-light-900"
                                     : "text-dark300_light900",
-                                  "flex items-center justify-start !text-xs gap-4 bg-transparent p-4"
+                                  "flex items-center justify-start !text-xs gap-1 bg-transparent p-2 "
                                 )}
                               >
-                                {subItem.icon && <subItem.icon />}
-                                <span>{subItem.title}</span>
+                                {subItem.icon && <subItem.icon   />}
+                                <span  className=" text-[10px]">{subItem.title}</span>
                               </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
@@ -109,14 +109,14 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
                   </CollapsibleContent>
                 </>
               ) : (
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild className="text-[10px]">
                   <Link
                     href={item.url}
                     className={cn(
                       isActive
-                        ? "primary-gradient rounded-lg text-light-900"
+                        ? "primary-gradient rounded-lg text-light-900 "
                         : "text-dark300_light900",
-                      "flex items-center justify-start gap-4 bg-transparent p-4"
+                      "flex items-center justify-start gap-1 bg-transparent p-2"
                     )}
                   >
                     {item.icon && <item.icon />}
