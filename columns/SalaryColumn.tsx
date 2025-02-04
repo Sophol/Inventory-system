@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import { toast } from "@/hooks/use-toast";
 import { deleteSalary } from "@/lib/actions/salary.action";
-
+import { formatCurrency } from '@/lib/utils';
 export interface Salary {
   _id: string;
   salaryDate: Date;
@@ -58,6 +58,10 @@ export const SalaryColumn: ColumnDef<Salary>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="salary" />
     ),
+    cell: ({ row }) => {
+      const salary = row.getValue("salary") as number;
+      return <span>{formatCurrency(salary)}</span>;
+    },
   },
   {
     accessorKey: "allowance",
@@ -76,6 +80,10 @@ export const SalaryColumn: ColumnDef<Salary>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Net Salary" />
     ),
+    cell: ({ row }) => {
+      const netSalary = row.getValue("netSalary") as number;
+      return <span>{formatCurrency(netSalary)}</span>;
+    },
   },
   {
     id: "actions",

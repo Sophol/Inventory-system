@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import { toast } from "@/hooks/use-toast";
 import { deleteMission } from "@/lib/actions/mission.action";
-
+import { formatCurrency } from '@/lib/utils';
 export interface Mission {
   _id: string;
   missionDate: Date;
@@ -54,6 +54,10 @@ export const MissionColumn: ColumnDef<Mission>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Amount" />
     ),
+    cell: ({ row }) => {
+      const amount = row.getValue("amount") as number;
+      return <span>{formatCurrency(amount)}</span>;
+    },
   },
   {
     id: "actions",

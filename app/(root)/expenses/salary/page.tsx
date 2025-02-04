@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 import { SalaryColumn } from "@/columns/SalaryColumn";
 import SalarySearch from "@/components/search/SalarySearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-
+import { formatCurrency } from '@/lib/utils';
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -46,7 +46,7 @@ const Salary = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary?.totalAmount}</strong>
+        <strong>{formatCurrency(summary?.totalAmount)}</strong>
       </TableCell>
     </TableRow>
   );

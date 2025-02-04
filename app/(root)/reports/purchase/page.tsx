@@ -12,7 +12,7 @@ import { PurchaseReportColumn } from "@/columns/PurchaseReportColumn";
 import PurchaseSearch from "@/components/search/PurchaseSearch";
 import { getPurchaseReports } from "@/lib/actions/purchaseReport";
 import { TableCell, TableRow } from "@/components/ui/table";
-
+import { formatCurrency } from '@/lib/utils';
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -47,7 +47,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary?.totalGrandtotal}</strong>
+        <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
       </TableCell>
     </TableRow>
   );

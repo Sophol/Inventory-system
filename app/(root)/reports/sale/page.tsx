@@ -12,7 +12,7 @@ import { getSaleReports } from "@/lib/actions/saleReport";
 import { SaleReportColumn } from "@/columns/SaleReportColumn";
 import SaleSearch from "@/components/search/SaleSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-
+import { formatCurrency } from '@/lib/utils';
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -53,19 +53,19 @@ const SaleReport = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary.totalGrandtotal}</strong>
+        <strong>{formatCurrency(summary.totalGrandtotal)}</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary.totalDiscount}</strong>
+        <strong>{formatCurrency(summary.totalDiscount)}</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary.totalDelivery}</strong>
+        <strong>{formatCurrency(summary.totalDelivery)}</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary.totalPaid}</strong>
+        <strong>{formatCurrency(summary.totalPaid)}</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary.totalBalance}</strong>
+        <strong>{formatCurrency(summary.totalBalance)}</strong>
       </TableCell>
     </TableRow>
   );

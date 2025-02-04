@@ -13,7 +13,7 @@ import { MissionColumn } from "@/columns/MissionColumn";
 import { ColumnDef } from "@tanstack/react-table";
 import { TableCell, TableRow } from "@/components/ui/table";
 import GeneralExpSearch from "@/components/search/GeneralExpSearch";
-
+import { formatCurrency } from '@/lib/utils';
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -46,7 +46,7 @@ const Mission = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell>
-        <strong>{summary?.totalAmount}</strong>
+        <strong>{formatCurrency(summary?.totalAmount)}</strong>
       </TableCell>
     </TableRow>
   );
@@ -59,7 +59,7 @@ const Mission = async ({ searchParams }: SearchParams) => {
       redirectClass="!text-light-900 primary-gradient"
     >
       <>
-        <div className="py-4">
+        <div className="pb-4">
           <GeneralExpSearch route={ROUTES.MISSIONEXPS} />
         </div>
         <DataRenderer
