@@ -54,13 +54,14 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
             <span className="pr-2">  Due Date:</span>
               { invoice.dueDate ? format(new Date(invoice.dueDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
-            <Image
+            {invoice.isLogo !== "false" && (<Image
               src={`/images/company_telegram_qr.jpg`}
               alt="Company Telegram QR"
               width={100}
               height={100}
               className="w-auto sm:w-[100] h-20 object-contain mx-auto pt-2"
             />
+            )}
           </div>
         </div>
         <div className="md:flex p-2 invoice-body my-1">

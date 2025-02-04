@@ -75,6 +75,7 @@ const InvoiceDetail = ({
                 />
               </span>
             </p>
+            {invoice.isLogo !== "false" && (
                        <Image
                           src={`/images/company_telegram_qr.jpg`}
                           alt="Company Telegram QR"
@@ -82,6 +83,7 @@ const InvoiceDetail = ({
                           height={100}
                           className="w-auto sm:w-[100] h-20 object-contain mx-auto pt-2"
                         />
+            )}
           </div>
         </div>
         
