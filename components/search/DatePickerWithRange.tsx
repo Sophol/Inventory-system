@@ -47,7 +47,7 @@ export function DatePickerWithRange({
     }
   }, [reset, defaultDateRange]);
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn("grid gap-0", className)}>
       <span className="text-[11px]  text-dark400_light800">
         Date Range
       </span>

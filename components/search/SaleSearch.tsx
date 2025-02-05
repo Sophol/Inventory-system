@@ -256,7 +256,7 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
   
       <Button
         onClick={handleClearSearch}
-        className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-6 text-[11px]  min-h-[26px] h-[26px]"
+        className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px]"
       >
         Clear Search
       </Button>
