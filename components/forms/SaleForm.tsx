@@ -420,7 +420,7 @@ const SaleForm = ({
           <Button
             type="submit"
             disabled={isPending}
-            className="primary-gradient w-fit uppercase !text-light-900 text-sm"
+            className="primary-gradient w-fit uppercase !text-light-900 text-[11px]"
           >
             {isPending ? (
               <>
