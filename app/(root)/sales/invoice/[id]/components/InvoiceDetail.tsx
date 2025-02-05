@@ -15,6 +15,7 @@ const formatCurrency = (amount: number) => {
 };
 
 const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
+  
   const { success, data: setting } = await getSetting({
     settingId: process.env.SETTING_ID as string,
   });
@@ -24,16 +25,16 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
     <div className="card80 ">
       <div className="printable-area card80-container">
         <div className="sm:flex flex-row justify-between invoice-header">
-          {/* Conditionally render logo if invoice.isLogo is true */}
-          {invoice.isLogo !== "false" && (
-            <div className="flex flex-col logo">
+            <div className="flex flex-col ">
+            {invoice.isLogo !== "false" && (
               <Image
                 src={`/` + setting.companyLogo}
                 alt="Company Logo"
                 width={100}
                 height={100}
-                className="w-auto sm:w-[100] h-20 object-contain"
+                className="w-auto sm:w-[100] h-20 object-contain logo"
               />
+            )}
               <p className="text-sm pt-2 pb-0 mx-auto sm:mx-0">{setting.companyName}</p>
               <p className="text-sm pb-0 mx-auto sm:mx-0">{setting.companyNameEnglish}</p>
               <p className="text-sm mx-auto sm:mx-0">
@@ -43,7 +44,6 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 {setting.phone}
               </p>
             </div>
-          )}
           <div className="flex flex-col">
             <h1 className="font-bold text-lg pt-2 mx-auto sm:mx-0 pb-3"># {invoice.referenceNo}</h1>
             <p className="text-sm">
@@ -54,20 +54,12 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
               <span className="pr-2">  Due Date:</span>
               {invoice.dueDate ? format(new Date(invoice.dueDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
-            {invoice.isLogo !== "false" && (<Image
-              src={`/images/company_telegram_qr.jpg`}
-              alt="Company Telegram QR"
-              width={100}
-              height={100}
-              className="w-auto sm:w-[100] h-20 object-contain mx-auto pt-2"
-            />
-            )}
           </div>
         </div>
         <div className="md:flex p-2 invoice-body my-1">
           <div className="bill-to">
             {/* <p className=" text-lg">Bill To:</p> */}
-            <div className="sub-info">
+            <div className="sub-info text-sm">
               <div className="flex gap-2">
                 <p className="pb-1 w-1/3">Total Due: </p>
                 <p className="pb-1 w-2/3">
@@ -114,7 +106,20 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
           ))}
         </div>
         <div className="flex gap-2 invoice-body">
-          <div className="pt-3 invoice-note">
+        <div className="pt-3 invoice-note text-left" >
+
+          {invoice.isLogo !== "false" && (
+         <div className="flex flex-col items-center">
+         <Image
+           src={`/images/company_telegram_qr.jpg`}
+           alt="Company Telegram QR"
+           width={100}
+           height={100}
+           className="w-auto sm:w-[100] h-20 object-contain pt-2"
+         />
+         <span className="text-[10px] mt-1">Telegram</span>
+       </div>       
+            )}
           </div>
           <div className="pt-3 invoice-total">
             <br />
@@ -123,19 +128,19 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 <p className="sub-info pb-1 w-1/3">Subtotal:</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
-                  {invoice.subtotal ? formatCurrency(invoice.subtotal) : "N/A"}
+                  {invoice.subtotal ? formatCurrency(invoice.subtotal) : "0"}
                 </p>
               </div>
               <div className="flex gap-2">
                 <p className="pb-1 w-1/3 ">Discount: </p>
                 <p className="pb-1 w-2/3 text-right font-bold">
-                  {invoice.discount ? formatCurrency(invoice.discount) : "N/A"}
+                  {invoice.discount ? formatCurrency(invoice.discount) : "0"}
                 </p>
               </div>
               <div className="flex gap-2">
                 <p className="pb-1 w-1/3">Delivery: </p>
                 <p className="pb-1 w-2/3 text-right font-bold">
-                  {invoice.delivery ? invoice.delivery : "N/A"}
+                  {invoice.delivery ? invoice.delivery : "0"}
                 </p>
               </div>
               <hr className="border-t-2 border-gray-400 my-3" />
@@ -144,7 +149,7 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {invoice.grandtotal
                     ? formatCurrency(invoice.grandtotal)
-                    : "N/A"}
+                    : "0"}
                 </p>
               </div>
 
