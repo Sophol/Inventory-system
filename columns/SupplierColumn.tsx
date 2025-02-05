@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
+import { deleteSupplier } from "@/lib/actions/supplier.action";
+import { toast } from "@/hooks/use-toast";
+import ButtonDelete from "@/components/formInputs/ButtonDelete";
 
 export interface Supplier {
   _id: string;
@@ -61,13 +64,35 @@ export const SupplierColumn: ColumnDef<Supplier>[] = [
     id: "actions",
     cell: ({ row }) => {
       const supplier = row.original;
+      const handleDelete = async () => {
+        // Add your delete logic here
+        const { success, error } = await deleteSupplier({
+          supplierId: supplier._id,
+        });
+        if (success) {
+          toast({
+            title: "success",
+            description: "Supplier deleted successfully.",
+          });
+          window.location.reload();
+        } else {
+          toast({
+            title: "error",
+            description: error?.message || "Something went wrong.",
+            variant: "destructive",
+          });
+        }
+      };
       return (
-        <RedirectButton
-          Icon={FaRegEdit}
-          href={ROUTES.SUPPLIER(supplier._id)}
-          isIcon
-          className="text-primary-500"
-        />
+        <div className="flex items-center space-x-1">
+          <RedirectButton
+            Icon={FaRegEdit}
+            href={ROUTES.SUPPLIER(supplier._id)}
+            isIcon
+            className="text-primary-500"
+          />
+          <ButtonDelete onDelete={handleDelete} />
+        </div>
       );
     },
   },

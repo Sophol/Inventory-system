@@ -1,6 +1,7 @@
 "use server";
-import { Unit } from "@/database";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
+
+import { ProductUnit, Unit } from "@/database";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 import {
@@ -130,5 +131,39 @@ export async function getUnits(
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
+  }
+}
+export async function deleteUnit(
+  params: GetUnitParams
+): Promise<ActionResponse> {
+  const validatedData = await action({
+    params,
+    schema: GetUnitSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { unitId } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const unit = await Unit.findById(unitId);
+    if (!unit) {
+      throw new Error("Unit not found");
+    }
+    const products = await ProductUnit.findOne({ unit: unitId });
+
+    if (products) {
+      throw new Error("Unit បានប្រើរួចហើយ");
+    }
+    await Unit.deleteOne({ _id: unit._id });
+    await session.commitTransaction();
+    return { success: true };
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    await session.endSession();
   }
 }

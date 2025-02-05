@@ -9,6 +9,9 @@ import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import { formatCurrency } from "@/lib/utils";
+import { deleteCustomer } from "@/lib/actions/customer.action";
+import { toast } from "@/hooks/use-toast";
+import ButtonDelete from "@/components/formInputs/ButtonDelete";
 
 export type Customer = {
   _id: string;
@@ -70,13 +73,35 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
     id: "actions",
     cell: ({ row }) => {
       const customer = row.original;
+      const handleDelete = async () => {
+        // Add your delete logic here
+        const { success, error } = await deleteCustomer({
+          customerId: customer._id,
+        });
+        if (success) {
+          toast({
+            title: "success",
+            description: "Customer deleted successfully.",
+          });
+          window.location.reload();
+        } else {
+          toast({
+            title: "error",
+            description: error?.message || "Something went wrong.",
+            variant: "destructive",
+          });
+        }
+      };
       return (
-        <RedirectButton
-          Icon={FaRegEdit}
-          href={ROUTES.CUSTOMER(customer._id)}
-          isIcon
-          className="text-primary-500"
-        />
+        <div className="flex items-center space-x-1">
+          <RedirectButton
+            Icon={FaRegEdit}
+            href={ROUTES.CUSTOMER(customer._id)}
+            isIcon
+            className="text-primary-500"
+          />
+          <ButtonDelete onDelete={handleDelete} />
+        </div>
       );
     },
   },

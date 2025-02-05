@@ -1,7 +1,7 @@
 "use server";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
-import { Branch } from "@/database";
+import { Branch, Purchase, User } from "@/database";
 import { IBranchDoc } from "@/database/branch.model";
 
 import action from "../handlers/action";
@@ -156,5 +156,42 @@ export async function getBranches(
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
+  }
+}
+export async function deleteBranch(
+  params: GetBranchParams
+): Promise<ActionResponse> {
+  const validatedData = await action({
+    params,
+    schema: GetBranchSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { branchId } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const branch = await Branch.findById(branchId);
+    if (!branch) {
+      throw new Error("Branch not found");
+    }
+    const [user, purchase] = await Promise.all([
+      User.findOne({ branch: branchId }),
+      Purchase.findOne({ branch: branchId }),
+    ]);
+
+    if (user || purchase) {
+      throw new Error("Branch បានប្រើរួចហើយ");
+    }
+    await Branch.deleteOne({ _id: branch._id });
+    await session.commitTransaction();
+    return { success: true };
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    await session.endSession();
   }
 }

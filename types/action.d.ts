@@ -321,3 +321,6 @@ interface UserParams {
   salary?: number;
   status: "active" | "inactive";
 }
+interface DeleteUserParams {
+  userId: string;
+}

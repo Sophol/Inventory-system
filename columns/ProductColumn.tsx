@@ -9,6 +9,9 @@ import ROUTES from "@/constants/routes";
 
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import { convertFromSmallUnitQty } from "@/lib/utils";
+import ButtonDelete from "@/components/formInputs/ButtonDelete";
+import { deleteProduct } from "@/lib/actions/product.action";
+import { toast } from "@/hooks/use-toast";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -81,13 +84,35 @@ export const ProductColumn: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => {
       const product = row.original;
+      const handleDelete = async () => {
+        // Add your delete logic here
+        const { success, error } = await deleteProduct({
+          productId: product._id,
+        });
+        if (success) {
+          toast({
+            title: "success",
+            description: "Product deleted successfully.",
+          });
+          window.location.reload();
+        } else {
+          toast({
+            title: "error",
+            description: error?.message || "Something went wrong.",
+            variant: "destructive",
+          });
+        }
+      };
       return (
-        <RedirectButton
-          Icon={FaRegEdit}
-          href={ROUTES.PRODUCT(product._id)}
-          isIcon
-          className="text-primary-500"
-        />
+        <div className="flex items-center space-x-1">
+          <RedirectButton
+            Icon={FaRegEdit}
+            href={ROUTES.PRODUCT(product._id)}
+            isIcon
+            className="text-primary-500"
+          />
+          <ButtonDelete onDelete={handleDelete} />
+        </div>
       );
     },
   },

@@ -1,9 +1,12 @@
 "use server";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
-import { PaginatedSearchParamsSchema } from "../validations";
-import { User } from "@/database";
+import {
+  DeleteUserParamSchema,
+  PaginatedSearchParamsSchema,
+} from "../validations";
+import { Account, Salary, Sale, User } from "@/database";
 import { auth } from "@/auth";
 
 export async function getUsers(
@@ -118,4 +121,42 @@ export async function getStaffs(
 export async function getUserRole() {
   const user = await auth();
   return user?.user.role ?? null;
+}
+export async function deleteUser(
+  params: DeleteUserParams
+): Promise<ActionResponse> {
+  const validatedData = await action({
+    params,
+    schema: DeleteUserParamSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { userId } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const [sales, salary] = await Promise.all([
+      Sale.findOne({ seller: userId }),
+      Salary.findOne({ staffId: userId }),
+    ]);
+
+    if (sales || salary) {
+      throw new Error("User បានប្រើរួចហើយ");
+    }
+    await User.deleteOne({ _id: user._id });
+    await Account.deleteMany({ userId: user._id });
+    await session.commitTransaction();
+    return { success: true };
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    await session.endSession();
+  }
 }

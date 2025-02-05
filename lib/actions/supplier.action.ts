@@ -1,7 +1,7 @@
 "use server";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
-import { Supplier } from "@/database";
+import { Purchase, Supplier } from "@/database";
 import { ISupplierDoc } from "@/database/supplier.model";
 
 import action from "../handlers/action";
@@ -169,5 +169,39 @@ export async function getSuppliers(
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
+  }
+}
+export async function deleteSupplier(
+  params: GetSupplierParams
+): Promise<ActionResponse> {
+  const validatedData = await action({
+    params,
+    schema: GetSupplierSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { supplierId } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const supplier = await Supplier.findById(supplierId);
+    if (!supplier) {
+      throw new Error("Supplier not found");
+    }
+    const purchase = await Purchase.findOne({ supplier: supplierId });
+
+    if (purchase) {
+      throw new Error("Supplier បានប្រើរួចហើយ");
+    }
+    await Supplier.deleteOne({ _id: supplier._id });
+    await session.commitTransaction();
+    return { success: true };
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    await session.endSession();
   }
 }

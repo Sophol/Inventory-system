@@ -1,7 +1,7 @@
 "use server";
 import { FilterQuery } from "mongoose";
 
-import { Category } from "@/database";
+import { Category, Product } from "@/database";
 import { ICategoryDoc } from "@/database/category.model";
 
 import action from "../handlers/action";
@@ -137,6 +137,33 @@ export async function getCategories(params: PaginatedSearchParams): Promise<
         isNext,
       },
     };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+export async function deleteCategory(
+  params: GetCategoryParams
+): Promise<ActionResponse> {
+  const validatedData = await action({
+    params,
+    schema: GetCategorySchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { categoryId } = validatedData.params!;
+  try {
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      throw new Error("Category not found");
+    }
+    const product = await Product.findOne({ category: categoryId });
+    if (product) {
+      throw new Error("Category បានប្រើរួចហើយ");
+    }
+    await Category.deleteOne({ _id: category._id });
+    return { success: true };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }

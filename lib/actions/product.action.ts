@@ -14,6 +14,7 @@ import {
   GetProductSchema,
   PaginatedSearchParamsSchema,
 } from "../validations";
+import { PurchaseDetail, SaleDetail } from "@/database";
 const ObjectId = mongoose.Types.ObjectId;
 export async function createProduct(
   params: CreateProductParams
@@ -398,5 +399,42 @@ export async function getProducts(
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
+  }
+}
+export async function deleteProduct(
+  params: GetProductParams
+): Promise<ActionResponse> {
+  const validatedData = await action({
+    params,
+    schema: GetProductSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { productId } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    const [purchaseDetails, saleDetails] = await Promise.all([
+      PurchaseDetail.findOne({ product: productId }).session(session),
+      SaleDetail.findOne({ product: productId }).session(session),
+    ]);
+    if (purchaseDetails || saleDetails) {
+      throw new Error("Product បានប្រើរួចហើយ");
+    }
+    await ProductUnit.deleteMany({ product: productId }, { session });
+    await Product.deleteOne({ _id: product._id });
+    await session.commitTransaction();
+    return { success: true };
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    await session.endSession();
   }
 }

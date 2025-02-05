@@ -1,7 +1,7 @@
 "use server";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
-import { Customer } from "@/database";
+import { Customer, Sale } from "@/database";
 import { ICustomerDoc } from "@/database/customer.model";
 
 import action from "../handlers/action";
@@ -207,5 +207,39 @@ export async function getCustomers(
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
+  }
+}
+export async function deleteCustomer(
+  params: GetCustomerParams
+): Promise<ActionResponse> {
+  const validatedData = await action({
+    params,
+    schema: GetCustomerSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { customerId } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const customer = await Customer.findById(customerId);
+    if (!customer) {
+      throw new Error("Customer not found");
+    }
+    const sale = await Sale.findOne({ customer: customerId });
+
+    if (sale) {
+      throw new Error("Customer បានប្រើរួចហើយ");
+    }
+    await Customer.deleteOne({ _id: customer._id });
+    await session.commitTransaction();
+    return { success: true };
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    await session.endSession();
   }
 }

@@ -6,6 +6,9 @@ import ROUTES from "@/constants/routes";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../components/table/DataTableColumnHeader";
 import { FaRegEdit } from "react-icons/fa";
+import { deleteUnit } from "@/lib/actions/unit.action";
+import { toast } from "@/hooks/use-toast";
+import ButtonDelete from "@/components/formInputs/ButtonDelete";
 export type Unit = {
   _id: string;
   title: string;
@@ -36,14 +39,36 @@ export const UnitColumn: ColumnDef<Unit>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const category = row.original;
+      const unit = row.original;
+      const handleDelete = async () => {
+        // Add your delete logic here
+        const { success, error } = await deleteUnit({
+          unitId: unit._id,
+        });
+        if (success) {
+          toast({
+            title: "success",
+            description: "Unit deleted successfully.",
+          });
+          window.location.reload();
+        } else {
+          toast({
+            title: "error",
+            description: error?.message || "Something went wrong.",
+            variant: "destructive",
+          });
+        }
+      };
       return (
-        <RedirectButton
-          Icon={FaRegEdit}
-          href={ROUTES.UNIT(category._id)}
-          isIcon
-          className="text-primary-500"
-        />
+        <div className="flex items-center space-x-1">
+          <RedirectButton
+            Icon={FaRegEdit}
+            href={ROUTES.UNIT(unit._id)}
+            isIcon
+            className="text-primary-500"
+          />
+          <ButtonDelete onDelete={handleDelete} />
+        </div>
       );
     },
   },
