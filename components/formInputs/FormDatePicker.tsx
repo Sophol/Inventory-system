@@ -65,7 +65,7 @@ const FormDatePicker = <T extends FieldValues>({
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "text-[11px] light-border-3 text-dark300_light700 no-focus min-h-[36px] border",
+                    "text-[11px] light-border-3 text-dark300_light700 no-focus min-h-[28px] h-[28px] border",
                     !field.value && "text-muted-foreground"
                   )}
                 >
@@ -78,7 +78,7 @@ const FormDatePicker = <T extends FieldValues>({
                         : ""}
                     </span>
                   )}
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  <CalendarIcon className="ml-auto h-3 w-3 opacity-50" />
                 </Button>
               </FormControl>
             </PopoverTrigger>

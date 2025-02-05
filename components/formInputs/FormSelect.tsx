@@ -49,7 +49,7 @@ function FormSelect<T extends FieldValues>({
             defaultValue={field.value as string | undefined}
           >
             <FormControl>
-              <SelectTrigger className="text-[12px] light-border-3 text-dark300_light700 no-focus h-[30px] min-h-[30px] border">
+              <SelectTrigger className="text-[12px] light-border-3 text-dark300_light700 no-focus h-[28px] min-h-[28px] border">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>

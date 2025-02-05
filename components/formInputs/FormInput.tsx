@@ -67,7 +67,7 @@ function FormInput<T extends FieldValues>({
           <FormControl>
             <Input
               type={type}
-              className="text-[11px]  mt-auto light-border-3 text-dark300_light700 no-focus  min-h-[28px] h-[28px] border"
+              className="text-[11px] mt-auto light-border-3 text-dark300_light700 no-focus  min-h-[28px] h-[28px] border"
               placeholder={placeholder}
               readOnly={readonly}
               autoComplete="off"

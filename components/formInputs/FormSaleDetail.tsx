@@ -191,7 +191,7 @@ function FormSaleDetail<T extends FieldValues>({
   ];
 
   return (
-    <div className="flex flex-col justify-start gap-1 text-[12px] md:text-base">
+    <div className="flex flex-col justify-start gap-1 text-[11px] md:text-base">
       {/* Sale Type Selector */}
       <div className="flex items-center justify-between gap-1 flex-wrap">
         <div className="w-full md:w-60">
@@ -205,7 +205,7 @@ function FormSaleDetail<T extends FieldValues>({
         </div>
         <Button
           type="button"
-          className="bg-green-600 text-[12px] hover:bg-green-500 text-white flex items-center justify-center w-full md:w-[100px] sm:mt-0 sm:mb-3 md:mb-0  md:mt-5"
+          className="bg-green-600 text-[11px] hover:bg-green-500 text-white flex items-center justify-center w-full md:w-[100px] sm:mt-0 sm:mb-3 md:mb-0  md:mt-5 h-[28px] min-h-[28px]"
           onClick={handleAddUnit}
         >
           <Plus className="mr-1 size-3 " /> Add Unit
@@ -213,7 +213,7 @@ function FormSaleDetail<T extends FieldValues>({
       </div>
 
       {/* Header Row - Static labels */}
-      <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 md:grid-cols-11 text-[12px] font-semibold hidden lg:grid leading-[0] mt-3">
+      <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 pb-1 md:grid-cols-11 text-[12px] hidden lg:grid leading-[0] mt-3">
         <div className="col-span-2 sm:col-span-1 md:col-span-3  ">
           Product<span className="text-primary-500 pl-1">*</span>
         </div>
@@ -304,17 +304,17 @@ function FormSaleDetail<T extends FieldValues>({
                   readonly={true}
                 />
               </div>
-              <div className="col-span-2 md:col-span-1 flex flex-col justify-end md:col-end-auto w-full sm:w-full mt-0">
+              <div className="col-span-2 md:col-span-1 flex flex-col justify-end md:col-end-auto w-full sm:w-full mt-0 min-h-[28px] h-[28px]">
                 <Button
                   type="button"
                   variant="outline"
                   size="icon"
                   onClick={() => remove(index)}
                   disabled={index === 0}
-                  className="w-full text-red-600 border-red-300 hover:bg-red-50 hover:border-red-500 flex items-center gap-2"
+                  className="w-full text-red-600 border-red-300 hover:bg-red-50 hover:border-red-500 flex items-center gap-2  min-h-[28px] h-[28px]"
                   aria-label={`Remove sale detail ${index + 1}`}
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-3 w-3" />
                 </Button>
               </div>
             </div>
@@ -325,7 +325,7 @@ function FormSaleDetail<T extends FieldValues>({
       {/* Total Calculation Fields */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="text-sm">Sub Total</label>
+          <label className="text-[11px]">Sub Total</label>
         </div>
         <div className="flex w-full sm:w-[275px]">
           <FormInput
@@ -339,7 +339,7 @@ function FormSaleDetail<T extends FieldValues>({
 
       <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="text-sm">Discount</label>
+          <label className="text-[11px]">Discount</label>
         </div>
         <div className="flex w-full sm:w-[275px]">
           <FormInput
@@ -353,7 +353,7 @@ function FormSaleDetail<T extends FieldValues>({
 
       <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="text-sm">Delivery</label>
+          <label className="text-[11px]">Delivery</label>
         </div>
         <div className="flex w-full sm:w-[275px]">
           <FormInput
@@ -367,7 +367,7 @@ function FormSaleDetail<T extends FieldValues>({
 
       <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="text-sm">Grand Total</label>
+          <label className="text-[11px]">Grand Total</label>
         </div>
         <div className="flex w-full sm:w-[275px]">
           <FormInput

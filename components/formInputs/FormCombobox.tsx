@@ -110,7 +110,7 @@ function FormCombobox<T extends FieldValues>({
                     variant="outline"
                     role="combobox"
                     ref={buttonRef}
-                    className="text-[12px] h-[20px] justify-between light-border-3 text-dark300_light700 no-focus min-h-[20px] border "
+                    className="text-[12px] h-[28px] justify-between light-border-3 text-dark300_light700 no-focus min-h-[28px] border "
                   >
                     {selectedItem.title}
                     <ChevronDown className="opacity-50" />

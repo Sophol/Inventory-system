@@ -24,35 +24,35 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
     <div className="card80 ">
       <div className="printable-area card80-container">
         <div className="sm:flex flex-row justify-between invoice-header">
-            {/* Conditionally render logo if invoice.isLogo is true */}
-            {invoice.isLogo !== "false" && (
-          <div className="flex flex-col logo">
-            <Image
-              src={`/` + setting.companyLogo}
-              alt="Company Logo"
-              width={100}
-              height={100}
-              className="w-auto sm:w-[100] h-20 object-contain"
-            />
-            <p className="text-sm pt-2 pb-0 mx-auto sm:mx-0">{setting.companyName}</p>
-            <p className="text-sm pb-0 mx-auto sm:mx-0">{setting.companyNameEnglish}</p>
-            <p className="text-sm mx-auto sm:mx-0">
-              {setting.address}
-            </p>
-            <p className="text-sm mx-auto sm:mx-0">
-             {setting.phone}
-            </p>
-          </div>
-            )}
+          {/* Conditionally render logo if invoice.isLogo is true */}
+          {invoice.isLogo !== "false" && (
+            <div className="flex flex-col logo">
+              <Image
+                src={`/` + setting.companyLogo}
+                alt="Company Logo"
+                width={100}
+                height={100}
+                className="w-auto sm:w-[100] h-20 object-contain"
+              />
+              <p className="text-sm pt-2 pb-0 mx-auto sm:mx-0">{setting.companyName}</p>
+              <p className="text-sm pb-0 mx-auto sm:mx-0">{setting.companyNameEnglish}</p>
+              <p className="text-sm mx-auto sm:mx-0">
+                {setting.address}
+              </p>
+              <p className="text-sm mx-auto sm:mx-0">
+                {setting.phone}
+              </p>
+            </div>
+          )}
           <div className="flex flex-col">
             <h1 className="font-bold text-lg pt-2 mx-auto sm:mx-0 pb-3"># {invoice.referenceNo}</h1>
             <p className="text-sm">
               <span className="pr-2">Date Issued:</span>
-              { invoice.dueDate ? format(new Date(invoice.invoicedDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
+              {invoice.dueDate ? format(new Date(invoice.invoicedDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
             <p className="text-sm">
-            <span className="pr-2">  Due Date:</span>
-              { invoice.dueDate ? format(new Date(invoice.dueDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
+              <span className="pr-2">  Due Date:</span>
+              {invoice.dueDate ? format(new Date(invoice.dueDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
             {invoice.isLogo !== "false" && (<Image
               src={`/images/company_telegram_qr.jpg`}
@@ -147,12 +147,12 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                     : "N/A"}
                 </p>
               </div>
-              
+
             </div>
-            
+
             <div></div>
           </div>
-          
+
         </div>
         <div className="flex p-2 invoice-body pt-12 ">
           <div className="invoice-to  text-center">
@@ -163,11 +163,11 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
           </div>
           <div className="bill-to">
             <div className=" text-center">
-                <p className="pb-1 w-full">Receiver(អ្នកទទួល): </p>
-                <p className="pb-5 w-full">
+              <p className="pb-1 w-full">Receiver(អ្នកទទួល): </p>
+              <p className="pb-5 w-full">
                 {invoice.customer.title}
-                </p>
-       
+              </p>
+
             </div>
           </div>
         </div>

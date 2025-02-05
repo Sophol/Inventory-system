@@ -316,7 +316,7 @@ const SaleForm = ({
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-4 text-sm"
+        className="flex flex-col gap-2 text-sm"
         onSubmit={form.handleSubmit(handleCreateSale)}
       >
         <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
@@ -402,7 +402,7 @@ const SaleForm = ({
               <CardTitle className="py-0 text-[12px]">Product</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="container mx-auto py-2">
+              <div className="container mx-auto pb-2 pt-0">
                 <FormSaleDetail
                   name="saleDetails"
                   control={form.control}
