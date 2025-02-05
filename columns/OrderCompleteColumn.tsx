@@ -23,93 +23,97 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reference No" />
+      <DataTableColumnHeader column={column} title="Reference No" className="justify-center" />
     ),
     cell: ({ row }) => {
       const referenceNo = row.getValue("referenceNo") as string;
-      return <span className="text-[10px]">{referenceNo}</span>;
+      return <span className="text-[10px] ">{referenceNo}</span>;
     },
   },
   {
     accessorKey: "invoicedDate", // Assuming saleDate is the date field you want to format
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" />
+      <DataTableColumnHeader column={column} title="Date" className="justify-center" />
     ),
     cell: ({ row }) => {
       const date = row.getValue("invoicedDate") as string;
       const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss ");
-      return <span className="text-[10px] min-w-[120px] flex">{formattedDate}</span>;
+      return <span className="text-[10px] min-w-[120px] flex justify-center">{formattedDate}</span>;
     },
   },
   {
     accessorKey: "customer.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Customer" />
+      <DataTableColumnHeader column={column} title="Customer"  className="justify-center"/>
     ),
   },
   {
     accessorKey: "branch.title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch" />
+      <DataTableColumnHeader column={column} title="Branch"  className="justify-center"/>
     ),
+    cell: ({ row }) => {
+      const branch = row.original.branch.title as string;
+      return <span className="text-[10px] min-w-[120px] flex justify-center">{branch}</span>;
+    },
   },
   {
     accessorKey: "grandtotal",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Grand Total" />
+      <DataTableColumnHeader column={column} title="Grand Total"  className="justify-center"/>
     ),
     cell: ({ row }) => {
       const grandtotal = row.getValue("grandtotal") as number;
-      return <span>{formatCurrency(grandtotal)}</span>;
+      return <span className="flex justify-end">{formatCurrency(grandtotal)}</span>;
     },
   },
 
   {
     accessorKey: "discount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Discount" />
+      <DataTableColumnHeader column={column} title="Discount"  className="justify-center" />
     ),
     cell: ({ row }) => {
       const discount = row.getValue("discount") as number;
-      return <span>{formatCurrency(discount)}</span>;
+      return <span className="flex justify-end">{formatCurrency(discount)}</span>;
     },
   },
   {
     accessorKey: "delivery",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Delivery" />
+      <DataTableColumnHeader column={column} title="Delivery"  className="justify-center"/>
     ),
     cell: ({ row }) => {
       const delivery = row.getValue("delivery") as number;
-      return <span>{formatCurrency(delivery)}</span>;
+      return <span className="flex justify-end">{formatCurrency(delivery)}</span>;
     },
   },
   {
     accessorKey: "paid",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Paid" />
+      <DataTableColumnHeader column={column} title="Paid" className="justify-center" />
     ),
     cell: ({ row }) => {
       const paid = row.getValue("paid") as number;
-      return <span>{formatCurrency(paid)}</span>;
+      return <span className="flex justify-end">{formatCurrency(paid)}</span>;
     },
   },
 
   {
     accessorKey: "balance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Balance" />
+      <DataTableColumnHeader column={column} title="Balance" className="justify-center" />
     ),
     cell: ({ row }) => {
       const balance = row.getValue("balance") as number;
-      return <span>{formatCurrency(balance)}</span>;
+      return <span className="flex justify-end">{formatCurrency(balance)}</span>;
     },
   },
 
   {
     accessorKey: "paymentStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payment Status" />
+      <DataTableColumnHeader column={column} title="Payment Status"  className="justify-center"/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("paymentStatus") as string;
@@ -117,12 +121,12 @@ export const SaleColumn: ColumnDef<Sale>[] = [
         <Badge
           className={
             status === "completed"
-              ? "bg-green-500 uppercase text-[10px] h-[23px] min-w-[85px] justify-center"
+              ? "bg-green-500 uppercase text-[9px] h-[21px] min-w-[85px] flex justify-center pt-1"
               : status === "approved"
-                ? "bg-blue-500 uppercase text-[10px] h-[23px] min-w-[85px] justify-center"
+                ? "bg-blue-500 uppercase text-[9px] h-[21px] min-w-[85px] flex justify-center pt-1"
                 : status === "pending"
-                  ? "bg-yellow-500 uppercase text-[10px] h-[23px] min-w-[85px] justify-center"
-                  : "bg-red-500 uppercase text-[10px] h-[23px] min-w-[85px] justify-center"
+                  ? "bg-yellow-500 uppercase text-[9px] h-[21px] min-w-[85px] flex justify-center pt-1" 
+                  : "bg-red-500 uppercase text-[9px] h-[21px] min-w-[85px] flex justify-center pt-1"
           }
         >
           {status}

@@ -100,7 +100,7 @@ export function DataTablePagination<TData>({
             </Button>
             <Button
               variant="outline"
-              className="h-8 w-8 p-0"
+              className="h-6 w-6 p-0"
               onClick={() => handleNavigation("next")}
               disabled={!isNext}
             >
