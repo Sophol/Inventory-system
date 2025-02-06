@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaRegFileArchive } from "react-icons/fa";
 
 import RedirectButton from "@/components/formInputs/RedirectButton";
 import { Badge } from "@/components/ui/badge";
@@ -20,13 +20,14 @@ export type Customer = {
   location: string;
   balance?: string | number;
   status: string;
+  isDepo: boolean;
 };
 
 export const CustomerColumn: ColumnDef<Customer>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status"  className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Status" className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
@@ -40,25 +41,25 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name"  className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Name" className="flex justify-center" />
     ),
   },
   {
     accessorKey: "phone",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Phone"  className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Phone" className="flex justify-center" />
     ),
   },
   {
     accessorKey: "location",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Location"  className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Location" className="flex justify-center" />
     ),
   },
   {
     accessorKey: "balance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Balance"  className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Balance" className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const customer = row.original;
@@ -72,7 +73,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Action"  className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Action" className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const customer = row.original;
@@ -96,13 +97,24 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1  justify-center">
+
+        <div className="flex items-center space-x-1  justify-end">
+           {customer.isDepo && (
+            <RedirectButton
+              Icon={FaRegFileArchive}
+              href={ROUTES.CUSTOMERCONTRACT(customer._id)}
+              isIcon
+              className="text-blue-500"
+            />
+          )}
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.CUSTOMER(customer._id)}
             isIcon
             className="text-primary-500"
           />
+
+         
           <ButtonDelete onDelete={handleDelete} />
         </div>
       );
