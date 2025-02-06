@@ -44,7 +44,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "customer.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Customer"  className="justify-center"/>
+      <DataTableColumnHeader column={column} title="Customer"  />
     ),
   },
   {
@@ -54,7 +54,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const branch = row.original.branch.title as string;
-      return <span className="text-[10px] min-w-[120px] flex justify-center">{branch}</span>;
+      return <span className="text-[10px] min-w-[120px] ">{branch}</span>;
     },
   },
   {
@@ -113,7 +113,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "paymentStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payment Status"  className="justify-center"/>
+      <DataTableColumnHeader column={column} title="Payment Status"  className="justify-center flex"/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("paymentStatus") as string;
@@ -121,12 +121,12 @@ export const SaleColumn: ColumnDef<Sale>[] = [
         <Badge
           className={
             status === "completed"
-              ? "bg-green-500 uppercase text-[9px] h-[21px] min-w-[85px] flex justify-center pt-1"
+              ? "bg-green-500 uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto"
               : status === "approved"
-                ? "bg-blue-500 uppercase text-[9px] h-[21px] min-w-[85px] flex justify-center pt-1"
+                ? "bg-blue-500 uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto"
                 : status === "pending"
-                  ? "bg-yellow-500 uppercase text-[9px] h-[21px] min-w-[85px] flex justify-center pt-1" 
-                  : "bg-red-500 uppercase text-[9px] h-[21px] min-w-[85px] flex justify-center pt-1"
+                  ? "bg-yellow-500 uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto" 
+                  : "bg-red-500 uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto"
           }
         >
           {status}
@@ -137,7 +137,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" className="uppercase" />
+      <DataTableColumnHeader column={column} title="Actions" className="uppercase justify-center flex" />
     ),
     cell: ({ row }) => {
       const sale = row.original;

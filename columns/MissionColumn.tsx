@@ -27,7 +27,7 @@ export const MissionColumn: ColumnDef<Mission>[] = [
   {
     accessorKey: "branch",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch" />
+      <DataTableColumnHeader column={column} title="Branch" className="justify-center" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -37,30 +37,36 @@ export const MissionColumn: ColumnDef<Mission>[] = [
   {
     accessorKey: "missionDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" />
+      <DataTableColumnHeader column={column} title="Date" className="justify-center" />
     ),
-    cell: ({ row }) =>
-      format(new Date(row.original.missionDate), "yyyy-MM-dd HH:mm:ss"),
+    cell: ({ row }) => {
+
+      const formattedDate = format(new Date(row.original.missionDate), "yyyy-MM-dd hh:mm:ss ");
+      return <span className="text-[10px] min-w-[120px] flex justify-center">{formattedDate}</span>;
+    }
   },
   {
     accessorKey: "staffName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader column={column} title="Title" className="justify-center" />
     ),
   },
 
   {
     accessorKey: "amount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Amount" />
+      <DataTableColumnHeader column={column} title="Amount" className="justify-center" />
     ),
     cell: ({ row }) => {
       const amount = row.getValue("amount") as number;
-      return <span>{formatCurrency(amount)}</span>;
+      return <span className="flex justify-end text-right">{formatCurrency(amount)}</span>;
     },
   },
   {
     id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Actions" className="uppercase justify-center flex " />
+    ),
     cell: ({ row }) => {
       const mission = row.original;
 
@@ -81,7 +87,7 @@ export const MissionColumn: ColumnDef<Mission>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 pl-7">
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.MISSIONEXP(mission._id)}

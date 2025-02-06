@@ -41,12 +41,15 @@ const Mission = async ({ searchParams }: SearchParams) => {
       isNext: boolean;
     });
   const summaryRow = (
-    <TableRow>
+    <TableRow className="bg-blue-200 dark:bg-slate-800">
       <TableCell colSpan={3} className="text-right">
         <strong>Total:</strong>
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         <strong>{formatCurrency(summary?.totalAmount)}</strong>
+      </TableCell>
+      <TableCell>
+        
       </TableCell>
     </TableRow>
   );

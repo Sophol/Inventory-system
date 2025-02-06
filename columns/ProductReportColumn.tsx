@@ -12,12 +12,12 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Status" className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
-        <Badge className={status === "active" ? "bg-green-500" : "bg-red-500"}>
+        <Badge className={status === "active" ? "uppercase bg-green-500  text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto" : "bg-red-500  text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto uppercase"}>
           {status}
         </Badge>
       );
@@ -26,13 +26,13 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
   {
     accessorKey: "code",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Code" />
+      <DataTableColumnHeader column={column} title="Code"  className="flex justify-center" />
     ),
   },
   {
     accessorKey: "category",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category" />
+      <DataTableColumnHeader column={column} title="Category"  className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const category = row.original;
@@ -42,13 +42,13 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader column={column} title="Title"  className="flex justify-center" />
     ),
   },
   {
     accessorKey: "qtyOnHand",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="QtyOnHand" />
+      <DataTableColumnHeader column={column} title="QtyOnHand"  className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const product = row.original;
@@ -62,7 +62,7 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
   {
     accessorKey: "alertQty",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="AlertQty" />
+      <DataTableColumnHeader column={column} title="AlertQty"  className="flex justify-center"  />
     ),
     cell: ({ row }) => {
       const product = row.original;
