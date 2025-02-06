@@ -28,6 +28,7 @@ export async function getPurchaseReports(params: PurchaseSearchParams): Promise<
     supplierId,
     branchId,
     dateRange,
+    customerId,
   } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
@@ -47,7 +48,9 @@ export async function getPurchaseReports(params: PurchaseSearchParams): Promise<
   if (supplierId) {
     filterQuery.supplier = new ObjectId(supplierId);
   }
-
+  if (customerId) {
+    filterQuery.customer = new ObjectId(customerId);
+  }
   if (branchId) {
     filterQuery.branch = new ObjectId(branchId);
   }
@@ -92,19 +95,27 @@ export async function getPurchaseReports(params: PurchaseSearchParams): Promise<
       Purchase.find(filterQuery)
         .populate("supplier", "name")
         .populate("branch", "title")
+        .populate("customer", "name")
         .lean()
         .sort(sortCriteria)
         .skip(skip)
         .limit(limit),
     ]);
+    const transformedPurchases = purchases.map((purchase: any) => {
+      if (purchase.customer) {
+        purchase.customer.title = purchase.customer.name;
+        delete purchase.customer.name;
+      }
+      return purchase;
+    });
     const count = aggregationResult[0]?.count || 0;
     const totalGrandtotal = aggregationResult[0]?.totalGrandtotal || 0;
-    const isNext = count > skip + purchases.length;
+    const isNext = count > skip + transformedPurchases.length;
     const totalCount = { count, totalGrandtotal };
     return {
       success: true,
       data: {
-        purchases: JSON.parse(JSON.stringify(purchases)),
+        purchases: JSON.parse(JSON.stringify(transformedPurchases)),
         summary: JSON.parse(JSON.stringify(totalCount)),
         isNext,
       },

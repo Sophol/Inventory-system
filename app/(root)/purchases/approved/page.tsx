@@ -12,7 +12,7 @@ import PurchaseSearch from "@/components/search/PurchaseSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { getPurchaseReports } from "@/lib/actions/purchaseReport";
 import { PurchaseReportColumn } from "@/columns/PurchaseReportColumn";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -23,8 +23,16 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
     return redirect("/unauthorized");
   }
 
-  const { page, pageSize, query, filter, supplierId, branchId, dateRange } =
-    await searchParams;
+  const {
+    page,
+    pageSize,
+    query,
+    filter,
+    supplierId,
+    branchId,
+    dateRange,
+    customerId,
+  } = await searchParams;
   const { success, data, error } = await getPurchaseReports({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
@@ -33,6 +41,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
     supplierId: supplierId?.toString() || "",
     branchId: branchId?.toString() || "",
     dateRange: dateRange?.toString() || "",
+    customerId: customerId?.toString() || "",
   });
 
   const { purchases, summary, isNext } = data || {
@@ -43,7 +52,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
 
   const summaryRow = (
     <TableRow>
-      <TableCell colSpan={6} className="text-right">
+      <TableCell colSpan={7} className="text-right">
         <strong>Total:</strong>
       </TableCell>
       <TableCell>

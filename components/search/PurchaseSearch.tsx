@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { getSuppliers } from "@/lib/actions/supplier.action";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import { DateRange } from "react-day-picker";
+import { getCustomers } from "@/lib/actions/customer.action";
 
 interface ProductSearchProps {
   route: string;
@@ -24,10 +25,12 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const query = searchParams.get("query") || "";
   const supplierId = searchParams.get("supplierId") || "";
   const branchId = searchParams.get("branchId") || "";
+  const customerId = searchParams.get("customerId") || "";
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState(query);
   const [searchSupplier, setSearchSupplier] = useState(supplierId);
   const [searchBranch, setSearchBranch] = useState(branchId);
+  const [searchCustomer, setSearchCustomer] = useState(customerId);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [resetData, setResetData] = useState(false);
 
@@ -101,6 +104,28 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
+      if (searchCustomer) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "customerId",
+          value: searchCustomer,
+        });
+        router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeyFromUrlQuery({
+            params: searchParams.toString(),
+            keyToRemove: ["customerId"],
+          });
+          router.push(newUrl, { scroll: false });
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(delayDebounceFn);
+  }, [route, router, pathname, searchCustomer, searchParams]);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
       if (dateRange) {
         const newUrl = formUrlQuery({
           params: searchParams.toString(),
@@ -127,6 +152,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
       search: query,
       supplier: supplierId,
       branch: branchId,
+      customer: customerId,
     },
   });
 
@@ -146,9 +172,33 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
     return {
       data: success
         ? data?.suppliers.map((supplier: Supplier) => ({
-          _id: supplier._id,
-          title: supplier.name,
-        })) || []
+            _id: supplier._id,
+            title: supplier.name,
+          })) || []
+        : [],
+      isNext: data?.isNext || false,
+    };
+  };
+  const handleFetchCustomers = async ({
+    page,
+    query,
+  }: {
+    page: number;
+    query: string;
+    parentId?: string;
+  }) => {
+    const { success, data } = await getCustomers({
+      page,
+      pageSize: 10,
+      query,
+      isDepo: true,
+    });
+    return {
+      data: success
+        ? data?.customers.map((customer: Customer) => ({
+            _id: customer._id,
+            title: customer.name,
+          })) || []
         : [],
       isNext: data?.isNext || false,
     };
@@ -173,6 +223,10 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
     form.setValue("supplier", value);
     setSearchSupplier(value);
   };
+  const handleCustomerChange = (value: string) => {
+    form.setValue("customer", value);
+    setSearchCustomer(value);
+  };
 
   const handleBranchChange = (value: string) => {
     form.setValue("branch", value);
@@ -189,15 +243,25 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
       search: "",
       supplier: "",
       branch: "",
+      customer: "",
     });
     setSearchQuery("");
     setSearchSupplier("");
     setSearchBranch("");
+    setSearchCustomer("");
     setDateRange(undefined);
     setResetData(true);
     const newUrl = removeKeyFromUrlQuery({
       params: searchParams.toString(),
-      keyToRemove: ["query", "supplierId", "branchId", "dateRange"],
+      keyToRemove: [
+        "query",
+        "supplierId",
+        "branchId",
+        "customerId",
+        "dateRange",
+        "pageSize",
+        "page",
+      ],
     });
     router.push(newUrl, { scroll: false });
   };
@@ -216,8 +280,8 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
             setSearchQuery(form.getValues("search"));
           }}
         />
-        <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
 
+        <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
           <FormCombobox
             control={form.control}
             name="supplier"
@@ -242,6 +306,18 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
             setValue={(name, value) => {
               form.setValue(name, value);
               handleBranchChange(value);
+            }}
+          />
+          <FormCombobox
+            control={form.control}
+            name="customer"
+            label="Depo"
+            fetchSingleItem={null}
+            isRequired={false}
+            fetchData={handleFetchCustomers}
+            setValue={(name, value) => {
+              form.setValue(name, value);
+              handleCustomerChange(value);
             }}
           />
         </div>

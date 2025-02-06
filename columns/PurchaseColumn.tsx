@@ -12,7 +12,7 @@ import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import { deletePurchase } from "@/lib/actions/purchase.action";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 const reloadPage = () => {
   window.location.reload();
 };
@@ -35,6 +35,16 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Branch" />
     ),
+  },
+  {
+    accessorKey: "customer",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Depo" />
+    ),
+    cell: ({ row }) => {
+      const purchase = row.original;
+      return purchase.customer ? purchase.customer.title : "";
+    },
   },
   {
     accessorKey: "purchaseDate",

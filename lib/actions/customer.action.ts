@@ -8,9 +8,9 @@ import action from "../handlers/action";
 import handleError from "../handlers/error";
 import {
   CreateCustomerSchema,
+  CustomerSearchParamsSchema,
   EditCustomerSchema,
   GetCustomerSchema,
-  PaginatedSearchParamsSchema,
 } from "../validations";
 
 export async function createCustomer(
@@ -54,6 +54,8 @@ export async function editCustomer(
     saleType,
     status,
     customerId,
+    isDepo,
+    attachmentUrl,
   } = validatedData.params!;
   try {
     const customer = await Customer.findById(customerId);
@@ -69,7 +71,9 @@ export async function editCustomer(
       customer.description !== description ||
       customer.balance !== balance ||
       customer.saleType !== saleType ||
-      customer.status !== status
+      customer.status !== status ||
+      customer.isDepo !== isDepo ||
+      customer.attachmentUrl !== attachmentUrl
     ) {
       customer.name = name;
       customer.phone = phone;
@@ -80,6 +84,8 @@ export async function editCustomer(
       customer.balance = balance;
       customer.saleType = saleType;
       customer.status = status;
+      customer.isDepo = isDepo;
+      customer.attachmentUrl = attachmentUrl;
       await customer.save();
     }
     return { success: true, data: JSON.parse(JSON.stringify(customer)) };
@@ -112,19 +118,19 @@ export async function getCustomer(
 }
 
 export async function getCustomers(
-  params: PaginatedSearchParams
+  params: CustomerSearchParams
 ): Promise<
   ActionResponse<{ customers: Customer[]; totalCount: number; isNext: boolean }>
 > {
   const validatedData = await action({
     params,
-    schema: PaginatedSearchParamsSchema,
+    schema: CustomerSearchParamsSchema,
     authorize: true,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { page = 1, pageSize = 10, query, filter } = params;
+  const { page = 1, pageSize = 10, query, filter, isDepo } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
   const filterQuery: FilterQuery<typeof Customer> = {};
@@ -133,6 +139,9 @@ export async function getCustomers(
       { name: { $regex: new RegExp(query, "i") } },
       { status: { $regex: new RegExp(query, "i") } },
     ];
+  }
+  if (isDepo) {
+    filterQuery.isDepo = isDepo;
   }
   let sortCriteria = {};
 
@@ -188,6 +197,8 @@ export async function getCustomers(
             status: 1,
             createdAt: 1,
             balance: 1,
+            isDepo: 1,
+            attachmentUrl: 1,
           },
         },
         { $sort: sortCriteria },

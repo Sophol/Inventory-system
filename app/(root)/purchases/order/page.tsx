@@ -12,7 +12,7 @@ import PurchaseSearch from "@/components/search/PurchaseSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { PurchaseColumn } from "@/columns/PurchaseColumn";
 import { getPurchases } from "@/lib/actions/purchase.action";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -24,8 +24,16 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
     return redirect("/unauthorized");
   }
 
-  const { page, pageSize, query, filter, supplierId, branchId, dateRange } =
-    await searchParams;
+  const {
+    page,
+    pageSize,
+    query,
+    filter,
+    supplierId,
+    branchId,
+    dateRange,
+    customerId,
+  } = await searchParams;
   const { success, data, error } = await getPurchases({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
@@ -33,6 +41,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
     filter: filter?.toString() || "",
     supplierId: supplierId?.toString() || "",
     branchId: branchId?.toString() || "",
+    customerId: customerId?.toString() || "",
     dateRange: dateRange?.toString() || "",
   });
 
@@ -44,7 +53,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
 
   const summaryRow = (
     <TableRow>
-      <TableCell colSpan={6} className="text-right">
+      <TableCell colSpan={7} className="text-right">
         <strong>Total:</strong>
       </TableCell>
       <TableCell>

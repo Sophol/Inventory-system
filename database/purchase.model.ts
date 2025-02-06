@@ -3,6 +3,7 @@ import { model, models, Schema, Document, Types } from "mongoose";
 export interface IPurchase {
   supplier: Types.ObjectId;
   branch: Types.ObjectId;
+  customer: Types.ObjectId;
   referenceNo: string;
   description: string;
   purchaseDate: Date;
@@ -27,6 +28,7 @@ const PurchaseSchema = new Schema<IPurchase>(
     referenceNo: { type: String, required: true, unique: true },
     supplier: { type: Schema.Types.ObjectId, ref: "Supplier", required: true },
     branch: { type: Schema.Types.ObjectId, ref: "Branch", required: true },
+    customer: { type: Schema.Types.ObjectId, ref: "Customer" },
     purchaseDate: { type: Date, default: Date.now() },
     description: { type: String },
     discount: { type: Number, default: 0 },

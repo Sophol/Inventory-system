@@ -17,6 +17,7 @@ import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
+import FormCheckBox from "../formInputs/FormCheckBox";
 
 interface Params {
   customer?: Customer;
@@ -38,6 +39,8 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
       balance: customer?.balance || 0,
       saleType: customer?.saleType || "retail",
       status: customer?.status || "active",
+      isDepo: customer?.isDepo || false,
+      attachmentUrl: customer?.attachmentUrl || "",
     },
   });
   const statusData: SelectData[] = dataStatuses;
@@ -109,20 +112,20 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
             isRequired={false}
             control={form.control}
           />
-          <FormSelect
-            name="saleType"
-            label="Sale Type"
-            control={form.control}
-            items={[
-              { _id: "retail", title: "Retail" },
-              { _id: "wholesale", title: "Wholesale" },
-            ]}
-          />
+          <FormCheckBox name="isDepo" label="Is Depo" control={form.control} />
           <FormSelect
             name="status"
             label="Status"
             control={form.control}
             items={statusData}
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
+          <FormInput
+            name="attachmentUrl"
+            label="Attachment Url"
+            isRequired={false}
+            control={form.control}
           />
         </div>
         <div className="mt-2 flex justify-end">

@@ -25,6 +25,9 @@ interface PaginatedSearchParams {
   filter?: string;
   sort?: string;
 }
+interface CustomerSearchParams extends PaginatedSearchParams {
+  isDepo?: boolean;
+}
 interface ProductSearchParams extends PaginatedSearchParams {
   categoryId?: string;
   branchId?: string;
@@ -33,6 +36,7 @@ interface PurchaseSearchParams extends PaginatedSearchParams {
   supplierId?: string;
   branchId?: string;
   dateRange?: string;
+  customerId?: string;
 }
 interface SaleSearchParams extends PaginatedSearchParams {
   customerId?: string;
@@ -126,6 +130,8 @@ interface Customer {
   balance?: number;
   saleType: "retail" | "wholesale";
   status: "active" | "inactive";
+  isDepo: boolean;
+  attachmentUrl?: string;
 }
 interface Supplier {
   _id: string;
@@ -158,6 +164,7 @@ interface Purchase {
   _id: string;
   supplier: { _id: string; title: string };
   branch: { _id: string; title: string };
+  customer?: { _id: string; title: string };
   referenceNo: string;
   description?: string;
   purchaseDate: string;

@@ -10,7 +10,7 @@ import ROUTES from "@/constants/routes";
 import { deletePurchaseApproved } from "@/lib/actions/purchase.action";
 import { toast } from "@/hooks/use-toast";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 
 export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
@@ -30,6 +30,16 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Branch" />
     ),
+  },
+  {
+    accessorKey: "customer",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Depo" />
+    ),
+    cell: ({ row }) => {
+      const purchase = row.original;
+      return purchase.customer ? purchase.customer.title : "";
+    },
   },
   {
     accessorKey: "purchaseDate",

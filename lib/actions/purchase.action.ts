@@ -50,6 +50,7 @@ export async function createPurchase(
     deliveryOut,
     shippingFee,
     serviceFee,
+    customer,
   } = validatedData.params!;
 
   const session = await mongoose.startSession();
@@ -82,6 +83,7 @@ export async function createPurchase(
           deliveryOut,
           shippingFee,
           serviceFee,
+          customer: new ObjectId(customer),
         },
       ],
       { session }
@@ -222,6 +224,7 @@ export async function editPurchase(
     deliveryOut,
     shippingFee,
     serviceFee,
+    customer,
   } = validatedData.params!;
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -258,6 +261,7 @@ export async function editPurchase(
     if (shippingFee !== purchase.shippingFee)
       purchase.shippingFee = shippingFee;
     if (serviceFee !== purchase.serviceFee) purchase.serviceFee = serviceFee;
+    if (customer !== purchase.customer) purchase.customer = customer;
     await purchase.save({ session });
 
     if (purchaseDetails) {
@@ -525,6 +529,25 @@ export async function getPurchase(
       },
       {
         $lookup: {
+          from: "customers",
+          localField: "customer",
+          foreignField: "_id",
+          as: "customerDetails",
+        },
+      },
+      {
+        $unwind: { path: "$customerDetails", preserveNullAndEmptyArrays: true },
+      },
+      {
+        $addFields: {
+          customer: {
+            _id: "$customerDetails._id",
+            title: "$customerDetails.name",
+          },
+        },
+      },
+      {
+        $lookup: {
           from: "branches",
           localField: "branch",
           foreignField: "_id",
@@ -543,6 +566,7 @@ export async function getPurchase(
           referenceNo: { $first: "$referenceNo" },
           supplier: { $first: "$supplier" },
           branch: { $first: "$branch" },
+          customer: { $first: "$customer" },
           purchaseDate: { $first: "$purchaseDate" },
           description: { $first: "$description" },
           discount: { $first: "$discount" },
@@ -595,6 +619,7 @@ export async function getPurchases(params: PurchaseSearchParams): Promise<
     supplierId,
     branchId,
     dateRange,
+    customerId,
   } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
@@ -613,6 +638,9 @@ export async function getPurchases(params: PurchaseSearchParams): Promise<
 
   if (supplierId) {
     filterQuery.supplier = new ObjectId(supplierId);
+  }
+  if (customerId) {
+    filterQuery.customer = new ObjectId(customerId);
   }
 
   if (branchId) {
@@ -659,19 +687,27 @@ export async function getPurchases(params: PurchaseSearchParams): Promise<
       Purchase.find(filterQuery)
         .populate("supplier", "name")
         .populate("branch", "title")
+        .populate("customer", "name")
         .lean()
         .sort(sortCriteria)
         .skip(skip)
         .limit(limit),
     ]);
+    const transformedPurchases = purchases.map((purchase: any) => {
+      if (purchase.customer) {
+        purchase.customer.title = purchase.customer.name;
+        delete purchase.customer.name;
+      }
+      return purchase;
+    });
     const count = aggregationResult[0]?.count || 0;
     const totalGrandtotal = aggregationResult[0]?.totalGrandtotal || 0;
-    const isNext = count > skip + purchases.length;
+    const isNext = count > skip + transformedPurchases.length;
     const totalCount = { count, totalGrandtotal };
     return {
       success: true,
       data: {
-        purchases: JSON.parse(JSON.stringify(purchases)),
+        purchases: JSON.parse(JSON.stringify(transformedPurchases)),
         summary: JSON.parse(JSON.stringify(totalCount)),
         isNext,
       },

@@ -7,6 +7,9 @@ export const PaginatedSearchParamsSchema = z.object({
   filter: z.string().optional(),
   sort: z.string().optional(),
 });
+export const CustomerSearchParamsSchema = PaginatedSearchParamsSchema.extend({
+  isDepo: z.boolean().optional(),
+});
 export const ProductSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   categoryId: z.string().optional(),
   branchId: z.string().optional(),
@@ -15,6 +18,7 @@ export const PurchaseSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   supplierId: z.string().optional(),
   branchId: z.string().optional(),
   dateRange: z.string().optional(),
+  customerId: z.string().optional(),
 });
 export const SaleSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   customerId: z.string().optional(),
@@ -212,6 +216,8 @@ export const CreateCustomerSchema = z.object({
   balance: z.number().default(0),
   saleType: z.enum(["retail", "wholesale"]).default("retail"),
   status: z.enum(["active", "inactive"]).default("active"),
+  isDepo: z.boolean().default(false),
+  attachmentUrl: z.string().optional(),
 });
 export const EditCustomerSchema = CreateCustomerSchema.extend({
   customerId: z.string().min(1, { message: "Customer ID is required." }),
@@ -252,6 +258,7 @@ export const CreatePurchaseSchema = z.object({
   supplier: z.string().min(1, "Supplier is required"),
   branch: z.string().min(1, "Branch is required"),
   referenceNo: z.string().min(1, "Reference number is required"),
+  customer: z.string().optional(),
   description: z.string().optional(),
   purchaseDate: z.date(),
   discount: z.number().min(0).default(0),

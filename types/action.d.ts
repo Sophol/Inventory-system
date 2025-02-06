@@ -83,6 +83,8 @@ interface CreateCustomerParams {
   balance?: number;
   saleType: "retail" | "wholesale";
   status: "active" | "inactive";
+  isDepo: boolean;
+  attachmentUrl?: string;
 }
 interface EditCustomerParams extends CreateCustomerParams {
   customerId: string;
@@ -128,6 +130,7 @@ interface CreatePurchaseParams {
   referenceNo: string;
   description?: string;
   purchaseDate?: Date | string;
+  customer?: string;
   discount?: number;
   subtotal?: number;
   grandtotal?: number;
