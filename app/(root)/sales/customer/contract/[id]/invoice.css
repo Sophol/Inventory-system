@@ -165,4 +165,7 @@
   .card20-container{
     padding: 10px;
   }
+  .flex-grow {
+    flex-grow: 2; /* First column takes more space */
+  }
 }
