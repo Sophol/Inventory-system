@@ -27,7 +27,7 @@ export const SalaryColumn: ColumnDef<Salary>[] = [
   {
     accessorKey: "branch",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="branch" />
+      <DataTableColumnHeader column={column} title="branch" className="justify-center"/>
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -37,15 +37,18 @@ export const SalaryColumn: ColumnDef<Salary>[] = [
   {
     accessorKey: "salaryDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" />
+      <DataTableColumnHeader column={column} title="Date" className="justify-center"/>
     ),
     cell: ({ row }) =>
-      format(new Date(row.original.salaryDate), "yyyy-MM-dd HH:mm:ss"),
+   {
+      const formattedDate = format(new Date(row.original.salaryDate), "yyyy-MM-dd hh:mm:ss ");
+      return <span className="text-[10px] min-w-[120px] flex justify-center">{formattedDate}</span>;
+    }
   },
   {
     accessorKey: "staffId",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="staffId" />
+      <DataTableColumnHeader column={column} title="staffId" className="justify-center" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -56,37 +59,48 @@ export const SalaryColumn: ColumnDef<Salary>[] = [
   {
     accessorKey: "salary",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="salary" />
+      <DataTableColumnHeader column={column} title="salary" className="justify-center"/>
     ),
     cell: ({ row }) => {
       const salary = row.getValue("salary") as number;
-      return <span>{formatCurrency(salary)}</span>;
+      return <span className="flex justify-end text-right">{formatCurrency(salary)}</span>;
     },
   },
   {
     accessorKey: "allowance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="allowance" />
+      <DataTableColumnHeader column={column} title="allowance" className="justify-center"/>
     ),
+    cell: ({ row }) => {
+      const allowance = row.getValue("allowance") as number;
+      return  <span className="flex justify-end text-right">{formatCurrency(allowance)}</span>;
+    },
   },
   {
     accessorKey: "deduction",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="deduction" />
+      <DataTableColumnHeader column={column} title="deduction" className="justify-center" />
     ),
+    cell: ({ row }) => {
+      const deduction = row.getValue("deduction") as number;
+      return  <span className="flex justify-end text-right">{formatCurrency(deduction)}</span>;
+    },
   },
   {
     accessorKey: "netSalary",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Net Salary" />
+      <DataTableColumnHeader column={column} title="Net Salary" className="justify-center"/>
     ),
     cell: ({ row }) => {
       const netSalary = row.getValue("netSalary") as number;
-      return <span>{formatCurrency(netSalary)}</span>;
+      return  <span className="flex justify-end text-right">{formatCurrency(netSalary)}</span>;
     },
   },
   {
     id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Actions" className="uppercase justify-center flex " />
+    ),
     cell: ({ row }) => {
       const salary = row.original;
 
@@ -108,7 +122,7 @@ export const SalaryColumn: ColumnDef<Salary>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 pl-5">
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.SALARYEXP(salary._id)}

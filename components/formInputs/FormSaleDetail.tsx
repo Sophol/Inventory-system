@@ -192,7 +192,6 @@ function FormSaleDetail<T extends FieldValues>({
 
   return (
     <div className="flex flex-col justify-start gap-1 text-[11px] md:text-base">
-      {/* Sale Type Selector */}
       <div className="flex items-center justify-between gap-1 flex-wrap">
         <div className="w-full md:w-60">
           <FormSelect

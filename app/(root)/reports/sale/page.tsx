@@ -48,25 +48,31 @@ const SaleReport = async ({ searchParams }: SearchParams) => {
       isNext: boolean;
     });
   const summaryRow = (
-    <TableRow>
+    <TableRow className="bg-blue-200 dark:bg-slate-800">
       <TableCell colSpan={4} className="text-right">
         <strong>Total:</strong>
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         <strong>{formatCurrency(summary.totalGrandtotal)}</strong>
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         <strong>{formatCurrency(summary.totalDiscount)}</strong>
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         <strong>{formatCurrency(summary.totalDelivery)}</strong>
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         <strong>{formatCurrency(summary.totalPaid)}</strong>
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         <strong>{formatCurrency(summary.totalBalance)}</strong>
       </TableCell>
+      <TableCell>
+        
+      </TableCell>
+      <TableCell>
+        
+        </TableCell>
     </TableRow>
   );
   return (

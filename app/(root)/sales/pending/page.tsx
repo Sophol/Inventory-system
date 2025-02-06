@@ -46,12 +46,15 @@ const PendingOrder = async ({ searchParams }: SearchParams) => {
       isNext: boolean;
     });
   const summaryRow = (
-    <TableRow>
+    <TableRow className="bg-blue-200 dark:bg-slate-800">
       <TableCell colSpan={4} className="text-right">
         <strong>Total:</strong>
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right ">
         <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
+      </TableCell>
+      <TableCell colSpan={3}>
+        
       </TableCell>
     </TableRow>
   );
