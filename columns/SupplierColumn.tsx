@@ -25,12 +25,12 @@ export const SupplierColumn: ColumnDef<Supplier>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Status" className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
-        <Badge className={status === "active" ? "bg-green-500" : "bg-red-500"}>
+        <Badge className={status === "active" ? "bg-green-500 uppercase" : "bg-red-500 uppercase"}>
           {status}
         </Badge>
       );
@@ -39,29 +39,32 @@ export const SupplierColumn: ColumnDef<Supplier>[] = [
   {
     accessorKey: "companyName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Company Name" />
+      <DataTableColumnHeader column={column} title="Company Name" className="flex justify-center" />
     ),
   },
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Name" className="flex justify-center" />
     ),
   },
   {
     accessorKey: "phone",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Phone" />
+      <DataTableColumnHeader column={column} title="Phone" className="flex justify-center"/>
     ),
   },
   {
     accessorKey: "location",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Location" />
+      <DataTableColumnHeader column={column} title="Location" className="flex justify-center" />
     ),
   },
   {
     id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Action" className="flex justify-center uppercase" />
+    ),
     cell: ({ row }) => {
       const supplier = row.original;
       const handleDelete = async () => {
