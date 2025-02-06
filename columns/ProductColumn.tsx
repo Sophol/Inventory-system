@@ -25,7 +25,7 @@ export const ProductColumn: ColumnDef<Product>[] = [
       const status = row.getValue("status") as string;
       return (
         <Badge className={status === "active" ? "bg-green-500  text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto" : "bg-red-500  text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto"}>
-          {status} 1
+          {status}
         </Badge>
       );
     },
