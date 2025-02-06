@@ -26,12 +26,12 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Status"  className="flex justify-center"/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
-        <Badge className={status === "active" ? "bg-green-500" : "bg-red-500"}>
+        <Badge className={status === "active" ? "bg-green-500 text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto uppercase" : "uppercase bg-red-500 text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto"}>
           {status}
         </Badge>
       );
@@ -40,25 +40,25 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Name"  className="flex justify-center"/>
     ),
   },
   {
     accessorKey: "phone",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Phone" />
+      <DataTableColumnHeader column={column} title="Phone"  className="flex justify-center"/>
     ),
   },
   {
     accessorKey: "location",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Location" />
+      <DataTableColumnHeader column={column} title="Location"  className="flex justify-center"/>
     ),
   },
   {
     accessorKey: "balance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Balance" />
+      <DataTableColumnHeader column={column} title="Balance"  className="flex justify-center"/>
     ),
     cell: ({ row }) => {
       const customer = row.original;
@@ -66,11 +66,14 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
         typeof customer.balance === "number"
           ? customer.balance
           : parseFloat(customer.balance ?? "0") || 0;
-      return <span suppressHydrationWarning>{formatCurrency(balance)}</span>;
+      return <span className="flex justify-end" suppressHydrationWarning>{formatCurrency(balance)}</span>;
     },
   },
   {
     id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Action"  className="flex justify-center"/>
+    ),
     cell: ({ row }) => {
       const customer = row.original;
       const handleDelete = async () => {
@@ -93,7 +96,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1  justify-center">
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.CUSTOMER(customer._id)}

@@ -80,7 +80,7 @@ export const ProductColumn: ColumnDef<Product>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Action" />
+      <DataTableColumnHeader column={column} title="Action"  className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const product = row.original;
@@ -104,7 +104,7 @@ export const ProductColumn: ColumnDef<Product>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 justify-center">
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.PRODUCT(product._id)}

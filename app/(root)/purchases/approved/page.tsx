@@ -51,12 +51,15 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
   };
 
   const summaryRow = (
-    <TableRow>
+    <TableRow  className="bg-blue-200 dark:bg-slate-800">
       <TableCell colSpan={7} className="text-right">
         <strong>Total:</strong>
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
+      </TableCell>
+      <TableCell >
+        <strong></strong>
       </TableCell>
     </TableRow>
   );
@@ -67,7 +70,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
       redirectTitle="ADD"
       redirectHref={ROUTES.ADDPURCHASE}
       redirectIcon={CiCirclePlus}
-      redirectClass="!text-light-900 primary-gradient"
+      redirectClass="!text-light-900 primary-gradient w-full sm:w-auto bg-red-600 mt-0 text-[11px]  min-h-[26px] h-[26px]"
     >
       <div className="pb-4">
         <PurchaseSearch route={ROUTES.PURCHASEREPORT} />

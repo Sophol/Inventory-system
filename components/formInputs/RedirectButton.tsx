@@ -20,13 +20,13 @@ const RedirectButton = ({
         <Button
           size="icon"
           variant="ghost"
-          className={`flex items-center justify-center gap-1 bg-transparent body-semibold p-0 m-0 ${className}`}
+          className={`flex items-center justify-center gap-1 bg-transparent p-0 m-0 ${className}`}
         >
           {Icon && <Icon className="p-0 m-0" />}
         </Button>
       ) : (
         <Button
-          className={`flex items-center justify-start gap-1 bg-transparent body-semibold ${className} px-2 h-7`}
+          className={`flex items-center justify-start gap-1 bg-transparent ${className} px-2`}
         >
           {Icon && <Icon />}
           {title && <span className="text-[11px]">{title} </span>}
