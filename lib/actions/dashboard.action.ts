@@ -1,12 +1,5 @@
-import {
-  GeneralExp,
-  Mission,
-  Product,
-  Purchase,
-  Salary,
-  Sale,
-} from "@/database";
-import { format , endOfMonth, startOfMonth, subMonths } from "date-fns";
+import { GeneralExp, Mission, Purchase, Salary, Sale } from "@/database";
+import { format, endOfMonth, startOfMonth, subMonths } from "date-fns";
 import handleError from "../handlers/error";
 import dbConnect from "../mongoose";
 
@@ -16,20 +9,30 @@ export const getFirstRowDashboard = async () => {
     const start = startOfMonth(new Date());
     const end = endOfMonth(new Date());
     const [
-      totalSales,
+      totalInvPaymentPending,
+      totalInvPaymentComplete,
+      totalOrderApproved,
       totalOrderPending,
-      totalProducts,
       totalSalesAmountResult,
     ] = await Promise.all([
       Sale.countDocuments({
         orderStatus: "completed",
+        paymentStatus: { $in: ["pending", "credit"] },
+        orderDate: { $gte: start, $lte: end },
+      }),
+      Sale.countDocuments({
+        orderStatus: "completed",
+        paymentStatus: "completed",
+        orderDate: { $gte: start, $lte: end },
+      }),
+      Sale.countDocuments({
+        orderStatus: "approved",
         orderDate: { $gte: start, $lte: end },
       }),
       Sale.countDocuments({
         orderStatus: "pending",
         orderDate: { $gte: start, $lte: end },
       }),
-      Product.countDocuments(),
       Sale.aggregate([
         {
           $match: {
@@ -49,7 +52,13 @@ export const getFirstRowDashboard = async () => {
       totalSalesAmountResult.length > 0 ? totalSalesAmountResult[0].total : 0;
     return {
       success: true,
-      data: { totalSales, totalOrderPending, totalProducts, totalSalesAmount },
+      data: {
+        totalInvPaymentPending,
+        totalInvPaymentComplete,
+        totalOrderPending,
+        totalOrderApproved,
+        totalSalesAmount,
+      },
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;
@@ -95,7 +104,7 @@ export const getAllExpense = async () => {
         {
           $group: {
             _id: null,
-            total: { $sum: "$amount" },
+            total: { $sum: "$netSalary" },
           },
         },
       ]),

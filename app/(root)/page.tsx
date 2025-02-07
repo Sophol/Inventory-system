@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Package, ShoppingCart } from "lucide-react";
+import { LayoutDashboard, ShoppingCart } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -22,6 +21,7 @@ import {
 import { checkAuthorization } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 import SaleChart from "@/components/SaleChart";
+import { ExpensePieChart } from "@/components/dashboard/ExpensePieChart";
 
 const Home = async () => {
   const isAuthorized = await checkAuthorization(["admin", "branch"]);
@@ -31,13 +31,36 @@ const Home = async () => {
   const { success, data } = await getFirstRowDashboard();
   if (!success) return notFound();
   const expenseData = await getAllExpense();
+  const chartExpenseData = [
+    {
+      expense: "purchase",
+      amount: expenseData.data.totalPurchase,
+      fill: "var(--color-purchase)",
+    },
+    {
+      expense: "general",
+      amount: expenseData.data.totalGeneral,
+      fill: "var(--color-general)",
+    },
+    {
+      expense: "mission",
+      amount: expenseData.data.totalMission,
+      fill: "var(--color-mission)",
+    },
+    {
+      expense: "salary",
+      amount: expenseData.data.totalSalary,
+      fill: "var(--color-salary)",
+    },
+  ];
+  console.log(chartExpenseData);
   const chartData = await getSalesDataLast6Months();
   const recentOrders = await getRecentOrders();
   return (
     <>
       <section>
         <div className="flex-1 space-y-4 p-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -60,12 +83,52 @@ const Home = async () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Total Sales
+                  Total Order Approved
                 </CardTitle>
                 <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-lg font-bold">{formatCurrency(data.totalSales)}</div>
+                <div className="text-lg font-bold">
+                  {formatCurrency(data.totalOrderApproved)}
+                </div>
+                <Button
+                  variant="link"
+                  className="px-0 text-xs text-muted-foreground"
+                >
+                  View Details
+                </Button>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Invoice Pending Payment
+                </CardTitle>
+                <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-lg font-bold">
+                  {formatCurrency(data.totalInvPaymentPending)}
+                </div>
+                <Button
+                  variant="link"
+                  className="px-0 text-xs text-muted-foreground"
+                >
+                  View Details
+                </Button>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Invoice Complete Payment
+                </CardTitle>
+                <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-lg font-bold">
+                  {formatCurrency(data.totalInvPaymentComplete)}
+                </div>
                 <Button
                   variant="link"
                   className="px-0 text-xs text-muted-foreground"
@@ -93,24 +156,6 @@ const Home = async () => {
                 </Button>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total Products
-                </CardTitle>
-                <Package className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-lg font-bold">{data.totalProducts}</div>
-                <Button
-                  variant="link"
-                  className="px-0 text-xs text-muted-foreground"
-                >
-                  View Details
-                </Button>
-              </CardContent>
-            </Card>
           </div>
           <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
             <Card>
@@ -118,68 +163,7 @@ const Home = async () => {
                 <CardTitle>Expense</CardTitle>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Expense Types</TableHead>
-                      <TableHead>Amount</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>
-                        <div className="text-lg p-3">Purchase Expense</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-lg">
-                          {formatCurrency(expenseData.data.totalPurchase)}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="text-lg p-3">Mission Expense</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-lg">
-                          {formatCurrency(expenseData.data.totalMission)}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="text-lg p-3">Salary Expense</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-lg">
-                          {formatCurrency(expenseData.data.totalSalary)}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <div className="text-lg p-3">General Expense</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-lg">
-                          {formatCurrency(expenseData.data.totalGeneral)}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                  <TableFooter>
-                    <TableRow>
-                      <TableCell>
-                        <div className="text-lg">Total: </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-lg">
-                          {formatCurrency(expenseData.data.totalExpenses)}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </TableFooter>
-                </Table>
+                <ExpensePieChart chartData={chartExpenseData} />
               </CardContent>
             </Card>
             <SaleChart saleByDate={chartData} />
@@ -219,7 +203,9 @@ const Home = async () => {
                         </Badge>
                       </TableCell>
                       <TableCell>{order.date}</TableCell>
-                      <TableCell>{formatCurrency(parseInt(order.amount))}</TableCell>
+                      <TableCell>
+                        {formatCurrency(parseInt(order.amount))}
+                      </TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm">
                           View
