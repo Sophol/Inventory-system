@@ -1,6 +1,6 @@
 import React from "react";
 import "./invoice.css";
-import { moulRegular } from "../../../../../fonts/fonts";
+
 import { getSetting } from "@/lib/actions/setting.action";
 import { notFound } from "next/navigation";
 
