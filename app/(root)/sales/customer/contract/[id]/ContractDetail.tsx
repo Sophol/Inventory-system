@@ -16,7 +16,7 @@ const ContractDetail = async ({ customer }: { customer: Customer }) => {
       <div className="printable-area card80-container">
 
         <div className="flex flex-col ">
-          <h4 className="flex justify-center text-center  font-moul text-sm"  style={{ lineHeight: '1.5rem' }}>
+          <h4 className="flex justify-center text-center  font-moul text-sm" style={{ lineHeight: '1.5rem' }}>
             ព្រះរាជាណាចក្រកម្ពុជា
             <br />
             ជាតិ សាសនា ព្រះមហាក្សត្រ
@@ -244,182 +244,182 @@ const ContractDetail = async ({ customer }: { customer: Customer }) => {
             </p>
           </div>
         </div>
-      
-      <h4 className={` py-2 font-moul text-sm`}>
-        ប្រការ ៧៖ រយៈពេលកិច្ចសន្យា និងការបញ្ចប់កិច្ចសន្យា
-      </h4>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៧.១</p>
+
+        <h4 className={` py-2 font-moul text-sm`}>
+          ប្រការ ៧៖ រយៈពេលកិច្ចសន្យា និងការបញ្ចប់កិច្ចសន្យា
+        </h4>
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៧.១</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              កិច្ចសន្យានេះមានសុពលភាពរយៈពេល ១២ ខែ រាប់ចាប់ពីថ្ងៃចុះកិច្ចសន្យាតទៅ។
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <p>
-            កិច្ចសន្យានេះមានសុពលភាពរយៈពេល ១២ ខែ រាប់ចាប់ពីថ្ងៃចុះកិច្ចសន្យាតទៅ។
-          </p>
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៧.២</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              ក្នុងករណីភាគីណាមួយមានបំណងចង់បន្តរយៈពេលនៃកិច្ចសន្យា ភាគីនោះត្រូវជូនដំណឹងទៅភាគីម្ខាងទៀតចំនួន ១ ខែជាមុន ដើម្បីពិភាក្សា និងចរចា លើលក្ខខណ្ឌថ្មី។
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៧.២</p>
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៧.៣</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              ក្នុងករណីភាគីណាមួយមានបំណង់ចង់រំលាយកិច្ចសន្យាមុនពេលកំណត់ ភាគីនោះត្រូវជូនដំណឹងទៅភាគីម្ខាងទៀត ចំនួន ១ ខែជាមុន ជាលាយលក្ខណ៍អក្សរ ដោយមានបញ្ជាក់ពីកាលបរិច្ឆេទនៃការបញ្ចប់កិច្ចសន្យាមុនកាលកំណត់។ ដរាបណាកិច្ចសន្យាមិនទាន់បញ្ចប់ រាល់កាតព្វកិច្ចរបស់ភាគី “ក” ស្របតាមប្រការ ៥ នៃកិច្ចសន្យានេះ និងរាល់កាតព្វកិច្ចរបស់ភាគី “ខ” ស្របតាមប្រការ ៦ នៃកិច្ចសន្យានេះ ត្រូវបន្តអនុវត្តដដែលរហូតដល់ផលិតផលលក់អស់ចេញពីស្តុក។
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <p>
-            ក្នុងករណីភាគីណាមួយមានបំណងចង់បន្តរយៈពេលនៃកិច្ចសន្យា ភាគីនោះត្រូវជូនដំណឹងទៅភាគីម្ខាងទៀតចំនួន ១ ខែជាមុន ដើម្បីពិភាក្សា និងចរចា លើលក្ខខណ្ឌថ្មី។
-          </p>
+        <h4 className={` py-2 font-moul text-sm`}>
+          ប្រការ ៨៖ ការមិនអនុវត្តកាតព្វកិច្ច
+        </h4>
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៨.១</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              ករណីការទូទាត់ប្រាក់ថ្លៃផលិតផលក្នុងប្រការ ៤.២ ខាងលើ មានការយឺតយ៉ាវ នោះភាគី “ក” មានសិទ្ធិក្នុងការជ្រើសរើសខាងក្រោម៖
+              <br />
+              ក. ឱ្យភាគី “ខ” ត្រូវបង់ការប្រាក់ពិន័យក្នុងចំនួន ១% ក្នុងមួយខែ នៃចំនួនទឹកប្រាក់ដែលមិនទាន់ទូទាត់ រហូតដល់មានការទូទាត់ប្រាក់គ្រប់ចំនួន ឬ
+              <br />
+              ខ. ភាគី “ក” ប្រមូលយកផលិតផលមកវិញទាំងអស់ និងរក្សាទុកប្រាក់កក់ ដែលបានបង់ដោយភាគី “ខ” ទាំងអស់។
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៧.៣</p>
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៨.២</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              ក្នុងករណីភាគី “ក” មិនអនុវត្តតាមកាតព្វកិច្ចរបស់ខ្លួនស្របតាមប្រការ ៣ ខាងលើ ភាគី “ក” ត្រូវជូនដំណឹងទៅភាគី “ខ” ឱ្យបានឆាប់ដែលអាចធ្វើទៅបាន និងត្រូវប្រគល់ប្រាក់កក់ជូនភាគី “ខ” វិញដោយគ្មានការប្រាក់ ឬសំណងបន្ថែមឡើយ។
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <p>
-            ក្នុងករណីភាគីណាមួយមានបំណង់ចង់រំលាយកិច្ចសន្យាមុនពេលកំណត់ ភាគីនោះត្រូវជូនដំណឹងទៅភាគីម្ខាងទៀត ចំនួន ១ ខែជាមុន ជាលាយលក្ខណ៍អក្សរ ដោយមានបញ្ជាក់ពីកាលបរិច្ឆេទនៃការបញ្ចប់កិច្ចសន្យាមុនកាលកំណត់។ ដរាបណាកិច្ចសន្យាមិនទាន់បញ្ចប់ រាល់កាតព្វកិច្ចរបស់ភាគី “ក” ស្របតាមប្រការ ៥ នៃកិច្ចសន្យានេះ និងរាល់កាតព្វកិច្ចរបស់ភាគី “ខ” ស្របតាមប្រការ ៦ នៃកិច្ចសន្យានេះ ត្រូវបន្តអនុវត្តដដែលរហូតដល់ផលិតផលលក់អស់ចេញពីស្តុក។
-          </p>
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៨.៣</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              ក្នុងករណីភាគីណាមួយនៃកិច្ចសន្យានេះ មិនអនុវត្តតាមកាតព្វកិច្ចណាមួយដែលមានចែងក្នុងកិច្ចសន្យានេះ ភាគីម្ខាងទៀត ត្រូវជូនដំណឹងទៅភាគីនោះដើម្បីដាស់តឿនការអនុវត្តកាតព្វកិច្ច ដោយមានកំណត់រយៈពេលឱ្យអនុវត្តតាមកាតព្វកិច្ចរបស់ខ្លួន។ ប្រសិនបើនៅតែមិនមានការកែប្រែណាមួយបន្ទាប់ពីមានការដាស់តឿនចំនួន ២ ដងរួច ភាគីម្ខាងទៀតអាចរំលាយកិច្ចសន្យានេះបាន ដោយអនុវត្តតាមប្រការ ៨.១, និងប្រការ ៨.២ ខាងលើ។
+            </p>
+          </div>
         </div>
-      </div>
-      <h4 className={` py-2 font-moul text-sm`}>
-        ប្រការ ៨៖ ការមិនអនុវត្តកាតព្វកិច្ច
-      </h4>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៨.១</p>
+        <h4 className={` py-2 font-moul text-sm`}>
+          ប្រការ ៩៖ បញ្ញត្តិផ្សេងៗ
+        </h4>
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៩.១</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              កិច្ចសន្យានេះធ្វើឡើងដោយឆន្ទៈរបស់ភាគីទាំងអស់ ដោយសេរី គ្មានការបង្ខិតបង្ខំ ឬគំរាមកំហែងពីភាគីណាមួយឡើយ ។ ភាគីទាំងអស់សន្យាថានឹងគោរពតាមលក្ខខណ្ឌខាងលើនេះ ។
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <p>
-            ករណីការទូទាត់ប្រាក់ថ្លៃផលិតផលក្នុងប្រការ ៤.២ ខាងលើ មានការយឺតយ៉ាវ នោះភាគី “ក” មានសិទ្ធិក្នុងការជ្រើសរើសខាងក្រោម៖
-            <br />
-            ក. ឱ្យភាគី “ខ” ត្រូវបង់ការប្រាក់ពិន័យក្នុងចំនួន ១% ក្នុងមួយខែ នៃចំនួនទឹកប្រាក់ដែលមិនទាន់ទូទាត់ រហូតដល់មានការទូទាត់ប្រាក់គ្រប់ចំនួន ឬ
-            <br />
-            ខ. ភាគី “ក” ប្រមូលយកផលិតផលមកវិញទាំងអស់ និងរក្សាទុកប្រាក់កក់ ដែលបានបង់ដោយភាគី “ខ” ទាំងអស់។
-          </p>
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៩.២</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              កិច្ចសន្យានេះមានអានុភាពអនុវត្តចាប់តាំងពីថ្ងៃចុះហត្ថលេខានេះតទៅ និងបញ្ចប់ដោយស្វយប្រវត្តិតាមប្រការ ៧.១ ខាងលើ។
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៨.២</p>
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៩.៣</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              ភាគីទាំងអស់បានអាន និងពិនិត្យយ៉ាងត្រឹមត្រូវនូវខ្លឹមសារនៃកិច្ចសន្យានេះ ថាពិតជាត្រឹមត្រូវ និងឯកភាពទាំងស្រុងនូវបណ្តាលក្ខខណ្ឌខាងលើ និងទទួលខុសត្រូវចំពោះមុខច្បាប់ និងសុខចិត្តផ្តិតស្នាមមេដៃ ចុះហត្ថលេខា និងបោះត្រាក្រុមហ៊ុន ទុកជាភស្តុតាង ។
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <p>
-            ក្នុងករណីភាគី “ក” មិនអនុវត្តតាមកាតព្វកិច្ចរបស់ខ្លួនស្របតាមប្រការ ៣ ខាងលើ ភាគី “ក” ត្រូវជូនដំណឹងទៅភាគី “ខ” ឱ្យបានឆាប់ដែលអាចធ្វើទៅបាន និងត្រូវប្រគល់ប្រាក់កក់ជូនភាគី “ខ” វិញដោយគ្មានការប្រាក់ ឬសំណងបន្ថែមឡើយ។
-          </p>
-        </div>
-      </div>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៨.៣</p>
-        </div>
-        <div className="flex flex-col">
-          <p>
-            ក្នុងករណីភាគីណាមួយនៃកិច្ចសន្យានេះ មិនអនុវត្តតាមកាតព្វកិច្ចណាមួយដែលមានចែងក្នុងកិច្ចសន្យានេះ ភាគីម្ខាងទៀត ត្រូវជូនដំណឹងទៅភាគីនោះដើម្បីដាស់តឿនការអនុវត្តកាតព្វកិច្ច ដោយមានកំណត់រយៈពេលឱ្យអនុវត្តតាមកាតព្វកិច្ចរបស់ខ្លួន។ ប្រសិនបើនៅតែមិនមានការកែប្រែណាមួយបន្ទាប់ពីមានការដាស់តឿនចំនួន ២ ដងរួច ភាគីម្ខាងទៀតអាចរំលាយកិច្ចសន្យានេះបាន ដោយអនុវត្តតាមប្រការ ៨.១, និងប្រការ ៨.២ ខាងលើ។
-          </p>
-        </div>
-      </div>
-      <h4 className={` py-2 font-moul text-sm`}>
-        ប្រការ ៩៖ បញ្ញត្តិផ្សេងៗ
-      </h4>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៩.១</p>
-        </div>
-        <div className="flex flex-col">
-          <p>
-            កិច្ចសន្យានេះធ្វើឡើងដោយឆន្ទៈរបស់ភាគីទាំងអស់ ដោយសេរី គ្មានការបង្ខិតបង្ខំ ឬគំរាមកំហែងពីភាគីណាមួយឡើយ ។ ភាគីទាំងអស់សន្យាថានឹងគោរពតាមលក្ខខណ្ឌខាងលើនេះ ។
-          </p>
-        </div>
-      </div>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៩.២</p>
-        </div>
-        <div className="flex flex-col">
-          <p>
-            កិច្ចសន្យានេះមានអានុភាពអនុវត្តចាប់តាំងពីថ្ងៃចុះហត្ថលេខានេះតទៅ និងបញ្ចប់ដោយស្វយប្រវត្តិតាមប្រការ ៧.១ ខាងលើ។
-          </p>
-        </div>
-      </div>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៩.៣</p>
-        </div>
-        <div className="flex flex-col">
-          <p>
-            ភាគីទាំងអស់បានអាន និងពិនិត្យយ៉ាងត្រឹមត្រូវនូវខ្លឹមសារនៃកិច្ចសន្យានេះ ថាពិតជាត្រឹមត្រូវ និងឯកភាពទាំងស្រុងនូវបណ្តាលក្ខខណ្ឌខាងលើ និងទទួលខុសត្រូវចំពោះមុខច្បាប់ និងសុខចិត្តផ្តិតស្នាមមេដៃ ចុះហត្ថលេខា និងបោះត្រាក្រុមហ៊ុន ទុកជាភស្តុតាង ។
-          </p>
-        </div>
-      </div>
-      <div className="flex space-x-1">
-        <div className="flex flex-col w-[40px]">
-          <p className="w-[40px]">៩.៤</p>
-        </div>
-        <div className="flex flex-col">
-          <p>
-            កិច្ចសន្យានេះធ្វើឡើងចំនួន ៤ ច្បាប់ដើម ដោយ ៖
-            <br />
-          
+        <div className="flex space-x-1">
+          <div className="flex flex-col w-[40px]">
+            <p className="w-[40px]">៩.៤</p>
+          </div>
+          <div className="flex flex-col">
+            <p>
+              កិច្ចសន្យានេះធ្វើឡើងចំនួន ៤ ច្បាប់ដើម ដោយ ៖
+              <br />
+
               <span className="mr-7">- ០១ ច្បាប់ សំរាប់ភាគី “ក”</span>
               <span className="mr-7">- ០១ ច្បាប់ សំរាប់ភាគី “ខ”</span>
               <span>- ០២ ច្បាប់ សំរាប់ សាក្សីម្នាក់ៗ ។</span>
-            
-          </p>
+
+            </p>
+          </div>
         </div>
-      </div>
-      {/* table */}
-      <div className="overflow-x-auto">
-      <table className="w-full border-collapse border border-dotted border-black mt-5">
-        <tbody>
-          <tr>
-            <td className="border border-dotted border-black px-4 py-2 w-[49.5%] text-center font-moul text-sm">
-              ភាគី “ក”
-              <br />
-              ក្រុមហ៊ុន [-]
-            </td>
-            <td className="border border-dotted border-black px-2 py-2 w-[1%]"></td>
-            <td className="border border-dotted border-black px-4 py-2 w-[49.5%] text-center font-moul text-sm">ភាគី “ខ”
-              <br />
-              ហត្ថលេខា និង ស្នាមមេដៃស្តាំ
-            </td>
-          </tr>
-          <tr>
-            <td className="border border-dotted border-black px-4 py-2 h-[140px]"></td>
-            <td className="border border-dotted border-black px-3 py-2"></td>
-            <td className="border border-dotted border-black px-4 py-2"></td>
-          </tr>
-          <tr>
-            <td className="border border-dotted border-black px-4 h-[30px]">តំណាងដោយលោក [-]</td>
-            <td className="border border-dotted border-black px-3  h-[30px]"></td>
-            <td className="border border-dotted border-black pl-10 h-[30px]">ឈ្មោះ  .........................................</td>
-          </tr>
-          <tr>
-            <td className="border border-dotted border-black px-4  h-[30px]"></td>
-            <td className="border border-dotted border-black px-3  h-[30px]"></td>
-            <td className="border border-dotted border-black px-4 h-[30px]"></td>
-          </tr>
-          <tr>
-            <td className="border border-dotted border-black px-4 py-2 font-moul text-sm text-center">សាក្សី 
-              <br />
-ហត្ថលេខា និងស្នាមមេដៃស្តាំ
-</td>
-            <td className="border border-dotted border-black px-2 py-2"></td>
-            <td className="border border-dotted border-black px-4 py-2 font-moul text-sm text-center">សាក្សី
-              <br />
-ហត្ថលេខា និងស្នាមមេដៃស្តាំ
-</td>
-          </tr>
-          <tr>
-            <td className="border border-dotted border-black px-4 py-2 h-[140px]"></td>
-            <td className="border border-dotted border-black px-2 py-2"></td>
-            <td className="border border-dotted border-black px-4 py-2"></td>
-          </tr>
-          <tr>
-          <td className="border border-dotted border-black pl-10 h-[30px]">ឈ្មោះ  .........................................</td>
-            <td className="border border-dotted border-black px-3  h-[30px]"></td>
-            <td className="border border-dotted border-black pl-10 h-[30px]">ឈ្មោះ  .........................................</td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-    </div >
+        {/* table */}
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse border border-dotted border-black mt-5">
+            <tbody>
+              <tr>
+                <td className="border border-dotted border-black px-4 py-2 w-[49.5%] text-center font-moul text-sm">
+                  ភាគី “ក”
+                  <br />
+                  ក្រុមហ៊ុន [-]
+                </td>
+                <td className="border border-dotted border-black px-2 py-2 w-[1%]"></td>
+                <td className="border border-dotted border-black px-4 py-2 w-[49.5%] text-center font-moul text-sm">ភាគី “ខ”
+                  <br />
+                  ហត្ថលេខា និង ស្នាមមេដៃស្តាំ
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-dotted border-black px-4 py-2 h-[140px]"></td>
+                <td className="border border-dotted border-black px-3 py-2"></td>
+                <td className="border border-dotted border-black px-4 py-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-dotted border-black px-4 h-[30px]">តំណាងដោយលោក [-]</td>
+                <td className="border border-dotted border-black px-3  h-[30px]"></td>
+                <td className="border border-dotted border-black pl-10 h-[30px]">ឈ្មោះ  .........................................</td>
+              </tr>
+              <tr>
+                <td className="border border-dotted border-black px-4  h-[30px]"></td>
+                <td className="border border-dotted border-black px-3  h-[30px]"></td>
+                <td className="border border-dotted border-black px-4 h-[30px]"></td>
+              </tr>
+              <tr>
+                <td className="border border-dotted border-black px-4 py-2 font-moul text-sm text-center">សាក្សី
+                  <br />
+                  ហត្ថលេខា និងស្នាមមេដៃស្តាំ
+                </td>
+                <td className="border border-dotted border-black px-2 py-2"></td>
+                <td className="border border-dotted border-black px-4 py-2 font-moul text-sm text-center">សាក្សី
+                  <br />
+                  ហត្ថលេខា និងស្នាមមេដៃស្តាំ
+                </td>
+              </tr>
+              <tr>
+                <td className="border border-dotted border-black px-4 py-2 h-[140px]"></td>
+                <td className="border border-dotted border-black px-2 py-2"></td>
+                <td className="border border-dotted border-black px-4 py-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-dotted border-black pl-10 h-[30px]">ឈ្មោះ  .........................................</td>
+                <td className="border border-dotted border-black px-3  h-[30px]"></td>
+                <td className="border border-dotted border-black pl-10 h-[30px]">ឈ្មោះ  .........................................</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div >
     </div>
   );
 };
