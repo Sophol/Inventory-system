@@ -85,6 +85,7 @@ interface CreateCustomerParams {
   status: "active" | "inactive";
   isDepo: boolean;
   attachmentUrl?: string;
+  province?: string;
 }
 interface EditCustomerParams extends CreateCustomerParams {
   customerId: string;

@@ -556,6 +556,9 @@ export async function getInvoices(params: SaleSearchParams): Promise<
     case "paymentStatus":
       sortCriteria = { paymentStatus: -1 };
       break;
+    case "balance":
+      sortCriteria = { balance: -1 };
+      break;
     default:
       sortCriteria = { createdAt: -1 };
       break;

@@ -7,7 +7,7 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
-import { dataStatuses } from "@/constants/data";
+import { dataProvince, dataStatuses } from "@/constants/data";
 import ROUTES from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
 import { createCustomer, editCustomer } from "@/lib/actions/customer.action";
@@ -41,9 +41,11 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
       status: customer?.status || "active",
       isDepo: customer?.isDepo || false,
       attachmentUrl: customer?.attachmentUrl || "",
+      province: customer?.province || "",
     },
   });
   const statusData: SelectData[] = dataStatuses;
+  const provinceData: SelectData[] = dataProvince;
   const handleCreateCustomer = async (
     data: z.infer<typeof CreateCustomerSchema>
   ) => {
@@ -120,7 +122,13 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
             items={statusData}
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <FormSelect
+            name="province"
+            label="Province"
+            control={form.control}
+            items={provinceData}
+          />
           <FormInput
             name="attachmentUrl"
             label="Attachment Url"

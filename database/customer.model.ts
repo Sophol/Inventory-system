@@ -12,6 +12,7 @@ export interface ICustomer {
   status: "active" | "inactive";
   isDepo: boolean;
   attachmentUrl?: string;
+  province: string;
 }
 export interface ICustomerDoc extends ICustomer, Document {}
 const CustomerSchema = new Schema<ICustomer>(
@@ -24,6 +25,7 @@ const CustomerSchema = new Schema<ICustomer>(
     description: { type: String },
     balance: { type: Number, default: 0 },
     attachmentUrl: { type: String },
+    province: { type: String },
     saleType: {
       type: String,
       enum: ["retail", "wholesale"],

@@ -56,6 +56,7 @@ export async function editCustomer(
     customerId,
     isDepo,
     attachmentUrl,
+    province,
   } = validatedData.params!;
   try {
     const customer = await Customer.findById(customerId);
@@ -73,7 +74,8 @@ export async function editCustomer(
       customer.saleType !== saleType ||
       customer.status !== status ||
       customer.isDepo !== isDepo ||
-      customer.attachmentUrl !== attachmentUrl
+      customer.attachmentUrl !== attachmentUrl ||
+      customer.province !== province
     ) {
       customer.name = name;
       customer.phone = phone;
@@ -86,6 +88,7 @@ export async function editCustomer(
       customer.status = status;
       customer.isDepo = isDepo;
       customer.attachmentUrl = attachmentUrl;
+      customer.province = province;
       await customer.save();
     }
     return { success: true, data: JSON.parse(JSON.stringify(customer)) };
@@ -199,6 +202,7 @@ export async function getCustomers(
             balance: 1,
             isDepo: 1,
             attachmentUrl: 1,
+            province: 1,
           },
         },
         { $sort: sortCriteria },

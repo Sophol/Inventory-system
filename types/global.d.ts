@@ -132,6 +132,7 @@ interface Customer {
   status: "active" | "inactive";
   isDepo: boolean;
   attachmentUrl?: string;
+  province?: string;
 }
 interface Supplier {
   _id: string;
