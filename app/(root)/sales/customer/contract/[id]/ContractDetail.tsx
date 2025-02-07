@@ -356,11 +356,11 @@ const ContractDetail = async ({ customer }: { customer: Customer }) => {
           <p>
             កិច្ចសន្យានេះធ្វើឡើងចំនួន ៤ ច្បាប់ដើម ដោយ ៖
             <br />
-            <p>
+          
               <span className="mr-7">- ០១ ច្បាប់ សំរាប់ភាគី “ក”</span>
               <span className="mr-7">- ០១ ច្បាប់ សំរាប់ភាគី “ខ”</span>
               <span>- ០២ ច្បាប់ សំរាប់ សាក្សីម្នាក់ៗ ។</span>
-            </p>
+            
           </p>
         </div>
       </div>
