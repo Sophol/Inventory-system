@@ -16,6 +16,7 @@ const ROUTES = {
   CUSTOMERS: "/sales/customer",
   ADDCUSTOMER: "/sales/customer/form",
   CUSTOMER: (_id: string) => `/sales/customer/${_id}`,
+  CUSTOMERCONTRACT: (_id: string) => `/sales/customer/contract/${_id}`,
   SUPPLIERS: "/purchases/supplier",
   ADDSUPPLIER: "/purchases/supplier/form",
   SUPPLIER: (_id: string) => `/purchases/supplier/${_id}`,

@@ -16,25 +16,25 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reference No" />
+      <DataTableColumnHeader column={column} title="Reference No" className="flex justify-center"/>
     ),
   },
   {
     accessorKey: "supplier.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Supplier" />
+      <DataTableColumnHeader column={column} title="Supplier" className="flex justify-center"/>
     ),
   },
   {
     accessorKey: "branch.title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch" />
+      <DataTableColumnHeader column={column} title="Branch" className="flex justify-center"/>
     ),
   },
   {
     accessorKey: "customer",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Depo" />
+      <DataTableColumnHeader column={column} title="Depo" className="flex justify-center"/>
     ),
     cell: ({ row }) => {
       const purchase = row.original;
@@ -44,23 +44,24 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "purchaseDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Purchase Date" />
+      <DataTableColumnHeader column={column} title="Purchase Date" className="flex justify-center"/>
     ),
     cell: ({ row }) => {
-      const date = row.getValue("purchaseDate") as Date;
-      return format(new Date(date), "yyyy-MM-dd HH:mm:ss");
+      const date = row.getValue("purchaseDate") as string;
+      const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
+      return <span className="flex justify-center">{formattedDate}</span>;
     },
   },
   {
     accessorKey: "orderStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Order Status" />
+      <DataTableColumnHeader column={column} title="Order Status" className="flex justify-center"/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("orderStatus") as string;
       return (
         <Badge
-          className={status === "completed" ? "bg-green-500" : "bg-yellow-500"}
+          className={status === "completed" ? "uppercase bg-green-500 text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto" : "bg-yellow-500 text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto uppercase"}
         >
           {status}
         </Badge>
@@ -70,13 +71,13 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "paymentStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payment Status" />
+      <DataTableColumnHeader column={column} title="Payment Status"  className="flex justify-center"/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("paymentStatus") as string;
       return (
         <Badge
-          className={status === "completed" ? "bg-green-500" : "bg-red-500"}
+          className={status === "completed" ? "uppercase bg-green-500 text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto" : "bg-red-500 text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto uppercase"}
         >
           {status}
         </Badge>
@@ -86,17 +87,17 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "grandtotal",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Grand Total" />
+      <DataTableColumnHeader column={column} title="Grand Total" className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const grandtotal = row.getValue("grandtotal") as number;
-      return <span>{formatCurrency(grandtotal)}</span>;
+      return <span className="justify-end flex">{formatCurrency(grandtotal)}</span>;
     },
   },
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" />
+      <DataTableColumnHeader column={column} title="Actions" className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const purchase = row.original;
@@ -120,11 +121,11 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 justify-center">
           <RedirectButton
             title="Preview"
             href={ROUTES.PREVIEWPURCHASE(purchase._id)}
-            className="bg-green-500 text-white"
+            className="bg-green-500 text-white uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center mx-auto"
           />
           <ButtonDelete onDelete={handleDelete} />
         </div>

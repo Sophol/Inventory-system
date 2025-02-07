@@ -25,7 +25,7 @@ export const ProductColumn: ColumnDef<Product>[] = [
       const status = row.getValue("status") as string;
       return (
         <Badge className={status === "active" ? "bg-green-500  text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto" : "bg-red-500  text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto"}>
-          {status} 1
+          {status}
         </Badge>
       );
     },
@@ -80,7 +80,7 @@ export const ProductColumn: ColumnDef<Product>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Action" />
+      <DataTableColumnHeader column={column} title="Action"  className="flex justify-center" />
     ),
     cell: ({ row }) => {
       const product = row.original;
@@ -104,7 +104,7 @@ export const ProductColumn: ColumnDef<Product>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 justify-center">
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.PRODUCT(product._id)}
