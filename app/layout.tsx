@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
-
+import { moulRegular } from "./fonts/fonts";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/toaster";
 import ThemeProvider from "@/context/Theme";
@@ -26,6 +26,7 @@ const kohSantepheap = localFont({
   weight: "400",
 });
 
+
 export const metadata: Metadata = {
   title: "ERP System",
   description:
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={moulRegular.variable}>
       <head>
         <link
           rel="stylesheet"
