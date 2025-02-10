@@ -12,6 +12,7 @@ import handleError from "../handlers/error";
 import { SearchAllExpenseSchema } from "../validations";
 import action from "../handlers/action";
 import { getUniqueRandomColors } from "../url";
+import dbConnect from "../mongoose";
 const months = [
   "January",
   "February",
@@ -29,6 +30,7 @@ const months = [
 
 export const getFirstRowDashboard = async () => {
   try {
+    await dbConnect();
     const start = startOfMonth(new Date());
     const end = endOfMonth(new Date());
     const [
