@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 import { SalaryColumn } from "@/columns/SalaryColumn";
 import SalarySearch from "@/components/search/SalarySearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -37,20 +37,33 @@ const Salary = async ({ searchParams }: SearchParams) => {
     data ||
     ({} as {
       salaries: Salary[];
-      summary: { count: 0; totalAmount: 0 };
+      summary: {
+        count: 0;
+        totalAmount: 0;
+        totalAllowance: 0;
+        totalDeduction: 0;
+        totalSalary: 0;
+      };
       isNext: boolean;
     });
   const summaryRow = (
-    <TableRow className="bg-blue-200 dark:bg-slate-800"> 
-      <TableCell colSpan={6} className="text-right ">
+    <TableRow className="bg-blue-200 dark:bg-slate-800">
+      <TableCell colSpan={3} className="text-right ">
         <strong>Total:</strong>
+      </TableCell>
+      <TableCell className="text-right ">
+        <strong>{formatCurrency(summary?.totalSalary)}</strong>
+      </TableCell>
+      <TableCell className="text-right ">
+        <strong>{formatCurrency(summary?.totalAllowance)}</strong>
+      </TableCell>
+      <TableCell className="text-right ">
+        <strong>{formatCurrency(summary?.totalDeduction)}</strong>
       </TableCell>
       <TableCell className="text-right ">
         <strong>{formatCurrency(summary?.totalAmount)}</strong>
       </TableCell>
-      <TableCell >
-        
-      </TableCell>
+      <TableCell></TableCell>
     </TableRow>
   );
   return (

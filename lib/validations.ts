@@ -462,3 +462,6 @@ export const PaginatedSearchParamsPaymentSchema =
   PaginatedSearchParamsSchema.extend({
     sale: z.string(),
   });
+export const SearchAllExpenseSchema = z.object({
+  searchMonth: z.string().min(1, { message: "Month is required." }),
+});

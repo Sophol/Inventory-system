@@ -1,10 +1,33 @@
-import { GeneralExp, Mission, Purchase, Salary, Sale } from "@/database";
+"use server";
+import {
+  Customer,
+  GeneralExp,
+  Mission,
+  Purchase,
+  Salary,
+  Sale,
+} from "@/database";
 import { format, endOfMonth, startOfMonth, subMonths } from "date-fns";
 import handleError from "../handlers/error";
-import dbConnect from "../mongoose";
+import { SearchAllExpenseSchema } from "../validations";
+import action from "../handlers/action";
+import { getUniqueRandomColors } from "../url";
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export const getFirstRowDashboard = async () => {
-  await dbConnect();
   try {
     const start = startOfMonth(new Date());
     const end = endOfMonth(new Date());
@@ -64,9 +87,34 @@ export const getFirstRowDashboard = async () => {
     return handleError(error) as ErrorResponse;
   }
 };
-export const getAllExpense = async () => {
-  const start = startOfMonth(new Date());
-  const end = endOfMonth(new Date());
+export async function getAllExpense(params: { searchMonth: string }): Promise<
+  ActionResponse<{
+    totalPurchase: number;
+    totalMission: number;
+    totalSalary: number;
+    totalGeneral: number;
+    totalExpenses: number;
+  }>
+> {
+  const validatedData = await action({
+    params,
+    schema: SearchAllExpenseSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { searchMonth } = validatedData.params!;
+  const monthIndex = months.findIndex(
+    (m) => m.toLowerCase().toString() === searchMonth.toLowerCase().toString()
+  );
+  if (monthIndex === -1) {
+    throw new Error("Invalid month string");
+  }
+
+  const date = new Date(new Date().getFullYear(), monthIndex, 1);
+  const start = startOfMonth(date);
+  const end = endOfMonth(date);
   const [totalPurchase, totalMission, totalSalary, totalGeneral] =
     await Promise.all([
       Purchase.aggregate([
@@ -144,7 +192,81 @@ export const getAllExpense = async () => {
       totalExpenses,
     },
   };
-};
+}
+interface RevenueByProvince {
+  province: string;
+  revenue: number;
+  fill: string;
+}
+export async function getRevenueByProvince(params: {
+  searchMonth: string;
+}): Promise<ActionResponse<{ data: RevenueByProvince[] }>> {
+  const validatedData = await action({
+    params,
+    schema: SearchAllExpenseSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { searchMonth } = validatedData.params!;
+  const monthIndex = months.findIndex(
+    (m) => m.toLowerCase() === searchMonth.toLowerCase()
+  );
+  if (monthIndex === -1) {
+    throw new Error("Invalid month string");
+  }
+
+  const date = new Date(new Date().getFullYear(), monthIndex, 1);
+  const start = startOfMonth(date);
+  const end = endOfMonth(date);
+
+  const matchStage = {
+    "sales.orderDate": { $gte: start, $lte: end },
+    "sales.orderStatus": "completed",
+  };
+
+  const result = await Customer.aggregate([
+    {
+      $lookup: {
+        from: "sales",
+        localField: "_id",
+        foreignField: "customer",
+        as: "sales",
+      },
+    },
+    {
+      $unwind: "$sales",
+    },
+    {
+      $match: matchStage,
+    },
+    {
+      $group: {
+        _id: "$province",
+        revenue: { $sum: "$sales.grandtotal" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        province: "$_id",
+        revenue: 1,
+      },
+    },
+  ]);
+
+  const data = result.map((item, index) => ({
+    province: item.province,
+    revenue: item.revenue,
+    fill: getUniqueRandomColors(index), // Add appropriate fill value if needed
+  }));
+  return {
+    success: true,
+    data: JSON.parse(JSON.stringify(data)),
+  };
+}
+
 export const getSalesDataLast6Months = async () => {
   try {
     const end = new Date();

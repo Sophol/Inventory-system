@@ -26,43 +26,17 @@ import {
   SelectValue,
 } from "../ui/select";
 import React from "react";
-import { getAllExpense } from "@/lib/actions/dashboard.action";
-
-// Define the type for chartExpenseData
-interface ChartExpenseData {
-  expense: string;
-  amount: number;
+import { getRevenueByProvince } from "@/lib/actions/dashboard.action";
+interface ChartRevenueData {
+  province: string;
+  revenue: number;
   fill: string;
 }
 
-const chartConfig = {
-  amount: {
-    label: "Amount",
-  },
-  purchase: {
-    label: "Purchase Expense",
-    color: "hsl(197 37% 24%)",
-  },
-  general: {
-    label: "General Expense",
-    color: "hsl(11.92deg 75.88% 60.98%)",
-  },
-  mission: {
-    label: "Mission Expense",
-    color: "hsl(26.71deg 86.9% 67.06%)",
-  },
-  salary: {
-    label: "Salary Expense",
-    color: "hsl(43 74% 66%)",
-  },
-} satisfies ChartConfig;
-
-export function ExpensePieChart({
+export function RevenueByProvincePieChart({
   initialChartData,
-  initialTotalExpense,
 }: {
-  initialChartData: ChartExpenseData[];
-  initialTotalExpense: number;
+  initialChartData: ChartRevenueData[];
 }) {
   const months = [
     "January",
@@ -84,38 +58,42 @@ export function ExpensePieChart({
     months[new Date().getMonth()]
   );
   const [chartData, setChartData] = useState(initialChartData);
-  const [totalExpense, setTotalExpense] = useState(initialTotalExpense);
-
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const convertedData = chartData.reduce(
+    (
+      acc: { [key: string]: { label: string; color: string } },
+      { province, fill }
+    ) => {
+      acc[province] = {
+        label: province.charAt(0).toUpperCase() + province.slice(1),
+        color: fill,
+      };
+      return acc;
+    },
+    {}
+  ) satisfies ChartConfig;
   useEffect(() => {
     const fetchExpenseData = async () => {
       console.log("monthString", selectedMonth);
-      const updatedExpenseData = await getAllExpense({
+      const revenueResponse = await getRevenueByProvince({
         searchMonth: selectedMonth,
       });
-
-      setChartData([
-        {
-          expense: "purchase",
-          amount: updatedExpenseData.data?.totalPurchase ?? 0,
-          fill: "var(--color-purchase)",
-        },
-        {
-          expense: "general",
-          amount: updatedExpenseData.data?.totalGeneral ?? 0,
-          fill: "var(--color-general)",
-        },
-        {
-          expense: "mission",
-          amount: updatedExpenseData.data?.totalMission ?? 0,
-          fill: "var(--color-mission)",
-        },
-        {
-          expense: "salary",
-          amount: updatedExpenseData.data?.totalSalary ?? 0,
-          fill: "var(--color-salary)",
-        },
-      ]);
-      setTotalExpense(updatedExpenseData.data?.totalExpenses ?? 0);
+      const revenueData = revenueResponse?.data ?? [];
+      const revenueChart = Array.isArray(revenueData)
+        ? revenueData.map(
+            (item: { province: string; revenue: number; fill: string }) => ({
+              province: item.province,
+              revenue: item.revenue,
+              fill: item.fill,
+            })
+          )
+        : [];
+      const totalRevenue = revenueChart.reduce(
+        (acc, item) => acc + item.revenue,
+        0
+      );
+      setChartData(revenueChart);
+      setTotalRevenue(totalRevenue);
     };
 
     fetchExpenseData();
@@ -124,7 +102,7 @@ export function ExpensePieChart({
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Expense Distribution</CardTitle>
+        <CardTitle>Revenue Distribution</CardTitle>
         <Select value={selectedMonth} onValueChange={setSelectedMonth}>
           <SelectTrigger
             className="ml-auto h-7 w-[130px] rounded-lg pl-2.5"
@@ -157,17 +135,17 @@ export function ExpensePieChart({
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
-          config={chartConfig}
+          config={convertedData}
           className="mx-auto aspect-square max-h-[300px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
             <ChartTooltip
-              content={<ChartTooltipContent nameKey="expense" hideLabel />}
+              content={<ChartTooltipContent nameKey="province" hideLabel />}
             />
             <Pie
               data={chartData}
-              dataKey="amount"
-              nameKey="expense"
+              dataKey="revenue"
+              nameKey="province"
               cx="50%"
               cy="50%"
               outerRadius={100}
@@ -177,7 +155,7 @@ export function ExpensePieChart({
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Total expense: <Currency amount={totalExpense} /> this month{" "}
+          Total expense: <Currency amount={totalRevenue} /> this month{" "}
           <TrendingUp className="h-4 w-4" />
         </div>
       </CardFooter>

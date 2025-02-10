@@ -149,7 +149,13 @@ export async function getSalary(
 export async function getSalaries(params: ExpenseSearchParams): Promise<
   ActionResponse<{
     salaries: Salary[];
-    summary: { count: 0; totalAmount: 0 };
+    summary: {
+      count: 0;
+      totalAmount: 0;
+      totalAllowance: 0;
+      totalDeduction: 0;
+      totalSalary: 0;
+    };
     isNext: boolean;
   }>
 > {
@@ -222,6 +228,9 @@ export async function getSalaries(params: ExpenseSearchParams): Promise<
           $group: {
             _id: null,
             count: { $sum: 1 },
+            totalSalary: { $sum: "$salary" },
+            totalAllowance: { $sum: "$allowance" },
+            totalDeduction: { $sum: "$deduction" },
             totalAmount: { $sum: "$netSalary" },
           },
         },
@@ -237,7 +246,16 @@ export async function getSalaries(params: ExpenseSearchParams): Promise<
     const count = totalSalaries[0]?.count || 0;
     const isNext = count > skip + salaries.length;
     const totalAmount = totalSalaries[0]?.totalAmount || 0;
-    const totalCount = { count, totalAmount };
+    const totalAllowance = totalSalaries[0]?.totalAllowance || 0;
+    const totalDeduction = totalSalaries[0]?.totalDeduction || 0;
+    const totalSalary = totalSalaries[0]?.totalSalary || 0;
+    const totalCount = {
+      count,
+      totalAmount,
+      totalAllowance,
+      totalDeduction,
+      totalSalary,
+    };
     return {
       success: true,
       data: {

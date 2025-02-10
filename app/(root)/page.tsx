@@ -16,13 +16,26 @@ import {
   getAllExpense,
   getFirstRowDashboard,
   getRecentOrders,
-  getSalesDataLast6Months,
+  getRevenueByProvince,
 } from "@/lib/actions/dashboard.action";
 import { checkAuthorization } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
-import SaleChart from "@/components/SaleChart";
 import { ExpensePieChart } from "@/components/dashboard/ExpensePieChart";
-
+import { RevenueByProvincePieChart } from "@/components/dashboard/RevenueByProvincePieChart";
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 const Home = async () => {
   const isAuthorized = await checkAuthorization(["admin", "branch"]);
   if (!isAuthorized) {
@@ -30,31 +43,47 @@ const Home = async () => {
   }
   const { success, data } = await getFirstRowDashboard();
   if (!success) return notFound();
-  const expenseData = await getAllExpense();
-  const chartExpenseData = [
-    {
-      expense: "purchase",
-      amount: expenseData.data.totalPurchase,
-      fill: "var(--color-purchase)",
-    },
-    {
-      expense: "general",
-      amount: expenseData.data.totalGeneral,
-      fill: "var(--color-general)",
-    },
-    {
-      expense: "mission",
-      amount: expenseData.data.totalMission,
-      fill: "var(--color-mission)",
-    },
-    {
-      expense: "salary",
-      amount: expenseData.data.totalSalary,
-      fill: "var(--color-salary)",
-    },
-  ];
-  console.log(chartExpenseData);
-  const chartData = await getSalesDataLast6Months();
+  const expenseData = await getAllExpense({
+    searchMonth: months[new Date().getMonth()],
+  });
+  const chartExpenseData = expenseData.data
+    ? [
+        {
+          expense: "purchase",
+          amount: expenseData.data.totalPurchase,
+          fill: "var(--color-purchase)",
+        },
+        {
+          expense: "general",
+          amount: expenseData.data.totalGeneral,
+          fill: "var(--color-general)",
+        },
+        {
+          expense: "mission",
+          amount: expenseData.data.totalMission,
+          fill: "var(--color-mission)",
+        },
+        {
+          expense: "salary",
+          amount: expenseData.data.totalSalary,
+          fill: "var(--color-salary)",
+        },
+      ]
+    : [];
+  const revenueResponse = await getRevenueByProvince({
+    searchMonth: months[new Date().getMonth()],
+  });
+  const revenueData = revenueResponse?.data ?? [];
+  const revenueChart = Array.isArray(revenueData)
+    ? revenueData.map(
+        (item: { province: string; revenue: number; fill: string }) => ({
+          province: item.province,
+          revenue: item.revenue,
+          fill: item.fill,
+        })
+      )
+    : [];
+  //const chartData = await getSalesDataLast6Months();
   const recentOrders = await getRecentOrders();
   return (
     <>
@@ -158,15 +187,15 @@ const Home = async () => {
             </Card>
           </div>
           <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Expense</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ExpensePieChart chartData={chartExpenseData} />
-              </CardContent>
-            </Card>
-            <SaleChart saleByDate={chartData} />
+            {expenseData.data && (
+              <ExpensePieChart
+                initialChartData={chartExpenseData}
+                initialTotalExpense={expenseData.data.totalExpenses}
+              />
+            )}
+            {revenueData && (
+              <RevenueByProvincePieChart initialChartData={revenueChart} />
+            )}
           </div>
           <Card>
             <CardHeader>
