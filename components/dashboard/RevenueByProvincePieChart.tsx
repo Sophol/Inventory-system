@@ -59,19 +59,26 @@ export function RevenueByProvincePieChart({
   );
   const [chartData, setChartData] = useState(initialChartData);
   const [totalRevenue, setTotalRevenue] = useState(0);
-  const convertedData = chartData.reduce(
-    (
-      acc: { [key: string]: { label: string; color: string } },
-      { province, fill }
-    ) => {
-      acc[province] = {
-        label: province.charAt(0).toUpperCase() + province.slice(1),
-        color: fill,
-      };
-      return acc;
-    },
-    {}
-  ) satisfies ChartConfig;
+  let convertedData: ChartConfig = {};
+  console.log("chartData", chartData);
+  if (chartData.length > 0) {
+    convertedData = chartData.reduce(
+      (
+        acc: { [key: string]: { label: string; color: string } },
+        { province, fill }
+      ) => {
+        if (province !== null && province !== undefined) {
+          acc[province] = {
+            label: province.charAt(0).toUpperCase() + province.slice(1),
+            color: fill,
+          };
+        }
+        return acc;
+      },
+      {}
+    ) satisfies ChartConfig;
+  }
+
   useEffect(() => {
     const fetchExpenseData = async () => {
       console.log("monthString", selectedMonth);

@@ -218,7 +218,7 @@ export const CreateCustomerSchema = z.object({
   status: z.enum(["active", "inactive"]).default("active"),
   isDepo: z.boolean().default(false),
   attachmentUrl: z.string().optional(),
-  province: z.string().optional(),
+  province: z.string().min(1, { message: "Name is required" }),
 });
 export const EditCustomerSchema = CreateCustomerSchema.extend({
   customerId: z.string().min(1, { message: "Customer ID is required." }),
