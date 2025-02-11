@@ -232,7 +232,8 @@ const ContractDetail = async ({ customer }: { customer: Customer }) => {
           <div className="flex flex-col ">
             <p>
               ភាគី “ក” យល់ព្រមផ្គត់ផ្គង់ផលិតផលផ្តាច់មុខជូនភាគី “ខ”
-              ក្នុងដែនអាជីវកម្មនៃខេត្ត/ស្រុក [-]។
+              ក្នុងដែនអាជីវកម្មនៃខេត្ត/ស្រុក{" "}
+              {customer.province ? formatProvince(customer.province) : "[-]"}។
             </p>
           </div>
         </div>
@@ -259,8 +260,8 @@ const ContractDetail = async ({ customer }: { customer: Customer }) => {
           <div className="flex flex-col">
             <p>
               ភាគី “ខ” យល់ព្រមថា ភាគី “ខ” ត្រូវទទួលទិញផលិតផលផ្តាច់មុខពីភាគី “ក”
-              តែម្នាក់ប៉ុណ្ណោះសម្រាប់ដែនអាជីវកម្មរបស់ខ្លួននៅក្នុងខេត្ត/ស្រុក
-              [-]។
+              តែម្នាក់ប៉ុណ្ណោះសម្រាប់ដែនអាជីវកម្មរបស់ខ្លួននៅក្នុងខេត្ត/ស្រុក{" "}
+              {customer.province ? formatProvince(customer.province) : "[-]"}។
             </p>
           </div>
         </div>
@@ -464,7 +465,7 @@ const ContractDetail = async ({ customer }: { customer: Customer }) => {
                 <td className="border border-dotted border-black px-4 py-2 w-[49.5%] text-center font-moul text-sm">
                   ភាគី “ក”
                   <br />
-                  ក្រុមហ៊ុន [-]
+                  {setting.companyName}
                 </td>
                 <td className="border border-dotted border-black px-2 py-2 w-[1%]"></td>
                 <td className="border border-dotted border-black px-4 py-2 w-[49.5%] text-center font-moul text-sm">
@@ -480,11 +481,11 @@ const ContractDetail = async ({ customer }: { customer: Customer }) => {
               </tr>
               <tr>
                 <td className="border border-dotted border-black px-4 h-[30px]">
-                  តំណាងដោយលោក [-]
+                  តំណាងដោយលោក {setting.companyOwner}
                 </td>
                 <td className="border border-dotted border-black px-3  h-[30px]"></td>
                 <td className="border border-dotted border-black pl-10 h-[30px]">
-                  ឈ្មោះ .........................................
+                  ឈ្មោះ {customer.name}
                 </td>
               </tr>
               <tr>
@@ -512,11 +513,17 @@ const ContractDetail = async ({ customer }: { customer: Customer }) => {
               </tr>
               <tr>
                 <td className="border border-dotted border-black pl-10 h-[30px]">
-                  ឈ្មោះ .........................................
+                  ឈ្មោះ{" "}
+                  {customer.guarantor1
+                    ? customer.guarantor1
+                    : "........................................."}
                 </td>
                 <td className="border border-dotted border-black px-3  h-[30px]"></td>
                 <td className="border border-dotted border-black pl-10 h-[30px]">
-                  ឈ្មោះ .........................................
+                  ឈ្មោះ{" "}
+                  {customer.guarantor2
+                    ? customer.guarantor2
+                    : "........................................."}
                 </td>
               </tr>
             </tbody>
