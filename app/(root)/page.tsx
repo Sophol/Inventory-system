@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import * as React from "react";
 import {
   getAllExpense,
+  getAnnualSummary,
   getFirstRowDashboard,
   getRecentOrders,
   getRevenueByProvince,
@@ -22,6 +23,7 @@ import { checkAuthorization } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 import { ExpensePieChart } from "@/components/dashboard/ExpensePieChart";
 import { RevenueByProvincePieChart } from "@/components/dashboard/RevenueByProvincePieChart";
+import { AnnualSummaryChart } from "@/components/dashboard/AnnualSummaryChart";
 const months = [
   "January",
   "February",
@@ -45,6 +47,7 @@ const Home = async () => {
   if (!success) return notFound();
   const expenseData = await getAllExpense({
     searchMonth: months[new Date().getMonth()],
+    searchYear: new Date().getFullYear(),
   });
   const chartExpenseData = expenseData.data
     ? [
@@ -72,6 +75,7 @@ const Home = async () => {
     : [];
   const revenueResponse = await getRevenueByProvince({
     searchMonth: months[new Date().getMonth()],
+    searchYear: new Date().getFullYear(),
   });
   const revenueData = revenueResponse?.data ?? [];
   const revenueChart = Array.isArray(revenueData)
@@ -83,7 +87,9 @@ const Home = async () => {
         })
       )
     : [];
-  //const chartData = await getSalesDataLast6Months();
+  const { data: annaulSummary } = await getAnnualSummary({
+    searchYear: new Date().getFullYear(),
+  });
   const recentOrders = await getRecentOrders();
   return (
     <>
@@ -196,6 +202,9 @@ const Home = async () => {
             {revenueData && (
               <RevenueByProvincePieChart initialChartData={revenueChart} />
             )}
+          </div>
+          <div className="grid grid-cols-1">
+            <AnnualSummaryChart annaulSummary={annaulSummary} />
           </div>
           <Card>
             <CardHeader>

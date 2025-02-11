@@ -47,6 +47,11 @@ export async function editSetting(
     exchangeRateD,
     exchangeRateT,
     settingId,
+    companyOwner,
+    vat_number,
+    bankName,
+    bankAccount,
+    bankNumber,
   } = validatedData.params!;
   try {
     const setting = await Setting.findById(settingId);
@@ -60,7 +65,12 @@ export async function editSetting(
       setting.address !== address ||
       setting.phone !== phone ||
       setting.exchangeRateD !== exchangeRateD ||
-      setting.exchangeRateT !== exchangeRateT
+      setting.exchangeRateT !== exchangeRateT ||
+      setting.companyOwner !== companyOwner ||
+      setting.vat_number !== vat_number ||
+      setting.bankName !== bankName ||
+      setting.bankAccount !== bankAccount ||
+      setting.bankNumber !== bankNumber
     ) {
       setting.companyName = companyName;
       setting.companyNameEnglish = companyNameEnglish;
@@ -69,6 +79,11 @@ export async function editSetting(
       setting.phone = phone;
       setting.exchangeRateD = exchangeRateD;
       setting.exchangeRateT = exchangeRateT;
+      setting.companyOwner = companyOwner;
+      setting.vat_number = vat_number;
+      setting.bankName = bankName;
+      setting.bankAccount = bankAccount;
+      setting.bankNumber = bankNumber;
       await setting.save();
     }
     return { success: true, data: JSON.parse(JSON.stringify(setting)) };

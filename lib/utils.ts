@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { techMap } from "../constants/techMaps";
+import { dataProvince } from "@/constants/data";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -98,4 +99,12 @@ export const formatCurrency = (
     maximumFractionDigits: 0, // You can adjust this if you want decimal places
   }).format(amount);
 };
-
+export const formatGender = (gender: string): string => {
+  if (gender === "male") return "ប្រុស";
+  else return "ស្រី";
+};
+export const formatProvince = (province: string): string => {
+  const pro = dataProvince.find((p) => p._id === province);
+  if (pro) return pro.title;
+  else return "";
+};

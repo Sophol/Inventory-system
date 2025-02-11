@@ -1,7 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { IoCaretBackOutline } from "react-icons/io5";
 
-import { auth } from "@/auth";
 import CardContainer from "@/components/cards/CardContainer";
 import CustomerForm from "@/components/forms/CustomerForm";
 import ROUTES from "@/constants/routes";

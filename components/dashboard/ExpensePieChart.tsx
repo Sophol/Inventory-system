@@ -13,10 +13,11 @@ import {
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { TrendingUp } from "lucide-react";
 import Currency from "../Currency";
 import {
   Select,
@@ -79,18 +80,22 @@ export function ExpensePieChart({
     "December",
   ];
 
-  // State to manage the selected month and chart data
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+
+  // State to manage the selected month, year, and chart data
   const [selectedMonth, setSelectedMonth] = useState(
     months[new Date().getMonth()]
   );
+  const [selectedYear, setSelectedYear] = useState(currentYear);
   const [chartData, setChartData] = useState(initialChartData);
   const [totalExpense, setTotalExpense] = useState(initialTotalExpense);
 
   useEffect(() => {
     const fetchExpenseData = async () => {
-      console.log("monthString", selectedMonth);
       const updatedExpenseData = await getAllExpense({
         searchMonth: selectedMonth,
+        searchYear: selectedYear,
       });
 
       setChartData([
@@ -119,41 +124,75 @@ export function ExpensePieChart({
     };
 
     fetchExpenseData();
-  }, [selectedMonth]);
-
+  }, [selectedMonth, selectedYear]);
+  console.log("chartData", chartData);
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Expense Distribution</CardTitle>
-        <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-          <SelectTrigger
-            className="ml-auto h-7 w-[130px] rounded-lg pl-2.5"
-            aria-label="Select a value"
+        <div className="flex gap-2 items-end">
+          <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+            <SelectTrigger
+              className="ml-auto h-7 w-[130px] rounded-lg pl-2.5"
+              aria-label="Select a value"
+            >
+              <SelectValue placeholder="Select month" />
+            </SelectTrigger>
+            <SelectContent align="end" className="rounded-xl">
+              {months.map((key) => {
+                return (
+                  <SelectItem
+                    key={key}
+                    value={key}
+                    className="rounded-lg [&_span]:flex"
+                  >
+                    <div className="flex items-center gap-2 text-xs">
+                      <span
+                        className="flex h-3 w-3 shrink-0 rounded-sm"
+                        style={{
+                          backgroundColor: `var(--color-${key})`,
+                        }}
+                      />
+                      {key}
+                    </div>
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+          <Select
+            value={selectedYear.toString()}
+            onValueChange={(value) => setSelectedYear(parseInt(value))}
           >
-            <SelectValue placeholder="Select month" />
-          </SelectTrigger>
-          <SelectContent align="end" className="rounded-xl">
-            {months.map((key) => {
-              return (
-                <SelectItem
-                  key={key}
-                  value={key}
-                  className="rounded-lg [&_span]:flex"
-                >
-                  <div className="flex items-center gap-2 text-xs">
-                    <span
-                      className="flex h-3 w-3 shrink-0 rounded-sm"
-                      style={{
-                        backgroundColor: `var(--color-${key})`,
-                      }}
-                    />
-                    {key}
-                  </div>
-                </SelectItem>
-              );
-            })}
-          </SelectContent>
-        </Select>
+            <SelectTrigger
+              className="ml-auto h-7 w-[130px] rounded-lg pl-2.5"
+              aria-label="Select a value"
+            >
+              <SelectValue placeholder="Select year" />
+            </SelectTrigger>
+            <SelectContent align="end" className="rounded-xl">
+              {years.map((year) => {
+                return (
+                  <SelectItem
+                    key={year}
+                    value={year.toString()}
+                    className="rounded-lg [&_span]:flex"
+                  >
+                    <div className="flex items-center gap-2 text-xs">
+                      <span
+                        className="flex h-3 w-3 shrink-0 rounded-sm"
+                        style={{
+                          backgroundColor: `var(--color-${year})`,
+                        }}
+                      />
+                      {year}
+                    </div>
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -164,21 +203,28 @@ export function ExpensePieChart({
             <ChartTooltip
               content={<ChartTooltipContent nameKey="expense" hideLabel />}
             />
-            <Pie
-              data={chartData}
-              dataKey="amount"
-              nameKey="expense"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-            ></Pie>
+            {chartData.length > 0 && (
+              <Pie
+                data={chartData}
+                dataKey="amount"
+                nameKey="expense"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+              />
+            )}
+            {totalExpense > 0 && (
+              <ChartLegend
+                content={<ChartLegendContent nameKey="expense" />}
+                className="-translate-y-2 flex-wrap gap-2 [&>*]:justify-center"
+              />
+            )}
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
+      <CardFooter className="flex-col gap-2 text-sm mb-4">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Total expense: <Currency amount={totalExpense} /> this month{" "}
-          <TrendingUp className="h-4 w-4" />
+          Total expense: <Currency amount={totalExpense} />
         </div>
       </CardFooter>
     </Card>

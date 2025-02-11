@@ -33,8 +33,13 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
       companyLogo: setting?.companyLogo || "",
       address: setting?.address || "",
       phone: setting?.phone || "",
+      companyOwner: setting?.companyOwner || "",
+      vat_number: setting?.vat_number || "",
       exchangeRateD: setting?.exchangeRateD || 0,
       exchangeRateT: setting?.exchangeRateT || 0,
+      bankName: setting?.bankName || "",
+      bankAccount: setting?.bankAccount || "",
+      bankNumber: setting?.bankNumber || "",
     },
   });
   const handleEditSetting = async (data: z.infer<typeof EditSettingSchema>) => {
@@ -71,7 +76,7 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
             label="Company Name"
             control={form.control}
           />
-             <FormInput
+          <FormInput
             name="companyNameEnglish"
             label="Company Name In English"
             control={form.control}
@@ -79,6 +84,19 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
           <FormInput
             name="companyLogo"
             label="Company Logo"
+            control={form.control}
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <FormInput name="bankName" label="Bank Name" control={form.control} />
+          <FormInput
+            name="bankAccount"
+            label="Bank Account"
+            control={form.control}
+          />
+          <FormInput
+            name="bankNumber"
+            label="Bank Number"
             control={form.control}
           />
         </div>
@@ -94,6 +112,19 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
             control={form.control}
           />
         </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <FormInput
+            name="companyOwner"
+            label="Company Owner"
+            control={form.control}
+          />
+          <FormInput
+            name="vat_number"
+            label="VAT/GST Number"
+            control={form.control}
+          />
+        </div>
+
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormInput
             name="exchangeRateD"

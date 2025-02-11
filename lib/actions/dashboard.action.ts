@@ -9,7 +9,10 @@ import {
 } from "@/database";
 import { format, endOfMonth, startOfMonth, subMonths } from "date-fns";
 import handleError from "../handlers/error";
-import { SearchAllExpenseSchema } from "../validations";
+import {
+  SearchAllExpenseSchema,
+  SearchAnnualSummarySchema,
+} from "../validations";
 import action from "../handlers/action";
 import { getUniqueRandomColors } from "../url";
 import dbConnect from "../mongoose";
@@ -89,7 +92,10 @@ export const getFirstRowDashboard = async () => {
     return handleError(error) as ErrorResponse;
   }
 };
-export async function getAllExpense(params: { searchMonth: string }): Promise<
+export async function getAllExpense(params: {
+  searchMonth: string;
+  searchYear: number;
+}): Promise<
   ActionResponse<{
     totalPurchase: number;
     totalMission: number;
@@ -106,15 +112,15 @@ export async function getAllExpense(params: { searchMonth: string }): Promise<
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { searchMonth } = validatedData.params!;
+  const { searchMonth, searchYear } = validatedData.params!;
   const monthIndex = months.findIndex(
-    (m) => m.toLowerCase().toString() === searchMonth.toLowerCase().toString()
+    (m) => m.toLowerCase() === searchMonth.toLowerCase()
   );
   if (monthIndex === -1) {
     throw new Error("Invalid month string");
   }
 
-  const date = new Date(new Date().getFullYear(), monthIndex, 1);
+  const date = new Date(searchYear, monthIndex, 1);
   const start = startOfMonth(date);
   const end = endOfMonth(date);
   const [totalPurchase, totalMission, totalSalary, totalGeneral] =
@@ -202,6 +208,7 @@ interface RevenueByProvince {
 }
 export async function getRevenueByProvince(params: {
   searchMonth: string;
+  searchYear: number;
 }): Promise<ActionResponse<{ data: RevenueByProvince[] }>> {
   const validatedData = await action({
     params,
@@ -211,7 +218,7 @@ export async function getRevenueByProvince(params: {
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;
   }
-  const { searchMonth } = validatedData.params!;
+  const { searchMonth, searchYear } = validatedData.params!;
   const monthIndex = months.findIndex(
     (m) => m.toLowerCase() === searchMonth.toLowerCase()
   );
@@ -219,7 +226,7 @@ export async function getRevenueByProvince(params: {
     throw new Error("Invalid month string");
   }
 
-  const date = new Date(new Date().getFullYear(), monthIndex, 1);
+  const date = new Date(searchYear, monthIndex, 1);
   const start = startOfMonth(date);
   const end = endOfMonth(date);
 
@@ -348,3 +355,78 @@ export const getRecentOrders = async () => {
     throw new Error("Failed to fetch recent orders");
   }
 };
+export async function getAnnualSummary(params: {
+  searchYear: number;
+}): Promise<ActionResponse<{ data: AnnualSummary[] }>> {
+  const validatedData = await action({
+    params,
+    schema: SearchAnnualSummarySchema,
+    authorize: true,
+  });
+
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+
+  const { searchYear } = validatedData.params!;
+  const start = new Date(searchYear, 0, 1); // Start of the year (Jan 1)
+  const end = new Date(searchYear, 11, 31, 23, 59, 59); // End of the year (Dec 31)
+
+  const salesData = await Sale.aggregate([
+    {
+      $match: {
+        orderDate: { $gte: start, $lte: end },
+        orderStatus: "completed",
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$orderDate" },
+        totalSales: { $sum: "$grandtotal" },
+      },
+    },
+  ]);
+
+  const purchasesData = await Purchase.aggregate([
+    {
+      $match: {
+        purchaseDate: { $gte: start, $lte: end },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$purchaseDate" },
+        totalPurchases: { $sum: "$grandtotal" },
+      },
+    },
+  ]);
+
+  const summaryMap = new Map();
+
+  // Initialize the summaryMap with all months set to zero values
+  months.forEach((month, index) => {
+    summaryMap.set(index + 1, {
+      month,
+      sale: 0,
+      purchase: 0,
+    });
+  });
+
+  salesData.forEach(({ _id, totalSales }) => {
+    summaryMap.get(_id)!.sale = totalSales;
+  });
+
+  purchasesData.forEach(({ _id, totalPurchases }) => {
+    summaryMap.get(_id)!.purchase = totalPurchases;
+  });
+
+  const result = Array.from(summaryMap.values()).map((entry) => ({
+    ...entry,
+    profit: entry.sale - entry.purchase,
+  }));
+
+  return {
+    success: true,
+    data: JSON.parse(JSON.stringify(result)),
+  };
+}

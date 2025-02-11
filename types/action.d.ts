@@ -84,8 +84,15 @@ interface CreateCustomerParams {
   saleType: "retail" | "wholesale";
   status: "active" | "inactive";
   isDepo: boolean;
+  gender: "male" | "female";
   attachmentUrl?: string;
   province: string;
+  idNumber?: string;
+  idIssueDate?: Date;
+  address?: string;
+  guarantor1?: string;
+  guarantor2?: string;
+  product_brand?: string;
 }
 interface EditCustomerParams extends CreateCustomerParams {
   customerId: string;
@@ -170,8 +177,13 @@ interface EditSettingParams {
   companyLogo: string;
   address: string;
   phone: string;
+  companyOwner: string;
+  vat_number: string;
   exchangeRateD: number;
   exchangeRateT: number;
+  bankName: string;
+  bankAccount: string;
+  bankNumber: string;
 }
 
 interface SaleDetailParams {

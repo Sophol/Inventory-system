@@ -133,6 +133,13 @@ interface Customer {
   isDepo: boolean;
   attachmentUrl?: string;
   province?: string;
+  idNumber?: string;
+  idIssueDate?: Date;
+  address?: string;
+  guarantor1?: string;
+  guarantor2?: string;
+  product_brand?: string;
+  gender: "male" | "female";
 }
 interface Supplier {
   _id: string;
@@ -246,8 +253,13 @@ interface Setting {
   companyLogo: string;
   address: string;
   phone: string;
+  companyOwner: string;
+  vat_number: string;
   exchangeRateD: number;
   exchangeRateT: number;
+  bankName: string;
+  bankAccount: string;
+  bankNumber: string;
 }
 interface User {
   _id: string;
@@ -318,4 +330,10 @@ interface Payment {
     | "Vatanak Bank"
     | "Others";
   paymentStatus: "pending" | "credit" | "completed";
+}
+interface AnnualSummary {
+  month: string;
+  sale: number;
+  purchase: number;
+  profit: number;
 }

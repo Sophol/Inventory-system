@@ -57,6 +57,13 @@ export async function editCustomer(
     isDepo,
     attachmentUrl,
     province,
+    gender,
+    idNumber,
+    idIssueDate,
+    address,
+    guarantor1,
+    guarantor2,
+    product_brand,
   } = validatedData.params!;
   try {
     const customer = await Customer.findById(customerId);
@@ -75,7 +82,14 @@ export async function editCustomer(
       customer.status !== status ||
       customer.isDepo !== isDepo ||
       customer.attachmentUrl !== attachmentUrl ||
-      customer.province !== province
+      customer.province !== province ||
+      customer.gender !== gender ||
+      customer.idNumber !== idNumber ||
+      customer.idIssueDate !== idIssueDate ||
+      customer.address !== address ||
+      customer.product_brand !== product_brand ||
+      customer.guarantor1 !== guarantor1 ||
+      customer.guarantor2 !== guarantor2
     ) {
       customer.name = name;
       customer.phone = phone;
@@ -89,6 +103,13 @@ export async function editCustomer(
       customer.isDepo = isDepo;
       customer.attachmentUrl = attachmentUrl;
       customer.province = province;
+      customer.gender = gender;
+      customer.idNumber = idNumber;
+      customer.idIssueDate = idIssueDate;
+      customer.address = address;
+      customer.product_brand = product_brand;
+      customer.guarantor1 = guarantor1;
+      customer.guarantor2 = guarantor2;
       await customer.save();
     }
     return { success: true, data: JSON.parse(JSON.stringify(customer)) };

@@ -219,6 +219,13 @@ export const CreateCustomerSchema = z.object({
   isDepo: z.boolean().default(false),
   attachmentUrl: z.string().optional(),
   province: z.string().min(1, { message: "Name is required" }),
+  gender: z.enum(["male", "female"]).default("male"),
+  idNumber: z.string().optional(),
+  idIssueDate: z.date().optional(),
+  address: z.string().optional(),
+  guarantor1: z.string().optional(),
+  guarantor2: z.string().optional(),
+  product_brand: z.string().optional(),
 });
 export const EditCustomerSchema = CreateCustomerSchema.extend({
   customerId: z.string().min(1, { message: "Customer ID is required." }),
@@ -302,8 +309,13 @@ export const EditSettingSchema = z.object({
   companyLogo: z.string().min(1, "Company Logo is required"),
   address: z.string().min(1, "Address is required"),
   phone: z.string().min(1, "Phone is required"),
+  companyOwner: z.string().min(1, "companyOwner is required"),
+  vat_number: z.string().min(1, "vat_number is required"),
   exchangeRateD: z.number().min(0).default(0),
   exchangeRateT: z.number().min(0).default(0),
+  bankAccount: z.string().min(1, "bankAccount is required"),
+  bankName: z.string().min(1, "bankName is required"),
+  bankNumber: z.string().min(1, "bankNumber is required"),
 });
 
 export const SaleDetailSchema = z.object({
@@ -464,4 +476,8 @@ export const PaginatedSearchParamsPaymentSchema =
   });
 export const SearchAllExpenseSchema = z.object({
   searchMonth: z.string().min(1, { message: "Month is required." }),
+  searchYear: z.number().min(1, { message: "Year is required." }),
+});
+export const SearchAnnualSummarySchema = z.object({
+  searchYear: z.number().min(1, { message: "Year is required." }),
 });

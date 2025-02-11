@@ -13,6 +13,13 @@ export interface ICustomer {
   isDepo: boolean;
   attachmentUrl?: string;
   province: string;
+  gender: "male" | "female";
+  idNumber?: string;
+  idIssueDate?: Date;
+  address?: string;
+  guarantor1?: string;
+  guarantor2?: string;
+  product_brand?: string;
 }
 export interface ICustomerDoc extends ICustomer, Document {}
 const CustomerSchema = new Schema<ICustomer>(
@@ -26,6 +33,18 @@ const CustomerSchema = new Schema<ICustomer>(
     balance: { type: Number, default: 0 },
     attachmentUrl: { type: String },
     province: { type: String },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      required: true,
+      default: "male",
+    },
+    idNumber: { type: String },
+    idIssueDate: { type: Date },
+    address: { type: String },
+    guarantor1: { type: String },
+    guarantor2: { type: String },
+    product_brand: { type: String },
     saleType: {
       type: String,
       enum: ["retail", "wholesale"],
