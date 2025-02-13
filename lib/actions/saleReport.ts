@@ -65,8 +65,23 @@ export async function getSaleReports(params: SaleSearchParams): Promise<
   if (dateRange) {
     const [from, to] = dateRange.split("_");
     filterQuery.invoicedDate = {
-      $gte: new Date(from),
-      $lte: new Date(to),
+      $gte: new Date(
+        Date.UTC(
+          new Date(from).getFullYear(),
+          new Date(from).getMonth(),
+          new Date(from).getDate()
+        )
+      ),
+      $lte: new Date(
+        Date.UTC(
+          new Date(to).getFullYear(),
+          new Date(to).getMonth(),
+          new Date(to).getDate(),
+          23,
+          59,
+          59
+        )
+      ),
     };
   }
   let sortCriteria = {};
@@ -199,32 +214,137 @@ export async function getProfitAndLossReport(params: SaleSearchParams): Promise<
   if (dateRange) {
     const [from, to] = dateRange.split("_");
     filterQuery.invoicedDate = {
-      $gte: new Date(from),
-      $lte: new Date(to),
+      $gte: new Date(
+        Date.UTC(
+          new Date(from).getFullYear(),
+          new Date(from).getMonth(),
+          new Date(from).getDate()
+        )
+      ),
+      $lte: new Date(
+        Date.UTC(
+          new Date(to).getFullYear(),
+          new Date(to).getMonth(),
+          new Date(to).getDate(),
+          23,
+          59,
+          59
+        )
+      ),
     };
     filterQueryPurchase.purchaseDate = {
-      $gte: new Date(from),
-      $lte: new Date(to),
+      $gte: new Date(
+        Date.UTC(
+          new Date(from).getFullYear(),
+          new Date(from).getMonth(),
+          new Date(from).getDate()
+        )
+      ),
+      $lte: new Date(
+        Date.UTC(
+          new Date(to).getFullYear(),
+          new Date(to).getMonth(),
+          new Date(to).getDate(),
+          23,
+          59,
+          59
+        )
+      ),
     };
     filterQueryExp.generalDate = {
-      $gte: new Date(from),
-      $lte: new Date(to),
+      $gte: new Date(
+        Date.UTC(
+          new Date(from).getFullYear(),
+          new Date(from).getMonth(),
+          new Date(from).getDate()
+        )
+      ),
+      $lte: new Date(
+        Date.UTC(
+          new Date(to).getFullYear(),
+          new Date(to).getMonth(),
+          new Date(to).getDate(),
+          23,
+          59,
+          59
+        )
+      ),
     };
     filterQueryMission.missionDate = {
-      $gte: new Date(from),
-      $lte: new Date(to),
+      $gte: new Date(
+        Date.UTC(
+          new Date(from).getFullYear(),
+          new Date(from).getMonth(),
+          new Date(from).getDate()
+        )
+      ),
+      $lte: new Date(
+        Date.UTC(
+          new Date(to).getFullYear(),
+          new Date(to).getMonth(),
+          new Date(to).getDate(),
+          23,
+          59,
+          59
+        )
+      ),
     };
     filterQuerySalary.salaryDate = {
-      $gte: new Date(from),
-      $lte: new Date(to),
+      $gte: new Date(
+        Date.UTC(
+          new Date(from).getFullYear(),
+          new Date(from).getMonth(),
+          new Date(from).getDate()
+        )
+      ),
+      $lte: new Date(
+        Date.UTC(
+          new Date(to).getFullYear(),
+          new Date(to).getMonth(),
+          new Date(to).getDate(),
+          23,
+          59,
+          59
+        )
+      ),
     };
     filterQuerySaleDetail["saleDetails.invoicedDate"] = {
-      $gte: new Date(from),
-      $lte: new Date(to),
+      $gte: new Date(
+        Date.UTC(
+          new Date(from).getFullYear(),
+          new Date(from).getMonth(),
+          new Date(from).getDate()
+        )
+      ),
+      $lte: new Date(
+        Date.UTC(
+          new Date(to).getFullYear(),
+          new Date(to).getMonth(),
+          new Date(to).getDate(),
+          23,
+          59,
+          59
+        )
+      ),
     };
     filterQueryPurchaseDetail["purchaseDetails.purchaseDate"] = {
-      $gte: new Date(from),
-      $lte: new Date(to),
+      $gte: new Date(
+        Date.UTC(
+          new Date(from).getFullYear(),
+          new Date(from).getMonth(),
+          new Date(from).getDate()
+        )
+      ),
+      $lte: new Date(
+        Date.UTC(
+          new Date(to).getFullYear(),
+          new Date(to).getMonth(),
+          new Date(to).getDate(),
+          23,
+          59,
+          59
+        )
+      ),
     };
   } else {
     filterQuery.invoicedDate = {
