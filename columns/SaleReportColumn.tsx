@@ -22,7 +22,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const date = row.getValue("invoicedDate") as string;
       const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
-      return <span className="flex justify-center">{formattedDate}</span>;
+      return <span className="text-[9px] min-w-[105px] flex justify-center">{formattedDate}</span>;
     },
   },
   {
@@ -36,6 +36,10 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Branch" className="flex justify-center"/>
     ),
+    cell: ({ row }) => {
+      const branch = row.original.branch.title as string;
+      return <span className="text-[9px] min-w-[100px] inline-flex">{branch}</span>;
+    },
   },
   {
      accessorKey: "grandtotal",
@@ -44,7 +48,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
      ),
      cell: ({ row }) => {
        const grandtotal = row.getValue("grandtotal") as number;
-       return <span className="flex justify-end">{formatCurrency(grandtotal)}</span>;
+       return <span className="flex justify-end  min-w-[90px] inline-flex">{formatCurrency(grandtotal)}</span>;
      },
    },
   {
@@ -54,7 +58,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const discount = row.getValue("discount") as number;
-      return <span className="flex justify-end">{formatCurrency(discount)}</span>;
+      return <span className="flex justify-end ">{formatCurrency(discount)}</span>;
     },
   },
   {
@@ -74,7 +78,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const paid = row.getValue("paid") as number;
-      return <span className="flex justify-end">{formatCurrency(paid)}</span>;
+      return <span className="flex justify-end  min-w-[90px] inline-flex">{formatCurrency(paid)}</span>;
     },
   },
   {
@@ -84,13 +88,13 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const balance = row.getValue("balance") as number;
-      return <span className="flex justify-end">{formatCurrency(balance)}</span>;
+      return <span className="flex justify-end  min-w-[90px] inline-flex">{formatCurrency(balance)}</span>;
     },
   },
   {
     accessorKey: "orderStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Order Status" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Order" className="flex justify-center"/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("orderStatus") as string;
@@ -114,7 +118,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "paymentStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payment Status" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Payment" className="flex justify-center"/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("paymentStatus") as string;
