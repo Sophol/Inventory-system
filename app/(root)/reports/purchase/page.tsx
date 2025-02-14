@@ -42,12 +42,15 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
   };
 
   const summaryRow = (
-    <TableRow>
-      <TableCell colSpan={6} className="text-right">
-        <strong>Total:</strong>
+    <TableRow className="bg-blue-200 dark:bg-slate-800">
+      <TableCell colSpan={7} className="text-right">
+        <strong >Total:</strong>
       </TableCell>
-      <TableCell>
-        <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
+      <TableCell className="text-right">
+        <strong className="text-right">{formatCurrency(summary?.totalGrandtotal)}</strong>
+      </TableCell>
+      <TableCell >
+
       </TableCell>
     </TableRow>
   );

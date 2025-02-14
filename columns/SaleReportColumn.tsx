@@ -48,7 +48,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
      ),
      cell: ({ row }) => {
        const grandtotal = row.getValue("grandtotal") as number;
-       return <span className="flex justify-end  min-w-[90px] inline-flex">{formatCurrency(grandtotal)}</span>;
+       return <span className="flex justify-end  min-w-[90px] w-full inline-flex text-right">{formatCurrency(grandtotal)}</span>;
      },
    },
   {
@@ -58,7 +58,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const discount = row.getValue("discount") as number;
-      return <span className="flex justify-end ">{formatCurrency(discount)}</span>;
+      return <span className="flex justify-end w-full">{formatCurrency(discount)}</span>;
     },
   },
   {
@@ -68,7 +68,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const delivery = row.getValue("delivery") as number;
-      return <span  className="flex justify-end">{formatCurrency(delivery)}</span>;
+      return <span  className="flex justify-end w-full">{formatCurrency(delivery)}</span>;
     },
   },
   {
@@ -78,7 +78,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const paid = row.getValue("paid") as number;
-      return <span className="flex justify-end  min-w-[90px] inline-flex">{formatCurrency(paid)}</span>;
+      return <span className="flex justify-end  min-w-[90px] w-full inline-flex">{formatCurrency(paid)}</span>;
     },
   },
   {
@@ -88,7 +88,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const balance = row.getValue("balance") as number;
-      return <span className="flex justify-end  min-w-[90px] inline-flex">{formatCurrency(balance)}</span>;
+      return <span className="flex justify-end  min-w-[90px] w-full inline-flex">{formatCurrency(balance)}</span>;
     },
   },
   {
