@@ -6,7 +6,7 @@ import NavBar from "@/components/navigation/navbar/index";
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <main
-      className="background-light850_dark100 realtive"
+      className="background-light850_dark100 realtive w-full"
       suppressHydrationWarning
     >
       <div className="flex">
@@ -14,7 +14,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           <AppSidebar />
           <SidebarInset>
             <NavBar />
-            <main>{children}</main>
+            <main className="w-full">{children} </main>
           </SidebarInset>
         </SidebarProvider>
       </div>
