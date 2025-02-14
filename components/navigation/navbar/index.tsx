@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import UserAvatar from "@/components/UserAvatar";
+import Language from "./Language";
 
 const NavBar = async () => {
   const session = await auth();
@@ -12,6 +13,7 @@ const NavBar = async () => {
         <Input placeholder="Search products..." className="max-w-sm" />
       </div>
       {/* <Theme /> */}
+      <Language />
       {session?.user?.id && (
         <UserAvatar
           id={session.user.id}

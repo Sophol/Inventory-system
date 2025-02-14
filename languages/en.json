@@ -1,0 +1,52 @@
+{
+  "erp": {
+    "name": "Product Name",
+    "alertQty": "Alert Qty",
+    "back": "BACK",
+    "save": "SAVE",
+    "add": "ADD",
+
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "user": "User",
+    "profile": "Profile",
+    "changePassword": "Change Password",
+    "branch": "Branch",
+
+    "sales": "Sales",
+    "sale": "Sale",
+    "saleOrder": "Sale Order",
+    "pendingSaleOrder": "Pending Sale Order",
+    "approvedSaleOrder": "Approved Sale Order",
+    "invoice": "Invoice",
+    "customer": "Customer",
+
+    "purchase": "Purchase",
+    "pendingPurchase": "Pending Purchase",
+    "approvedPurchase": "Approved Purchase",
+    "supplier": "Supplier",
+
+    "expense": "Expense",
+    "salaryExpense": "Salary Expense",
+    "missionExpense": "Mission Expense",
+    "generalExpense": "General Expense",
+
+    "inventory": "Inventory",
+    "category": "Category",
+    "products": "Products",
+    "product": "Product",
+    "units": "Units",
+    "unit": "Unit",
+
+    "report": "Reports",
+    "saleReport": "Sales Report",
+    "productReport": "Products Report",
+    "purchaseReport": "Purchases Report",
+    "alertQtyReport": "Alert Qty Report",
+    "profitReport": "Profit Report",
+
+    "logout": "Logout",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  }
+}

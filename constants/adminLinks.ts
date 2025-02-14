@@ -31,47 +31,48 @@ interface Link {
   items?: Link[];
   permissions?: string[]; // Add permissions property
 }
+
 export const adminLinks: Link[] = [
   {
-    title: "Dashboard",
+    title: "dashboard",
     url: ROUTES.HOME,
     icon: AiTwotoneDashboard,
     isActive: true,
     permissions: ["admin", "branch", "report", "auditReport"], // Example permissions
   },
   {
-    title: "Sale",
+    title: "sale",
     url: "#",
     icon: SiSellfy,
     isActive: false,
     permissions: ["admin", "seller"],
     items: [
       {
-        title: "Sale Order",
+        title: "saleOrder",
         url: "/sales/order",
         icon: ShoppingBag,
         permissions: ["admin", "seller"],
       },
       {
-        title: "Pending Sale Order",
+        title: "pendingSaleOrder",
         url: "/sales/pending",
         icon: ShoppingBag,
         permissions: ["admin", "seller"],
       },
       {
-        title: "Approved Sale Order",
+        title: "approvedSaleOrder",
         url: "/sales/approved",
         icon: ShoppingBag,
         permissions: ["admin", "seller"],
       },
       {
-        title: "Invoice",
+        title: "invoice",
         url: "/sales/invoice",
         icon: LiaFileInvoiceSolid,
         permissions: ["admin", "seller"],
       },
       {
-        title: "Customer",
+        title: "customer",
         url: "/sales/customer",
         icon: FaUsers,
         permissions: ["admin", "seller"],
@@ -79,26 +80,26 @@ export const adminLinks: Link[] = [
     ],
   },
   {
-    title: "Purchase",
+    title: "purchase",
     url: "#",
     icon: ShoppingCart,
     isActive: false,
     permissions: ["admin", "stock", "branch"],
     items: [
       {
-        title: "Order Pending",
+        title: "pendingPurchase",
         url: ROUTES.PURCHASES,
         icon: ShoppingBasket,
         permissions: ["admin", "stock", "branch"],
       },
       {
-        title: "Order Completed",
+        title: "approvedPurchase",
         url: ROUTES.PURCHASECOMPLETES,
         icon: ShoppingBasket,
         permissions: ["admin", "stock", "branch"],
       },
       {
-        title: "Supplier",
+        title: "supplier",
         url: ROUTES.SUPPLIERS,
         icon: FaUserTie,
         permissions: ["admin", "stock", "branch"],
@@ -106,26 +107,26 @@ export const adminLinks: Link[] = [
     ],
   },
   {
-    title: "Expense",
+    title: "expense",
     url: "#",
     icon: Blocks,
     isActive: false,
     permissions: ["admin", "branch"],
     items: [
       {
-        title: "Salary Expense",
+        title: "salaryExpense",
         url: ROUTES.SALARYEXPS,
         icon: BadgeDollarSign,
         permissions: ["admin", "branch"],
       },
       {
-        title: "Mission Expense",
+        title: "missionExpense",
         url: ROUTES.MISSIONEXPS,
         icon: BriefcaseConveyorBelt,
         permissions: ["admin", "branch"],
       },
       {
-        title: "General Expense",
+        title: "generalExpense",
         url: ROUTES.GENERALEXPS,
         icon: NotebookPen,
         permissions: ["admin", "branch"],
@@ -133,26 +134,26 @@ export const adminLinks: Link[] = [
     ],
   },
   {
-    title: "Inventory",
+    title: "inventory",
     url: "#",
     icon: MdOutlineInventory2,
     isActive: false,
     permissions: ["admin", "stock", "seller"],
     items: [
       {
-        title: "Category",
+        title: "category",
         url: ROUTES.CATEGORIES,
         icon: BiCategory,
         permissions: ["admin", "stock"],
       },
       {
-        title: "Unit",
+        title: "unit",
         url: ROUTES.UNITS,
         icon: Boxes,
         permissions: ["admin", "stock"],
       },
       {
-        title: "Product",
+        title: "product",
         url: ROUTES.PRODUCTS,
         icon: AiOutlineProduct,
         permissions: ["admin", "stock", "seller"],
@@ -160,7 +161,7 @@ export const adminLinks: Link[] = [
     ],
   },
   {
-    title: "Report",
+    title: "report",
     url: "#",
     icon: TbReportSearch,
     isActive: false,
@@ -174,19 +175,19 @@ export const adminLinks: Link[] = [
     ],
     items: [
       {
-        title: "Sale Report",
+        title: "saleReport",
         url: "/reports/sale",
         icon: SiSellfy,
         permissions: ["admin", "report", "auditReport", "branch", "seller"],
       },
       {
-        title: "Purchase Report",
+        title: "purchaseReport",
         url: "/reports/purchase",
         icon: ShoppingCart,
         permissions: ["admin", "report", "auditReport", "stock", "branch"],
       },
       {
-        title: "Product Report",
+        title: "productReport",
         url: "/reports/product",
         icon: AiOutlineProduct,
         permissions: [
@@ -199,13 +200,13 @@ export const adminLinks: Link[] = [
         ],
       },
       {
-        title: "Profit Report",
+        title: "profitReport",
         url: "/reports/profit",
         icon: GrMoney,
         permissions: ["admin", "report", "auditReport", "branch"],
       },
       {
-        title: "Alet Qty Report",
+        title: "alertQtyReport",
         url: "/reports/alertQty",
         icon: GrMoney,
         permissions: ["admin", "report", "auditReport", "branch"],
@@ -213,26 +214,26 @@ export const adminLinks: Link[] = [
     ],
   },
   {
-    title: "Settings",
+    title: "settings",
     url: "#",
     icon: IoSettingsOutline,
     isActive: false,
     permissions: ["admin", "stock", "seller", "branch"],
     items: [
       {
-        title: "User",
+        title: "user",
         url: "/settings/user",
         icon: FaUserCog,
         permissions: ["admin", "branch"],
       },
       {
-        title: "Branch",
+        title: "branch",
         url: ROUTES.BRANCHES,
         icon: LucideWarehouse,
         permissions: ["admin", "stock", "branch", "seller"],
       },
       {
-        title: "Setting",
+        title: "settings",
         url: ROUTES.SETTING(settingId),
         icon: IoSettingsOutline,
         permissions: ["admin", "stock", "seller", "branch"],

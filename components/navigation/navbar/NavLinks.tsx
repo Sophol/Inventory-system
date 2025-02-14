@@ -19,12 +19,13 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { getSidebarLinks } from "@/constants/index";
+import { useTranslations } from "next-intl";
 
 const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
   const pathname = usePathname();
   const sidebarLinks = getSidebarLinks(role);
   const [openItem, setOpenItem] = useState<string | null>(null);
-
+  const t = useTranslations("erp");
   const isActiveRoute = useCallback(
     (route: string) =>
       (pathname.includes(route) && route.length > 1) || pathname === route,
@@ -78,8 +79,11 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
                       className="flex items-center justify-start gap-1 bg-transparent p-2 uppercase text-[10px]"
                     >
                       {item.icon && <item.icon />}
-                      <span>{item.title}</span>
-                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 "  size={9}/>
+                      <span>{t(item.title)}</span>
+                      <ChevronRight
+                        className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 "
+                        size={9}
+                      />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
@@ -88,7 +92,7 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
                         const isSubActive = isActiveRoute(subItem.url);
                         return (
                           <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton asChild >
+                            <SidebarMenuSubButton asChild>
                               <Link
                                 href={subItem.url}
                                 className={cn(
@@ -98,8 +102,10 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
                                   "flex items-center justify-start !text-xs gap-1 bg-transparent p-2 "
                                 )}
                               >
-                                {subItem.icon && <subItem.icon   />}
-                                <span  className=" text-[10px]">{subItem.title}</span>
+                                {subItem.icon && <subItem.icon />}
+                                <span className=" text-[10px]">
+                                  {t(subItem.title)}
+                                </span>
                               </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
@@ -120,7 +126,7 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
                     )}
                   >
                     {item.icon && <item.icon />}
-                    <span>{item.title}</span>
+                    <span>{t(item.title)}</span>
                   </Link>
                 </SidebarMenuButton>
               )}

@@ -1,0 +1,49 @@
+{
+  "erp": {
+    "name": "ឈ្មោះ ផលិតផល",
+    "alertQty": "ការជូនដំណឹងបរិមាណ",
+    "back": "ត្រឡប់ទៅក្រោយ",
+    "save": "រក្សាទុក",
+    "add": "បន្ថែម",
+
+    "dashboard": "ផ្ទាំងគ្រប់គ្រង",
+    "settings": "ការកំណត់",
+    "logout": "ចាកចេញ",
+    "user": "អ្នកប្រើប្រាស់",
+    "profile": "ប្រវត្តិរូប",
+    "changePassword": "ប្តូរពាក្យសម្ងាត់",
+    "branch": "សាខា",
+
+    "sales": "ការលក់",
+    "sale": "ការលក់",
+    "saleOrder": "ការបញ្ជាទិញលក់",
+    "pendingSaleOrder": "ការបញ្ជាទិញលក់កំពុងរង់ចាំ",
+    "approvedSaleOrder": "ការបញ្ជាទិញលក់ដែលបានអនុម័ត",
+    "invoice": "វិក្កយបត្រ",
+    "customer": "អតិថិជន",
+
+    "purchase": "ការទិញ",
+    "pendingPurchase": "ការទិញកំពុងរង់ចាំ",
+    "approvedPurchase": "ការទិញដែលបានអនុម័ត",
+    "supplier": "អ្នកផ្គត់ផ្គង់",
+
+    "expense": "ការចំណាយ",
+    "salaryExpense": "ការចំណាយប្រាក់ខែ",
+    "missionExpense": "ការចំណាយបេសកកម្ម",
+    "generalExpense": "ការចំណាយទូទៅ",
+
+    "inventory": "សារពើភ័ណ្ឌ",
+    "category": "ប្រភេទ",
+    "products": "ផលិតផល",
+    "product": "ផលិតផល",
+    "units": "ឯកតា",
+    "unit": "ឯកតា",
+
+    "report": "របាយការណ៍",
+    "saleReport": "របាយការណ៍លក់",
+    "productReport": "របាយការណ៍ផលិតផល",
+    "purchaseReport": "របាយការណ៍ការទិញ",
+    "alertQtyReport": "របាយការណ៍បរិមាណជូនដំណឹង",
+    "profitReport": "របាយការណ៍ប្រាក់ចំណេញ"
+  }
+}

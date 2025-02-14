@@ -36,6 +36,7 @@ const Product = async ({ searchParams }: SearchParams) => {
     totalCount: 0,
     isNext: false,
   };
+
   return (
     <CardContainer
       title="Product"
