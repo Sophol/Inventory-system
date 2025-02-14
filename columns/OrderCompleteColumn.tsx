@@ -15,6 +15,7 @@ import { format } from "date-fns";
 import { voidInvoice } from "@/lib/actions/invoice.action";
 import { formatCurrency } from '@/lib/utils';
 
+
 const reloadPage = () => {
   window.location.reload();
 };
@@ -23,11 +24,11 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reference No" className="justify-center" />
+      <DataTableColumnHeader column={column} title="Reference No" className="justify-center min-w-[80px] w-[80px]" />
     ),
     cell: ({ row }) => {
       const referenceNo = row.getValue("referenceNo") as string;
-      return <span className="text-[10px] ">{referenceNo}</span>;
+      return <span className="text-[9px]  min-w-[80px] w-[80px]">{referenceNo}</span>;
     },
   },
   {
@@ -38,7 +39,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const date = row.getValue("invoicedDate") as string;
       const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss ");
-      return <span className="text-[10px] min-w-[120px] flex justify-center">{formattedDate}</span>;
+      return <span className="text-[9px] min-w-[105px] flex justify-center">{formattedDate}</span>;
     },
   },
   {
@@ -54,7 +55,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const branch = row.original.branch.title as string;
-      return <span className="text-[10px] min-w-[120px] ">{branch}</span>;
+      return <span className="text-[9px] min-w-[100px] inline-flex">{branch}</span>;
     },
   },
   {
@@ -64,7 +65,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const grandtotal = row.getValue("grandtotal") as number;
-      return <span className="flex justify-end">{formatCurrency(grandtotal)}</span>;
+      return <span className="flex justify-end min-w-[90px] inline-flex">{formatCurrency(grandtotal)}</span>;
     },
   },
 
@@ -95,7 +96,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const paid = row.getValue("paid") as number;
-      return <span className="flex justify-end">{formatCurrency(paid)}</span>;
+      return <span className="flex justify-end  min-w-[100px] inline-flex">{formatCurrency(paid)}</span>;
     },
   },
 
@@ -106,7 +107,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const balance = row.getValue("balance") as number;
-      return <span className="flex justify-end">{formatCurrency(balance)}</span>;
+      return <span className="flex justify-end min-w-[90px] inline-flex">{formatCurrency(balance)}</span>;
     },
   },
 
