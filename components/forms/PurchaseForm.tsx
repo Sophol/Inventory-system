@@ -266,10 +266,10 @@ const PurchaseForm = ({
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-8"
+        className="flex flex-col  gap-2 text-sm"
         onSubmit={form.handleSubmit(handleCreatePurchase)}
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
           <FormInput
             name="referenceNo"
             label="Reference No"
@@ -294,7 +294,7 @@ const PurchaseForm = ({
             setValue={form.setValue} // Replace with actual branch data
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
           <FormDatePicker
             name="purchaseDate"
             label="Purchase Date"
@@ -337,12 +337,12 @@ const PurchaseForm = ({
           </div>
         </div>
         <div className="grid grid-cols-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Product</CardTitle>
+          <Card  className="text-[12px]">
+            <CardHeader className="py-0 text-lg">
+              <CardTitle className="py-0 text-[12px]">Product</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="container mx-auto py-4">
+              <div className="container mx-auto pb-2 pt-0">
                 <FormPurchaseDetail
                   name="purchaseDetails"
                   control={form.control}
@@ -355,11 +355,11 @@ const PurchaseForm = ({
             </CardContent>
           </Card>
         </div>
-        <div className="mt-2 flex justify-end">
+        <div className="mb-3 flex justify-end">
           <Button
             type="submit"
             disabled={isPending}
-            className="primary-gradient w-fit uppercase !text-light-900"
+            className="primary-gradient w-fit uppercase !text-light-900 text-[11px]"
           >
             {isPending ? (
               <>
