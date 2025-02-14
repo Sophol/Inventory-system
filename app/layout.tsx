@@ -6,7 +6,7 @@ import { moulRegular } from "./fonts/fonts";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/toaster";
 import ThemeProvider from "@/context/Theme";
-import { getLocale, getMessages } from "next-intl/server";
+import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 
 const inter = localFont({
@@ -37,10 +37,15 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+const RootLayout = async ({
+  children,
+  params: { locale },
+}: {
+  children: React.ReactNode;
+  params: { locale: string };
+}) => {
   const session = await auth();
-  const messages = await getMessages();
-  const locale = await getLocale();
+  const messages = await getMessages({ locale });
   return (
     <html
       lang={locale}

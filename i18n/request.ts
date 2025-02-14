@@ -1,8 +1,12 @@
+"use server";
 import { getRequestConfig } from "next-intl/server";
 import { cookies } from "next/headers";
 
 export default getRequestConfig(async () => {
-  const localeCookie = (await cookies()).get("ERPSP_Locale");
+  const allCookies = await cookies();
+  const localeCookie = allCookies
+    .getAll()
+    .find((cookie) => cookie.name === "ERPSP_Locale");
   const locale = localeCookie ? localeCookie.value : "km";
   return {
     locale,
