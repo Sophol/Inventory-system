@@ -196,6 +196,17 @@ export async function getSalaries(params: ExpenseSearchParams): Promise<
 
   if (dateRange) {
     const [from, to] = dateRange.split("_");
+    const toDate = new Date(
+      Date.UTC(
+        new Date(to).getFullYear(),
+        new Date(to).getMonth(),
+        new Date(to).getDate(),
+        23,
+        59,
+        59
+      )
+    );
+    console.log("toDate", toDate);
     filterQuery.salaryDate = {
       $gte: new Date(
         Date.UTC(

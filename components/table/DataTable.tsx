@@ -65,6 +65,7 @@ export function DataTable<TData, TValue>({
                 className={`light-border-3 text-[10px] `}
               >
                 {headerGroup.headers.map((header) => {
+                  console.log(header);
                   return (
                     <TableHead
                       key={header.id}
