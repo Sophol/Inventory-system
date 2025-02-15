@@ -108,3 +108,16 @@ export const formatProvince = (province: string): string => {
   if (pro) return pro.title;
   else return "";
 };
+export function toCamelCase(str: string, t: (key: string) => string): string {
+  const camelCased = str
+    .toLowerCase()
+    .split(" ")
+    .map((word, index) => {
+      if (index === 0) {
+        return word;
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join("");
+  return t(camelCased);
+}

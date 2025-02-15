@@ -36,15 +36,15 @@ const Branch = async ({ searchParams }: SearchParams) => {
   const { branches, totalCount, isNext } = data || {};
   return (
     <CardContainer
-      title="Branch"
-      redirectTitle="ADD"
+      title="branch"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDBRANCH}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"
     >
       <>
         <div className="py-4">
-          <LocalSearch route={ROUTES.BRANCHES} placeholder="Search..." />
+          <LocalSearch route={ROUTES.BRANCHES} placeholder="search..." />
         </div>
         <DataRenderer
           success={success}

@@ -25,7 +25,7 @@ export const BranchColumn: ColumnDef<Branch>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="status" />
     ),
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
@@ -39,19 +39,19 @@ export const BranchColumn: ColumnDef<Branch>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader column={column} title="title" />
     ),
   },
   {
     accessorKey: "phone",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Phone" />
+      <DataTableColumnHeader column={column} title="phone" />
     ),
   },
   {
     accessorKey: "location",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Location" />
+      <DataTableColumnHeader column={column} title="location" />
     ),
   },
   {

@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/table";
 
 import { DataTablePagination } from "./DataTablePagination";
+import { useTranslations } from "next-intl";
+import { toCamelCase } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -38,7 +40,7 @@ export function DataTable<TData, TValue>({
   totalCount = 0,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-
+  const t = useTranslations("erp");
   const table = useReactTable({
     data,
     columns,
@@ -58,16 +60,17 @@ export function DataTable<TData, TValue>({
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup, index) => (
-              <TableRow key={headerGroup.id}  className={`light-border-3 text-[10px] `}>
+              <TableRow
+                key={headerGroup.id}
+                className={`light-border-3 text-[10px] `}
+              >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}  className={` ${index === 0 ? 'pl-3' : ''}`}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                    <TableHead
+                      key={header.id}
+                      className={` ${index === 0 ? "pl-3" : ""} text-black`}
+                    >
+                      {toCamelCase(header.id, t)}
                     </TableHead>
                   );
                 })}
@@ -82,7 +85,10 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell, index) => (
-                    <TableCell key={cell.id} className={`text-[10px] ${index === 0 ? 'pl-2' : ''}`}>
+                    <TableCell
+                      key={cell.id}
+                      className={`text-[10px] ${index === 0 ? "pl-2" : ""}`}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
