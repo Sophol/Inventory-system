@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,25 +10,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 
 function Language() {
-  const [locale, setLocale] = React.useState<string>("km");
+  const currentLocale = useLocale();
+  const [locale, setLocale] = useState<string>(currentLocale);
   const router = useRouter();
-
-  React.useEffect(() => {
-    const cookieLocale = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("ERPSP_Locale="))
-      ?.split("=")[1];
-    console.log("cookieLocale", document.cookie);
-    if (cookieLocale) {
-      setLocale(cookieLocale);
-    }
-  }, []);
 
   const changeLocale = (newLocale: string) => {
     setLocale(newLocale);
-    document.cookie = `ERPSP_Locale=${newLocale};`;
+    document.cookie = `ERPSP_Locale=${newLocale}; path=/; max-age=31536000`;
     router.refresh();
   };
 

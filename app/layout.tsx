@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import ThemeProvider from "@/context/Theme";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import { cookies } from "next/headers";
 
 const inter = localFont({
   src: "./fonts/InterVF.ttf",
@@ -37,14 +38,9 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout = async ({
-  children,
-  params: { locale },
-}: {
-  children: React.ReactNode;
-  params: { locale: string };
-}) => {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
+  const locale = (await cookies()).get("ERPSP_Locale")?.value || "km";
   const messages = await getMessages({ locale });
   return (
     <html
@@ -63,7 +59,7 @@ const RootLayout = async ({
         <body
           className={`${inter.variable} ${spaceGrotesk.variable} ${kohSantepheap.variable} antialiased`}
         >
-          <NextIntlClientProvider messages={messages}>
+          <NextIntlClientProvider locale={locale} messages={messages}>
             <ThemeProvider
               attribute="class"
               defaultTheme="light"

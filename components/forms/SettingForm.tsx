@@ -15,6 +15,7 @@ import FormInput from "../formInputs/FormInput";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { editSetting } from "@/lib/actions/setting.action";
+import { useTranslations } from "next-intl";
 
 interface Params {
   setting: Setting;
@@ -22,6 +23,7 @@ interface Params {
 }
 
 const SettingForm = ({ setting, isEdit = false }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof EditSettingSchema>>({
@@ -73,54 +75,58 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           <FormInput
             name="companyName"
-            label="Company Name"
+            label={t("companyName")}
             control={form.control}
           />
           <FormInput
             name="companyNameEnglish"
-            label="Company Name In English"
+            label={t("companyEnglishName")}
             control={form.control}
           />
           <FormInput
             name="companyLogo"
-            label="Company Logo"
+            label={t("companyLogo")}
             control={form.control}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <FormInput name="bankName" label="Bank Name" control={form.control} />
+          <FormInput
+            name="bankName"
+            label={t("bankName")}
+            control={form.control}
+          />
           <FormInput
             name="bankAccount"
-            label="Bank Account"
+            label={t("bankAccount")}
             control={form.control}
           />
           <FormInput
             name="bankNumber"
-            label="Bank Number"
+            label={t("bankNumber")}
             control={form.control}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormInput
             name="phone"
-            label="Company Phone"
+            label={t("companyPhone")}
             control={form.control}
           />
           <FormInput
             name="address"
-            label="Company Address"
+            label={t("companyAddress")}
             control={form.control}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormInput
             name="companyOwner"
-            label="Company Owner"
+            label={t("companyOwner")}
             control={form.control}
           />
           <FormInput
             name="vat_number"
-            label="VAT/GST Number"
+            label={t("vat/gstNumber")}
             control={form.control}
           />
         </div>
@@ -128,13 +134,13 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormInput
             name="exchangeRateD"
-            label="exchangeRate Dollar"
+            label={t("exchangeRateDollar")}
             type="number"
             control={form.control}
           />
           <FormInput
             name="exchangeRateT"
-            label="exchangeRate Thai"
+            label={t("exchangeRateBaht")}
             type="number"
             control={form.control}
           />
@@ -151,7 +157,7 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>
