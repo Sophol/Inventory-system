@@ -220,6 +220,7 @@ interface CreateSaleParams {
   exchangeRateD?: number;
   exchangeRateT?: number;
   delivery?: number;
+  invoicedDate: Date | string;
   paidBy?:
     | "Cash"
     | "ABA Bank"

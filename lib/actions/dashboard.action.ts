@@ -178,6 +178,8 @@ export async function getAllExpense(params: {
         },
       ]),
     ]);
+  console.log("start", start);
+  console.log("start", end);
   const totalPurchaseAmount =
     totalPurchase.length > 0 ? totalPurchase[0].total : 0;
   const totalMissionAmount =

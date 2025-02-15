@@ -201,6 +201,7 @@ export async function getGeneralExps(params: ExpenseSearchParams): Promise<
       sortCriteria = { createdAt: -1 };
       break;
   }
+  console.log("filter", filterQuery);
   try {
     const [totalGeneralExps, generalExps] = await Promise.all([
       GeneralExp.aggregate([
