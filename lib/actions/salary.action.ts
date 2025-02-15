@@ -212,7 +212,10 @@ export async function getSalaries(params: ExpenseSearchParams): Promise<
         Date.UTC(
           new Date(from).getFullYear(),
           new Date(from).getMonth(),
-          new Date(from).getDate()
+          new Date(from).getDate(),
+          0,
+          0,
+          0
         )
       ),
       $lte: new Date(
