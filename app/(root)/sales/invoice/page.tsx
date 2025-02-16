@@ -52,20 +52,20 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
       <TableCell colSpan={4} className="text-right ">
         <strong>Total:</strong>
       </TableCell>
-      <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
+      <TableCell className="text-right  ">
+        <strong className="px-4">{formatCurrency(summary?.totalGrandtotal)}</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalDiscount)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalDiscount)}</strong>
       </TableCell>
-      <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalDelivery)}</strong>
+      <TableCell className="text-right  ">
+        <strong className="px-4">{formatCurrency(summary?.totalDelivery)}</strong>
       </TableCell>
-      <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalPaid)}</strong>
+      <TableCell className="text-right  ">
+        <strong className="px-4">{formatCurrency(summary?.totalPaid)}</strong>
       </TableCell>
-      <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalBalance)}</strong>
+      <TableCell className="text-right  ">
+        <strong className="px-4"> {formatCurrency(summary?.totalBalance)}</strong>
       </TableCell>
       <TableCell></TableCell>
       <TableCell></TableCell>

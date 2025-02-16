@@ -102,7 +102,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const grandtotal = row.getValue("grandtotal") as number;
       return (
-        <span className="flex justify-end whitespace-nowrap ">
+        <span className="flex justify-end whitespace-nowrap px-4">
           {formatCurrency(grandtotal)}
         </span>
       );
@@ -121,7 +121,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const discount = row.getValue("discount") as number;
       return (
-        <span className=" justify-end w-full flex whitespace-nowrap ">
+        <span className=" justify-end w-full flex whitespace-nowrap  px-4">
           {formatCurrency(discount)}
         </span>
       );
@@ -139,7 +139,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const delivery = row.getValue("delivery") as number;
       return (
-        <span className="justify-end w-full  flex whitespace-nowrap ">
+        <span className="justify-end w-full  flex whitespace-nowrap  px-4">
           {formatCurrency(delivery)}
         </span>
       );
@@ -156,7 +156,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const paid = row.getValue("paid") as number;
       return (
-        <span className="justify-end  flex  whitespace-nowrap">
+        <span className="justify-end  flex  whitespace-nowrap  px-4">
           {formatCurrency(paid)}
         </span>
       );
@@ -175,7 +175,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const balance = row.getValue("balance") as number;
       return (
-        <span className=" justify-end flex whitespace-nowrap ">
+        <span className=" justify-end flex whitespace-nowrap  px-4">
           {formatCurrency(balance)}
         </span>
       );
