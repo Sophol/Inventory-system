@@ -161,14 +161,14 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
         </div>
         <div className="flex p-2 invoice-body pt-12 ">
           <div className="invoice-to  text-center">
-            <p className="pb-1 w-full">Sender(អ្នកប្រគល់): </p>
+            <p className="pb-1 w-full">អ្នកប្រគល់: </p>
             <p className="pb-5 w-full">
               <span className="">{invoice.sellerName}</span>
             </p>
           </div>
           <div className="bill-to">
             <div className=" text-center">
-              <p className="pb-1 w-full">Receiver(អ្នកទទួល): </p>
+              <p className="pb-1 w-full">អ្នកទទួល: </p>
               <p className="pb-5 w-full">
                 {invoice.customer.title}
               </p>
