@@ -16,7 +16,7 @@ import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { getUserRole } from "@/lib/actions/user.action";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 const reloadPage = () => {
   window.location.reload();
 };
@@ -25,7 +25,11 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reference No" className="justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Reference No"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
       const referenceNo = row.getValue("referenceNo") as string;
@@ -35,51 +39,89 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "customer.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Customer" className="justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Customer"
+        className="min-w-[120px] inline-flex"
+      />
     ),
+    cell: ({ row }) => {
+      const customer = row.original.customer.title as string;
+      return (
+        <span className="text-[9px] min-w-[100px] inline-flex">{customer}</span>
+      );
+    },
   },
   {
     accessorKey: "branch.title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch" className="justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Branch"
+        className="justify-center"
+      />
     ),
   },
   {
     accessorKey: "subtotal",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Sub Total" className="justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Sub Total"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
       const subtotal = row.getValue("subtotal") as number;
-      return <span className="flex justify-end">{formatCurrency(subtotal)}</span>;
+      return (
+        <span className="flex justify-end">{formatCurrency(subtotal)}</span>
+      );
     },
   },
   {
     accessorKey: "grandtotal",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Grand Total" className="justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Grand Total"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
       const grandtotal = row.getValue("grandtotal") as number;
-      return <span className="flex justify-end">{formatCurrency(grandtotal)}</span>;
+      return (
+        <span className="flex justify-end">{formatCurrency(grandtotal)}</span>
+      );
     },
   },
-  
+
   {
     accessorKey: "orderDate", // Assuming saleDate is the date field you want to format
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Order Date" className="justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Order Date"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
       const date = row.getValue("orderDate") as string;
       const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss "); // Customize format as needed
-      return <span className="text-[10px] min-w-[120px] flex justify-center">{formattedDate}</span>;
+      return (
+        <span className="text-[10px] min-w-[120px] flex justify-center">
+          {formattedDate}
+        </span>
+      );
     },
   },
   {
     accessorKey: "orderStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Order Status" className="justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="Order Status"
+        className="justify-center"
+      />
     ),
     cell: ({ row }) => {
       const status = row.getValue("orderStatus") as string;
@@ -103,7 +145,11 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions"  className="justify-center flex"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Actions"
+        className="justify-center flex"
+      />
     ),
     cell: ({ row }) => {
       const sale = row.original;

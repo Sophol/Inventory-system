@@ -19,7 +19,7 @@ const reloadPage = () => {
   window.location.reload();
 };
 
-export const SaleColumn: ColumnDef<SaleComplete>[] = [
+export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
@@ -67,7 +67,7 @@ export const SaleColumn: ColumnDef<SaleComplete>[] = [
       />
     ),
     cell: ({ row }) => {
-      const customer = row.original.customer.name as string;
+      const customer = row.original.customer.title as string;
       return (
         <span className="text-[9px] min-w-[100px] inline-flex">{customer}</span>
       );

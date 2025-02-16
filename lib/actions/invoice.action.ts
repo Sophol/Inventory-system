@@ -604,6 +604,10 @@ export async function getInvoices(params: SaleSearchParams): Promise<
         .skip(skip)
         .limit(limit),
     ]);
+    const transformedSales = sales.map((sale) => ({
+      ...sale,
+      customer: sale.customer ? { title: sale.customer.name } : null,
+    }));
     const count = totalSales[0]?.count || 0;
     const totalGrandtotal = totalSales[0]?.grandtotal || 0;
     const totalDiscount = totalSales[0]?.discount || 0;
@@ -622,7 +626,7 @@ export async function getInvoices(params: SaleSearchParams): Promise<
     return {
       success: true,
       data: {
-        sales: JSON.parse(JSON.stringify(sales)),
+        sales: JSON.parse(JSON.stringify(transformedSales)),
         summary: JSON.parse(JSON.stringify(summaryData)),
         isNext,
       },
