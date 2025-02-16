@@ -19,7 +19,7 @@ const reloadPage = () => {
   window.location.reload();
 };
 
-export const SaleColumn: ColumnDef<Sale>[] = [
+export const SaleColumn: ColumnDef<SaleComplete>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
@@ -32,7 +32,9 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const referenceNo = row.getValue("referenceNo") as string;
       return (
-        <span className="text-[9px] inline-flex min-w-[90px]">{referenceNo}</span>
+        <span className="text-[9px] inline-flex min-w-[90px]">
+          {referenceNo}
+        </span>
       );
     },
   },
@@ -50,15 +52,19 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss ");
       return (
         <span className="text-[9px] min-w-[105px] flex justify-center">
-          {formattedDate} 
-        </span> 
+          {formattedDate}
+        </span>
       );
     },
   },
   {
     accessorKey: "customer.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Customer" className="min-w-[120px] inline-flex"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Customer"
+        className="min-w-[120px] inline-flex"
+      />
     ),
     cell: ({ row }) => {
       const customer = row.original.customer.name as string;
@@ -67,7 +73,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       );
     },
   },
-  
+
   {
     accessorKey: "branch.title",
     header: ({ column }) => (

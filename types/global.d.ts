@@ -245,7 +245,40 @@ interface Sale {
   saleDetails: saleDetail[];
   sellerName?: string;
 }
-
+interface SaleComplete {
+  _id: string;
+  customer: { _id: string; name: string };
+  branch: { _id: string; title: string };
+  seller: { _id: string; title: string };
+  referenceNo: string;
+  description?: string;
+  orderDate: string;
+  approvedDate: string;
+  dueDate?: Date;
+  invoicedDate: string;
+  discount: number;
+  subtotal: number;
+  delivery: number;
+  grandtotal: number;
+  paid: number;
+  balance: number;
+  exchangeRateD?: number;
+  exchangeRateT?: number;
+  tax: number;
+  isLogo: string;
+  paidBy?:
+    | "Cash"
+    | "ABA Bank"
+    | "ACLEDA Bank"
+    | "Sathapna Bank"
+    | "Vatanak Bank"
+    | "Others";
+  orderStatus: "pending" | "approved" | "completed" | "void";
+  paymentStatus: "pending" | "credit" | "completed";
+  saleType?: "retail" | "wholesale";
+  saleDetails: saleDetail[];
+  sellerName?: string;
+}
 interface Setting {
   _id: string;
   companyName: string;
