@@ -305,7 +305,7 @@ function FormPurchaseDetail<T extends FieldValues>({
         })}
       </div>
 
-      <div className="grid grid-cols-4 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <FormInput
           type="number"
           name={"deliveryOut" as Path<T>}

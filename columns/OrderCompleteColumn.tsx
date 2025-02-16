@@ -26,13 +26,13 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Reference No"
-        className="justify-center min-w-[80px] w-[80px]"
+        className="justify-center min-w-[100px] "
       />
     ),
     cell: ({ row }) => {
       const referenceNo = row.getValue("referenceNo") as string;
       return (
-        <span className="text-[9px]  min-w-[80px] w-[80px]">{referenceNo}</span>
+        <span className="text-[9px] inline-flex min-w-[90px]">{referenceNo}</span>
       );
     },
   },
@@ -42,7 +42,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Date"
-        className="justify-center"
+        className="flex justify-center text-center min-w-[105px] w-[105px] items-center"
       />
     ),
     cell: ({ row }) => {
@@ -50,24 +50,31 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss ");
       return (
         <span className="text-[9px] min-w-[105px] flex justify-center">
-          {formattedDate}
-        </span>
+          {formattedDate} 
+        </span> 
       );
     },
   },
   {
     accessorKey: "customer.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Customer" />
+      <DataTableColumnHeader column={column} title="Customer" className="min-w-[120px] inline-flex"/>
     ),
+    cell: ({ row }) => {
+      const customer = row.original.customer.name as string;
+      return (
+        <span className="text-[9px] min-w-[100px] inline-flex">{customer}</span>
+      );
+    },
   },
+  
   {
     accessorKey: "branch.title",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
         title="Branch"
-        className="justify-center"
+        className="justify-center min-w-[100px]"
       />
     ),
     cell: ({ row }) => {
@@ -83,7 +90,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Grand Total"
-        className="justify-center"
+        className="justify-center min-w-[90px]"
       />
     ),
     cell: ({ row }) => {
@@ -102,13 +109,13 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Discount"
-        className="justify-center"
+        className="justify-center min-w-[90px] inline-flex"
       />
     ),
     cell: ({ row }) => {
       const discount = row.getValue("discount") as number;
       return (
-        <span className="flex justify-end w-full">
+        <span className="flex justify-end w-full  min-w-[70px] inline-flex">
           {formatCurrency(discount)}
         </span>
       );
@@ -126,7 +133,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const delivery = row.getValue("delivery") as number;
       return (
-        <span className="flex justify-end w-full">
+        <span className="flex justify-end w-full  min-w-[70px] inline-flex">
           {formatCurrency(delivery)}
         </span>
       );
@@ -138,7 +145,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Paid"
-        className="justify-center"
+        className="justify-center min-w-[100px]"
       />
     ),
     cell: ({ row }) => {
@@ -157,7 +164,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Balance"
-        className="justify-center"
+        className="justify-center min-w-[90px]"
       />
     ),
     cell: ({ row }) => {
