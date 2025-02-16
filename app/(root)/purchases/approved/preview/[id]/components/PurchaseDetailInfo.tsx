@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import Currency from "@/components/Currency";
 
 const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
+  console.log(purchase);
   return (
     <div className="card80 ">
       <div className="printable-area">
@@ -16,7 +17,7 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
             </h1>
 
             <p className="text-sm">
-              <span className="pr-2">Date Issued:</span>
+              <span className="pr-2">ថ្ងៃចេញ:</span>
               {format(new Date(purchase.purchaseDate), "dd/MM/yyyy hh:mm:ss ")}
             </p>
           </div>
@@ -25,33 +26,33 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
         <div className="flex p-2 invoice-body mt-2 mb-1">
           <div className="bill-to">
             <div className="flex gap-2">
-              <p className="pb-1">Supplier: </p>
-              <p className="pb-1">{purchase.supplier.title}</p>
+              <p className="pb-1">អ្នកផ្គត់ផ្គង់: </p>
+              <p className="pb-1 font-bold">{purchase.supplier.title}</p>
             </div>
             <div className="flex gap-2">
-              <p className="pb-1">Branch: </p>
-              <p className="pb-1">{purchase.branch.title}</p>
+              <p className="pb-1">សាខា : </p>
+              <p className="pb-1 font-bold">{purchase.branch.title}</p>
             </div>
           </div>
           <div className="sub-info">
             <div className="flex gap-2">
-              <p className="pb-1">Total Amount: </p>
-              <p className="pb-1">
+              <p className="pb-1">សរុបចំនួន: </p>
+              <p className="pb-1 font-bold">
                 <Currency amount={purchase.grandtotal} />
               </p>
             </div>
             <div className="flex gap-2">
-              <p className="pb-1">Paid By: </p>
-              <p className="pb-1">{purchase.paidBy}</p>
+              <p className="pb-1">បង់ប្រាក់ដោយ: </p>
+              <p className="pb-1 font-bold">{purchase.paidBy}</p>
             </div>
           </div>
         </div>
         <div className="sale-details bg-white rounded-lg shadow-sm">
           <div className="flex gap-2 border-b pb-1 px-7 text-sm  ">
-            <p className="w-2/6">ITEM</p>
-            <p className="w-2/6">COST</p>
-            <p className="w-1/6">QTY</p>
-            <p className="w-1/6">TOTAL</p>
+            <p className="w-2/6 font-bold">ផលិតផល</p>
+            <p className="w-2/6 font-bold">ថ្លៃ</p>
+            <p className="w-1/6 font-bold">ចំនួន</p>
+            <p className="w-1/6 font-bold">សរុប</p>
           </div>
           {purchase.purchaseDetails.map((detail, index) => (
             <div
@@ -86,7 +87,7 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
             <br />
             <div className="sub-info">
               <div className="flex gap-2">
-                <p className="sub-info pb-1 w-1/3">Subtotal:</p>
+                <p className="sub-info pb-1 w-1/3">ថ្លៃទំនិញ:</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
                   {purchase.subtotal ? (
@@ -97,7 +98,7 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
                 </p>
               </div>
               <div className="flex gap-2">
-                <p className="sub-info pb-1 w-1/3">DeliveryIn:</p>
+                <p className="sub-info pb-1 w-1/3">ថ្លៃដឹកចូល:</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
                   {purchase.deliveryIn ? (
@@ -108,7 +109,7 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
                 </p>
               </div>
               <div className="flex gap-2">
-                <p className="sub-info pb-1 w-1/3">DeliveryOut:</p>
+                <p className="sub-info pb-1 w-1/3">ថ្លៃដឹកចេញ:</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
                   {purchase.deliveryOut ? (
@@ -119,7 +120,7 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
                 </p>
               </div>
               <div className="flex gap-2">
-                <p className="sub-info pb-1 w-1/3">ServiceFee:</p>
+                <p className="sub-info pb-1 w-1/3">ថ្លៃសេវា:</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
                   {purchase.serviceFee ? (
@@ -130,7 +131,7 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
                 </p>
               </div>
               <div className="flex gap-2">
-                <p className="sub-info pb-1 w-1/3">ShippingFee:</p>
+                <p className="sub-info pb-1 w-1/3">ថ្លៃដឹក(Shipping):</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
                   {purchase.shippingFee ? (
@@ -142,7 +143,7 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
               </div>
               <hr className="border-t-2 border-gray-400 my-3" />
               <div className="flex gap-2">
-                <p className="pb-1 w-1/3">Total: </p>
+                <p className="pb-1 w-1/3">សរុប: </p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {purchase.grandtotal ? (
                     <Currency amount={purchase.grandtotal} />

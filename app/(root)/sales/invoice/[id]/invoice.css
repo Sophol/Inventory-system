@@ -14,7 +14,7 @@
 
 
   .invoice-header{
-    padding:15px 25px 15px 25px;
+    padding:15px 7px 15px 7px;
     background-color: rgba(231, 231, 231, 0.733);
     border-radius: 5px;
   }
@@ -52,14 +52,14 @@
     }
   }
   .invoice-note{
-    width:76%;
+    width:75%;
     display: flex; 
     align-items: center;  
     height: 160px; 
 
   }
   .invoice-total{
-    width:24%;
+    width:25%;
   }
 
   .loader {
@@ -129,7 +129,7 @@
   display: none !important;
 }
 .invoice-to, .bill-to{
-  width:50%;
+  width:45%;
 }
 .invoice-container {
   padding:15px; /* Stack elements vertically */

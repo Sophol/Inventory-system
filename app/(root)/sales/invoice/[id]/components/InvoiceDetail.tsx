@@ -35,8 +35,8 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 className="w-auto sm:w-[100] h-20 object-contain logo"
               />
             )}
-              <p className="text-sm pt-2 pb-0 mx-auto sm:mx-0">{setting.companyName}</p>
-              <p className="text-sm pb-0 mx-auto sm:mx-0">{setting.companyNameEnglish}</p>
+              <p className="text-sm pt-2 pb-0 mx-auto sm:mx-0 font-bold">{setting.companyName}</p>
+              <p className="text-sm pb-0 mx-auto sm:mx-0 bold">{setting.companyNameEnglish}</p>
               <p className="text-sm mx-auto sm:mx-0">
                 {setting.address}
               </p>
@@ -47,11 +47,11 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
           <div className="flex flex-col">
             <h1 className="font-bold text-lg pt-2 mx-auto sm:mx-0 pb-3"># {invoice.referenceNo}</h1>
             <p className="text-sm">
-              <span className="pr-2">Date Issued:</span>
+              <span className="pr-2">ថ្ងៃចេញ:</span>
               {invoice.dueDate ? format(new Date(invoice.invoicedDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
             <p className="text-sm">
-              <span className="pr-2">  Due Date:</span>
+              <span className="pr-2">ថ្ងៃកំណត់:</span>
               {invoice.dueDate ? format(new Date(invoice.dueDate), "dd/MM/yyyy hh:mm:ss ") : "N/A"}
             </p>
           </div>
@@ -61,13 +61,13 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
             {/* <p className=" text-lg">Bill To:</p> */}
             <div className="sub-info text-sm">
               <div className="flex gap-2">
-                <p className="pb-1 w-1/3">Total Due: </p>
+                <p className="pb-1 w-1/3">ប្រាក់ដែលត្រូវបង់: </p>
                 <p className="pb-1 w-2/3">
                   {invoice.balance ? formatCurrency(invoice.balance) : 0.0}
                 </p>
               </div>
               <div className="flex gap-2">
-                <p className="pb-1 w-1/3">Paid By: </p>
+                <p className="pb-1 w-1/3">បង់ថ្លៃទំនិញដោយ: </p>
                 <p className="pb-1 w-2/3">
                   {invoice.paid === 0 ? "N/A" : invoice.paidBy}
                 </p>
@@ -77,10 +77,10 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
         </div>
         <div className="sale-details bg-white rounded-lg shadow-sm">
           <div className="flex gap-2 border-b pb-1 px-7 text-sm  ">
-            <p className="w-2/6">ITEM</p>
-            <p className="w-2/6">PRICE</p>
-            <p className="w-1/6">QTY</p>
-            <p className="w-1/6">TOTAL</p>
+            <p className="w-2/6 font-bold">ផលិតផល</p>
+            <p className="w-2/6 font-bold">តម្លៃ</p>
+            <p className="w-1/6 font-bold">ចំនួន</p>
+            <p className="w-1/6 font-bold">សរុប</p>
           </div>
           {invoice.saleDetails.map((detail, index) => (
             <div
@@ -125,27 +125,27 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
             <br />
             <div className="sub-info">
               <div className="flex gap-2">
-                <p className="sub-info pb-1 w-1/3">Subtotal:</p>
+                <p className="sub-info pb-1 w-1/3">ថ្លៃទំនិញ:</p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
                   {invoice.subtotal ? formatCurrency(invoice.subtotal) : "0"}
                 </p>
               </div>
               <div className="flex gap-2">
-                <p className="pb-1 w-1/3 ">Discount: </p>
+                <p className="pb-1 w-1/3 ">ចុះតម្លៃ: </p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {invoice.discount ? formatCurrency(invoice.discount) : "0"}
                 </p>
               </div>
               <div className="flex gap-2">
-                <p className="pb-1 w-1/3">Delivery: </p>
+                <p className="pb-1 w-1/3">ថ្លៃដឹក: </p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {invoice.delivery ? invoice.delivery : "0"}
                 </p>
               </div>
               <hr className="border-t-2 border-gray-400 my-3" />
               <div className="flex gap-2">
-                <p className="pb-1 w-1/3">Total: </p>
+                <p className="pb-1 w-1/3">សរុប: </p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {invoice.grandtotal
                     ? formatCurrency(invoice.grandtotal)
