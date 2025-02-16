@@ -233,7 +233,7 @@ export async function getRevenueByProvince(params: {
   const end = endOfMonth(date);
 
   const matchStage = {
-    "sales.orderDate": { $gte: start, $lte: end },
+    "sales.invoicedDate": { $gte: start, $lte: end },
     "sales.orderStatus": "completed",
   };
 
