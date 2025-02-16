@@ -305,7 +305,7 @@ function FormPurchaseDetail<T extends FieldValues>({
         })}
       </div>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
         <FormInput
           type="number"
           name={"deliveryOut" as Path<T>}
@@ -335,7 +335,7 @@ function FormPurchaseDetail<T extends FieldValues>({
           onChange={calculateGrandTotal}
         />
       </div>
-      <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex items-center gap-2 flex-wrap pt-3">
         <div className="grow text-right">
           <label className="text-[11px]">Sub Total</label>
         </div>
