@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 import { getInvoices } from "@/lib/actions/invoice.action";
 import { TableCell, TableRow } from "@/components/ui/table";
 import SaleSearch from "@/components/search/SaleSearch";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -53,26 +53,22 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary.totalGrandtotal)}</strong>
+        <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary.totalDiscount)}</strong>
+        <strong>{formatCurrency(summary?.totalDiscount)}</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary.totalDelivery)}</strong>
+        <strong>{formatCurrency(summary?.totalDelivery)}</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary.totalPaid)}</strong>
+        <strong>{formatCurrency(summary?.totalPaid)}</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary.totalBalance)}</strong>
+        <strong>{formatCurrency(summary?.totalBalance)}</strong>
       </TableCell>
-      <TableCell>
-        
-      </TableCell>
-      <TableCell>
-        
-      </TableCell>
+      <TableCell></TableCell>
+      <TableCell></TableCell>
     </TableRow>
   );
   return (
