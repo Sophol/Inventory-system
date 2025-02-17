@@ -29,6 +29,7 @@ import {
 import React from "react";
 import { getRevenueByProvince } from "@/lib/actions/dashboard.action";
 import { useTranslations } from "next-intl";
+import { formatProvince } from "@/lib/utils";
 
 interface ChartRevenueData {
   province: string;
@@ -55,7 +56,7 @@ export function RevenueByProvincePieChart({
     "November",
     "December",
   ];
-
+  const t = useTranslations("erp");
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
 
@@ -76,7 +77,7 @@ export function RevenueByProvincePieChart({
       ) => {
         if (province !== null && province !== undefined) {
           acc[province] = {
-            label: province.charAt(0).toUpperCase() + province.slice(1),
+            label: formatProvince(province),
             color: fill,
           };
         }
@@ -122,7 +123,7 @@ export function RevenueByProvincePieChart({
 
     fetchRevenueData();
   }, [selectedMonth, selectedYear]);
-  const t = useTranslations("erp");
+
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -194,7 +195,7 @@ export function RevenueByProvincePieChart({
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={convertedData}
-          className="mx-auto aspect-square max-h-[350px] [&_.recharts-text]:fill-background"
+          className="mx-auto aspect-square max-h-[330px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
             <ChartTooltip

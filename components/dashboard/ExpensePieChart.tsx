@@ -38,28 +38,6 @@ interface ChartExpenseData {
   fill: string;
 }
 
-const chartConfig = {
-  amount: {
-    label: "Amount",
-  },
-  purchase: {
-    label: "Purchase Expense",
-    color: getUniqueRandomColors(0),
-  },
-  general: {
-    label: "General Expense",
-    color: getUniqueRandomColors(1),
-  },
-  mission: {
-    label: "Mission Expense",
-    color: getUniqueRandomColors(3),
-  },
-  salary: {
-    label: "Salary Expense",
-    color: getUniqueRandomColors(4),
-  },
-} satisfies ChartConfig;
-
 export function ExpensePieChart({
   initialChartData,
   initialTotalExpense,
@@ -137,6 +115,28 @@ export function ExpensePieChart({
     fetchExpenseData();
   }, [selectedMonth, selectedYear]);
   const t = useTranslations("erp");
+
+  const chartConfig = {
+    amount: {
+      label: "Amount",
+    },
+    purchase: {
+      label: t("purchaseExpense"),
+      color: getUniqueRandomColors(0),
+    },
+    general: {
+      label: t("generalExpense"),
+      color: getUniqueRandomColors(1),
+    },
+    mission: {
+      label: t("missionExpense"),
+      color: getUniqueRandomColors(2),
+    },
+    salary: {
+      label: t("salaryExpense"),
+      color: getUniqueRandomColors(3),
+    },
+  } satisfies ChartConfig;
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -208,7 +208,7 @@ export function ExpensePieChart({
       <CardContent className="flex-1 pb-0 mt-5">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[350px] [&_.recharts-text]:fill-background"
+          className="mx-auto aspect-square max-h-[330px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />

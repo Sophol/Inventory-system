@@ -524,6 +524,7 @@ export async function getPurchase(
           supplier: {
             _id: "$supplierDetails._id",
             title: "$supplierDetails.name",
+            phone: "$supplierDetails.phone",
           },
         },
       },

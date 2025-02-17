@@ -90,7 +90,7 @@
     "paymentStatus": "ស្ថានភាពទូទាត់",
     "paymentDate": "កាលបរិច្ឆេទទូទាត់",
     "addUnit": "បន្ថែមឯកតា",
-    "dateRange": "ជួរកាលបរិច្ឆេទ",
+    "dateRange": "កាលបរិច្ឆេទ",
     "printLogo": "បោះពុម្ពឡូហ្គោ",
     "invoiceDate": "កាលបរិច្ឆេទវិក្កយបត្រ",
     "invoiceddate": "កាលបរិច្ឆេទវិក្កយបត្រ",
@@ -123,7 +123,7 @@
     "shippingFee": "ថ្លៃដឹកជញ្ជូន",
     "serviceFee": "ថ្លៃសេវា",
     "cost": "ថ្លៃដើម",
-    "profit": "ចំណេញ",
+    "profit": "ប្រាក់ចំណេញសរុប",
     "staff": "បុគ្គលិក",
     "staffid": "បុគ្គលិក",
     "salary": "ប្រាក់ខែ",
@@ -177,6 +177,9 @@
     "expenseByMonth": "ចំណាយតាមខែ",
     "revenueByProvince": "ចំណូលតាមខេត្ត",
     "monthlyProfitLoss": "ប្រាក់ចំណេញនិងខាតប្រចាំខែ",
-    "yearlyProfitLoss": "ប្រាក់ចំណេញនិងខាតប្រចាំឆ្នាំ"
+    "yearlyProfitLoss": "ប្រាក់ចំណេញនិងខាតប្រចាំឆ្នាំ",
+    "grossProfit": "ប្រាក់ចំណេញ",
+    "purchaseExpense": "ចំណាយលើការទិញ",
+    "clearSearch": "លុបការស្វែងរក"
   }
 }

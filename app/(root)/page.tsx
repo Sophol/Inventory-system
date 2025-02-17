@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   getAllExpense,
   getAnnualSummary,
+  getAnnualSummaryByear,
   getFirstRowDashboard,
   getRevenueByProvince,
 } from "@/lib/actions/dashboard.action";
@@ -9,9 +10,9 @@ import { checkAuthorization } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 import { ExpensePieChart } from "@/components/dashboard/ExpensePieChart";
 import { RevenueByProvincePieChart } from "@/components/dashboard/RevenueByProvincePieChart";
-//import { AnnualSummaryChart } from "@/components/dashboard/AnnualSummaryChart";
 import { MonthlyPrfoit } from "@/components/dashboard/MonthlyProfit";
 import SummarySale from "@/components/dashboard/SummarySale";
+import { YearlyPrfoit } from "@/components/dashboard/YearlyProfit";
 const months = [
   "January",
   "February",
@@ -78,7 +79,7 @@ const Home = async () => {
   const { data: annaulSummary } = await getAnnualSummary({
     searchYear: new Date().getFullYear(),
   });
-  console.log("annaulSummary", annaulSummary);
+  const { data: AnnualSummaryByYear } = await getAnnualSummaryByear();
   return (
     <>
       <section>
@@ -103,6 +104,9 @@ const Home = async () => {
           </div>
           <div className="grid grid-cols-1">
             <MonthlyPrfoit annaulSummary={annaulSummary} />
+          </div>
+          <div className="grid grid-cols-1">
+            <YearlyPrfoit annaulSummary={AnnualSummaryByYear} />
           </div>
         </div>
       </section>

@@ -7,7 +7,15 @@ import {
   Salary,
   Sale,
 } from "@/database";
-import { format, endOfMonth, startOfMonth, subMonths } from "date-fns";
+import {
+  format,
+  endOfMonth,
+  startOfMonth,
+  subMonths,
+  startOfYear,
+  subYears,
+  endOfYear,
+} from "date-fns";
 import handleError from "../handlers/error";
 import {
   SearchAllExpenseSchema,
@@ -178,8 +186,6 @@ export async function getAllExpense(params: {
         },
       ]),
     ]);
-  console.log("start", start);
-  console.log("start", end);
   const totalPurchaseAmount =
     totalPurchase.length > 0 ? totalPurchase[0].total : 0;
   const totalMissionAmount =
@@ -358,6 +364,7 @@ export const getRecentOrders = async () => {
     throw new Error("Failed to fetch recent orders");
   }
 };
+
 export async function getAnnualSummary(params: {
   searchYear: number;
 }): Promise<ActionResponse<{ data: AnnualSummary[] }>> {
@@ -400,6 +407,58 @@ export async function getAnnualSummary(params: {
       $group: {
         _id: { $month: "$purchaseDate" },
         totalPurchases: { $sum: "$grandtotal" },
+        totalServiceFee: {
+          $sum: {
+            $add: [
+              "$deliveryIn",
+              "$deliveryOut",
+              "$serviceFee",
+              "$shippingFee",
+            ],
+          },
+        },
+      },
+    },
+  ]);
+
+  const salaryData = await Salary.aggregate([
+    {
+      $match: {
+        salaryDate: { $gte: start, $lte: end },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$salaryDate" },
+        totalSalaryExpense: { $sum: "$netSalary" },
+      },
+    },
+  ]);
+
+  const missionExpenseData = await Mission.aggregate([
+    {
+      $match: {
+        missionDate: { $gte: start, $lte: end },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$missionDate" },
+        totalMissionExpense: { $sum: "$amount" },
+      },
+    },
+  ]);
+
+  const generalExpenseData = await GeneralExp.aggregate([
+    {
+      $match: {
+        generalDate: { $gte: start, $lte: end },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$generalDate" },
+        totalGeneralExpense: { $sum: "$amount" },
       },
     },
   ]);
@@ -407,11 +466,30 @@ export async function getAnnualSummary(params: {
   const summaryMap = new Map();
 
   // Initialize the summaryMap with all months set to zero values
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   months.forEach((month, index) => {
     summaryMap.set(index + 1, {
       month,
       sale: 0,
       purchase: 0,
+      serviceFee: 0,
+      expense: 0,
+      grossProfit: 0,
+      profit: 0,
     });
   });
 
@@ -419,15 +497,163 @@ export async function getAnnualSummary(params: {
     summaryMap.get(_id)!.sale = totalSales;
   });
 
-  purchasesData.forEach(({ _id, totalPurchases }) => {
+  purchasesData.forEach(({ _id, totalPurchases, totalServiceFee }) => {
     summaryMap.get(_id)!.purchase = totalPurchases;
+    summaryMap.get(_id)!.serviceFee = totalServiceFee;
+  });
+
+  salaryData.forEach(({ _id, totalSalaryExpense }) => {
+    summaryMap.get(_id)!.expense += totalSalaryExpense;
+  });
+
+  missionExpenseData.forEach(({ _id, totalMissionExpense }) => {
+    summaryMap.get(_id)!.expense += totalMissionExpense;
+  });
+
+  generalExpenseData.forEach(({ _id, totalGeneralExpense }) => {
+    summaryMap.get(_id)!.expense += totalGeneralExpense;
   });
 
   const result = Array.from(summaryMap.values()).map((entry) => ({
     ...entry,
-    profit: entry.sale - entry.purchase,
+    grossProfit: entry.sale - entry.purchase,
+    profit: entry.sale - entry.purchase - entry.expense + entry.serviceFee,
   }));
+  return {
+    success: true,
+    data: JSON.parse(JSON.stringify(result)),
+  };
+}
 
+export async function getAnnualSummaryByear(): Promise<
+  ActionResponse<{ data: AnnualSummaryByYear[] }>
+> {
+  const currentYear = new Date().getFullYear();
+  const start = startOfYear(subYears(new Date(), 4)); // Start of the year 5 years ago
+  const end = endOfYear(new Date()); // End of the current year
+
+  const salesData = await Sale.aggregate([
+    {
+      $match: {
+        orderDate: { $gte: start, $lte: end },
+        orderStatus: "completed",
+      },
+    },
+    {
+      $group: {
+        _id: { $year: "$orderDate" },
+        totalSales: { $sum: "$grandtotal" },
+      },
+    },
+  ]);
+
+  const purchasesData = await Purchase.aggregate([
+    {
+      $match: {
+        purchaseDate: { $gte: start, $lte: end },
+      },
+    },
+    {
+      $group: {
+        _id: { $year: "$purchaseDate" },
+        totalPurchases: { $sum: "$grandtotal" },
+        totalServiceFee: {
+          $sum: {
+            $add: [
+              "$deliveryIn",
+              "$deliveryOut",
+              "$serviceFee",
+              "$shippingFee",
+            ],
+          },
+        },
+      },
+    },
+  ]);
+
+  const salaryData = await Salary.aggregate([
+    {
+      $match: {
+        salaryDate: { $gte: start, $lte: end },
+      },
+    },
+    {
+      $group: {
+        _id: { $year: "$salaryDate" },
+        totalSalaryExpense: { $sum: "$netSalary" },
+      },
+    },
+  ]);
+
+  const missionExpenseData = await Mission.aggregate([
+    {
+      $match: {
+        missionDate: { $gte: start, $lte: end },
+      },
+    },
+    {
+      $group: {
+        _id: { $year: "$missionDate" },
+        totalMissionExpense: { $sum: "$amount" },
+      },
+    },
+  ]);
+
+  const generalExpenseData = await GeneralExp.aggregate([
+    {
+      $match: {
+        generalDate: { $gte: start, $lte: end },
+      },
+    },
+    {
+      $group: {
+        _id: { $year: "$generalDate" },
+        totalGeneralExpense: { $sum: "$amount" },
+      },
+    },
+  ]);
+
+  const summaryMap = new Map();
+
+  // Initialize the summaryMap with all years set to zero values
+  for (let year = currentYear - 4; year <= currentYear; year++) {
+    summaryMap.set(year, {
+      year,
+      sale: 0,
+      purchase: 0,
+      serviceFee: 0,
+      expense: 0,
+      grossProfit: 0,
+      profit: 0,
+    });
+  }
+
+  salesData.forEach(({ _id, totalSales }) => {
+    summaryMap.get(_id)!.sale = totalSales;
+  });
+
+  purchasesData.forEach(({ _id, totalPurchases, totalServiceFee }) => {
+    summaryMap.get(_id)!.purchase = totalPurchases;
+    summaryMap.get(_id)!.serviceFee = totalServiceFee;
+  });
+
+  salaryData.forEach(({ _id, totalSalaryExpense }) => {
+    summaryMap.get(_id)!.expense += totalSalaryExpense;
+  });
+
+  missionExpenseData.forEach(({ _id, totalMissionExpense }) => {
+    summaryMap.get(_id)!.expense += totalMissionExpense;
+  });
+
+  generalExpenseData.forEach(({ _id, totalGeneralExpense }) => {
+    summaryMap.get(_id)!.expense += totalGeneralExpense;
+  });
+
+  const result = Array.from(summaryMap.values()).map((entry) => ({
+    ...entry,
+    grossProfit: entry.sale - entry.purchase,
+    profit: entry.sale - entry.purchase - entry.expense + entry.serviceFee,
+  }));
   return {
     success: true,
     data: JSON.parse(JSON.stringify(result)),

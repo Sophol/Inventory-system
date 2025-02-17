@@ -176,6 +176,9 @@
     "expenseByMonth": "Expense By Month",
     "revenueByProvince": "Revenue By Province",
     "monthlyProfitLoss": "Monthly Profit & Loss",
-    "yearlyProfitLoss": "Yearly Profit & Lost"
+    "yearlyProfitLoss": "Yearly Profit & Lost",
+    "grossProfit": "Gross Profit",
+    "purchaseExpense": "Purchase Expense",
+    "clearSearch": "Clear Search"
   }
 }

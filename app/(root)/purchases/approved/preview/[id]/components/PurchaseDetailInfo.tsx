@@ -30,6 +30,10 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
               <p className="pb-1 font-bold">{purchase.supplier.title}</p>
             </div>
             <div className="flex gap-2">
+              <p className="pb-1">លេខទូរស័ព្ទអ្នកផ្គត់ផ្គង់: </p>
+              <p className="pb-1 font-bold">{purchase.supplier.phone}</p>
+            </div>
+            <div className="flex gap-2">
               <p className="pb-1">សាខា : </p>
               <p className="pb-1 font-bold">{purchase.branch.title}</p>
             </div>

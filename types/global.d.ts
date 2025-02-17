@@ -170,7 +170,7 @@ interface PurchaseDetail {
 
 interface Purchase {
   _id: string;
-  supplier: { _id: string; title: string };
+  supplier: { _id: string; title: string; phone?: string };
   branch: { _id: string; title: string };
   customer?: { _id: string; title: string };
   referenceNo: string;
@@ -366,6 +366,12 @@ interface Payment {
 }
 interface AnnualSummary {
   month: string;
+  sale: number;
+  purchase: number;
+  profit: number;
+}
+interface AnnualSummaryByYear {
+  year: string;
   sale: number;
   purchase: number;
   profit: number;

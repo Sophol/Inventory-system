@@ -11,6 +11,7 @@ import FormInput from "../formInputs/FormInput";
 import { Button } from "../ui/button";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import { DateRange } from "react-day-picker";
+import { useTranslations } from "next-intl";
 
 interface ProductSearchProps {
   route: string;
@@ -19,6 +20,7 @@ interface ProductSearchProps {
 
 const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const router = useRouter();
+  const t = useTranslations("erp");
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
   const branchId = searchParams.get("branchId") || "";
@@ -145,10 +147,12 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
 
   return (
     <FormProvider {...form}>
-      <div className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}>
+      <div
+        className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}
+      >
         <FormInput
           name="search"
-          label="Search"
+          label={t("search")}
           control={form.control}
           isRequired={false}
           onChange={() => {
@@ -159,7 +163,7 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
           <FormCombobox
             control={form.control}
             name="branch"
-            label="Branch"
+            label={t("branch")}
             // placeholder="Select branch"
             fetchSingleItem={null}
             isRequired={false}
@@ -179,7 +183,7 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
           onClick={handleClearSearch}
           className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px] "
         >
-          Clear Search
+          {t("clearSearch")}
         </Button>
       </div>
     </FormProvider>

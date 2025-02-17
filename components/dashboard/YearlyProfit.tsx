@@ -15,7 +15,7 @@ import {
 import { getUniqueRandomColors } from "@/lib/url";
 import { useTranslations } from "use-intl";
 
-export function MonthlyPrfoit({ annaulSummary }: { annaulSummary: any }) {
+export function YearlyPrfoit({ annaulSummary }: { annaulSummary: any }) {
   const t = useTranslations("erp");
   const chartConfig = {
     sale: {
@@ -47,7 +47,7 @@ export function MonthlyPrfoit({ annaulSummary }: { annaulSummary: any }) {
     <Card>
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>{t("monthlyProfitLoss")}</CardTitle>
+          <CardTitle>{t("yearlyProfitLoss")}</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
@@ -132,11 +132,11 @@ export function MonthlyPrfoit({ annaulSummary }: { annaulSummary: any }) {
             </defs>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="year"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              // tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}

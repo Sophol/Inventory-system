@@ -13,6 +13,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useTranslations } from "use-intl";
 
 interface DatePickerWithRangeProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -46,10 +47,11 @@ export function DatePickerWithRange({
       setDate(defaultDateRange);
     }
   }, [reset, defaultDateRange]);
+  const t = useTranslations("erp");
   return (
     <div className={cn("grid gap-0", className)}>
       <span className="text-[11px]  text-dark400_light800">
-        Date Range
+        {t("dateRange")}
       </span>
       <Popover>
         <PopoverTrigger asChild>
