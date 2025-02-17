@@ -166,6 +166,16 @@
     "staffname": "Staff Name",
     "generaldate": "General Expense Date",
     "purchasedate": "Purchase Date",
-    "orderdate": "Order Date"
+    "orderdate": "Order Date",
+    "totalOrderPending": "Total Orders Pending",
+    "invoicePendingPayment": "Invoice Pending Payment",
+    "totalOrderApproved": "Total Order Approved",
+    "invoiceCompletePayment": "Invoice Complete Payment",
+    "totalRevenue": "Total Revenue",
+    "viewDetails": "View Details",
+    "expenseByMonth": "Expense By Month",
+    "revenueByProvince": "Revenue By Province",
+    "monthlyProfitLoss": "Monthly Profit & Loss",
+    "yearlyProfitLoss": "Yearly Profit & Lost"
   }
 }

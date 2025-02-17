@@ -28,6 +28,8 @@ import {
 } from "../ui/select";
 import React from "react";
 import { getAllExpense } from "@/lib/actions/dashboard.action";
+import { getUniqueRandomColors } from "@/lib/url";
+import { useTranslations } from "next-intl";
 
 // Define the type for chartExpenseData
 interface ChartExpenseData {
@@ -42,19 +44,19 @@ const chartConfig = {
   },
   purchase: {
     label: "Purchase Expense",
-    color: "hsl(197 37% 24%)",
+    color: getUniqueRandomColors(0),
   },
   general: {
     label: "General Expense",
-    color: "hsl(11.92deg 75.88% 60.98%)",
+    color: getUniqueRandomColors(1),
   },
   mission: {
     label: "Mission Expense",
-    color: "hsl(26.71deg 86.9% 67.06%)",
+    color: getUniqueRandomColors(3),
   },
   salary: {
     label: "Salary Expense",
-    color: "hsl(43 74% 66%)",
+    color: getUniqueRandomColors(4),
   },
 } satisfies ChartConfig;
 
@@ -90,7 +92,16 @@ export function ExpensePieChart({
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [chartData, setChartData] = useState(initialChartData);
   const [totalExpense, setTotalExpense] = useState(initialTotalExpense);
-
+  const renderCustomLabel = ({
+    name,
+    value,
+  }: {
+    name: string;
+    value: number;
+  }) => {
+    console.log(name);
+    return ` ${value.toLocaleString()}`;
+  };
   useEffect(() => {
     const fetchExpenseData = async () => {
       const updatedExpenseData = await getAllExpense({
@@ -125,11 +136,11 @@ export function ExpensePieChart({
 
     fetchExpenseData();
   }, [selectedMonth, selectedYear]);
-  console.log("chartData", chartData);
+  const t = useTranslations("erp");
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Expense Distribution</CardTitle>
+        <CardTitle className="mb-2">{t("expenseByMonth")}</CardTitle>
         <div className="flex gap-2 items-end">
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
             <SelectTrigger
@@ -194,19 +205,18 @@ export function ExpensePieChart({
           </Select>
         </div>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex-1 pb-0 mt-5">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[300px] [&_.recharts-text]:fill-background"
+          className="mx-auto aspect-square max-h-[350px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
-            <ChartTooltip
-              content={<ChartTooltipContent nameKey="expense" hideLabel />}
-            />
+            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
             {chartData.length > 0 && (
               <Pie
                 data={chartData}
                 dataKey="amount"
+                label={renderCustomLabel}
                 nameKey="expense"
                 cx="50%"
                 cy="50%"
@@ -224,7 +234,7 @@ export function ExpensePieChart({
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm mb-4">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Total expense: <Currency amount={totalExpense} />
+          {t("totalExpense")}: <Currency amount={totalExpense} />
         </div>
       </CardFooter>
     </Card>

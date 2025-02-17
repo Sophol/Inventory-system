@@ -265,6 +265,7 @@ export async function getRevenueByProvince(params: {
         revenue: 1,
       },
     },
+    { $sort: { province: 1 } },
   ]);
 
   const data = result.map((item, index) => ({

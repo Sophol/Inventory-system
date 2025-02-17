@@ -28,6 +28,7 @@ import {
 } from "../ui/select";
 import React from "react";
 import { getRevenueByProvince } from "@/lib/actions/dashboard.action";
+import { useTranslations } from "next-intl";
 
 interface ChartRevenueData {
   province: string;
@@ -67,7 +68,6 @@ export function RevenueByProvincePieChart({
   const [totalRevenue, setTotalRevenue] = useState(0);
 
   let convertedData: ChartConfig = {};
-  console.log("chartData", chartData);
   if (chartData.length > 0) {
     convertedData = chartData.reduce(
       (
@@ -85,7 +85,16 @@ export function RevenueByProvincePieChart({
       {}
     ) satisfies ChartConfig;
   }
-
+  const renderCustomLabel = ({
+    name,
+    value,
+  }: {
+    name: string;
+    value: number;
+  }) => {
+    console.log(name);
+    return ` ${value.toLocaleString()}`;
+  };
   useEffect(() => {
     const fetchRevenueData = async () => {
       console.log("monthString", selectedMonth, "yearString", selectedYear);
@@ -113,11 +122,11 @@ export function RevenueByProvincePieChart({
 
     fetchRevenueData();
   }, [selectedMonth, selectedYear]);
-
+  const t = useTranslations("erp");
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Revenue Distribution</CardTitle>
+        <CardTitle className="mb-2">{t("revenueByProvince")}</CardTitle>
         <div className="flex gap-2">
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
             <SelectTrigger
@@ -185,7 +194,7 @@ export function RevenueByProvincePieChart({
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={convertedData}
-          className="mx-auto aspect-square max-h-[300px] [&_.recharts-text]:fill-background"
+          className="mx-auto aspect-square max-h-[350px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
             <ChartTooltip
@@ -195,6 +204,7 @@ export function RevenueByProvincePieChart({
               data={chartData}
               dataKey="revenue"
               nameKey="province"
+              label={renderCustomLabel}
               cx="50%"
               cy="50%"
               outerRadius={100}
@@ -210,7 +220,7 @@ export function RevenueByProvincePieChart({
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm mb-4">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Total Revenue: <Currency amount={totalRevenue} />
+          {t("totalRevenue")}: <Currency amount={totalRevenue} />
         </div>
       </CardFooter>
     </Card>

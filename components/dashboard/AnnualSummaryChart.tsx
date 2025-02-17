@@ -15,19 +15,20 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { getUniqueRandomColors } from "@/lib/url";
 
 const chartConfig = {
   sale: {
     label: "Sale",
-    color: "hsl(173 58% 39%)",
+    color: getUniqueRandomColors(0),
   },
   purchase: {
     label: "Purchase",
-    color: "hsl(11.92deg 75.88% 60.98%)",
+    color: getUniqueRandomColors(1),
   },
   profit: {
     label: "Profit",
-    color: "hsl(43 74% 66%)",
+    color: getUniqueRandomColors(2),
   },
 } satisfies ChartConfig;
 

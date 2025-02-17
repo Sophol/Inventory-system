@@ -167,6 +167,16 @@
     "staffname": "ឈ្មោះបុគ្គលិក",
     "generaldate": "កាលបរិច្ឆេទចំណាយទូទៅ",
     "purchasedate": "កាលបរិច្ឆេទទិញ",
-    "orderdate": "កាលបរិច្ឆេទបញ្ជាទិញ"
+    "orderdate": "កាលបរិច្ឆេទបញ្ជាទិញ",
+    "totalOrderPending": "ចំនួនការបញ្ជាទិញដែលនៅរង់ចាំ",
+    "invoicePendingPayment": "វិក្កយបត្ររង់ចាំការទូទាត់",
+    "totalOrderApproved": "ចំនួនការបញ្ជាទិញដែលបានអនុម័ត",
+    "invoiceCompletePayment": "វិក្កយបត្របានទូទាត់ពេញលេញ",
+    "totalRevenue": "ចំណូលសរុប",
+    "viewDetails": "មើលព័ត៌មានលម្អិត",
+    "expenseByMonth": "ចំណាយតាមខែ",
+    "revenueByProvince": "ចំណូលតាមខេត្ត",
+    "monthlyProfitLoss": "ប្រាក់ចំណេញនិងខាតប្រចាំខែ",
+    "yearlyProfitLoss": "ប្រាក់ចំណេញនិងខាតប្រចាំឆ្នាំ"
   }
 }
