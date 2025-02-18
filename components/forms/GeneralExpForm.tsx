@@ -21,6 +21,7 @@ import {
   createGeneralExp,
   editGeneralExp,
 } from "@/lib/actions/generalExp.action";
+import { useTranslations } from "next-intl";
 
 interface Params {
   generalExp?: GeneralExp;
@@ -35,6 +36,7 @@ const GeneralExpForm = ({
   exchangeRateD,
   exchangeRateT,
 }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateGeneralExpSchema>>({
@@ -122,7 +124,7 @@ const GeneralExpForm = ({
           <FormCombobox
             control={form.control}
             name="branch"
-            label="Branch"
+            label={t("branch")}
             // placeholder="Select Branch"
             fetchSingleItem={generalExp ? generalExp.branch : null}
             fetchData={fetchBranches}
@@ -130,14 +132,14 @@ const GeneralExpForm = ({
           />
           <FormInput
             name="title"
-            label="Title"
+            label={t("title")}
             type="text"
             control={form.control}
           />
 
           <FormInput
             name="amount"
-            label="Amount"
+            label={t("amount")}
             type="number"
             control={form.control}
           />
@@ -145,19 +147,19 @@ const GeneralExpForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormDatePicker
             name="generalDate"
-            label="Date"
+            label={t("date")}
             control={form.control}
             defaultValue={new Date()}
           />
           <FormInput
             name="exchangeRateD"
-            label="ExchangeRate Dollar"
+            label={t("exchangeRateDollar")}
             type="number"
             control={form.control}
           />
           <FormInput
             name="exchangeRateT"
-            label="ExchangeRate Thai"
+            label={t("exchangeRateBaht")}
             type="number"
             control={form.control}
           />
@@ -165,7 +167,7 @@ const GeneralExpForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
           <FormInput
             name="description"
-            label="Description"
+            label={t("description")}
             control={form.control}
             isRequired={false}
           />
@@ -182,7 +184,7 @@ const GeneralExpForm = ({
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { Types } from "mongoose";
 import { createMission, editMission } from "@/lib/actions/mission.action";
+import { useTranslations } from "use-intl";
 
 interface Params {
   mission?: Mission;
@@ -32,6 +33,7 @@ const MissionForm = ({
   exchangeRateD,
   exchangeRateT,
 }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateMissionSchema>>({
@@ -119,17 +121,21 @@ const MissionForm = ({
           <FormCombobox
             control={form.control}
             name="branch"
-            label="Branch"
+            label={t("branch")}
             // placeholder="Select Branch"
             fetchSingleItem={mission ? mission.branch : null}
             fetchData={fetchBranches}
             setValue={form.setValue}
           />
-          <FormInput name="staffName" label="Title" control={form.control} />
+          <FormInput
+            name="staffName"
+            label={t("title")}
+            control={form.control}
+          />
 
           <FormInput
             name="amount"
-            label="Amount"
+            label={t("amount")}
             type="number"
             control={form.control}
           />
@@ -137,19 +143,19 @@ const MissionForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormDatePicker
             name="missionDate"
-            label="Date"
+            label={t("date")}
             control={form.control}
             defaultValue={new Date()}
           />
           <FormInput
             name="exchangeRateD"
-            label="ExchangeRate Dollar"
+            label={t("exchangeRateDollar")}
             type="number"
             control={form.control}
           />
           <FormInput
             name="exchangeRateT"
-            label="ExchangeRate Thai"
+            label={t("exchangeRateBaht")}
             type="number"
             control={form.control}
           />
@@ -157,7 +163,7 @@ const MissionForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
           <FormInput
             name="description"
-            label="Description"
+            label={t("description")}
             control={form.control}
             isRequired={false}
           />
@@ -174,7 +180,7 @@ const MissionForm = ({
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

@@ -20,6 +20,7 @@ import { getStaffs } from "@/lib/actions/user.action";
 import { Types } from "mongoose";
 import { createSalary, editSalary } from "@/lib/actions/salary.action";
 import { api } from "@/lib/api";
+import { useTranslations } from "next-intl";
 
 interface Params {
   salary?: Salary;
@@ -34,6 +35,7 @@ const SalaryForm = ({
   exchangeRateD,
   exchangeRateT,
 }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateSalarySchema>>({
@@ -161,7 +163,7 @@ const SalaryForm = ({
           <FormCombobox
             control={form.control}
             name="branch"
-            label="Branch"
+            label={t("branch")}
             // placeholder="Select Branch"
             fetchSingleItem={salary ? salary.branch : null}
             fetchData={fetchBranches}
@@ -170,7 +172,7 @@ const SalaryForm = ({
           <FormCombobox
             control={form.control}
             name="staffId"
-            label="Staff"
+            label={t("staff")}
             // placeholder="Select Staff"
             fetchSingleItem={salary ? salary.staffId : null}
             fetchData={fetchStaffs}
@@ -184,7 +186,7 @@ const SalaryForm = ({
 
           <FormInput
             name="salary"
-            label="Salary"
+            label={t("salary")}
             type="number"
             readonly
             control={form.control}
@@ -193,20 +195,20 @@ const SalaryForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormDatePicker
             name="salaryDate"
-            label="Date"
+            label={t("date")}
             control={form.control}
             defaultValue={new Date()}
           />
           <FormInput
             name="allowance"
-            label="Allowance"
+            label={t("allowance")}
             type="number"
             control={form.control}
             onChange={() => calculateNetSalary()}
           />
           <FormInput
             name="deduction"
-            label="Deduction"
+            label={t("deduction")}
             type="number"
             onChange={() => calculateNetSalary()}
             control={form.control}
@@ -215,19 +217,19 @@ const SalaryForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormInput
             name="exchangeRateD"
-            label="ExchangeRate Dollar"
+            label={t("exchangeRateDollar")}
             type="number"
             control={form.control}
           />
           <FormInput
             name="exchangeRateT"
-            label="ExchangeRate Thai"
+            label={t("exchangeRateBaht")}
             type="number"
             control={form.control}
           />
           <FormInput
             name="netSalary"
-            label="Net Salary"
+            label={t("netsalary")}
             type="number"
             readonly
             control={form.control}
@@ -236,7 +238,7 @@ const SalaryForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
           <FormInput
             name="description"
-            label="Description"
+            label={t("description")}
             control={form.control}
             isRequired={false}
           />
@@ -253,7 +255,7 @@ const SalaryForm = ({
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("ppdate") : t("save")}</>
             )}
           </Button>
         </div>
