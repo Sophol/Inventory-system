@@ -17,6 +17,7 @@ import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
+import { useTranslations } from "use-intl";
 
 interface Params {
   supplier?: Supplier;
@@ -24,6 +25,7 @@ interface Params {
 }
 
 const SupplierForm = ({ supplier, isEdit = false }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateSupplierSchema>>({
@@ -90,33 +92,37 @@ const SupplierForm = ({ supplier, isEdit = false }: Params) => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormInput
             name="companyName"
-            label="Company Name"
+            label={t("companyName")}
             control={form.control}
           />
-          <FormInput name="name" label="Name" control={form.control} />
-          <FormInput name="phone" label="Phone" control={form.control} />
+          <FormInput name="name" label={t("name")} control={form.control} />
+          <FormInput name="phone" label={t("phone")} control={form.control} />
           <FormInput
             name="email"
-            label="Email"
+            label={t("email")}
             isRequired={false}
             control={form.control}
           />
           <FormInput
             name="socialLink"
             isRequired={false}
-            label="Social Link"
+            label={t("socialLinks")}
             control={form.control}
           />
-          <FormInput name="location" label="Location" control={form.control} />
+          <FormInput
+            name="location"
+            label={t("location")}
+            control={form.control}
+          />
           <FormInput
             name="description"
             isRequired={false}
-            label="Description"
+            label={t("description")}
             control={form.control}
           />
           <FormSelect
             name="status"
-            label="Status"
+            label={t("status")}
             control={form.control}
             items={statusData}
           />
@@ -133,7 +139,7 @@ const SupplierForm = ({ supplier, isEdit = false }: Params) => {
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

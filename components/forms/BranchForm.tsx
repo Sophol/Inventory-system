@@ -17,6 +17,7 @@ import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
+import { useTranslations } from "use-intl";
 
 interface Params {
   branch?: Branch;
@@ -24,6 +25,7 @@ interface Params {
 }
 
 const BranchForm = ({ branch, isEdit = false }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateBranchSchema>>({
@@ -85,18 +87,22 @@ const BranchForm = ({ branch, isEdit = false }: Params) => {
         onSubmit={form.handleSubmit(handleCreateBranch)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormInput name="title" label="Title" control={form.control} />
-          <FormInput name="phone" label="Phone" control={form.control} />
-          <FormInput name="location" label="Location" control={form.control} />
+          <FormInput name="title" label={t("title")} control={form.control} />
+          <FormInput name="phone" label={t("phone")} control={form.control} />
+          <FormInput
+            name="location"
+            label={t("location")}
+            control={form.control}
+          />
           <FormInput
             name="description"
-            label="Description"
+            label={t("description")}
             isRequired={false}
             control={form.control}
           />
           <FormSelect
             name="status"
-            label="Status"
+            label={t("status")}
             control={form.control}
             items={statusData}
           />
@@ -113,7 +119,7 @@ const BranchForm = ({ branch, isEdit = false }: Params) => {
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

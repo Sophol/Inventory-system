@@ -19,6 +19,7 @@ import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import FormCheckBox from "../formInputs/FormCheckBox";
 import FormDatePicker from "../formInputs/FormDatePicker";
+import { useTranslations } from "next-intl";
 
 interface Params {
   customer?: Customer;
@@ -26,6 +27,7 @@ interface Params {
 }
 
 const CustomerForm = ({ customer, isEdit = false }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateCustomerSchema>>({
@@ -106,29 +108,29 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
         onSubmit={form.handleSubmit(handleCreateCustomer)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <FormInput name="name" label="Name" control={form.control} />
-          <FormInput name="phone" label="Phone" control={form.control} />
+          <FormInput name="name" label={t("name")} control={form.control} />
+          <FormInput name="phone" label={t("phone")} control={form.control} />
           <FormInput
             name="email"
-            label="Email"
+            label={t("email")}
             isRequired={false}
             control={form.control}
           />
           <FormInput
             name="socialLink"
-            label="Social Link"
+            label={t("socialLinks")}
             control={form.control}
           />
           <FormSelect
             name="province"
-            label="Province"
+            label={t("province")}
             control={form.control}
             items={provinceData}
           />
           <FormInput name="location" label="Location" control={form.control} />
           <FormSelect
             name="gender"
-            label="Gender"
+            label={t("gender")}
             control={form.control}
             items={genderData}
           />
@@ -137,56 +139,56 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
           <FormInput
             isRequired={false}
             name="product_brand"
-            label="Product Brand"
+            label={t("productBrand")}
             control={form.control}
           />
           <FormInput
             isRequired={false}
             name="idNumber"
-            label="ID number"
+            label={t("idNumber")}
             control={form.control}
           />
           <FormDatePicker
             name="idIssueDate"
-            label="ID Issue Date"
+            label={t("idIssueDate")}
             control={form.control}
             defaultValue={new Date()}
           />
           <FormInput
             isRequired={false}
             name="address"
-            label="Address"
+            label={t("address")}
             control={form.control}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormInput
             name="attachmentUrl"
-            label="Attachment Url"
+            label={t("attachmentUrl")}
             isRequired={false}
             control={form.control}
           />
           <FormInput
             name="guarantor1"
-            label="Guarantor 1"
+            label={t("guarantor1")}
             isRequired={false}
             control={form.control}
           />
           <FormInput
             name="guarantor2"
-            label="Guarantor 2"
+            label={t("guarantor2")}
             isRequired={false}
             control={form.control}
           />
           <FormInput
             name="description"
-            label="Description"
+            label={t("description")}
             isRequired={false}
             control={form.control}
           />
           <FormSelect
             name="status"
-            label="Status"
+            label={t("status")}
             control={form.control}
             items={statusData}
           />
@@ -203,7 +205,7 @@ const CustomerForm = ({ customer, isEdit = false }: Params) => {
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

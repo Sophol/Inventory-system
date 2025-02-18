@@ -115,8 +115,8 @@
     "idIssueDate": "កាលបរិច្ឆេទចេញអត្តសញ្ញាណប័ណ្ណ",
     "attachmentUrl": "តំណភ្ជាប់ឯកសារភ្ជាប់",
     "attachment": "ឯកសារភ្ជាប់",
-    "guarantor1": "អ្នកធានា ១",
-    "guarantor2": "អ្នកធានា ២",
+    "guarantor1": "សាក្សី ១",
+    "guarantor2": "សាក្សី ២",
     "depo": "ប្រាក់កក់",
     "deliveryOut": "ថ្លៃដឹកចេញ",
     "deliveryIn": "ថ្លៃដឹកចូល",
@@ -180,6 +180,8 @@
     "yearlyProfitLoss": "ប្រាក់ចំណេញនិងខាតប្រចាំឆ្នាំ",
     "grossProfit": "ប្រាក់ចំណេញ",
     "purchaseExpense": "ចំណាយលើការទិញ",
-    "clearSearch": "លុបការស្វែងរក"
+    "clearSearch": "លុបការស្វែងរក",
+    "gender": "ភេទ",
+    "productBrand": "ម៉ាកផលិតផល"
   }
 }

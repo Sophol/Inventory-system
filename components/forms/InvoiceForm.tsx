@@ -26,6 +26,7 @@ import { generateUniqueReference } from "@/lib/utils";
 import { createInvoice } from "@/lib/actions/invoice.action";
 import { getStaffs } from "@/lib/actions/user.action";
 import FormSelect from "../formInputs/FormSelect";
+import { useTranslations } from "next-intl";
 
 interface Params {
   sale?: Sale;
@@ -42,6 +43,7 @@ const InvoiceForm = ({
   exchangeRateT,
   isSeller = false,
 }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateSaleSchema>>({
@@ -271,13 +273,13 @@ const InvoiceForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <FormInput
             name="referenceNo"
-            label="Reference No"
+            label={t("referenceNo")}
             control={form.control}
           />
           <FormCombobox
             control={form.control}
             name="customer"
-            label="Customer"
+            label={t("customer")}
             // placeholder="Select Customer"
             fetchSingleItem={sale ? sale.customer : null}
             fetchData={fetchCustomers}
@@ -286,7 +288,7 @@ const InvoiceForm = ({
           <FormCombobox
             control={form.control}
             name="branch"
-            label="Branch"
+            label={t("branch")}
             // placeholder="Select Branch"
             fetchSingleItem={sale ? sale.branch : null}
             fetchData={fetchBranches}
@@ -294,7 +296,7 @@ const InvoiceForm = ({
           />
           <FormDatePicker
             name="invoicedDate"
-            label="Invoice Date"
+            label={t("invoiceddate")}
             control={form.control}
             defaultValue={new Date()}
           />
@@ -302,25 +304,25 @@ const InvoiceForm = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <FormSelect
             name="isLogo"
-            label="Print Logo"
+            label={t("printLogo")}
             control={form.control}
             items={printData}
           />
           <FormDatePicker
             name="dueDate"
-            label="Due Date"
+            label={t("dueDate")}
             control={form.control}
             defaultValue={new Date()}
           />
           <FormInput
             name="exchangeRateD"
-            label="ExchangeRate Dollar"
+            label={t("exchangeRateDollar")}
             control={form.control}
             type="number"
           />
           <FormInput
             name="exchangeRateT"
-            label="ExchangeRate Thai"
+            label={t("exchangeRateBaht")}
             control={form.control}
             type="number"
           />
@@ -330,7 +332,7 @@ const InvoiceForm = ({
           <div className="grid grid-cols-1 gap-2 md:grid-cols-1">
             <FormInput
               name="description"
-              label="Description"
+              label={t("description")}
               control={form.control}
               isRequired={false}
             />
@@ -341,7 +343,7 @@ const InvoiceForm = ({
             <FormCombobox
               control={form.control}
               name="seller"
-              label="Seller"
+              label={t("seller")}
               // placeholder="Select Seller"
               fetchSingleItem={sale ? sale.seller : null}
               fetchData={fetchStaffs}
@@ -350,7 +352,7 @@ const InvoiceForm = ({
             <div className="col-span-2">
               <FormInput
                 name="description"
-                label="Description"
+                label={t("description")}
                 control={form.control}
                 isRequired={false}
               />
@@ -360,7 +362,7 @@ const InvoiceForm = ({
         <div className="grid grid-cols-1">
           <Card>
             <CardHeader>
-              <CardTitle>Product</CardTitle>
+              <CardTitle>{t("product")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="container mx-auto py-4">
@@ -389,7 +391,7 @@ const InvoiceForm = ({
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

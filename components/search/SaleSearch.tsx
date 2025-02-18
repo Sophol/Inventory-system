@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import { DateRange } from "react-day-picker";
 import { getCustomers } from "@/lib/actions/customer.action";
+import { useTranslations } from "next-intl";
 
 interface ProductSearchProps {
   route: string;
@@ -19,6 +20,7 @@ interface ProductSearchProps {
 }
 
 const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
@@ -204,66 +206,61 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
 
   return (
     <FormProvider {...form}>
-    <div
-      className={`flex text-[11px] flex-wrap sm:flex-nowrap items-center gap-3 min-h-[30px] rounded-sm ${otherClasses}`}
-    >
-
-      <FormInput
-        name="search"
-        label="Search"
-        control={form.control}
-        isRequired={false}
-        onChange={() => {
-          setSearchQuery(form.getValues("search"));
-        }}
-      />
-
-      <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
-
-        <FormCombobox
-          control={form.control}
-          name="customer"
-          label="Customer"
-          fetchSingleItem={null}
-          isRequired={false}
-          fetchData={handleFetchCustomers}
-          setValue={(name, value) => {
-            form.setValue(name, value);
-            handleCustomerChange(value);
-          }}
-        />
-        <FormCombobox
-          control={form.control}
-          name="branch"
-          label="Branch"
-          labelClass="mt-3 sm:mt-0"
-          fetchSingleItem={null}
-          isRequired={false}
-          fetchData={handleFetchBranches}
-          setValue={(name, value) => {
-            form.setValue(name, value);
-            handleBranchChange(value);
-          }}
-        />
-      </div>
-  
-
-      <DatePickerWithRange
-        onDateChange={handleDateRangeChange}
-        reset={resetData}
-        className="w-full sm:w-auto text-[11px] "
-      />
-  
-      <Button
-        onClick={handleClearSearch}
-        className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px]"
+      <div
+        className={`flex text-[11px] flex-wrap sm:flex-nowrap items-center gap-3 min-h-[30px] rounded-sm ${otherClasses}`}
       >
-        Clear Search
-      </Button>
-    </div>
-  </FormProvider>
-  
+        <FormInput
+          name="search"
+          label={t("search")}
+          control={form.control}
+          isRequired={false}
+          onChange={() => {
+            setSearchQuery(form.getValues("search"));
+          }}
+        />
 
+        <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
+          <FormCombobox
+            control={form.control}
+            name="customer"
+            label={t("customer")}
+            fetchSingleItem={null}
+            isRequired={false}
+            fetchData={handleFetchCustomers}
+            setValue={(name, value) => {
+              form.setValue(name, value);
+              handleCustomerChange(value);
+            }}
+          />
+          <FormCombobox
+            control={form.control}
+            name="branch"
+            label={t("branch")}
+            labelClass="mt-3 sm:mt-0"
+            fetchSingleItem={null}
+            isRequired={false}
+            fetchData={handleFetchBranches}
+            setValue={(name, value) => {
+              form.setValue(name, value);
+              handleBranchChange(value);
+            }}
+          />
+        </div>
+
+        <DatePickerWithRange
+          onDateChange={handleDateRangeChange}
+          reset={resetData}
+          className="w-full sm:w-auto text-[11px] "
+        />
+
+        <Button
+          onClick={handleClearSearch}
+          className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px]"
+        >
+          {t("clearSearch")}
+        </Button>
+      </div>
+    </FormProvider>
   );
 };
 

@@ -14,11 +14,13 @@ import ROUTES from "@/constants/routes";
 import { CreateUnitSchema } from "@/lib/validations";
 import { createUnit, editUnit } from "@/lib/actions/unit.action";
 import { dataStatuses } from "@/constants/data";
+import { useTranslations } from "next-intl";
 interface Params {
   unit?: Unit;
   isEdit?: boolean;
 }
 const UnitForm = ({ unit, isEdit = false }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateUnitSchema>>({
@@ -75,10 +77,10 @@ const UnitForm = ({ unit, isEdit = false }: Params) => {
         onSubmit={form.handleSubmit(handleCreateUnit)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormInput name="title" label="Title" control={form.control} />
+          <FormInput name="title" label={t("title")} control={form.control} />
           <FormSelect
             name="status"
-            label="Status"
+            label={t("status")}
             control={form.control}
             items={statusData}
           />
@@ -95,7 +97,7 @@ const UnitForm = ({ unit, isEdit = false }: Params) => {
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

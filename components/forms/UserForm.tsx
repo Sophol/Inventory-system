@@ -20,6 +20,7 @@ import { rolesData } from "@/constants/data";
 import FormCheckBox from "../formInputs/FormCheckBox";
 import { getBranches } from "@/lib/actions/branch.action";
 import FormCombobox from "../formInputs/FormCombobox";
+import { useTranslations } from "next-intl";
 
 interface Params {
   user?: User;
@@ -27,6 +28,7 @@ interface Params {
 }
 
 const UserForm = ({ user, isEdit = false }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof UserSchema>>({
@@ -111,31 +113,35 @@ const UserForm = ({ user, isEdit = false }: Params) => {
         onSubmit={form.handleSubmit(handleCreateUser)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <FormInput name="username" label="Username" control={form.control} />
-          <FormInput name="name" label="Name" control={form.control} />
+          <FormInput
+            name="username"
+            label={t("username")}
+            control={form.control}
+          />
+          <FormInput name="name" label={t("name")} control={form.control} />
           <FormInput
             name="email"
             type="email"
-            label="Email"
+            label={t("email")}
             control={form.control}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormSelect
             name="role"
-            label="Role"
+            label={t("role")}
             control={form.control}
             items={rolesData}
           />
           <FormInput
             name="password"
-            label="Password"
+            label={t("password")}
             type="password"
             control={form.control}
           />
           <FormInput
             name="phone"
-            label="phone"
+            label={t("phone")}
             isRequired={false}
             control={form.control}
           />
@@ -143,13 +149,13 @@ const UserForm = ({ user, isEdit = false }: Params) => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormCheckBox
             name="isStaff"
-            label="Is Staff"
+            label={t("isStaff")}
             control={form.control}
           />
           <FormCombobox
             control={form.control}
             name="branch"
-            label="Branch"
+            label={t("branch")}
             // placeholder="Select Branch"
             fetchSingleItem={user ? user.branch : null}
             fetchData={fetchBranches}
@@ -157,7 +163,7 @@ const UserForm = ({ user, isEdit = false }: Params) => {
           />
           <FormInput
             name="salary"
-            label="Salary"
+            label={t("salary")}
             type="number"
             control={form.control}
           />
@@ -174,7 +180,7 @@ const UserForm = ({ user, isEdit = false }: Params) => {
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

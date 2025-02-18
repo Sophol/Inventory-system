@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import { DateRange } from "react-day-picker";
 import { getStaffs } from "@/lib/actions/user.action";
+import { useTranslations } from "next-intl";
 
 interface ProductSearchProps {
   route: string;
@@ -19,6 +20,7 @@ interface ProductSearchProps {
 }
 
 const SalarySearch = ({ route, otherClasses }: ProductSearchProps) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
@@ -205,54 +207,56 @@ const SalarySearch = ({ route, otherClasses }: ProductSearchProps) => {
 
   return (
     <FormProvider {...form}>
-      <div className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}>
+      <div
+        className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}
+      >
         <FormInput
           name="search"
-          label="Search"
+          label={t("search")}
           control={form.control}
           isRequired={false}
           onChange={() => {
             setSearchQuery(form.getValues("search"));
           }}
         />
-             <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
-        <FormCombobox
-          control={form.control}
-          name="staffId"
-          label="Staff"
-          // placeholder="Select Staff"
-          fetchSingleItem={null}
-          isRequired={false}
-          fetchData={handleFetchStaffs}
-          setValue={(name, value) => {
-            form.setValue(name, value);
-            handleStaffChange(value);
-          }}
-        />
-        <FormCombobox
-          control={form.control}
-          name="branch"
-          label="Branch"
-          // placeholder="Select branch"
-          fetchSingleItem={null}
-          isRequired={false}
-          fetchData={handleFetchBranches}
-          setValue={(name, value) => {
-            form.setValue(name, value);
-            handleBranchChange(value);
-          }}
-        />
+        <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
+          <FormCombobox
+            control={form.control}
+            name="staffId"
+            label={t("staff")}
+            // placeholder="Select Staff"
+            fetchSingleItem={null}
+            isRequired={false}
+            fetchData={handleFetchStaffs}
+            setValue={(name, value) => {
+              form.setValue(name, value);
+              handleStaffChange(value);
+            }}
+          />
+          <FormCombobox
+            control={form.control}
+            name="branch"
+            label={t("branch")}
+            // placeholder="Select branch"
+            fetchSingleItem={null}
+            isRequired={false}
+            fetchData={handleFetchBranches}
+            setValue={(name, value) => {
+              form.setValue(name, value);
+              handleBranchChange(value);
+            }}
+          />
         </div>
         <DatePickerWithRange
           onDateChange={handleDateRangeChange}
           reset={resetData}
-           className="w-full sm:w-auto"
+          className="w-full sm:w-auto"
         />
         <Button
           onClick={handleClearSearch}
           className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px]"
         >
-          Clear Search
+          {t("clearSearch")}
         </Button>
       </div>
     </FormProvider>

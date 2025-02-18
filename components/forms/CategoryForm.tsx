@@ -17,12 +17,14 @@ import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
+import { useTranslations } from "next-intl";
 
 interface Params {
   category?: Category;
   isEdit?: boolean;
 }
 const CategoryForm = ({ category, isEdit = false }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateCategorySchema>>({
@@ -81,10 +83,10 @@ const CategoryForm = ({ category, isEdit = false }: Params) => {
         onSubmit={form.handleSubmit(handleCreateCategory)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormInput name="title" label="Title" control={form.control} />
+          <FormInput name="title" label={t("title")} control={form.control} />
           <FormSelect
             name="status"
-            label="Status"
+            label={t("status")}
             control={form.control}
             items={statusData}
           />
@@ -101,7 +103,7 @@ const CategoryForm = ({ category, isEdit = false }: Params) => {
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

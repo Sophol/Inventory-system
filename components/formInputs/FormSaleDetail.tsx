@@ -17,6 +17,7 @@ import FormCombobox from "./FormCombobox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import FormSelect from "./FormSelect";
+import { useTranslations } from "next-intl";
 
 interface SelectData {
   _id: string;
@@ -54,6 +55,7 @@ function FormSaleDetail<T extends FieldValues>({
   name,
   defaultValue,
 }: FormSaleDetailProps<T>) {
+  const t = useTranslations("erp");
   const { watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -193,7 +195,7 @@ function FormSaleDetail<T extends FieldValues>({
   return (
     <div className="flex flex-col justify-start gap-1 text-[11px] md:text-base">
       <div className="flex items-center justify-between gap-1 flex-wrap">
-        <div className="w-full md:w-60">
+        <div className="w-full md:w-60 hidden">
           <FormSelect
             name={"saleType" as Path<T>}
             items={saleTypeData}
@@ -207,26 +209,31 @@ function FormSaleDetail<T extends FieldValues>({
           className="bg-green-600 text-[11px] hover:bg-green-500 text-white flex items-center justify-center w-full md:w-[100px] sm:mt-0 sm:mb-3 md:mb-0  md:mt-5 h-[28px] min-h-[28px]"
           onClick={handleAddUnit}
         >
-          <Plus className="mr-1 size-3 " /> Add Unit
+          <Plus className="mr-1 size-3 " /> {t("addUnit")}
         </Button>
       </div>
 
       {/* Header Row - Static labels */}
       <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 pb-1 md:grid-cols-11 text-[12px] hidden lg:grid leading-[0] mt-3">
         <div className="col-span-2 sm:col-span-1 md:col-span-3  ">
-          Product<span className="text-primary-500 pl-1">*</span>
+          {t("product")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-2 sm:col-span-1 md:col-span-2">
-          Unit<span className="text-primary-500 pl-1">*</span>
+          {t("unit")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-1 sm:col-span-1 md:col-span-1">
-          Qty<span className="text-primary-500 pl-1">*</span>
+          {t("qty")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-2 sm:col-span-1 md:col-span-2 text-left">
-          Price<span className="text-primary-500 pl-1">*</span>
+          {t("qty")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-2 sm:col-span-1 md:col-span-2">
-          Total<span className="text-primary-500 pl-1">*</span>
+          {t("total")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
       </div>
 
@@ -241,7 +248,7 @@ function FormSaleDetail<T extends FieldValues>({
                 <FormCombobox
                   control={control}
                   name={`${name}.${index}.product` as Path<T>}
-                  label={"Product"}
+                  label={t("product")}
                   labelClass={"block lg:hidden"}
                   // placeholder="Select Product"
                   fetchSingleItem={(field as any).selectedProduct}
@@ -256,7 +263,7 @@ function FormSaleDetail<T extends FieldValues>({
                 <FormCombobox
                   control={control}
                   name={`${name}.${index}.unit` as Path<T>}
-                  label={"Unit"}
+                  label={t("unit")}
                   labelClass={"block lg:hidden"}
                   // placeholder="Select unit"
                   fetchSingleItem={(field as any).selectedUnit}
@@ -273,7 +280,7 @@ function FormSaleDetail<T extends FieldValues>({
               <FormInput
                 type="number"
                 name={`${name}.${index}.qty` as Path<T>}
-                label={"Qty"}
+                label={t("qty")}
                 labelClass={"block lg:hidden"}
                 control={control}
                 onChange={() => calculateTotal(index)}
@@ -282,7 +289,7 @@ function FormSaleDetail<T extends FieldValues>({
                 <FormInput
                   type="number"
                   name={`${name}.${index}.price` as Path<T>}
-                  label={"Price"}
+                  label={t("price")}
                   labelClass={"block lg:hidden"}
                   control={control}
                   onChange={() => calculateTotal(index)}
@@ -297,7 +304,7 @@ function FormSaleDetail<T extends FieldValues>({
                 <FormInput
                   type="number"
                   name={`${name}.${index}.totalPrice` as Path<T>}
-                  label={"Total"}
+                  label={t("total")}
                   labelClass={"block lg:hidden"}
                   control={control}
                   readonly={true}
@@ -324,7 +331,7 @@ function FormSaleDetail<T extends FieldValues>({
       {/* Total Calculation Fields */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="text-[11px]">Sub Total</label>
+          <label className="text-[11px]">{t("subtotal")}</label>
         </div>
         <div className="flex w-full sm:w-[275px]">
           <FormInput
@@ -338,7 +345,7 @@ function FormSaleDetail<T extends FieldValues>({
 
       <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="text-[11px]">Discount</label>
+          <label className="text-[11px]">{t("discount")}</label>
         </div>
         <div className="flex w-full sm:w-[275px]">
           <FormInput
@@ -352,7 +359,7 @@ function FormSaleDetail<T extends FieldValues>({
 
       <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="text-[11px]">Delivery</label>
+          <label className="text-[11px]">{t("delivery")}</label>
         </div>
         <div className="flex w-full sm:w-[275px]">
           <FormInput
@@ -366,7 +373,7 @@ function FormSaleDetail<T extends FieldValues>({
 
       <div className="flex items-center gap-3 flex-wrap">
         <div className="grow text-right">
-          <label className="text-[11px]">Grand Total</label>
+          <label className="text-[11px]">{t("grandtotal")}</label>
         </div>
         <div className="flex w-full sm:w-[275px]">
           <FormInput

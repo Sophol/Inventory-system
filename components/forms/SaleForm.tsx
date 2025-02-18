@@ -25,6 +25,7 @@ import { getProduct, getProducts } from "@/lib/actions/product.action";
 import { getUnits } from "@/lib/actions/unit.action";
 import { generateUniqueReference } from "@/lib/utils";
 import { getStaffs } from "@/lib/actions/user.action";
+import { useTranslations } from "next-intl";
 
 interface Params {
   sale?: Sale;
@@ -41,6 +42,7 @@ const SaleForm = ({
   exchangeRateT,
   isSeller = false,
 }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   // const defaultSaleType = sale?.saleType || "retail";
@@ -322,13 +324,13 @@ const SaleForm = ({
         <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
           <FormInput
             name="referenceNo"
-            label="Reference No"
+            label={t("referenceNo")}
             control={form.control}
           />
           <FormCombobox
             control={form.control}
             name="customer"
-            label="Customer"
+            label={t("customer")}
             // placeholder=""
             fetchSingleItem={sale ? sale.customer : null}
             fetchData={fetchCustomers}
@@ -337,7 +339,7 @@ const SaleForm = ({
           <FormCombobox
             control={form.control}
             name="branch"
-            label="Branch"
+            label={t("branch")}
             // placeholder="Select Branch"
             fetchSingleItem={sale ? sale.branch : null}
             fetchData={fetchBranches}
@@ -347,19 +349,19 @@ const SaleForm = ({
         <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
           <FormDatePicker
             name="orderDate"
-            label="Order Date"
+            label={t("orderdate")}
             control={form.control}
             defaultValue={new Date()}
           />
           <FormInput
             name="exchangeRateD"
-            label="ExchangeRate Dollar"
+            label={t("exchangeRateDollar")}
             control={form.control}
             type="number"
           />
           <FormInput
             name="exchangeRateT"
-            label="ExchangeRate Thai"
+            label={t("exchangeRateBaht")}
             control={form.control}
             type="number"
           />
@@ -368,7 +370,7 @@ const SaleForm = ({
           <div className="grid grid-cols-1 gap-2 md:grid-cols-1">
             <FormInput
               name="description"
-              label="Description"
+              label={t("description")}
               control={form.control}
               isRequired={false}
             />
@@ -379,7 +381,7 @@ const SaleForm = ({
             <FormCombobox
               control={form.control}
               name="seller"
-              label="Seller"
+              label={t("seller")}
               // placeholder="Select Seller"
               fetchSingleItem={sale ? sale.seller : null}
               fetchData={fetchStaffs}
@@ -388,7 +390,7 @@ const SaleForm = ({
             <div className="col-span-2">
               <FormInput
                 name="description"
-                label="Description"
+                label={t("description")}
                 control={form.control}
                 isRequired={false}
               />
@@ -399,7 +401,7 @@ const SaleForm = ({
         <div className="grid grid-cols-1">
           <Card className="text-[12px]">
             <CardHeader className="pt-4 pb-2 text-lg">
-              <CardTitle className="py-0 text-[12px]">Product</CardTitle>
+              <CardTitle className="py-0 text-[12px]">{t("product")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="container mx-auto pb-2 pt-0">
@@ -428,7 +430,7 @@ const SaleForm = ({
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

@@ -25,6 +25,7 @@ import { getProduct, getProducts } from "@/lib/actions/product.action";
 import { getUnits } from "@/lib/actions/unit.action";
 import { generateUniqueReference } from "@/lib/utils";
 import { getCustomers } from "@/lib/actions/customer.action";
+import { useTranslations } from "next-intl";
 
 interface Params {
   purchase?: Purchase;
@@ -39,6 +40,7 @@ const PurchaseForm = ({
   exchangeRateD,
   exchangeRateT,
 }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreatePurchaseSchema>>({
@@ -272,13 +274,13 @@ const PurchaseForm = ({
         <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
           <FormInput
             name="referenceNo"
-            label="Reference No"
+            label={t("referenceNo")}
             control={form.control}
           />
           <FormCombobox
             control={form.control}
             name="supplier"
-            label="Supplier"
+            label={t("supplier")}
             // placeholder="Select Supplier"
             fetchSingleItem={purchase ? purchase.supplier : null}
             fetchData={fetchSuppliers}
@@ -287,7 +289,7 @@ const PurchaseForm = ({
           <FormCombobox
             control={form.control}
             name="branch"
-            label="Branch"
+            label={t("branch")}
             // placeholder="Select Branch"
             fetchSingleItem={purchase ? purchase.branch : null}
             fetchData={fetchBranches}
@@ -297,19 +299,19 @@ const PurchaseForm = ({
         <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
           <FormDatePicker
             name="purchaseDate"
-            label="Purchase Date"
+            label={t("purchasedate")}
             control={form.control}
             defaultValue={new Date()}
           />
           <FormInput
             name="exchangeRateD"
-            label="ExchangeRate Dollar"
+            label={t("exchangeRateDollar")}
             control={form.control}
             type="number"
           />
           <FormInput
             name="exchangeRateT"
-            label="ExchangeRate Thai"
+            label={t("exchangeRateBaht")}
             control={form.control}
             type="number"
           />
@@ -318,7 +320,7 @@ const PurchaseForm = ({
           <FormCombobox
             control={form.control}
             name="customer"
-            label="Depo"
+            label={t("customer")}
             // placeholder="Select Branch"
             fetchSingleItem={
               purchase && purchase.customer ? purchase.customer : null
@@ -330,16 +332,16 @@ const PurchaseForm = ({
           <div className="col-span-2">
             <FormInput
               name="description"
-              label="Description"
+              label={t("description")}
               control={form.control}
               isRequired={false}
             />
           </div>
         </div>
         <div className="grid grid-cols-1">
-          <Card  className="text-[12px]">
+          <Card className="text-[12px]">
             <CardHeader className="py-0 text-lg">
-              <CardTitle className="py-0 text-[12px]">Product</CardTitle>
+              <CardTitle className="py-0 text-[12px]">{t("product")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="container mx-auto pb-2 pt-0">
@@ -367,7 +369,7 @@ const PurchaseForm = ({
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

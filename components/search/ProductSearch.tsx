@@ -10,6 +10,7 @@ import { formUrlQuery, removeKeyFromUrlQuery } from "@/lib/url";
 import FormCombobox from "../formInputs/FormCombobox";
 import FormInput from "../formInputs/FormInput";
 import { Button } from "../ui/button";
+import { useTranslations } from "next-intl";
 
 interface ProductSearchProps {
   route: string;
@@ -17,6 +18,7 @@ interface ProductSearchProps {
 }
 
 const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
@@ -161,49 +163,51 @@ const ProductSearch = ({ route, otherClasses }: ProductSearchProps) => {
 
   return (
     <FormProvider {...form}>
-           <div className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}>
+      <div
+        className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}
+      >
         <FormInput
           name="search"
-          label="Search"
+          label={t("search")}
           control={form.control}
           isRequired={false}
           onChange={() => {
             setSearchQuery(form.getValues("search"));
           }}
         />
-         <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
-        <FormCombobox
-          control={form.control}
-          name="category"
-          label="Category"
-          // placeholder="Select category"
-          fetchSingleItem={null}
-          isRequired={false}
-          fetchData={handleFetchCategories}
-          setValue={(name, value) => {
-            form.setValue(name, value);
-            handleCategoryChange(value);
-          }}
-        />
-        <FormCombobox
-          control={form.control}
-          name="branch"
-          label="Branch"
-          // placeholder="Select branch"
-          fetchSingleItem={null}
-          isRequired={false}
-          fetchData={handleFetchBranches}
-          setValue={(name, value) => {
-            form.setValue(name, value);
-            handleBranchChange(value);
-          }}
-        />
+        <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
+          <FormCombobox
+            control={form.control}
+            name="category"
+            label={t("category")}
+            // placeholder="Select category"
+            fetchSingleItem={null}
+            isRequired={false}
+            fetchData={handleFetchCategories}
+            setValue={(name, value) => {
+              form.setValue(name, value);
+              handleCategoryChange(value);
+            }}
+          />
+          <FormCombobox
+            control={form.control}
+            name="branch"
+            label={t("branch")}
+            // placeholder="Select branch"
+            fetchSingleItem={null}
+            isRequired={false}
+            fetchData={handleFetchBranches}
+            setValue={(name, value) => {
+              form.setValue(name, value);
+              handleBranchChange(value);
+            }}
+          />
         </div>
         <Button
           onClick={handleClearSearch}
-             className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px] "
+          className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px] "
         >
-          Clear Search
+          {t("clearSearch")}
         </Button>
       </div>
     </FormProvider>

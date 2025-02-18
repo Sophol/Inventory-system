@@ -17,6 +17,7 @@ import FormInput from "./FormInput";
 import FormCombobox from "./FormCombobox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "next-intl";
 
 interface SelectData {
   _id: string;
@@ -50,6 +51,7 @@ function FormPurchaseDetail<T extends FieldValues>({
   fetchProductDetails,
   name,
 }: FormPurchaseDetailProps<T>) {
+  const t = useTranslations("erp");
   const { watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -189,32 +191,36 @@ function FormPurchaseDetail<T extends FieldValues>({
   return (
     <div className="flex flex-col justify-start gap-1 text-[11px] md:text-base">
       <div className="flex items-center justify-between gap-1 flex-wrap">
-        <div className="w-full md:w-60">
-        </div>
+        <div className="w-full md:w-60"></div>
         <Button
           type="button"
           className="bg-green-600 text-[11px] hover:bg-green-500 text-white flex items-center justify-center w-full md:w-[100px] sm:mt-0 sm:mb-3 md:mb-0  md:mt-0 h-[28px] min-h-[28px]"
           onClick={handleAddUnit}
         >
-          <Plus className="mr-1 size-3 " /> Add Unit
+          <Plus className="mr-1 size-3 " /> {t("addUnit")}
         </Button>
       </div>
       {/* Header Row - Static labels */}
       <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 pb-1 md:grid-cols-11 text-[12px] hidden lg:grid leading-[0] mt-3">
         <div className="col-span-2 sm:col-span-1 md:col-span-3  ">
-          Product<span className="text-primary-500 pl-1">*</span>
+          {t("product")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-2 sm:col-span-1 md:col-span-2">
-          Unit<span className="text-primary-500 pl-1">*</span>
+          {t("unit")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-1 sm:col-span-1 md:col-span-1">
-          Qty<span className="text-primary-500 pl-1">*</span>
+          {t("qty")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-2 sm:col-span-1 md:col-span-2 text-left">
-          Cost<span className="text-primary-500 pl-1">*</span>
+          {t("cost")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-2 sm:col-span-1 md:col-span-2">
-          Total<span className="text-primary-500 pl-1">*</span>
+          {t("total")}
+          <span className="text-primary-500 pl-1">*</span>
         </div>
       </div>
 
@@ -224,13 +230,12 @@ function FormPurchaseDetail<T extends FieldValues>({
           const singleProduct = (field as any).selectedProduct;
           return (
             <React.Fragment key={field.id}>
-
               <div className={`col-span-2 sm:col-span-1 md:col-span-3`}>
                 <Input type="hidden" value={field.id} disabled />
                 <FormCombobox
                   control={control}
                   name={`${name}.${index}.product` as Path<T>}
-                  label="Product"
+                  label={t("product")}
                   labelClass={"block lg:hidden"}
                   // placeholder="Select Product"
                   fetchSingleItem={singleProduct}
@@ -245,7 +250,7 @@ function FormPurchaseDetail<T extends FieldValues>({
                 <FormCombobox
                   control={control}
                   name={`${name}.${index}.unit` as Path<T>}
-                  label="Unit"
+                  label={t("unit")}
                   labelClass={"block lg:hidden"}
                   // placeholder="Select unit"
                   fetchSingleItem={(field as any).selectedUnit}
@@ -262,7 +267,7 @@ function FormPurchaseDetail<T extends FieldValues>({
               <FormInput
                 type="number"
                 name={`purchaseDetails.${index}.qty` as Path<T>}
-                label="Qty"
+                label={t("qty")}
                 labelClass={"block lg:hidden"}
                 control={control}
                 onChange={() => calculateTotal(index)}
@@ -272,7 +277,7 @@ function FormPurchaseDetail<T extends FieldValues>({
                   type="number"
                   name={`purchaseDetails.${index}.cost` as Path<T>}
                   labelClass={"block lg:hidden"}
-                  label="Cost"
+                  label={t("cost")}
                   control={control}
                   onChange={() => calculateTotal(index)}
                 />
@@ -282,7 +287,7 @@ function FormPurchaseDetail<T extends FieldValues>({
                   type="number"
                   name={`purchaseDetails.${index}.total` as Path<T>}
                   labelClass={"block lg:hidden"}
-                  label="Total"
+                  label={t("total")}
                   control={control}
                   readonly={true}
                 />
@@ -310,34 +315,34 @@ function FormPurchaseDetail<T extends FieldValues>({
           type="number"
           name={"deliveryOut" as Path<T>}
           control={control}
-          label="Delivery Out"
+          label={t("deliveryOut")}
           onChange={calculateGrandTotal}
         />
         <FormInput
           type="number"
           name={"shippingFee" as Path<T>}
           control={control}
-          label="Shipping Fee"
+          label={t("shippingFee")}
           onChange={calculateGrandTotal}
         />
         <FormInput
           type="number"
           name={"serviceFee" as Path<T>}
           control={control}
-          label="Service Fee"
+          label={t("serviceFee")}
           onChange={calculateGrandTotal}
         />
         <FormInput
           type="number"
           name={"deliveryIn" as Path<T>}
           control={control}
-          label="Delivery In"
+          label={t("deliveryIn")}
           onChange={calculateGrandTotal}
         />
       </div>
       <div className="flex items-center gap-2 flex-wrap pt-3">
         <div className="grow text-right">
-          <label className="text-[11px]">Sub Total</label>
+          <label className="text-[11px]">{t("subtotal")}</label>
         </div>
         <div className="flex w-[275px]">
           <FormInput
@@ -346,13 +351,12 @@ function FormPurchaseDetail<T extends FieldValues>({
             control={control}
             readonly={true}
           />
-        
         </div>
       </div>
 
       <div className="flex items-center gap-2">
         <div className="grow text-right">
-          <label className="text-[11px]">Discount</label>
+          <label className="text-[11px]">{t("discount")}</label>
         </div>
         <div className="flex w-[275px]">
           <FormInput
@@ -361,12 +365,11 @@ function FormPurchaseDetail<T extends FieldValues>({
             control={control}
             onChange={calculateGrandTotal}
           />
-      
         </div>
       </div>
       <div className="flex items-center gap-2">
         <div className="grow text-right">
-          <label className="text-[11px]">Grand Total</label>
+          <label className="text-[11px]">{t("grandtotal")}</label>
         </div>
         <div className="flex w-[275px]">
           <FormInput
@@ -375,7 +378,6 @@ function FormPurchaseDetail<T extends FieldValues>({
             control={control}
             readonly={true}
           />
-  
         </div>
       </div>
     </div>

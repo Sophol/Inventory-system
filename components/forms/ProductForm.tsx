@@ -21,6 +21,7 @@ import FormInput from "../formInputs/FormInput";
 import FormSelect from "../formInputs/FormSelect";
 import FormUnitVariant from "../formInputs/FormUnitVariant";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { useTranslations } from "use-intl";
 
 interface Params {
   product?: Product;
@@ -28,6 +29,7 @@ interface Params {
 }
 
 const ProductForm = ({ product, isEdit = false }: Params) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const [isPending, startTransaction] = useTransition();
   const form = useForm<z.infer<typeof CreateProductSchema>>({
@@ -136,28 +138,28 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
         onSubmit={form.handleSubmit(handleCreateProduct)}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <FormInput name="code" label="Code" control={form.control} />
+          <FormInput name="code" label={t("code")} control={form.control} />
           <FormCombobox
             control={form.control}
             name="category"
-            label="Category"
+            label={t("category")}
             // placeholder="Select category"
             fetchSingleItem={selectedData}
             fetchData={fetchCategories}
             setValue={form.setValue}
           />
-          <FormInput name="title" label="Title" control={form.control} />
+          <FormInput name="title" label={t("title")} control={form.control} />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormInput
             type="number"
             name="alertQty"
-            label="Alert Qty"
+            label={t("alertQty")}
             control={form.control}
           />
           <FormSelect
             name="status"
-            label="Status"
+            label={t("status")}
             control={form.control}
             items={statusData}
           />
@@ -165,7 +167,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
         <div className="flex">
           <Card>
             <CardHeader>
-              <CardTitle>Product Unit Variant</CardTitle>
+              <CardTitle>{t("productVariants")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="container mx-auto py-4">
@@ -191,7 +193,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? "Update" : "Submit"}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

@@ -13,6 +13,7 @@ import { getSuppliers } from "@/lib/actions/supplier.action";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import { DateRange } from "react-day-picker";
 import { getCustomers } from "@/lib/actions/customer.action";
+import { useTranslations } from "next-intl";
 
 interface ProductSearchProps {
   route: string;
@@ -20,6 +21,7 @@ interface ProductSearchProps {
 }
 
 const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
+  const t = useTranslations("erp");
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
@@ -273,7 +275,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
       >
         <FormInput
           name="search"
-          label="Search"
+          label={t("search")}
           control={form.control}
           isRequired={false}
           onChange={() => {
@@ -285,7 +287,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
           <FormCombobox
             control={form.control}
             name="supplier"
-            label="Supplier"
+            label={t("supplier")}
             // placeholder="Select Supplier"
             fetchSingleItem={null}
             isRequired={false}
@@ -298,7 +300,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
           <FormCombobox
             control={form.control}
             name="branch"
-            label="Branch"
+            label={t("branch")}
             // placeholder="Select branch"
             fetchSingleItem={null}
             isRequired={false}
@@ -311,7 +313,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
           <FormCombobox
             control={form.control}
             name="customer"
-            label="Depo"
+            label={t("customer")}
             fetchSingleItem={null}
             isRequired={false}
             fetchData={handleFetchCustomers}
@@ -330,7 +332,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
           onClick={handleClearSearch}
           className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px]"
         >
-          Clear Search
+          {t("clearSearch")}
         </Button>
       </div>
     </FormProvider>

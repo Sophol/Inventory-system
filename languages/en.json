@@ -179,6 +179,8 @@
     "yearlyProfitLoss": "Yearly Profit & Lost",
     "grossProfit": "Gross Profit",
     "purchaseExpense": "Purchase Expense",
-    "clearSearch": "Clear Search"
+    "clearSearch": "Clear Search",
+    "gender": "Gender",
+    "productBrand": "Product Brand"
   }
 }

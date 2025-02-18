@@ -14,6 +14,7 @@ import {
 import FormInput from "./FormInput";
 import FormCombobox from "../formInputs/FormCombobox";
 import { Button } from "../ui/button";
+import { useTranslations } from "next-intl";
 
 interface SelectData {
   _id: string;
@@ -40,7 +41,7 @@ function FormUnitVariant<T extends FieldValues>({
     control,
     name,
   });
-
+  const t = useTranslations("erp");
   return (
     <div className="flex flex-col gap-2 justify-start">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
@@ -54,7 +55,7 @@ function FormUnitVariant<T extends FieldValues>({
               <FormCombobox
                 control={control}
                 name={`${name}.${index}.unit` as Path<T>}
-                label="Unit"
+                label={t("unit")}
                 // placeholder="Select unit"
                 fetchSingleItem={selectedData}
                 fetchData={fetchUnits}
@@ -63,25 +64,25 @@ function FormUnitVariant<T extends FieldValues>({
               <FormInput
                 type="number"
                 name={`${name}.${index}.qty` as Path<T>}
-                label="Qty"
+                label={t("qty")}
                 control={control}
               />
               <FormInput
                 type="number"
                 name={`${name}.${index}.cost` as Path<T>}
-                label="Cost"
+                label={t("cost")}
                 control={control}
               />
               <FormInput
                 type="number"
                 name={`${name}.${index}.price` as Path<T>}
-                label="Price"
+                label={t("price")}
                 control={control}
               />
               <FormInput
                 type="number"
                 name={`${name}.${index}.wholeSalePrice` as Path<T>}
-                label="WholeSalePrice"
+                label={t("wholeSalePrice")}
                 control={control}
               />
               <Button
@@ -114,7 +115,7 @@ function FormUnitVariant<T extends FieldValues>({
           }
           disabled={fields.length >= 3}
         >
-          Add Unit
+          {t("addUnit")}
         </Button>
       </div>
     </div>
