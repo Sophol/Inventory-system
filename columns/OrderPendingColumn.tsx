@@ -28,12 +28,12 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Reference No"
-        className="justify-center"
+        className="whitespace-nowrap justify-center"
       />
     ),
     cell: ({ row }) => {
       const referenceNo = row.getValue("referenceNo") as string;
-      return <span className="text-[10px] ">{referenceNo}</span>;
+      return <span className="text-[10px] whitespace-nowrap justify-center flex">{referenceNo}</span>;
     },
   },
   {
@@ -42,13 +42,13 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Customer"
-        className="min-w-[120px] inline-flex"
+        className="whitespace-nowrap justify-center"
       />
     ),
     cell: ({ row }) => {
       const customer = row.original.customer.title as string;
       return (
-        <span className="text-[9px] min-w-[100px] inline-flex">{customer}</span>
+        <span className="text-[9px] whitespace-nowrap justify-center flex">{customer}</span>
       );
     },
   },
@@ -58,9 +58,15 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Branch"
-        className="justify-center"
+        className="justify-center flex flex-nowrap"
       />
     ),
+    cell: ({ row }) => {
+      const branch = row.original.branch.title as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap flex justify-center ">{branch}</span>
+      );
+    },
   },
   {
     accessorKey: "subtotal",
@@ -68,13 +74,13 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Sub Total"
-        className="justify-center"
+        className="justify-center whitespace-nowrap"
       />
     ),
     cell: ({ row }) => {
       const subtotal = row.getValue("subtotal") as number;
       return (
-        <span className="flex justify-end">{formatCurrency(subtotal)}</span>
+        <span className="flex justify-end whitespace-nowrap px-4">{formatCurrency(subtotal)}</span>
       );
     },
   },
@@ -90,7 +96,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const grandtotal = row.getValue("grandtotal") as number;
       return (
-        <span className="flex justify-end">{formatCurrency(grandtotal)}</span>
+        <span className="flex justify-end whitespace-nowrap px-4">{formatCurrency(grandtotal)}</span>
       );
     },
   },
@@ -101,14 +107,14 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Order Date"
-        className="justify-center"
+        className="justify-center whitespace-nowrap"
       />
     ),
     cell: ({ row }) => {
       const date = row.getValue("orderDate") as string;
       const formattedDate = format(new Date(date), "yyyy-MM-dd hh:mm:ss "); // Customize format as needed
       return (
-        <span className="text-[10px] min-w-[120px] flex justify-center">
+        <span className="text-[10px] whitespace-nowrap flex justify-center">
           {formattedDate}
         </span>
       );
@@ -120,7 +126,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
       <DataTableColumnHeader
         column={column}
         title="Order Status"
-        className="justify-center"
+        className="justify-center whitespace-nowrap"
       />
     ),
     cell: ({ row }) => {

@@ -47,10 +47,10 @@ const ApprovedOrder = async ({ searchParams }: SearchParams) => {
   const summaryRow = (
     <TableRow className="bg-blue-200 dark:bg-slate-800">
       <TableCell colSpan={4} className="text-right">
-        <strong>Total:</strong>
+        <strong className="px-4">Total:</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalGrandtotal)}</strong>
       </TableCell>
       <TableCell colSpan={3}>
 

@@ -329,11 +329,12 @@ function FormSaleDetail<T extends FieldValues>({
       })}
 
       {/* Total Calculation Fields */}
-      <div className="flex items-center gap-3 flex-wrap">
+      
+      <div className="flex items-center gap-2 flex-wrap pt-3">
         <div className="grow text-right">
           <label className="text-[11px]">{t("subtotal")}</label>
         </div>
-        <div className="flex w-full sm:w-[275px]">
+        <div className="flex w-[275px]">
           <FormInput
             type="number"
             name={"subtotal" as Path<T>}
@@ -342,12 +343,11 @@ function FormSaleDetail<T extends FieldValues>({
           />
         </div>
       </div>
-
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex items-center gap-2 flex-wrap">
         <div className="grow text-right">
           <label className="text-[11px]">{t("discount")}</label>
         </div>
-        <div className="flex w-full sm:w-[275px]">
+        <div className="flex w-[275px]">
           <FormInput
             type="number"
             name={"discount" as Path<T>}
@@ -357,11 +357,11 @@ function FormSaleDetail<T extends FieldValues>({
         </div>
       </div>
 
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex items-center gap-2 flex-wrap">
         <div className="grow text-right">
           <label className="text-[11px]">{t("delivery")}</label>
         </div>
-        <div className="flex w-full sm:w-[275px]">
+        <div className="flex w-[275px]">
           <FormInput
             type="number"
             name={"delivery" as Path<T>}
@@ -371,11 +371,11 @@ function FormSaleDetail<T extends FieldValues>({
         </div>
       </div>
 
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex items-center gap-2 flex-wrap">
         <div className="grow text-right">
           <label className="text-[11px]">{t("grandtotal")}</label>
         </div>
-        <div className="flex w-full sm:w-[275px]">
+        <div className="flex w-[275px]">
           <FormInput
             type="number"
             name={"grandtotal" as Path<T>}

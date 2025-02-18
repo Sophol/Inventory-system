@@ -30,7 +30,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
       <DataTableColumnHeader
         column={column}
         title="Status"
-        className="flex justify-center"
+        className="flex justify-center whitespace-nowrap"
       />
     ),
     cell: ({ row }) => {
@@ -54,9 +54,15 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
       <DataTableColumnHeader
         column={column}
         title="Name"
-        className="flex justify-center"
+        className="flex justify-center whitespace-nowrap"
       />
     ),
+    cell: ({ row }) => {
+      const name = row.getValue("name") as string;
+      return (
+        <span className="flex justify-start whitespace-nowrap px-4">{name}</span>
+      );
+    },
   },
   {
     accessorKey: "phone",
@@ -64,7 +70,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
       <DataTableColumnHeader
         column={column}
         title="Phone"
-        className="flex justify-center"
+        className="flex justify-center whitespace-nowrap"
       />
     ),
   },
@@ -74,7 +80,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
       <DataTableColumnHeader
         column={column}
         title="Location"
-        className="flex justify-center"
+        className="flex justify-center whitespace-nowrap"
       />
     ),
   },
@@ -84,7 +90,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
       <DataTableColumnHeader
         column={column}
         title="Balance"
-        className="flex justify-center"
+        className="flex justify-center whitespace-nowrap"
       />
     ),
     cell: ({ row }) => {
@@ -94,7 +100,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
           ? customer.balance
           : parseFloat(customer.balance ?? "0") || 0;
       return (
-        <span className="flex justify-end" suppressHydrationWarning>
+        <span className="flex justify-end whitespace-nowrap" suppressHydrationWarning>
           {formatCurrency(balance)}
         </span>
       );
@@ -106,7 +112,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
       <DataTableColumnHeader
         column={column}
         title="Action"
-        className="flex justify-center"
+        className="flex justify-center whitespace-nowrap "
       />
     ),
     cell: ({ row }) => {
