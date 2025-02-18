@@ -27,79 +27,81 @@ export const SalaryColumn: ColumnDef<Salary>[] = [
   {
     accessorKey: "branch",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="branch" className="justify-center"/>
+      <DataTableColumnHeader column={column} title="branch" className="whitespace-nowrap justify-center flex"/>
     ),
     cell: ({ row }) => {
-      const user = row.original;
-      return <span>{user.branch.title}</span>;
+      const branch = row.original.branch?.title as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap justify-center flex ">{branch}</span>
+      );
     },
   },
   {
     accessorKey: "salaryDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" className="justify-center"/>
+      <DataTableColumnHeader column={column} title="Date" className="whitespace-nowrap justify-center flex"/>
     ),
     cell: ({ row }) =>
    {
       const formattedDate = format(new Date(row.original.salaryDate), "yyyy-MM-dd hh:mm:ss ");
-      return <span className="text-[10px] min-w-[120px] flex justify-center">{formattedDate}</span>;
+      return <span className="text-[10px] whitespace-nowrap justify-center flex">{formattedDate}</span>;
     }
   },
   {
     accessorKey: "staffId",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="staffId" className="justify-center" />
+      <DataTableColumnHeader column={column} title="staffId" className="whitespace-nowrap justify-center flex" />
     ),
     cell: ({ row }) => {
       const user = row.original;
-      return <span>{user.staffId.username}</span>;
+      return <span className="text-[9px] whitespace-nowrap justify-center flex ">{user.staffId.username}</span>
     },
   },
 
   {
     accessorKey: "salary",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="salary" className="justify-center"/>
+      <DataTableColumnHeader column={column} title="salary" className="flex `justify-center whitespace-nowrap"/>
     ),
     cell: ({ row }) => {
       const salary = row.getValue("salary") as number;
-      return <span className="flex justify-end text-right">{formatCurrency(salary)}</span>;
+      return <span className="flex justify-end whitespace-nowrap px-4">{formatCurrency(salary)}</span>;
     },
   },
   {
     accessorKey: "allowance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="allowance" className="justify-center"/>
+      <DataTableColumnHeader column={column} title="allowance" className="justify-center whitespace-nowrap"/>
     ),
     cell: ({ row }) => {
       const allowance = row.getValue("allowance") as number;
-      return  <span className="flex justify-end text-right">{formatCurrency(allowance)}</span>;
+      return  <span className="flex justify-end whitespace-nowrap px-4">{formatCurrency(allowance)}</span>;
     },
   },
   {
     accessorKey: "deduction",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="deduction" className="justify-center" />
+      <DataTableColumnHeader column={column} title="deduction" className="justify-center whitespace-nowrap" />
     ),
     cell: ({ row }) => {
       const deduction = row.getValue("deduction") as number;
-      return  <span className="flex justify-end text-right">{formatCurrency(deduction)}</span>;
+      return  <span className="flex justify-end whitespace-nowrap px-4">{formatCurrency(deduction)}</span>;
     },
   },
   {
     accessorKey: "netSalary",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Net Salary" className="justify-center"/>
+      <DataTableColumnHeader column={column} title="Net Salary" className="justify-center  whitespace-nowrap"/>
     ),
     cell: ({ row }) => {
       const netSalary = row.getValue("netSalary") as number;
-      return  <span className="flex justify-end text-right">{formatCurrency(netSalary)}</span>;
+      return  <span className="flex justify-end text-right  whitespace-nowrap px-4">{formatCurrency(netSalary)}</span>;
     },
   },
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" className="uppercase justify-center flex " />
+      <DataTableColumnHeader column={column} title="Actions" className="uppercase justify-center flex  whitespace-nowrap" />
     ),
     cell: ({ row }) => {
       const salary = row.original;

@@ -49,19 +49,19 @@ const Salary = async ({ searchParams }: SearchParams) => {
   const summaryRow = (
     <TableRow className="bg-blue-200 dark:bg-slate-800">
       <TableCell colSpan={3} className="text-right ">
-        <strong>Total:</strong>
+        <strong className="px-4">Total:</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalSalary)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalSalary)}</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalAllowance)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalAllowance)}</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalDeduction)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalDeduction)}</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong>{formatCurrency(summary?.totalAmount)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalAmount)}</strong>
       </TableCell>
       <TableCell></TableCell>
     </TableRow>

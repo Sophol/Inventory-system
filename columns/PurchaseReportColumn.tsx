@@ -16,46 +16,56 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reference No" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Reference No" className="flex justify-center whitespace-nowrap "/>
     ),
   },
   {
     accessorKey: "supplier.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Supplier" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Supplier" className="flex justify-center whitespace-nowrap "/>
     ),
+    
   },
   {
     accessorKey: "branch.title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Branch" className="flex justify-center whitespace-nowrap "/>
     ),
+    cell: ({ row }) => {
+      const branch = row.original.branch?.title as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap justify-center flex ">{branch}</span>
+      );
+    },
   },
   {
     accessorKey: "customer",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Depo" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Depo" className="flex justify-center whitespace-nowrap "/>
     ),
     cell: ({ row }) => {
-      const purchase = row.original;
-      return purchase.customer ? purchase.customer.title : "";
+      const customer = row.original.customer?.title as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap justify-center flex ">{customer}</span>
+      );
     },
+
   },
   {
     accessorKey: "purchaseDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Purchase Date" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Purchase Date" className="flex justify-center whitespace-nowrap "/>
     ),
     cell: ({ row }) => {
       const date = row.getValue("purchaseDate") as string;
       const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
-      return <span className="flex justify-center">{formattedDate}</span>;
+      return <span className="flex justify-center whitespace-nowrap ">{formattedDate}</span>;
     },
   },
   {
     accessorKey: "orderStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Order Status" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Order Status" className="flex justify-center whitespace-nowrap "/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("orderStatus") as string;
@@ -71,7 +81,7 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "paymentStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payment Status"  className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Payment Status"  className="flex justify-center whitespace-nowrap "/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("paymentStatus") as string;
@@ -87,17 +97,17 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "grandtotal",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Grand Total" className="flex justify-center" />
+      <DataTableColumnHeader column={column} title="Grand Total" className="flex justify-center whitespace-nowrap " />
     ),
     cell: ({ row }) => {
       const grandtotal = row.getValue("grandtotal") as number;
-      return <span className="justify-end flex">{formatCurrency(grandtotal)}</span>;
+      return <span className="justify-end flex whitespace-nowrap px-4 ">{formatCurrency(grandtotal)}</span>;
     },
   },
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" className="flex justify-center" />
+      <DataTableColumnHeader column={column} title="Actions" className="flex justify-center whitespace-nowrap " />
     ),
     cell: ({ row }) => {
       const purchase = row.original;

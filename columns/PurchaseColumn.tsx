@@ -23,6 +23,12 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Reference No" className="flex justify-center" />
     ),
+    cell: ({ row }) => {
+      const referenceNo = row.getValue("referenceNo") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap px-4">{referenceNo}</span>
+      );
+    },
   },
   {
     accessorKey: "supplier.name",
@@ -35,6 +41,12 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Branch" className="flex justify-center"/>
     ),
+    cell: ({ row }) => {
+      const branch = row.original.branch.title as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap flex justify-center ">{branch}</span>
+      );
+    },
   },
   {
     accessorKey: "customer",

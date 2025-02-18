@@ -27,46 +27,52 @@ export const GeneralExpColumn: ColumnDef<GeneralExp>[] = [
   {
     accessorKey: "branch",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch"  className="justify-center"/>
+      <DataTableColumnHeader column={column} title="Branch"  className="whitespace-nowrap flex justify-center"/>
     ),
     cell: ({ row }) => {
-      const user = row.original;
-      return <span>{user.branch.title}</span>;
+      const branch = row.original.branch?.title as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap justify-center flex ">{branch}</span>
+      );
     },
   },
   {
     accessorKey: "generalDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date"  className="justify-center" />
+      <DataTableColumnHeader column={column} title="Date"  className="whitespace-nowrap flex justify-center" />
     ),
     cell: ({ row }) =>
     {
     
     const formattedDate = format(new Date(row.original.generalDate), "yyyy-MM-dd hh:mm:ss ");
-    return <span className="text-[10px] min-w-[120px] flex justify-center">{formattedDate}</span>;
+    return <span className="text-[10px] whitespace-nowrap flex justify-center">{formattedDate}</span>;
   }
   },
   {
     accessorKey: "title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" className="justify-center" />
+      <DataTableColumnHeader column={column} title="Title" className="whitespace-nowrap flex justify-center" />
     ),
+    cell: ({ row }) => {
+      const title = row.getValue("title") as string;
+      return <span className="text-[9px] whitespace-nowrap justify-center flex ">{title}</span>
+    },
   },
 
   {
     accessorKey: "amount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Amount"  className="justify-center" />
+      <DataTableColumnHeader column={column} title="Amount"  className="whitespace-nowrap flex justify-center" />
     ),
     cell: ({ row }) => {
       const amount = row.getValue("amount") as number;
-      return <span className="flex justify-end text-right">{formatCurrency(amount)}</span>;
+      return <span className="flex justify-end text-right whitespace-nowrap px-4 " >{formatCurrency(amount)}</span>;
     },
   },
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" className="uppercase justify-center flex " />
+      <DataTableColumnHeader column={column} title="Actions" className="uppercase justify-center flex whitespace-nowrap " />
     ),
     cell: ({ row }) => {
       const generalExp = row.original;
@@ -90,7 +96,7 @@ export const GeneralExpColumn: ColumnDef<GeneralExp>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1 pl-7">
+        <div className="flex items-center justify-center whitespace-nowrap ">
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.GENERALEXP(generalExp._id)}
