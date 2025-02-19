@@ -31,8 +31,8 @@ const User = async ({ searchParams }: SearchParams) => {
   const { users, totalCount, isNext } = data || {};
   return (
     <CardContainer
-      title="User"
-      redirectTitle="ADD"
+      title="user"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDUSER}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"

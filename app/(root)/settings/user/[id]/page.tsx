@@ -21,8 +21,8 @@ const EditUser = async ({ params }: RouteParams) => {
 
   return (
     <CardContainer
-      title="Edit User"
-      redirectTitle="BACK"
+      title="user"
+      redirectTitle="back"
       redirectHref={ROUTES.USERS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

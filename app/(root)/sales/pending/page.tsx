@@ -12,7 +12,7 @@ import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import SaleSearch from "@/components/search/SaleSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -51,17 +51,17 @@ const PendingOrder = async ({ searchParams }: SearchParams) => {
         <strong className="px-4">Total:</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong className="px-4">{formatCurrency(summary?.totalGrandtotal)}</strong>
+        <strong className="px-4">
+          {formatCurrency(summary?.totalGrandtotal)}
+        </strong>
       </TableCell>
-      <TableCell colSpan={3}>
-        
-      </TableCell>
+      <TableCell colSpan={3}></TableCell>
     </TableRow>
   );
   return (
     <CardContainer
-      title="Pening Order"
-      redirectTitle="ADD"
+      title="pendingSaleOrder"
+      redirectTitle="add"
       redirectHref={ROUTES.SALES}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"

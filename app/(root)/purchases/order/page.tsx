@@ -59,16 +59,14 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
       <TableCell className="text-right">
         <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
       </TableCell>
-      <TableCell>
-        
-      </TableCell>
+      <TableCell></TableCell>
     </TableRow>
   );
 
   return (
     <CardContainer
-      title="Purchase"
-      redirectTitle="ADD"
+      title="purchase"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDPURCHASE}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient w-full sm:w-auto bg-red-600 mt-0 text-[11px]  min-h-[26px] h-[26px]"

@@ -20,8 +20,8 @@ const page = async () => {
   const { exchangeRateD, exchangeRateT } = setting;
   return (
     <CardContainer
-      title="Add Purchase"
-      redirectTitle="BACK"
+      title="purchase"
+      redirectTitle="back"
       redirectHref={ROUTES.PURCHASES}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

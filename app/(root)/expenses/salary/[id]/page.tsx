@@ -19,8 +19,8 @@ const EditSalary = async ({ params }: RouteParams) => {
 
   return (
     <CardContainer
-      title="Edit Salary"
-      redirectTitle="BACK"
+      title="salary"
+      redirectTitle="back"
       redirectHref={ROUTES.SALARYEXPS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

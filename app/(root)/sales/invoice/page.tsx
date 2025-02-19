@@ -53,19 +53,28 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell className="text-right  ">
-        <strong className="px-4">{formatCurrency(summary?.totalGrandtotal)}</strong>
+        <strong className="px-4">
+          {formatCurrency(summary?.totalGrandtotal)}
+        </strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong className="px-4">{formatCurrency(summary?.totalDiscount)}</strong>
+        <strong className="px-4">
+          {formatCurrency(summary?.totalDiscount)}
+        </strong>
       </TableCell>
       <TableCell className="text-right  ">
-        <strong className="px-4">{formatCurrency(summary?.totalDelivery)}</strong>
+        <strong className="px-4">
+          {formatCurrency(summary?.totalDelivery)}
+        </strong>
       </TableCell>
       <TableCell className="text-right  ">
         <strong className="px-4">{formatCurrency(summary?.totalPaid)}</strong>
       </TableCell>
       <TableCell className="text-right  ">
-        <strong className="px-4"> {formatCurrency(summary?.totalBalance)}</strong>
+        <strong className="px-4">
+          {" "}
+          {formatCurrency(summary?.totalBalance)}
+        </strong>
       </TableCell>
       <TableCell></TableCell>
       <TableCell></TableCell>
@@ -73,8 +82,8 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
   );
   return (
     <CardContainer
-      title="Invoice"
-      redirectTitle="ADD"
+      title="invoice"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDINVOICE}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"

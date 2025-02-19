@@ -41,10 +41,11 @@ const ProductReport = async ({ searchParams }: SearchParams) => {
 
   return (
     <CardContainer
-      title="Product"
-      redirectTitle="ADD"
+      title="product"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDPRODUCT}
       redirectIcon={CiCirclePlus}
+      isButton={false}
       redirectClass="!text-light-900 primary-gradient"
     >
       <>

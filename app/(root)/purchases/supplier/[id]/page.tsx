@@ -19,8 +19,8 @@ const EditSupplier = async ({ params }: RouteParams) => {
 
   return (
     <CardContainer
-      title="Edit Supplier"
-      redirectTitle="BACK"
+      title="supplier"
+      redirectTitle="back"
       redirectHref={ROUTES.SUPPLIERS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

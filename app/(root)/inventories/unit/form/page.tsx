@@ -12,8 +12,8 @@ const CreateUnit = async () => {
   }
   return (
     <CardContainer
-      title="Add Unit"
-      redirectTitle="BACK"
+      title="unit"
+      redirectTitle="back"
       redirectHref={ROUTES.UNITS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

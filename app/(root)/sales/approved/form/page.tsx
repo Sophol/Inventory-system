@@ -18,16 +18,13 @@ const page = async () => {
   const { exchangeRateD, exchangeRateT } = setting;
   return (
     <CardContainer
-      title="Add Sale"
-      redirectTitle="BACK"
+      title="approvedSaleOrder"
+      redirectTitle="back"
       redirectHref={ROUTES.SALES}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"
     >
-      <SaleForm
-        exchangeRateD={exchangeRateD}
-        exchangeRateT={exchangeRateT}
-      />
+      <SaleForm exchangeRateD={exchangeRateD} exchangeRateT={exchangeRateT} />
     </CardContainer>
   );
 };

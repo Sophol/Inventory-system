@@ -24,8 +24,8 @@ const EditBranch = async ({ params }: RouteParams) => {
 
   return (
     <CardContainer
-      title="Edit Branch"
-      redirectTitle="BACK"
+      title="branch"
+      redirectTitle="back"
       redirectHref={ROUTES.BRANCHES}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

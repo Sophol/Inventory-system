@@ -55,10 +55,14 @@ const Salary = async ({ searchParams }: SearchParams) => {
         <strong className="px-4">{formatCurrency(summary?.totalSalary)}</strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong className="px-4">{formatCurrency(summary?.totalAllowance)}</strong>
+        <strong className="px-4">
+          {formatCurrency(summary?.totalAllowance)}
+        </strong>
       </TableCell>
       <TableCell className="text-right ">
-        <strong className="px-4">{formatCurrency(summary?.totalDeduction)}</strong>
+        <strong className="px-4">
+          {formatCurrency(summary?.totalDeduction)}
+        </strong>
       </TableCell>
       <TableCell className="text-right ">
         <strong className="px-4">{formatCurrency(summary?.totalAmount)}</strong>
@@ -68,8 +72,8 @@ const Salary = async ({ searchParams }: SearchParams) => {
   );
   return (
     <CardContainer
-      title="Salary"
-      redirectTitle="ADD"
+      title="salary"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDSALARYEXP}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"

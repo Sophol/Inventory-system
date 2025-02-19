@@ -18,8 +18,8 @@ const page = async () => {
   }
   return (
     <CardContainer
-      title="Add Branch"
-      redirectTitle="BACK"
+      title="branch"
+      redirectTitle="back"
       redirectHref={ROUTES.BRANCHES}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

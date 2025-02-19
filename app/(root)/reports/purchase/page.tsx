@@ -12,7 +12,7 @@ import { PurchaseReportColumn } from "@/columns/PurchaseReportColumn";
 import PurchaseSearch from "@/components/search/PurchaseSearch";
 import { getPurchaseReports } from "@/lib/actions/purchaseReport";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -44,23 +44,24 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
   const summaryRow = (
     <TableRow className="bg-blue-200 dark:bg-slate-800">
       <TableCell colSpan={7} className="text-right">
-        <strong >Total:</strong>
+        <strong>Total:</strong>
       </TableCell>
       <TableCell className="text-right">
-        <strong className="text-right">{formatCurrency(summary?.totalGrandtotal)}</strong>
+        <strong className="text-right">
+          {formatCurrency(summary?.totalGrandtotal)}
+        </strong>
       </TableCell>
-      <TableCell >
-
-      </TableCell>
+      <TableCell></TableCell>
     </TableRow>
   );
 
   return (
     <CardContainer
-      title="Purchase"
-      redirectTitle="ADD"
+      title="purchase"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDPURCHASE}
       redirectIcon={CiCirclePlus}
+      isButton={false}
       redirectClass="!text-light-900 primary-gradient"
     >
       <div className="py-4">

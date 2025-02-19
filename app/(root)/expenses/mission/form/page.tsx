@@ -21,8 +21,8 @@ const page = async () => {
   const { exchangeRateD, exchangeRateT } = setting;
   return (
     <CardContainer
-      title="Add Mission"
-      redirectTitle="BACK"
+      title="mission"
+      redirectTitle="back"
       redirectHref={ROUTES.MISSIONEXPS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

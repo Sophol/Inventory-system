@@ -25,8 +25,8 @@ const page = async () => {
   if (session.user.role === "seller") isSeller = true;
   return (
     <CardContainer
-      title="Add Sale"
-      redirectTitle="BACK"
+      title="invoice"
+      redirectTitle="back"
       redirectHref={ROUTES.INVOICES}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

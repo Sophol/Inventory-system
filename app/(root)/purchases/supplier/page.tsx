@@ -31,8 +31,8 @@ const Supplier = async ({ searchParams }: SearchParams) => {
   const { suppliers, totalCount, isNext } = data || {};
   return (
     <CardContainer
-      title="Supplier"
-      redirectTitle="ADD"
+      title="supplier"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDSUPPLIER}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"

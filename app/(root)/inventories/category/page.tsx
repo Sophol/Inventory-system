@@ -31,8 +31,8 @@ const Category = async ({ searchParams }: SearchParams) => {
   const { categories, totalCount, isNext } = data || {};
   return (
     <CardContainer
-      title="Category"
-      redirectTitle="ADD"
+      title="category"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDCATEGORY}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"

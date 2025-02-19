@@ -19,8 +19,8 @@ const EditCatgory = async ({ params }: RouteParams) => {
 
   return (
     <CardContainer
-      title="Add Category"
-      redirectTitle="BACK"
+      title="category"
+      redirectTitle="back"
       redirectHref={ROUTES.CATEGORIES}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

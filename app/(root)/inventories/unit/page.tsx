@@ -28,8 +28,8 @@ const Unit = async ({ searchParams }: SearchParams) => {
   const { units, totalCount, isNext } = data || {};
   return (
     <CardContainer
-      title="UNIT"
-      redirectTitle="ADD"
+      title="unit"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDUNIT}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"

@@ -13,7 +13,7 @@ import { MissionColumn } from "@/columns/MissionColumn";
 import { ColumnDef } from "@tanstack/react-table";
 import { TableCell, TableRow } from "@/components/ui/table";
 import GeneralExpSearch from "@/components/search/GeneralExpSearch";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -48,15 +48,13 @@ const Mission = async ({ searchParams }: SearchParams) => {
       <TableCell className="text-right">
         <strong className="px-4">{formatCurrency(summary?.totalAmount)}</strong>
       </TableCell>
-      <TableCell>
-        
-      </TableCell>
+      <TableCell></TableCell>
     </TableRow>
   );
   return (
     <CardContainer
-      title="Mission"
-      redirectTitle="ADD"
+      title="mission"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDMISSIONEXP}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"

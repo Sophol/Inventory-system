@@ -21,8 +21,8 @@ const page = async () => {
   const { exchangeRateD, exchangeRateT } = setting;
   return (
     <CardContainer
-      title="Add Salary"
-      redirectTitle="BACK"
+      title="salary"
+      redirectTitle="back"
       redirectHref={ROUTES.SALARYEXPS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

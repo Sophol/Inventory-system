@@ -255,7 +255,7 @@ const SalaryForm = ({
                 <span>Submitting...</span>
               </>
             ) : (
-              <>{isEdit ? t("ppdate") : t("save")}</>
+              <>{isEdit ? t("update") : t("save")}</>
             )}
           </Button>
         </div>

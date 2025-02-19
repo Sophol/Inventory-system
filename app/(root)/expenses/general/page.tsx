@@ -13,7 +13,7 @@ import { GeneralExpColumn } from "@/columns/GeneralExpColumn";
 import { ColumnDef } from "@tanstack/react-table";
 import GeneralExpSearch from "@/components/search/GeneralExpSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -45,18 +45,16 @@ const GeneralExp = async ({ searchParams }: SearchParams) => {
       <TableCell colSpan={3} className="text-right">
         <strong className="px-4">Total:</strong>
       </TableCell>
-      <TableCell  className="text-right">
+      <TableCell className="text-right">
         <strong className="px-4">{formatCurrency(summary?.totalAmount)}</strong>
       </TableCell>
-      <TableCell>
-        
-      </TableCell>
+      <TableCell></TableCell>
     </TableRow>
   );
   return (
     <CardContainer
-      title="General Expenses"
-      redirectTitle="ADD"
+      title="generalExpense"
+      redirectTitle="add"
       redirectHref={ROUTES.ADDGENERALEXP}
       redirectIcon={CiCirclePlus}
       redirectClass="!text-light-900 primary-gradient"

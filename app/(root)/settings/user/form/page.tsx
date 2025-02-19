@@ -13,8 +13,8 @@ const CreateUser = async () => {
   }
   return (
     <CardContainer
-      title="Add User"
-      redirectTitle="BACK"
+      title="user"
+      redirectTitle="back"
       redirectHref={ROUTES.USERS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

@@ -7,8 +7,8 @@ import ROUTES from "@/constants/routes";
 const page = () => {
   return (
     <CardContainer
-      title="Add Customer"
-      redirectTitle="BACK"
+      title="customer"
+      redirectTitle="back"
       redirectHref={ROUTES.CUSTOMERS}
       redirectIcon={IoCaretBackOutline}
       redirectClass="background-light800_dark300 text-light400_light500"

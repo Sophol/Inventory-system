@@ -1,5 +1,4 @@
 "use server";
-import { CiCirclePlus } from "react-icons/ci";
 
 import CardContainer from "@/components/cards/CardContainer";
 import DataRenderer from "@/components/DataRenderer";
@@ -41,10 +40,10 @@ const ProductReport = async ({ searchParams }: SearchParams) => {
 
   return (
     <CardContainer
-      title="Product"
-      redirectTitle="ADD"
+      title="product"
+      redirectTitle=""
       redirectHref={ROUTES.ADDPRODUCT}
-      redirectIcon={CiCirclePlus}
+      isButton={false}
       redirectClass="!text-light-900 primary-gradient"
     >
       <>
