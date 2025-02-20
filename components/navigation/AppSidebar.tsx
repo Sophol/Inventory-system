@@ -19,7 +19,7 @@ import ROUTES from "@/constants/routes";
 
 import { Button } from "../ui/button";
 import NavLinks from "./navbar/NavLinks";
-import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 const AppSidebar = async () => {
   const session = await auth();
@@ -65,8 +65,12 @@ const AppSidebar = async () => {
                 <form
                   action={async () => {
                     "use server";
-                    await signOut();
-                    redirect(ROUTES.SIGN_IN);
+                    const origin = (await headers()).get("origin");
+                    console.log("origin", origin);
+                    await signOut({
+                      redirect: true,
+                      redirectTo: `${origin}/sign-in`,
+                    });
                   }}
                 >
                   <Button

@@ -65,13 +65,15 @@ export async function signInWithCredentials(
   const { email, password } = validationResutl.params!;
 
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username: email }],
+    });
     if (!existingUser) {
       throw new NotFoundError("User");
     }
     const existingAccount = await Account.findOne({
       provider: "credentials",
-      providerAccountId: email,
+      providerAccountId: existingUser.email,
     });
     if (!existingAccount) {
       throw new NotFoundError("Account");
@@ -81,7 +83,11 @@ export async function signInWithCredentials(
       existingAccount.password!
     );
     if (!passwordMatch) throw new Error("Password does not match");
-    await signIn("credentials", { email, password, redirect: false });
+    await signIn("credentials", {
+      email: existingUser.email,
+      password,
+      redirect: false,
+    });
     return { success: true };
   } catch (error) {
     return handleError(error) as ErrorResponse;
