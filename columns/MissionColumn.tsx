@@ -54,7 +54,7 @@ export const MissionColumn: ColumnDef<Mission>[] = [
     ),
     cell: ({ row }) => {
       const user = row.getValue("staffName") as string;
-      return <span className="text-[9px] whitespace-nowrap justify-center flex ">{user}</span>
+      return <span className="text-[9px] whitespace-nowrap ">{user}</span>
     },
   },
 
