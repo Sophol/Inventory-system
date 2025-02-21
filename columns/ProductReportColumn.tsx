@@ -12,7 +12,7 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" className="flex justify-center" />
+      <DataTableColumnHeader column={column} title="Status" className="flex justify-center whitespace-nowrap" />
     ),
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
@@ -26,17 +26,25 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
   {
     accessorKey: "code",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Code"  className="flex justify-center" />
+      <DataTableColumnHeader column={column} title="Code"  className="flex justify-center  whitespace-nowrap" />
     ),
+    cell: ({ row }) => {
+      const code = row.getValue("code") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap px-1">{code}</span>
+      );
+    },
   },
   {
     accessorKey: "category",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category"  className="flex justify-center" />
+      <DataTableColumnHeader column={column} title="Category"  className="flex justify-center  whitespace-nowrap" />
     ),
     cell: ({ row }) => {
       const category = row.original;
-      return category.categoryTitle;
+      return (
+        <span className=" flex justify-center whitespace-nowrap px-1">{category.categoryTitle}</span>
+      );
     },
   },
   {
@@ -44,6 +52,12 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title"  className="flex justify-center" />
     ),
+    cell: ({ row }) => {
+      const title = row.getValue("title") as string;
+      return (
+        <span className="flex justify-center px-1 whitespace-nowrap ">{title}</span>
+      );
+    },
   },
   {
     accessorKey: "qtyOnHand",
@@ -56,7 +70,9 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
         product.qtySmallUnit ?? 0,
         product.units
       );
-      return qty;
+      return (
+        <span className="flex justify-center whitespace-nowrap ">{qty}</span>
+      );
     },
   },
   {
@@ -67,7 +83,9 @@ export const ProductReportColumn: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const product = row.original;
       const qty = convertFromSmallUnitQty(product.alertQty ?? 0, product.units);
-      return qty;
+      return (
+        <span className="flex justify-center whitespace-nowrap ">{qty}</span>
+      );
     },
   },
 ];

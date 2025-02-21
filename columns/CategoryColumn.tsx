@@ -22,22 +22,34 @@ export const CategoryColumn: ColumnDef<Category>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Status"         className="flex justify-center whitespace-nowrap"/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
-        <Badge className={status === "active" ? "bg-green-500" : "bg-red-500"}>
+        <div className="flex justify-center ">
+        <Badge className={`${status === "active" ? "bg-green-500  text-[10px]" : "bg-red-500  text-[10px]" } uppercase`}>
           {status}
         </Badge>
+      </div>
       );
     },
   },
   {
     accessorKey: "title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader
+        column={column}
+        title="Title"
+        className="flex justify-center whitespace-nowrap"
+      />
     ),
+    cell: ({ row }) => {
+      const title = row.getValue("title") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap px-4">{title}</span>
+      );
+    },
   },
   {
     id: "actions",
@@ -63,7 +75,7 @@ export const CategoryColumn: ColumnDef<Category>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 justify-center whitespace-nowrap">
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.CATEGORY(category._id)}

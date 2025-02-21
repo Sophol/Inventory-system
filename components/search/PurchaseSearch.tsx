@@ -271,7 +271,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
   return (
     <FormProvider {...form}>
       <div
-        className={`flex flex-wrap sm:flex-nowrap items-center gap-3 min-h-[36px] rounded-[10px] ${otherClasses}`}
+        className={`flex flex-wrap sm:flex-nowrap items-center gap-2 min-h-[36px] rounded-[10px] ${otherClasses}`}
       >
         <FormInput
           name="search"
@@ -283,7 +283,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
           }}
         />
 
-        <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
+        <div className="flex flex-col sm:flex-row gap-2 w-full">
           <FormCombobox
             control={form.control}
             name="supplier"
@@ -330,7 +330,7 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
         />
         <Button
           onClick={handleClearSearch}
-          className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px]"
+          className="w-full sm:w-auto bg-red-600 mt-1 sm:mt-4 text-[11px]  min-h-[26px] h-[26px]"
         >
           {t("clearSearch")}
         </Button>

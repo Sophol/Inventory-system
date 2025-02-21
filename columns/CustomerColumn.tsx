@@ -60,7 +60,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
     cell: ({ row }) => {
       const name = row.getValue("name") as string;
       return (
-        <span className="flex justify-start whitespace-nowrap px-4">{name}</span>
+        <span className="flex justify-center whitespace-nowrap ">{name}</span>
       );
     },
   },
@@ -73,6 +73,12 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
         className="flex justify-center whitespace-nowrap"
       />
     ),
+    cell: ({ row }) => {
+      const phone = row.getValue("phone") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap">{phone}</span>
+      );
+    },
   },
   {
     accessorKey: "location",
@@ -83,6 +89,12 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
         className="flex justify-center whitespace-nowrap"
       />
     ),
+    cell: ({ row }) => {
+      const location = row.getValue("location") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap">{location}</span>
+      );
+    },
   },
   {
     accessorKey: "balance",
@@ -138,7 +150,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1  justify-end">
+        <div className="flex items-center space-x-1  justify-center">
           <RedirectButton
             Icon={FaEye}
             href={hrefLink}

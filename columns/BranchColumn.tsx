@@ -25,14 +25,16 @@ export const BranchColumn: ColumnDef<Branch>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="status" />
+      <DataTableColumnHeader column={column} title="status" className="whitespace-nowrap "/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
-        <Badge className={status === "active" ? "bg-green-500" : "bg-red-500"}>
+        <div className="flex justify-center whitespace-nowrap ">
+        <Badge className={`${status === "active" ? "bg-green-500  text-[10px]" : "bg-red-500  text-[10px]" } uppercase`}>
           {status}
         </Badge>
+      </div>
       );
     },
   },
@@ -41,18 +43,30 @@ export const BranchColumn: ColumnDef<Branch>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="title" />
     ),
+    cell: ({ row }) => {
+      const title = row.getValue("title") as string;
+      return <span className=" text-[9px] flex justify-center  whitespace-nowrap ">{title}</span>;
+    },
   },
   {
     accessorKey: "phone",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="phone" />
     ),
+    cell: ({ row }) => {
+      const phone = row.getValue("phone") as string;
+      return <span className=" text-[9px] flex justify-center  whitespace-nowrap ">{phone}</span>;
+    },
   },
   {
     accessorKey: "location",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="location" />
     ),
+    cell: ({ row }) => {
+      const location = row.getValue("location") as string;
+      return <span className=" text-[9px] flex justify-center  whitespace-nowrap ">{location}</span>;
+    },
   },
   {
     id: "actions",
@@ -78,7 +92,7 @@ export const BranchColumn: ColumnDef<Branch>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 justify-center">
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.BRANCH(branch._id)}

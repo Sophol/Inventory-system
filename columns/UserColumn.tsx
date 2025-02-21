@@ -26,30 +26,60 @@ export const UserColumn: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Username" />
     ),
+    cell: ({ row }) => {
+      const username = row.getValue("username") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap px-1">{username}</span>
+      );
+    },
   },
   {
     accessorKey: "name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
+    cell: ({ row }) => {
+      const name = row.getValue("name") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap px-1">{name}</span>
+      );
+    },
   },
   {
     accessorKey: "email",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="email" />
     ),
+    cell: ({ row }) => {
+      const email = row.getValue("email") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap px-1">{email}</span>
+      );
+    },
   },
   {
     accessorKey: "role",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="role" />
     ),
+    cell: ({ row }) => {
+      const role = row.getValue("role") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap px-1">{role}</span>
+      );
+    },
   },
   {
     accessorKey: "phone",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Phone" />
     ),
+    cell: ({ row }) => {
+      const phone = row.getValue("phone") as string;
+      return (
+        <span className="flex justify-center whitespace-nowrap px-1">{phone}</span>
+      );
+    },
   },
   {
     id: "actions",
@@ -75,7 +105,7 @@ export const UserColumn: ColumnDef<User>[] = [
         }
       };
       return (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 whitespace-nowrap justify-center">
           <RedirectButton
             Icon={FaRegEdit}
             href={ROUTES.USER(user._id)}

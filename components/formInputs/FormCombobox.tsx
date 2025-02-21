@@ -99,7 +99,7 @@ function FormCombobox<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className="text-[11px] flex w-full flex-col ">
-          <FormLabel className={`text-[11px] text-dark400_light800 ${labelClass}`}>
+          <FormLabel className={`text-[11px] text-dark400_light800 mb-1 ${labelClass}`}>
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Popover>

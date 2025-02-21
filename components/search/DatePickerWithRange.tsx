@@ -50,7 +50,7 @@ export function DatePickerWithRange({
   const t = useTranslations("erp");
   return (
     <div className={cn("grid gap-0", className)}>
-      <span className="text-[11px]  text-dark400_light800">
+      <span className="text-[11px]  text-dark400_light800 mb-1">
         {t("dateRange")}
       </span>
       <Popover>

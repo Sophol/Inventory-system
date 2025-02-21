@@ -57,9 +57,9 @@ function FormInput<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex w-full flex-col mt-0">
+        <FormItem className="flex w-full flex-col my-0">
           {label && (
-            <FormLabel className={`text-[11px] text-dark400_light800 ${labelClass}`} >
+            <FormLabel className={`text-[11px] text-dark400_light800 ${labelClass} mb-1`} >
               {label}
               {isRequired && <span className="text-primary-500">*</span>}
             </FormLabel>
@@ -77,7 +77,7 @@ function FormInput<T extends FieldValues>({
             />
           </FormControl>
           {message && (
-            <FormDescription className="text-[11px] mt-2.5 text-light-500">
+            <FormDescription className="text-[11px] mt-1 text-light-500">
               {message}
             </FormDescription>
           )}

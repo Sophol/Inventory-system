@@ -159,7 +159,7 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
             setSearchQuery(form.getValues("search"));
           }}
         />
-        <div className="flex flex-col sm:flex-row sm:gap-3 w-full">
+        <div className="flex flex-col sm:flex-row gap-2 w-full">
           <FormCombobox
             control={form.control}
             name="branch"
@@ -181,7 +181,7 @@ const GeneralExpSearch = ({ route, otherClasses }: ProductSearchProps) => {
         />
         <Button
           onClick={handleClearSearch}
-          className="w-full sm:w-auto bg-red-600 mt-2 sm:mt-4 text-[11px]  min-h-[26px] h-[26px] "
+          className="w-full sm:w-auto bg-red-600 mt-1 sm:mt-4 text-[11px]  min-h-[26px] h-[26px] "
         >
           {t("clearSearch")}
         </Button>

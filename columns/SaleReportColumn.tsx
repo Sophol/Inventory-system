@@ -11,26 +11,37 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reference No" className="flex justify-center" />
+      <DataTableColumnHeader column={column} title="Reference No" className="flex justify-center whitespace-nowrap" />
     ),
+    cell: ({ row }) => {
+      const referenceNo = row.getValue("referenceNo") as string;
+      return <span className="flex justify-center  whitespace-nowrap ">{referenceNo}</span>;
+    },
   },
   {
     accessorKey: "invoicedDate", // Assuming saleDate is the date field you want to format
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Date" className="flex justify-center whitespace-nowrap"/>
     ),
     cell: ({ row }) => {
       const date = row.getValue("invoicedDate") as string;
       const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
-      return <span className="text-[9px] min-w-[105px] flex justify-center">{formattedDate}</span>;
+      return <span className="text-[9px] whitespace-nowrap flex justify-center">{formattedDate}</span>;
     },
   },
   {
     accessorKey: "customer.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Customer" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Customer" className="text-center whitespace-nowrap text-[9px] " />
+    ),
+    cell: ({ row }) => (
+      <div className="text-center whitespace-nowrap text-[9px] ">
+        {row.original.customer?.name ?? "N/A"}
+      </div>
     ),
   },
+  
+  
   {
     accessorKey: "branch.title",
     header: ({ column }) => (
@@ -38,7 +49,7 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
     ),
     cell: ({ row }) => {
       const branch = row.original.branch.title as string;
-      return <span className="text-[9px] min-w-[100px] inline-flex">{branch}</span>;
+      return <span className="text-[9px] whitespace-nowrap justify-center flex">{branch}</span>;
     },
   },
   {
@@ -48,53 +59,53 @@ export const SaleReportColumn: ColumnDef<Sale>[] = [
      ),
      cell: ({ row }) => {
        const grandtotal = row.getValue("grandtotal") as number;
-       return <span className="flex justify-end  min-w-[90px] w-full inline-flex text-right">{formatCurrency(grandtotal)}</span>;
+       return <span className="flex justify-end  whitespace-nowrap text-right px-4">{formatCurrency(grandtotal)}</span>;
      },
    },
   {
     accessorKey: "discount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Discount" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Discount" className="flex whitespace-nowrap justify-center px-4"/>
     ),
     cell: ({ row }) => {
       const discount = row.getValue("discount") as number;
-      return <span className="flex justify-end w-full">{formatCurrency(discount)}</span>;
+      return <span className="flex justify-end  whitespace-nowrap px-4">{formatCurrency(discount)}</span>;
     },
   },
   {
     accessorKey: "delivery",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Delivery" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Delivery" className="flex justify-center whitespace-nowrap px-4"/>
     ),
     cell: ({ row }) => {
       const delivery = row.getValue("delivery") as number;
-      return <span  className="flex justify-end w-full">{formatCurrency(delivery)}</span>;
+      return <span  className="flex justify-end whitespace-nowrap px-4">{formatCurrency(delivery)}</span>;
     },
   },
   {
     accessorKey: "paid",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Paid" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Paid" className="flex justify-center whitespace-nowrap px-4"/>
     ),
     cell: ({ row }) => {
       const paid = row.getValue("paid") as number;
-      return <span className="flex justify-end  min-w-[90px] w-full inline-flex">{formatCurrency(paid)}</span>;
+      return <span className="flex justify-end whitespace-nowrap px-4">{formatCurrency(paid)}</span>;
     },
   },
   {
     accessorKey: "balance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Balance" className="flex justify-center" />
+      <DataTableColumnHeader column={column} title="Balance" className="flex justify-center px-4" />
     ),
     cell: ({ row }) => {
       const balance = row.getValue("balance") as number;
-      return <span className="flex justify-end  min-w-[90px] w-full inline-flex">{formatCurrency(balance)}</span>;
+      return <span className="flex justify-end  whitespace-nowrap px-4">{formatCurrency(balance)}</span>;
     },
   },
   {
     accessorKey: "orderStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Order" className="flex justify-center"/>
+      <DataTableColumnHeader column={column} title="Order" className="flex justify-center whitespace-nowrap"/>
     ),
     cell: ({ row }) => {
       const status = row.getValue("orderStatus") as string;

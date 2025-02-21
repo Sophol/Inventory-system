@@ -47,7 +47,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell className="text-right">
-        <strong className="text-right">
+        <strong className="text-right px-4">
           {formatCurrency(summary?.totalGrandtotal)}
         </strong>
       </TableCell>

@@ -56,7 +56,7 @@ const FormDatePicker = <T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className="flex w-full flex-col">
-          <FormLabel className="text-[11px]  text-dark400_light800">
+          <FormLabel className="text-[11px]  text-dark400_light800 mb-1">
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Popover>

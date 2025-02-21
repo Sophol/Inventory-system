@@ -18,13 +18,22 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Reference No" className="flex justify-center whitespace-nowrap "/>
     ),
+    cell: ({ row }) => {
+      const referenceNo = row.getValue("referenceNo") as string;
+      return <span className=" text-[9px] flex justify-center  whitespace-nowrap ">{referenceNo}</span>;
+    },
   },
   {
     accessorKey: "supplier.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Supplier" className="flex justify-center whitespace-nowrap "/>
     ),
-    
+    cell: ({ row }) => {
+      const supplier = row.original.supplier?.name as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap justify-center flex ">{supplier}</span>
+      );
+    },
   },
   {
     accessorKey: "branch.title",
@@ -59,7 +68,7 @@ export const PurchaseReportColumn: ColumnDef<Purchase>[] = [
     cell: ({ row }) => {
       const date = row.getValue("purchaseDate") as string;
       const formattedDate = format(new Date(date), "dd/MM/yyyy hh:mm:ss "); // Customize format as needed
-      return <span className="flex justify-center whitespace-nowrap ">{formattedDate}</span>;
+      return <span className="text-[9px] flex justify-center whitespace-nowrap ">{formattedDate}</span>;
     },
   },
   {

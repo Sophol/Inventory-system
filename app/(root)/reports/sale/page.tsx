@@ -50,22 +50,22 @@ const SaleReport = async ({ searchParams }: SearchParams) => {
   const summaryRow = (
     <TableRow className="bg-blue-200 dark:bg-slate-800">
       <TableCell colSpan={4} className="text-right">
-        <strong>Total:</strong>
+        <strong className="px-4">Total:</strong>
       </TableCell>
       <TableCell className="text-right">
-        <strong>{formatCurrency(summary?.totalGrandtotal)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalGrandtotal)}</strong>
       </TableCell>
       <TableCell className="text-right">
-        <strong>{formatCurrency(summary?.totalDiscount)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalDiscount)}</strong>
       </TableCell>
       <TableCell className="text-right">
-        <strong>{formatCurrency(summary?.totalDelivery)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalDelivery)}</strong>
       </TableCell>
       <TableCell className="text-right">
-        <strong>{formatCurrency(summary?.totalPaid)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalPaid)}</strong>
       </TableCell>
       <TableCell className="text-right">
-        <strong>{formatCurrency(summary?.totalBalance)}</strong>
+        <strong className="px-4">{formatCurrency(summary?.totalBalance)}</strong>
       </TableCell>
       <TableCell></TableCell>
       <TableCell></TableCell>
