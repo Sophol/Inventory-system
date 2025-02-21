@@ -139,10 +139,14 @@ export async function getSaleReports(params: SaleSearchParams): Promise<
       totalBalance,
       totalPaid,
     };
+    const transformedSales = sales.map((sale) => ({
+      ...sale,
+      customer: sale.customer ? { title: sale.customer.name } : null,
+    }));
     return {
       success: true,
       data: {
-        sales: JSON.parse(JSON.stringify(sales)),
+        sales: JSON.parse(JSON.stringify(transformedSales)),
         summary: JSON.parse(JSON.stringify(summaryData)),
         isNext,
       },

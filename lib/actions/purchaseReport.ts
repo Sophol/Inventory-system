@@ -116,13 +116,11 @@ export async function getPurchaseReports(params: PurchaseSearchParams): Promise<
         .skip(skip)
         .limit(limit),
     ]);
-    const transformedPurchases = purchases.map((purchase: any) => {
-      if (purchase.customer) {
-        purchase.customer.title = purchase.customer.name;
-        delete purchase.customer.name;
-      }
-      return purchase;
-    });
+    const transformedPurchases = purchases.map((purchase) => ({
+      ...purchase,
+      customer: purchase.customer ? { title: purchase.customer.name } : null,
+      supplier: purchase.supplier ? { title: purchase.supplier.name } : null,
+    }));
     const count = aggregationResult[0]?.count || 0;
     const totalGrandtotal = aggregationResult[0]?.totalGrandtotal || 0;
     const isNext = count > skip + transformedPurchases.length;
