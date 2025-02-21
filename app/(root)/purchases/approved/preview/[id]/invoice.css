@@ -20,7 +20,7 @@
   }
 
   .sub-info{
-    color:rgba(47, 43, 61, 0.87);
+    color:black
   }
   .button-download-invoice{
     background-color: #675dd8;
@@ -134,6 +134,9 @@
 
 /* For small screens (mobile-first) */
 @media (max-width: 768px) {
+  .newline{
+    width:100%
+  }
   .invoice-to, .bill-to{
     width:100%;
   }
