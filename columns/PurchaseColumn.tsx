@@ -21,37 +21,65 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "referenceNo",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reference No" className="flex justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="Reference No"
+        className="flex justify-center"
+      />
     ),
     cell: ({ row }) => {
       const referenceNo = row.getValue("referenceNo") as string;
       return (
-        <span className="flex justify-center whitespace-nowrap px-4">{referenceNo}</span>
+        <span className="flex justify-center whitespace-nowrap px-4">
+          {referenceNo}
+        </span>
       );
     },
   },
   {
     accessorKey: "supplier.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Supplier"className="flex justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="Supplier"
+        className="flex justify-center"
+      />
     ),
+    cell: ({ row }) => {
+      const supplier = row.original.supplier?.title as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap justify-center flex ">
+          {supplier}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "branch.title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch" className="flex justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Branch"
+        className="flex justify-center"
+      />
     ),
     cell: ({ row }) => {
       const branch = row.original.branch.title as string;
       return (
-        <span className="text-[9px] whitespace-nowrap flex justify-center ">{branch}</span>
+        <span className="text-[9px] whitespace-nowrap flex justify-center ">
+          {branch}
+        </span>
       );
     },
   },
   {
     accessorKey: "customer",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Depo" className="flex justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Depo"
+        className="flex justify-center"
+      />
     ),
     cell: ({ row }) => {
       const purchase = row.original;
@@ -61,7 +89,11 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "purchaseDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Purchase Date" className="flex justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Purchase Date"
+        className="flex justify-center"
+      />
     ),
     cell: ({ row }) => {
       const date = row.getValue("purchaseDate") as Date;
@@ -71,13 +103,21 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "orderStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Order Status" className="flex justify-center"/>
+      <DataTableColumnHeader
+        column={column}
+        title="Order Status"
+        className="flex justify-center"
+      />
     ),
     cell: ({ row }) => {
       const status = row.getValue("orderStatus") as string;
       return (
         <Badge
-          className={status === "completed" ? "bg-green-500  uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto" : "bg-yellow-500  uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center mx-auto"}
+          className={
+            status === "completed"
+              ? "bg-green-500  uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center pt-1 mx-auto"
+              : "bg-yellow-500  uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center mx-auto"
+          }
         >
           {status}
         </Badge>
@@ -87,13 +127,21 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
   {
     accessorKey: "paymentStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Payment Status" className="flex justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="Payment Status"
+        className="flex justify-center"
+      />
     ),
     cell: ({ row }) => {
       const status = row.getValue("paymentStatus") as string;
       return (
         <Badge
-          className={status === "completed" ? "bg-green-500  uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center mx-auto" : "bg-red-500  uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center mx-auto"}
+          className={
+            status === "completed"
+              ? "bg-green-500  uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center mx-auto"
+              : "bg-red-500  uppercase text-[9px] h-[21px] min-w-[85px] w-[85px] flex justify-center mx-auto"
+          }
         >
           {status}
         </Badge>
@@ -107,13 +155,19 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
     ),
     cell: ({ row }) => {
       const grandtotal = row.getValue("grandtotal") as number;
-      return <span className="flex justify-end">{formatCurrency(grandtotal)}</span>;
+      return (
+        <span className="flex justify-end">{formatCurrency(grandtotal)}</span>
+      );
     },
   },
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" className="flex justify-center" />
+      <DataTableColumnHeader
+        column={column}
+        title="Actions"
+        className="flex justify-center"
+      />
     ),
     cell: ({ row }) => {
       const purchase = row.original;
