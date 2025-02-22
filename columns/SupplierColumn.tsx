@@ -39,24 +39,24 @@ export const SupplierColumn: ColumnDef<Supplier>[] = [
   {
     accessorKey: "companyName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Company Name" className="flex justify-center whitespace-nowrap" />
+      <DataTableColumnHeader column={column} title="Company Name" className=" whitespace-nowrap" />
     ),
     cell: ({ row }) => {
       const companyName = row.getValue("companyName") as string;
       return (
-        <span className="text-[9px] whitespace-nowrap justify-center flex ">{companyName}</span>
+        <span className="text-[9px] whitespace-nowrap ">{companyName}</span>
       );
     },
   },
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" className="flex justify-center whitespace-nowrap" />
+      <DataTableColumnHeader column={column} title="Name" className=" whitespace-nowrap" />
     ),
     cell: ({ row }) => {
       const name = row.getValue("name") as string;
       return (
-        <span className="text-[9px] whitespace-nowrap justify-center flex ">{name}</span>
+        <span className="text-[9px] whitespace-nowrap  ">{name}</span>
       );
     },
   },
@@ -75,12 +75,12 @@ export const SupplierColumn: ColumnDef<Supplier>[] = [
   {
     accessorKey: "location",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Location" className="flex justify-center whitespace-nowrap" />
+      <DataTableColumnHeader column={column} title="Location" className="whitespace-nowrap" />
     ),
     cell: ({ row }) => {
       const location = row.getValue("location") as string;
       return (
-        <span className="text-[9px] whitespace-nowrap justify-center flex ">{location}</span>
+        <span className="text-[9px] whitespace-nowrap  ">{location}</span>
       );
     },
   },

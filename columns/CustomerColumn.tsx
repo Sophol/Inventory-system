@@ -60,7 +60,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
     cell: ({ row }) => {
       const name = row.getValue("name") as string;
       return (
-        <span className="flex justify-center whitespace-nowrap ">{name}</span>
+        <span className=" whitespace-nowrap ">{name}</span>
       );
     },
   },
@@ -76,7 +76,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
     cell: ({ row }) => {
       const phone = row.getValue("phone") as string;
       return (
-        <span className="flex justify-center whitespace-nowrap">{phone}</span>
+        <span className="whitespace-nowrap">{phone}</span>
       );
     },
   },
@@ -92,7 +92,7 @@ export const CustomerColumn: ColumnDef<Customer>[] = [
     cell: ({ row }) => {
       const location = row.getValue("location") as string;
       return (
-        <span className="flex justify-center whitespace-nowrap">{location}</span>
+        <span className=" whitespace-nowrap">{location}</span>
       );
     },
   },

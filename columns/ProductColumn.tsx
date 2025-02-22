@@ -55,7 +55,7 @@ export const ProductColumn: ColumnDef<Product>[] = [
       const category = row.original;
       return (
       
-        <span className="flex justify-center whitespace-nowrap px-4">{ category.categoryTitle}</span>
+        <span className="flex whitespace-nowrap px-4">{ category.categoryTitle}</span>
 
       )
     },
@@ -68,7 +68,7 @@ export const ProductColumn: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const title = row.getValue("title") as string;
       return (
-        <span className="flex justify-center whitespace-nowrap px-4">{title}</span>
+        <span className="flex whitespace-nowrap px-4">{title}</span>
       );
     },
   },

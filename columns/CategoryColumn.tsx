@@ -47,7 +47,7 @@ export const CategoryColumn: ColumnDef<Category>[] = [
     cell: ({ row }) => {
       const title = row.getValue("title") as string;
       return (
-        <span className="flex justify-center whitespace-nowrap px-4">{title}</span>
+        <span className="flex  whitespace-nowrap px-4">{title}</span>
       );
     },
   },

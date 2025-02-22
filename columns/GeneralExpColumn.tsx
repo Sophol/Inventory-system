@@ -55,7 +55,7 @@ export const GeneralExpColumn: ColumnDef<GeneralExp>[] = [
     ),
     cell: ({ row }) => {
       const title = row.getValue("title") as string;
-      return <span className="text-[9px] whitespace-nowrap justify-center flex ">{title}</span>
+      return <span className="text-[9px] whitespace-nowrap ">{title}</span>
     },
   },
 
