@@ -9,10 +9,10 @@ import { PURCHASE_EMPTY } from "@/constants/states";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { PurchaseReportColumn } from "@/columns/PurchaseReportColumn";
-import PurchaseSearch from "@/components/search/PurchaseSearch";
 import { getPurchaseReports } from "@/lib/actions/purchaseReport";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
+import PurchaseSearchReport from "@/components/search/PurchaseSearchReport";
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -23,8 +23,16 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
     return redirect("/unauthorized");
   }
 
-  const { page, pageSize, query, filter, supplierId, branchId, dateRange } =
-    await searchParams;
+  const {
+    page,
+    pageSize,
+    query,
+    filter,
+    supplierId,
+    branchId,
+    dateRange,
+    orderStatus,
+  } = await searchParams;
   const { success, data, error } = await getPurchaseReports({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
@@ -33,6 +41,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
     supplierId: supplierId?.toString() || "",
     branchId: branchId?.toString() || "",
     dateRange: dateRange?.toString() || "",
+    orderStatus: orderStatus?.toString() || "",
   });
 
   const { purchases, summary, isNext } = data || {
@@ -65,7 +74,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
       redirectClass="!text-light-900 primary-gradient"
     >
       <div className="py-4">
-        <PurchaseSearch route={ROUTES.PURCHASEREPORT} />
+        <PurchaseSearchReport route={ROUTES.PURCHASEREPORT} />
       </div>
       <DataRenderer
         success={success}

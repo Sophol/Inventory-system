@@ -19,6 +19,7 @@ export const PurchaseSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   branchId: z.string().optional(),
   dateRange: z.string().optional(),
   customerId: z.string().optional(),
+  orderStatus: z.string().optional(),
 });
 export const SaleSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   customerId: z.string().optional(),

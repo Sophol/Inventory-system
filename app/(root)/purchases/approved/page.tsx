@@ -10,9 +10,9 @@ import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import PurchaseSearch from "@/components/search/PurchaseSearch";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { getPurchaseReports } from "@/lib/actions/purchaseReport";
 import { PurchaseReportColumn } from "@/columns/PurchaseReportColumn";
 import { formatCurrency } from "@/lib/utils";
+import { getPurchaseCompleted } from "@/lib/actions/purchase.action";
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
@@ -33,7 +33,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
     dateRange,
     customerId,
   } = await searchParams;
-  const { success, data, error } = await getPurchaseReports({
+  const { success, data, error } = await getPurchaseCompleted({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query?.toString() || "",

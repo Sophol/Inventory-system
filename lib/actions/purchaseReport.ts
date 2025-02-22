@@ -29,12 +29,11 @@ export async function getPurchaseReports(params: PurchaseSearchParams): Promise<
     branchId,
     dateRange,
     customerId,
+    orderStatus,
   } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
-  const filterQuery: FilterQuery<typeof Purchase> = {
-    orderStatus: "completed",
-  };
+  const filterQuery: FilterQuery<typeof Purchase> = {};
 
   if (query) {
     filterQuery.$or = [
@@ -53,6 +52,9 @@ export async function getPurchaseReports(params: PurchaseSearchParams): Promise<
   }
   if (branchId) {
     filterQuery.branch = new ObjectId(branchId);
+  }
+  if (orderStatus) {
+    filterQuery.orderStatus = orderStatus;
   }
 
   if (dateRange) {

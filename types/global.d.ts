@@ -37,6 +37,7 @@ interface PurchaseSearchParams extends PaginatedSearchParams {
   branchId?: string;
   dateRange?: string;
   customerId?: string;
+  orderStatus?: string;
 }
 interface SaleSearchParams extends PaginatedSearchParams {
   customerId?: string;

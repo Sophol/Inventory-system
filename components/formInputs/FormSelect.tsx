@@ -14,6 +14,12 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+
+interface SelectData {
+  _id: string;
+  title: string;
+}
+
 interface FormSelectProps<T extends FieldValues> {
   defaultValue?: string;
   items: SelectData[];
@@ -23,7 +29,9 @@ interface FormSelectProps<T extends FieldValues> {
   message?: string;
   control: Control<T>;
   isRequired?: boolean;
+  onChange?: (value: string) => void; // Add onChange prop
 }
+
 function FormSelect<T extends FieldValues>({
   defaultValue,
   items,
@@ -33,6 +41,7 @@ function FormSelect<T extends FieldValues>({
   message,
   control,
   isRequired = true,
+  onChange, // Destructure onChange prop
 }: FormSelectProps<T>) {
   return (
     <FormField
@@ -45,7 +54,12 @@ function FormSelect<T extends FieldValues>({
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Select
-            onValueChange={field.onChange}
+            onValueChange={(value) => {
+              field.onChange(value);
+              if (onChange) {
+                onChange(value); // Call onChange prop if provided
+              }
+            }}
             defaultValue={field.value as string | undefined}
           >
             <FormControl>
@@ -70,4 +84,5 @@ function FormSelect<T extends FieldValues>({
     />
   );
 }
+
 export default FormSelect;

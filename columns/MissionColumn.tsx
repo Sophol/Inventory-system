@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import { toast } from "@/hooks/use-toast";
 import { deleteMission } from "@/lib/actions/mission.action";
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from "@/lib/utils";
 export interface Mission {
   _id: string;
   missionDate: Date;
@@ -27,51 +27,87 @@ export const MissionColumn: ColumnDef<Mission>[] = [
   {
     accessorKey: "branch",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Branch" className="justify-center  whitespace-nowrap" />
+      <DataTableColumnHeader
+        column={column}
+        title="Branch"
+        className="justify-center  whitespace-nowrap"
+      />
     ),
     cell: ({ row }) => {
       const branch = row.original.branch?.title as string;
       return (
-        <span className="text-[9px] whitespace-nowrap justify-center flex ">{branch}</span>
+        <span className="text-[9px] whitespace-nowrap justify-center flex ">
+          {branch}
+        </span>
       );
     },
   },
   {
     accessorKey: "missionDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" className="justify-center  whitespace-nowrap" />
+      <DataTableColumnHeader
+        column={column}
+        title="Date"
+        className="justify-center  whitespace-nowrap"
+      />
     ),
     cell: ({ row }) => {
-
-      const formattedDate = format(new Date(row.original.missionDate), "yyyy-MM-dd hh:mm:ss ");
-      return <span className="text-[10px]  whitespace-nowrap flex justify-center">{formattedDate}</span>;
-    }
+      const formattedDate = format(
+        new Date(row.original.missionDate),
+        "yyyy-MM-dd hh:mm:ss "
+      );
+      return (
+        <span className="text-[10px]  whitespace-nowrap flex justify-center">
+          {formattedDate}
+        </span>
+      );
+    },
   },
   {
-    accessorKey: "staffName",
+    accessorKey: "title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" className="justify-center whitespace-nowrap " />
+      <DataTableColumnHeader
+        column={column}
+        title="Title"
+        className="justify-center whitespace-nowrap "
+      />
     ),
     cell: ({ row }) => {
-      const user = row.getValue("staffName") as string;
-      return <span className="text-[9px] whitespace-nowrap justify-center flex ">{user}</span>
+      const mission = row.original;
+      return (
+        <span className="text-[9px] whitespace-nowrap justify-center flex ">
+          {mission.staffName}
+        </span>
+      );
     },
   },
 
   {
     accessorKey: "amount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Amount" className="justify-center whitespace-nowrap " />
+      <DataTableColumnHeader
+        column={column}
+        title="Amount"
+        className="justify-center whitespace-nowrap "
+      />
     ),
     cell: ({ row }) => {
       const amount = row.getValue("amount") as number;
-      return <span className="flex justify-end text-right  whitespace-nowrap px-4">{formatCurrency(amount)}</span>;
+      return (
+        <span className="flex justify-end text-right  whitespace-nowrap px-4">
+          {formatCurrency(amount)}
+        </span>
+      );
     },
   },
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" className="uppercase justify-center flex  whitespace-nowrap " />
+      <DataTableColumnHeader
+        column={column}
+        title="Actions"
+        className="uppercase justify-center flex  whitespace-nowrap "
+      />
     ),
     cell: ({ row }) => {
       const mission = row.original;
