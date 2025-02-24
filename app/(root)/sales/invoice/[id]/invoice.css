@@ -14,7 +14,7 @@
 
 
   .invoice-header{
-    padding:15px 7px 15px 7px;
+    padding:15px 7px 0px 7px;
     background-color: rgba(231, 231, 231, 0.733);
     border-radius: 5px;
   }
@@ -36,96 +36,7 @@
     border:1px solid lightgrey;
     padding: 15px;
     border-radius: 5px;
-  }
-  @media print {
-    body * {
-      visibility: hidden;
-    }
-    .printable-area, .printable-area * {
-      visibility: visible;
-    }
-    .printable-area {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      font-weight: bold;
-      color:black!important;
-    }
-
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 210mm;
-        font-size: 11px; /* Adjust font size if necessary */
-        font-weight: bold;
-        color:black!important;
-      }
-    
-      /* Set the container of the printable area to fit 80mm width and A4 height */
-      .card80-container {
-        width: 100%; /* Setting the width to 80mm */
-        height: 210mm; /* Setting the height to A4 paper size (297mm) */
-        margin: 0 auto;
-        padding: 7px;
-        font-size: 11px; /* Adjust font size if necessary */
-        font-weight: bold;
-        color:black!important;
-      }
-    
-      /* Remove any extra spacing that would cause overflowing content */
-      .invoice-header,
-      .invoice-body,
-      .sale-details {
-        page-break-inside: avoid;
-        font-weight: bold;
-        color:black!important;
-        white-space: nowrap;
-      }
-    
-      /* Hide the print button and any other UI elements during printing */
-      .btn-print,
-      .no-print {
-        display: none;
-      }
-    
-      /* Ensure the layout fits well on the page */
-      .invoice-header,
-      .invoice-body,
-      .sale-details {
-        width: 100%;
-        padding: 0;
-        white-space: nowrap;
-      }
-    
-      /* Adjust for smaller font size if needed */
-      .text-sm {
-        font-size: 11px;
-      }
-    
-      /* Additional styling for invoice detail rows */
-      .sale-details .flex {
-        display: flex;
-        justify-content: space-between;
-      }
-    
-      /* Adjust the spacing and layout of invoice items */
-      .sub-info {
-        margin-bottom: 5px;
-        font-weight: bold;
-        color:black!important;
-      }
-    
-      .sub-info p {
-        margin: 0;
-        font-weight: bold;
-        color:black!important;
-      }
-    
-      /* Optional: hide unnecessary borders or add custom border styling */
-
-    }
+  }  
     
     /* Ensure the print button appears on the page (not for printing) */
     .btn-print {
@@ -147,8 +58,8 @@
   .invoice-note{
     width:75%;
     display: flex; 
-    align-items: center;  
-    height: 160px; 
+    /* align-items: center;   */
+    height: 80px; 
 
   }
   .invoice-total{
@@ -197,7 +108,7 @@
   }
   .print-options-overlay {
     position: fixed;
-    top: 0;
+    top: -5px;
     left: 0;
     width: 100%;
     height: 100%;
@@ -210,7 +121,7 @@
   
   .print-options-container {
     background: white;
-    padding: 20px;
+    padding: 0px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
@@ -222,14 +133,18 @@
   display: none !important;
 }
 .invoice-to, .bill-to{
-  width:45%;
+  width:50%;
 }
 .invoice-container {
-  padding:15px; /* Stack elements vertically */
+  padding:5px; /* Stack elements vertically */
 }
 
 /* For small screens (mobile-first) */
 @media (max-width: 768px) {
+  .grayscale {
+    filter: grayscale(100%) contrast(2.5) brightness(0.9);
+  }
+  
   .invoice-to, .bill-to{
     width:100%;
   }
@@ -238,6 +153,7 @@
     
 }  .invoice-total {
     width:100%;
+    padding:0px;
 
   }
   .invoice-container {
@@ -257,5 +173,120 @@
   }
   .card20-container{
     padding: 10px;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .printable-area, .printable-area * {
+    visibility: visible;
+  }
+  .printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    font-weight: bold;
+    color: black!important;
+  }
+
+  body {
+    margin: 0;
+
+    padding: 0;
+    width: 100%;
+    height: 200mm;
+    font-size: 9px;
+    font-weight: bold;
+    color: black!important;
+    font-family: 'Koh Sonthepheap' sans-serif;
+  }
+  .card80 {
+    padding:0px;
+  }
+  .printable-area {
+    margin-top: 0px; /* Remove any top margin from the printable area */
+  }
+  
+  .card80-container {
+    padding-top: 0 !important; /* Ensure no extra padding on top */
+  }
+  
+  .invoice-header {
+    padding: 0 !important; 
+  }
+  
+
+  .card80-container {
+
+    width: 100%;
+    height: 210mm;
+    margin: 0 auto;
+    padding: 0px;
+    font-size: 9px;
+    font-weight: bold;
+    color: black!important;
+       font-family: 'Koh Sonthepheap' sans-serif;
+  }
+
+  /* Table Borders */
+  .sale-details {
+    border-collapse: collapse; /* Ensure borders are collapsed into one */
+    width: 100%; /* Ensure full width */
+    border: 1px solid black;
+    padding:0;
+  }
+  .sale-details > div {
+    border: 1px solid rgba(0, 0, 0, 0.856);; /* Explicit border for cells */
+    padding: 0px; /* Adjust padding for better spacing */
+  }
+  .sale-details > p {
+    font-size:9px;
+    color:black;
+    font-weight: bold;
+  }
+
+  .invoice-total{
+    padding:0px;
+  }
+  /* Hide the print button and unnecessary UI elements */
+  .btn-print, .no-print {
+    display: none;
+  }
+  .address{
+    padding:0 10px;
+    text-align: center;
+  }
+  .invoice-ref{
+    padding:10px 0 0 0;
+  }
+  .data-for-print{
+    font-size:10px;
+  }
+  .print-h1{
+    max-width: 25mm;
+  }
+  .print-h2{
+    max-width: 15mm;
+  }
+  .print-h3{
+    max-width: 15mm;
+  }
+  .print-h4{
+    max-width: 25mm;
+  }
+  .print-d1{
+    max-width: 25mm;
+  }
+  .print-d2{
+    max-width: 15mm;
+  }
+  .print-d3{
+    max-width: 15mm;
+  }
+  .print-d4{
+    max-width: 25mm;
   }
 }
