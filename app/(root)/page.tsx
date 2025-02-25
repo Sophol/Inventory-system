@@ -10,7 +10,7 @@ import { checkAuthorization } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 import { ExpensePieChart } from "@/components/dashboard/ExpensePieChart";
 import { RevenueByProvincePieChart } from "@/components/dashboard/RevenueByProvincePieChart";
-import { MonthlyPrfoit } from "@/components/dashboard/MonthlyProfit";
+import { MonthlyProfit } from "@/components/dashboard/MonthlyProfit";
 import SummarySale from "@/components/dashboard/SummarySale";
 import { YearlyPrfoit } from "@/components/dashboard/YearlyProfit";
 const months = [
@@ -103,7 +103,7 @@ const Home = async () => {
             )}
           </div>
           <div className="grid grid-cols-1">
-            <MonthlyPrfoit annaulSummary={annaulSummary} />
+            <MonthlyProfit annualSummary={annaulSummary} />
           </div>
           <div className="grid grid-cols-1">
             <YearlyPrfoit annaulSummary={AnnualSummaryByYear} />

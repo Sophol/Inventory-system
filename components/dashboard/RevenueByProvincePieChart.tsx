@@ -98,7 +98,6 @@ export function RevenueByProvincePieChart({
   };
   useEffect(() => {
     const fetchRevenueData = async () => {
-      console.log("monthString", selectedMonth, "yearString", selectedYear);
       const revenueResponse = await getRevenueByProvince({
         searchMonth: selectedMonth,
         searchYear: selectedYear,

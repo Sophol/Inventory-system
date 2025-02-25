@@ -406,15 +406,11 @@ export async function getAnnualSummary(params: {
     {
       $group: {
         _id: { $month: "$purchaseDate" },
-        totalPurchases: { $sum: "$grandtotal" },
+        totalPurchases: { $sum: "$subtotal" },
+        totalDeliveryIn: { $sum: "$deliveryIn" },
         totalServiceFee: {
           $sum: {
-            $add: [
-              "$deliveryIn",
-              "$deliveryOut",
-              "$serviceFee",
-              "$shippingFee",
-            ],
+            $add: ["$deliveryOut", "$serviceFee", "$shippingFee"],
           },
         },
       },
@@ -497,10 +493,13 @@ export async function getAnnualSummary(params: {
     summaryMap.get(_id)!.sale = totalSales;
   });
 
-  purchasesData.forEach(({ _id, totalPurchases, totalServiceFee }) => {
-    summaryMap.get(_id)!.purchase = totalPurchases;
-    summaryMap.get(_id)!.serviceFee = totalServiceFee;
-  });
+  purchasesData.forEach(
+    ({ _id, totalPurchases, totalServiceFee, totalDeliveryIn }) => {
+      summaryMap.get(_id)!.purchase = totalPurchases;
+      summaryMap.get(_id)!.serviceFee = totalServiceFee;
+      summaryMap.get(_id)!.grossProfit = totalDeliveryIn;
+    }
+  );
 
   salaryData.forEach(({ _id, totalSalaryExpense }) => {
     summaryMap.get(_id)!.expense += totalSalaryExpense;
@@ -516,8 +515,9 @@ export async function getAnnualSummary(params: {
 
   const result = Array.from(summaryMap.values()).map((entry) => ({
     ...entry,
-    grossProfit: entry.sale - entry.purchase,
-    profit: entry.sale - entry.purchase - entry.expense + entry.serviceFee,
+    profit:
+      entry.sale -
+      (entry.purchase + entry.expense + entry.serviceFee + entry.grossProfit),
   }));
   return {
     success: true,
@@ -529,7 +529,7 @@ export async function getAnnualSummaryByear(): Promise<
   ActionResponse<{ data: AnnualSummaryByYear[] }>
 > {
   const currentYear = new Date().getFullYear();
-  const start = startOfYear(subYears(new Date(), 4)); // Start of the year 5 years ago
+  const start = startOfYear(subYears(new Date(), 2)); // Start of the year 5 years ago
   const end = endOfYear(new Date()); // End of the current year
 
   const salesData = await Sale.aggregate([
@@ -556,15 +556,11 @@ export async function getAnnualSummaryByear(): Promise<
     {
       $group: {
         _id: { $year: "$purchaseDate" },
-        totalPurchases: { $sum: "$grandtotal" },
+        totalPurchases: { $sum: "$subtotal" },
+        totalDeliveryIn: { $sum: "$deliveryIn" },
         totalServiceFee: {
           $sum: {
-            $add: [
-              "$deliveryIn",
-              "$deliveryOut",
-              "$serviceFee",
-              "$shippingFee",
-            ],
+            $add: ["$deliveryOut", "$serviceFee", "$shippingFee"],
           },
         },
       },
@@ -616,7 +612,7 @@ export async function getAnnualSummaryByear(): Promise<
   const summaryMap = new Map();
 
   // Initialize the summaryMap with all years set to zero values
-  for (let year = currentYear - 4; year <= currentYear; year++) {
+  for (let year = currentYear - 2; year <= currentYear; year++) {
     summaryMap.set(year, {
       year,
       sale: 0,
@@ -632,10 +628,13 @@ export async function getAnnualSummaryByear(): Promise<
     summaryMap.get(_id)!.sale = totalSales;
   });
 
-  purchasesData.forEach(({ _id, totalPurchases, totalServiceFee }) => {
-    summaryMap.get(_id)!.purchase = totalPurchases;
-    summaryMap.get(_id)!.serviceFee = totalServiceFee;
-  });
+  purchasesData.forEach(
+    ({ _id, totalPurchases, totalServiceFee, totalDeliveryIn }) => {
+      summaryMap.get(_id)!.purchase = totalPurchases;
+      summaryMap.get(_id)!.serviceFee = totalServiceFee;
+      summaryMap.get(_id)!.grossProfit = totalDeliveryIn;
+    }
+  );
 
   salaryData.forEach(({ _id, totalSalaryExpense }) => {
     summaryMap.get(_id)!.expense += totalSalaryExpense;
@@ -652,7 +651,9 @@ export async function getAnnualSummaryByear(): Promise<
   const result = Array.from(summaryMap.values()).map((entry) => ({
     ...entry,
     grossProfit: entry.sale - entry.purchase,
-    profit: entry.sale - entry.purchase - entry.expense + entry.serviceFee,
+    profit:
+      entry.sale -
+      (entry.purchase + entry.expense + entry.serviceFee + entry.grossProfit),
   }));
   return {
     success: true,

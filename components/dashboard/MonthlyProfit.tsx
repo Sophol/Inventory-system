@@ -1,11 +1,9 @@
 "use client";
-
-import * as React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -14,8 +12,17 @@ import {
 } from "@/components/ui/chart";
 import { getUniqueRandomColors } from "@/lib/url";
 import { useTranslations } from "use-intl";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { useEffect, useState } from "react";
+import { getAnnualSummary } from "@/lib/actions/dashboard.action";
 
-export function MonthlyPrfoit({ annaulSummary }: { annaulSummary: any }) {
+export function MonthlyProfit({ annualSummary }: { annualSummary: any }) {
   const t = useTranslations("erp");
   const chartConfig = {
     sale: {
@@ -43,150 +50,106 @@ export function MonthlyPrfoit({ annaulSummary }: { annaulSummary: any }) {
       color: getUniqueRandomColors(6),
     },
   } satisfies ChartConfig;
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [chartData, setChartData] = useState(annualSummary);
+
+  useEffect(() => {
+    const fetchMonthlyProfit = async () => {
+      const { data: annaulSummary } = await getAnnualSummary({
+        searchYear: selectedYear,
+      });
+      setChartData(annaulSummary);
+    };
+    fetchMonthlyProfit();
+  }, [selectedYear]);
   return (
-    <Card>
-      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
-        <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>{t("monthlyProfitLoss")}</CardTitle>
+    <Card className="flex flex-col">
+      <CardHeader className="items-center">
+        <CardTitle className="mb-2">{t("monthlyProfitLoss")}</CardTitle>
+        <div className="flex">
+          <Select
+            value={selectedYear.toString()}
+            onValueChange={(value) => setSelectedYear(parseInt(value))}
+          >
+            <SelectTrigger
+              className="ml-auto h-7 w-[130px] rounded-lg pl-2.5"
+              aria-label="Select a value"
+            >
+              <SelectValue placeholder="Select year" />
+            </SelectTrigger>
+            <SelectContent align="end" className="rounded-xl">
+              {years.map((year) => {
+                return (
+                  <SelectItem
+                    key={year}
+                    value={year.toString()}
+                    className="rounded-lg [&_span]:flex"
+                  >
+                    <div className="flex items-center gap-2 text-xs">
+                      <span
+                        className="flex h-3 w-3 shrink-0 rounded-sm"
+                        style={{
+                          backgroundColor: `var(--color-${year})`,
+                        }}
+                      />
+                      {year}
+                    </div>
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
         </div>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <AreaChart data={annaulSummary}>
-            <defs>
-              <linearGradient id="fillSale" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-sale)"
-                  stopOpacity={0.8}
+        <div className="overflow-x-auto">
+          <div className="min-w-[800px]">
+            <ChartContainer config={chartConfig}>
+              <BarChart
+                width={600}
+                height={300}
+                data={chartData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                  tickFormatter={(value) => value.slice(0, 3)}
                 />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-slae)"
-                  stopOpacity={0.1}
+                <YAxis />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent indicator="dashed" />}
                 />
-              </linearGradient>
-              <linearGradient id="fillPurchase" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-purchase)"
-                  stopOpacity={0.8}
+                <Bar dataKey="sale" fill="var(--color-sale)" radius={4} />
+                <Bar
+                  dataKey="purchase"
+                  fill="var(--color-purchase)"
+                  radius={4}
                 />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-purchase)"
-                  stopOpacity={0.1}
+                <Bar
+                  dataKey="serviceFee"
+                  fill="var(--color-serviceFee)"
+                  radius={4}
                 />
-              </linearGradient>
-              <linearGradient id="fillServiceFee" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-serviceFee)"
-                  stopOpacity={0.8}
+                <Bar dataKey="expense" fill="var(--color-expense)" radius={4} />
+                <Bar
+                  dataKey="grossProfit"
+                  fill="var(--color-grossProfit)"
+                  radius={4}
                 />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-serviceFee)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillExpense" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-expense)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-expense)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillGrossProfit" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-grossProfit)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-grossProfit)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillProfit" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-profit)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-profit)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="dot" />}
-            />
-            <Area
-              dataKey="sale"
-              type="natural"
-              fill="url(#fillSale)"
-              stroke="var(--color-sale)"
-              stackId="a"
-            />
-            <Area
-              dataKey="purchase"
-              type="natural"
-              fill="url(#fillPurchase)"
-              stroke="var(--color-purchase)"
-              stackId="a"
-            />
-            <Area
-              dataKey="serviceFee"
-              type="natural"
-              fill="url(#fillServiceFee)"
-              stroke="var(--color-serviceFee)"
-              stackId="a"
-            />
-            <Area
-              dataKey="expense"
-              type="natural"
-              fill="url(#fillExpense)"
-              stroke="var(--color-expense)"
-              stackId="a"
-            />
-            <Area
-              dataKey="grossProfit"
-              type="natural"
-              fill="url(#fillGrossProfit)"
-              stroke="var(--color-grossProfit)"
-              stackId="a"
-            />
-            <Area
-              dataKey="profit"
-              type="natural"
-              fill="url(#fillProfit)"
-              stroke="var(--color-profit)"
-              stackId="a"
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-          </AreaChart>
-        </ChartContainer>
+                <Bar dataKey="profit" fill="var(--color-profit)" radius={4} />
+                <ChartLegend content={<ChartLegendContent />} />
+              </BarChart>
+            </ChartContainer>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
