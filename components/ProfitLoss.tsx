@@ -72,7 +72,7 @@ const ProfitLoss = ({
               <div className=" hidden sm:flex">
                 <div className="w-4/5">      
           </div>
-                <div className="w-1/5 text-right px-4 py-3" style={{ backgroundColor: "#2c4375" }}>
+                <div className="w-1/5 text-right px-4 py-1" style={{ backgroundColor: "#2c4375" }}>
                   <h2 className="text-white uppercase text-lg">Total</h2>
                 </div>
               </div>
