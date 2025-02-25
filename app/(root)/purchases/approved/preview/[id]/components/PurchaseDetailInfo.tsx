@@ -1,15 +1,25 @@
-"use client";
+import React from "react";
 import "../invoice.css";
 import { format } from "date-fns";
 import Currency from "@/components/Currency";
+import Image from "next/image";
 
-const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
+const PurchaseDetailInfo =  ({ purchase }: { purchase: Purchase }) => {
+
 
   return (
     <div className="card80 ">
       <div className="printable-area">
         <div className="sm:flex flex-row justify-between invoice-header">
           <div className="flex flex-col">
+
+            <Image
+              src={`/images/logo.png`}
+              alt="Company Logo"
+              width={100}
+              height={100}
+              className="w-auto sm:w-[100] h-20 object-contain logo"
+            />
             <h1
               className={`font-bold text-lg sm:pt-0 pt-5 mx-auto sm:mx-0`}
             >
@@ -24,33 +34,33 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
         </div>
 
         <div className="md:flex px-0 mb-0 mt-1 py-0 invoice-body">
-  <div className="bill-to sub-info text-[11px] my-0 py-0" style={{ color: "black" }}>
-    <div className="flex gap-2 flex-nowrap w-full">
-      <p className="pb-1">អ្នកផ្គត់ផ្គង់: </p>
-      <p className="pb-1">{purchase.supplier.title}</p>
-    </div>
-    <div className="flex gap-2 flex-nowrap w-full">
-      <p className="pb-1 whitespace-nowrap">លេខទូរស័ព្ទអ្នកផ្គត់ផ្គង់: </p>
-      <p className="pb-1 whitespace-nowrap">{purchase.supplier.phone}</p>
-    </div>
-    <div className="flex gap-2 flex-nowrap w-full">
-      <p className="pb-1">សាខា : </p>
-      <p className="pb-1 ">{purchase.branch.title}</p>
-    </div>
-  </div>
-  <div className="sub-info  text-[11px] my-0 py-0">
-    <div className="flex gap-2 flex-nowrap w-full">
-      <p className="pb-1">សរុបចំនួន: </p>
-      <p className="pb-1">
-        <Currency amount={purchase.grandtotal} />
-      </p>
-    </div>
-    <div className="flex gap-2 flex-nowrap w-full">
-      <p className="pb-1">បង់ប្រាក់ដោយ: </p>
-      <p className="pb-1 ">{purchase.paidBy}</p>
-    </div>
-  </div>
-</div>
+          <div className="bill-to sub-info text-[11px] my-0 py-0" style={{ color: "black" }}>
+            <div className="flex gap-2 flex-nowrap w-full">
+              <p className="pb-1">អ្នកផ្គត់ផ្គង់: </p>
+              <p className="pb-1">{purchase.supplier.title}</p>
+            </div>
+            <div className="flex gap-2 flex-nowrap w-full">
+              <p className="pb-1 whitespace-nowrap">លេខទូរស័ព្ទអ្នកផ្គត់ផ្គង់: </p>
+              <p className="pb-1 whitespace-nowrap">{purchase.supplier.phone}</p>
+            </div>
+            <div className="flex gap-2 flex-nowrap w-full">
+              <p className="pb-1">សាខា : </p>
+              <p className="pb-1 ">{purchase.branch.title}</p>
+            </div>
+          </div>
+          <div className="sub-info  text-[11px] my-0 py-0">
+            <div className="flex gap-2 flex-nowrap w-full">
+              <p className="pb-1">សរុបចំនួន: </p>
+              <p className="pb-1">
+                <Currency amount={purchase.grandtotal} />
+              </p>
+            </div>
+            <div className="flex gap-2 flex-nowrap w-full">
+              <p className="pb-1">បង់ប្រាក់ដោយ: </p>
+              <p className="pb-1 ">{purchase.paidBy}</p>
+            </div>
+          </div>
+        </div>
 
         <div className="sale-details bg-white rounded-lg shadow-sm ">
           <div className="flex gap-2 border-b pb-1 px-2 text-[11px]    ">
@@ -89,7 +99,7 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
         <div className="flex gap-2 invoice-body font-bold pt-1 mt-0">
           <div className="pt-1 invoice-note "></div>
           <div className="pt-1 invoice-total">
-      
+
             <div className="sub-info text-[11px]">
               <div className="flex gap-2">
                 <p className="sub-info pb-1 w-1/3 whitespace-nowrap text-[11px]">ថ្លៃទំនិញ:</p>
