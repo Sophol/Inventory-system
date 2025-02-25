@@ -1,6 +1,7 @@
 import { endOfMonth, format, startOfMonth } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { formatCurrency } from "@/lib/utils";
+import { DatePickerWithRange } from "../components/search/DatePickerWithRange";
 
 interface ProfitLossProps {
   salesIncome: number;
@@ -47,13 +48,19 @@ const ProfitLoss = ({
   const startDate = startOfMonth(new Date());
   const endDate = endOfMonth(new Date());
   return (
-    <section className="max-w-4xl mx-auto py-0">
-      <div className="flex-wrap space-y-4 p-5 px-0 sm:px-2 sm:px-4 md:px-8">
-        <Card>
-          <CardHeader className="flex flex-col md:flex-row items-center profit-loss-header-container">
+    <section className="max-w-3xl mx-auto py-0">
+      <div className="flex-wrap space-y-2 p-5 px-0 sm:px-2 sm:px-4 md:px-8">
+      <DatePickerWithRange
+
+          className="w-full px-2 sm:px-0"
+        />
+        <Card className="py-0 my-0">
+
+          <CardHeader className="flex flex-col md:flex-row items-center profit-loss-header-container ">
           <CardTitle className="text-xl sm:flex w-full">
-            <h2 className="pf-card-title justify-center sm:justify-start w-full md:w-3/4 items-center flex text-sm md:text-xl">Profit Loss Statement</h2>
-            <div className="pf-header-date w-full md:w-1/4 mt-2 md:mt-0 text-sm md:text-base ">
+            
+            <h2 className="pf-card-title justify-center sm:justify-start w-full md:w-3/4 items-center flex text-sm md:text-xl">Profit/Loss Statement</h2>
+            <div className="pf-header-date w-full md:w-1/4 mt-2 md:mt-0 text-sm md:text-base "> 
               <h6 className=" text-right">from: <span>{format(startDate, "yyyy-MM-dd")}</span></h6>
               <h6 className=" text-right">To: <span className="ml-2 sm:ml-3">{format(endDate, "yyyy-MM-dd")}</span></h6>
             </div>
@@ -61,10 +68,11 @@ const ProfitLoss = ({
 
           </CardHeader>
           <CardContent>
-            <div className="container mx-auto py-1 sm:py-3 px-0">
+            <div className="container mx-auto py-1 sm:py-1 px-0">
               <div className=" hidden sm:flex">
-                <div className="w-4/5"></div>
-                <div className="w-1/5 text-right px-4 py-1" style={{ backgroundColor: "#2c4375" }}>
+                <div className="w-4/5">      
+          </div>
+                <div className="w-1/5 text-right px-4 py-3" style={{ backgroundColor: "#2c4375" }}>
                   <h2 className="text-white uppercase text-lg">Total</h2>
                 </div>
               </div>
