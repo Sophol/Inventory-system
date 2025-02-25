@@ -85,10 +85,10 @@ const Home = async () => {
       <section>
         <div className="flex-1 space-y-4 p-4">
           <SummarySale
-            totalInvPaymentComplete={data.totalInvPaymentComplete}
-            totalInvPaymentPending={data.totalInvPaymentComplete}
-            totalOrderApproved={data.totalOrderApproved}
             totalOrderPending={data.totalOrderPending}
+            totalOrderApproved={data.totalOrderApproved}
+            totalInvPaymentPending={data.totalInvPaymentPending}
+            totalInvPaymentComplete={data.totalInvPaymentComplete}
             totalSalesAmount={data.totalSalesAmount}
           />
           <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">

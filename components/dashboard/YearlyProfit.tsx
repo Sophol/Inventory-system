@@ -43,6 +43,25 @@ export function YearlyPrfoit({ annaulSummary }: { annaulSummary: any }) {
       color: getUniqueRandomColors(6),
     },
   } satisfies ChartConfig;
+  const formatNumber = (value: number): string => {
+    const absValue = Math.abs(value);
+    const sign = value < 0 ? "-" : "";
+    if (absValue >= 1000000) {
+      let formatted = (absValue / 1000000).toFixed(1);
+      if (formatted.endsWith(".0")) {
+        formatted = formatted.slice(0, -2);
+      }
+      return sign + formatted + "M";
+    } else if (absValue >= 1000) {
+      let formatted = (absValue / 1000).toFixed(1);
+      if (formatted.endsWith(".0")) {
+        formatted = formatted.slice(0, -2);
+      }
+      return sign + formatted + "K";
+    } else {
+      return sign + absValue.toString();
+    }
+  };
   return (
     <Card>
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
@@ -68,7 +87,7 @@ export function YearlyPrfoit({ annaulSummary }: { annaulSummary: any }) {
                   axisLine={false}
                   //tickFormatter={(value) => value.slice(0, 3)}
                 />
-                <YAxis />
+                <YAxis tickFormatter={formatNumber} />
                 <ChartTooltip
                   cursor={false}
                   content={<ChartTooltipContent indicator="dashed" />}

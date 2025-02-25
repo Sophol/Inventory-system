@@ -65,6 +65,25 @@ export function MonthlyProfit({ annualSummary }: { annualSummary: any }) {
     };
     fetchMonthlyProfit();
   }, [selectedYear]);
+  const formatNumber = (value: number): string => {
+    const absValue = Math.abs(value);
+    const sign = value < 0 ? "-" : "";
+    if (absValue >= 1000000) {
+      let formatted = (absValue / 1000000).toFixed(1);
+      if (formatted.endsWith(".0")) {
+        formatted = formatted.slice(0, -2);
+      }
+      return sign + formatted + "M";
+    } else if (absValue >= 1000) {
+      let formatted = (absValue / 1000).toFixed(1);
+      if (formatted.endsWith(".0")) {
+        formatted = formatted.slice(0, -2);
+      }
+      return sign + formatted + "K";
+    } else {
+      return sign + absValue.toString();
+    }
+  };
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center">
@@ -122,7 +141,7 @@ export function MonthlyProfit({ annualSummary }: { annualSummary: any }) {
                   axisLine={false}
                   tickFormatter={(value) => value.slice(0, 3)}
                 />
-                <YAxis />
+                <YAxis tickFormatter={formatNumber} />
                 <ChartTooltip
                   cursor={false}
                   content={<ChartTooltipContent indicator="dashed" />}
