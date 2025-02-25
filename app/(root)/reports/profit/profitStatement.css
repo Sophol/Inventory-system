@@ -1,0 +1,49 @@
+.profit-loss-header-container{
+    background-color:#2c4375 ;
+    color: white;
+    padding: 25px ;
+}
+.pf-card-title{
+    font-weight:500;
+    font-size:1.4em;
+    text-transform: uppercase;
+}
+.pf-header-date {
+    border-left: 2px solid white;
+    padding-left: 15px;
+    font-weight: 400;
+}
+
+@media (max-width: 640px) {
+    .profit-loss-header-container{
+
+        padding: 10px 15px 7px 15px ;
+    }
+    .pf-header-date {
+        border-left: none;
+    }
+    .pf-card-title{
+        font-size:1em;
+        text-align: center;
+    }
+}
+
+.pf-header-date  span{
+    font-weight: 600;
+    padding-left:10px;
+}
+.pf-title{
+    background-color:#cfdbe8;
+    color:#1d3764;
+    padding: 5px 15px;
+    font-size:1.1em;
+    font-weight: 500;
+}
+.bg-value{
+    background: #eeeeee;
+    padding: 7px 15px;
+
+}
+.b-item{
+    border-bottom: 1px solid rgba(128, 128, 128, 0.292)
+}

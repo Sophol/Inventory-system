@@ -11,8 +11,6 @@
   color: black;
   width: 20%;
 }
-
-
   .invoice-header{
     padding:15px 25px 15px 25px;
     background-color: rgba(231, 231, 231, 0.733);
@@ -37,20 +35,7 @@
     padding: 15px;
     border-radius: 5px;
   }
-  @media print {
-    body * {
-      visibility: hidden;
-    }
-    .printable-area, .printable-area * {
-      visibility: visible;
-    }
-    .printable-area {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-    }
-  }
+ 
   .invoice-note{
     width:70%;
   }
@@ -162,5 +147,117 @@
   }
   .card20-container{
     padding: 10px;
+  }
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .printable-area, .printable-area * {
+    visibility: visible;
+  }
+  .printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 200mm;
+    font-size: 10px;
+    font-weight: bold;
+    color: black!important;
+    font-family: 'Koh Sonthepheap' sans-serif!important;
+  }
+  .card80 {
+    padding:0px;
+    font-family: 'Koh Sonthepheap' sans-serif;
+  }
+  .printable-area {
+    margin-top: 0px; /* Remove any top margin from the printable area */
+  }
+  
+  .card80-container {
+    padding-top: 0 !important; /* Ensure no extra padding on top */
+  }
+  
+  .invoice-header {
+    padding: 0 !important; 
+  }
+  
+
+  .card80-container {
+
+    width: 100%;
+    height: 210mm;
+    margin: 0 auto;
+    padding: 0px;
+    font-size: 10px;
+    font-weight: bold;
+    color: black!important;
+       font-family: 'Koh Sonthepheap' sans-serif;
+  }
+
+  /* Table Borders */
+  .sale-details {
+    border-collapse: collapse; /* Ensure borders are collapsed into one */
+    width: 100%; /* Ensure full width */
+    border: 1px solid black;
+    padding:0;
+  }
+  .sale-details > div {
+    border: 1px solid rgba(0, 0, 0, 0.856);; /* Explicit border for cells */
+    padding: 0px; /* Adjust padding for better spacing */
+  }
+  .sale-details > p {
+    font-size:10px;
+    color:black;
+    font-weight: bold;
+  }
+
+  .invoice-total{
+    padding:0px;
+  }
+  /* Hide the print button and unnecessary UI elements */
+  .btn-print, .no-print {
+    display: none;
+  }
+  .address{
+    padding:0 10px;
+    text-align: center;
+  }
+  .invoice-ref{
+    padding:10px 0 0 0;
+  }
+  .data-for-print{
+    font-size:10px;
+  }
+  .print-h1{
+    max-width: 25mm;
+  }
+  .print-h2{
+    max-width: 15mm;
+  }
+  .print-h3{
+    max-width: 15mm;
+  }
+  .print-h4{
+    max-width: 25mm;
+  }
+  .print-d1{
+    max-width: 25mm;
+  }
+  .print-d2{
+    max-width: 15mm;
+  }
+  .print-d3{
+    max-width: 15mm;
+  }
+  .print-d4{
+    max-width: 25mm;
   }
 }

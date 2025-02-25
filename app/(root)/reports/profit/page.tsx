@@ -4,7 +4,7 @@ import { DEFAULT_EMPTY } from "@/constants/states";
 import { getProfitAndLossReport } from "@/lib/actions/saleReport";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
-
+import "./profitStatement.css";
 const Profit = async () => {
   const isAuthorized = await checkAuthorization([
     "admin",

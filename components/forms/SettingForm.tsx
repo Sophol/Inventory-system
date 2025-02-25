@@ -69,10 +69,10 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-8"
+        className="flex flex-col gap-2"
         onSubmit={form.handleSubmit(handleEditSetting)}
       >
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <FormInput
             name="companyName"
             label={t("companyName")}
@@ -89,7 +89,7 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
             control={form.control}
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <FormInput
             name="bankName"
             label={t("bankName")}
@@ -106,7 +106,7 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
             control={form.control}
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <FormInput
             name="phone"
             label={t("companyPhone")}
@@ -118,7 +118,7 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
             control={form.control}
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <FormInput
             name="companyOwner"
             label={t("companyOwner")}
@@ -131,7 +131,7 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <FormInput
             name="exchangeRateD"
             label={t("exchangeRateDollar")}
