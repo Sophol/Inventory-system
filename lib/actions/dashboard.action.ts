@@ -54,12 +54,12 @@ export const getFirstRowDashboard = async () => {
       Sale.countDocuments({
         orderStatus: "completed",
         paymentStatus: { $in: ["pending", "credit"] },
-        orderDate: { $gte: start, $lte: end },
+        invoicedDate: { $gte: start, $lte: end },
       }),
       Sale.countDocuments({
         orderStatus: "completed",
         paymentStatus: "completed",
-        orderDate: { $gte: start, $lte: end },
+        invoicedDate: { $gte: start, $lte: end },
       }),
       Sale.countDocuments({
         orderStatus: "approved",
@@ -293,7 +293,7 @@ export const getSalesDataLast6Months = async () => {
     const salesData = await Sale.aggregate([
       {
         $match: {
-          orderDate: { $gte: start, $lte: end },
+          invoicedDate: { $gte: start, $lte: end },
           orderStatus: "completed",
         },
       },
@@ -385,7 +385,7 @@ export async function getAnnualSummary(params: {
   const salesData = await Sale.aggregate([
     {
       $match: {
-        orderDate: { $gte: start, $lte: end },
+        invoicedDate: { $gte: start, $lte: end },
         orderStatus: "completed",
       },
     },
@@ -535,7 +535,7 @@ export async function getAnnualSummaryByear(): Promise<
   const salesData = await Sale.aggregate([
     {
       $match: {
-        orderDate: { $gte: start, $lte: end },
+        invoicedDate: { $gte: start, $lte: end },
         orderStatus: "completed",
       },
     },
