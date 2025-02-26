@@ -391,7 +391,7 @@ export async function getAnnualSummary(params: {
     },
     {
       $group: {
-        _id: { $month: "$orderDate" },
+        _id: { $month: "$invoicedDate" },
         totalSales: { $sum: "$grandtotal" },
       },
     },
@@ -541,7 +541,7 @@ export async function getAnnualSummaryByear(): Promise<
     },
     {
       $group: {
-        _id: { $year: "$orderDate" },
+        _id: { $year: "$invoicedDate" },
         totalSales: { $sum: "$grandtotal" },
       },
     },
