@@ -29,20 +29,20 @@ export function MonthlyProfit({ annualSummary }: { annualSummary: any }) {
       label: t("sale"),
       color: getUniqueRandomColors(0),
     },
-    purchase: {
+    cost: {
       label: t("cost"),
       color: getUniqueRandomColors(1),
     },
-    serviceFee: {
-      label: t("serviceFee"),
+    service: {
+      label: t("service"),
       color: getUniqueRandomColors(3),
     },
     expense: {
       label: t("expense"),
       color: getUniqueRandomColors(4),
     },
-    grossProfit: {
-      label: t("grossProfit"),
+    delivery: {
+      label: t("delivery"),
       color: getUniqueRandomColors(5),
     },
     profit: {
@@ -144,20 +144,13 @@ export function MonthlyProfit({ annualSummary }: { annualSummary: any }) {
                 <YAxis tickFormatter={formatNumber} />
                 <ChartTooltip cursor={false} content={<CustomTooltip />} />
                 <Bar dataKey="sale" fill="var(--color-sale)" radius={4} />
-                <Bar
-                  dataKey="purchase"
-                  fill="var(--color-purchase)"
-                  radius={4}
-                />
-                <Bar
-                  dataKey="serviceFee"
-                  fill="var(--color-serviceFee)"
-                  radius={4}
-                />
                 <Bar dataKey="expense" fill="var(--color-expense)" radius={4} />
+                <Bar dataKey="cost" fill="var(--color-cost)" radius={4} />
+                <Bar dataKey="service" fill="var(--color-service)" radius={4} />
+
                 <Bar
-                  dataKey="grossProfit"
-                  fill="var(--color-grossProfit)"
+                  dataKey="delivery"
+                  fill="var(--color-delivery)"
                   radius={4}
                 />
                 <Bar dataKey="profit" fill="var(--color-profit)" radius={4} />

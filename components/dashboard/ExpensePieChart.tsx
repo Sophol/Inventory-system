@@ -16,7 +16,6 @@ import {
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
 import Currency from "../Currency";
 import {
@@ -30,6 +29,7 @@ import React from "react";
 import { getAllExpense } from "@/lib/actions/dashboard.action";
 import { getUniqueRandomColors } from "@/lib/url";
 import { useTranslations } from "next-intl";
+import CustomTooltip from "./CustomTooltip";
 
 // Define the type for chartExpenseData
 interface ChartExpenseData {
@@ -211,7 +211,7 @@ export function ExpensePieChart({
           className="mx-auto aspect-square max-h-[330px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
-            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+            <ChartTooltip content={<CustomTooltip />} />
             {chartData.length > 0 && (
               <Pie
                 data={chartData}

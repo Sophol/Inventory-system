@@ -16,7 +16,6 @@ import {
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
 import Currency from "../Currency";
 import {
@@ -29,7 +28,7 @@ import {
 import React from "react";
 import { getRevenueByProvince } from "@/lib/actions/dashboard.action";
 import { useTranslations } from "next-intl";
-import { formatProvince } from "@/lib/utils";
+import CustomTooltip from "./CustomTooltip";
 
 interface ChartRevenueData {
   province: string;
@@ -77,7 +76,7 @@ export function RevenueByProvincePieChart({
       ) => {
         if (province !== null && province !== undefined) {
           acc[province] = {
-            label: formatProvince(province),
+            label: province,
             color: fill,
           };
         }
@@ -197,9 +196,7 @@ export function RevenueByProvincePieChart({
           className="mx-auto aspect-square max-h-[330px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
-            <ChartTooltip
-              content={<ChartTooltipContent nameKey="province" hideLabel />}
-            />
+            <ChartTooltip content={<CustomTooltip />} />
             <Pie
               data={chartData}
               dataKey="revenue"

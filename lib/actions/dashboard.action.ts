@@ -407,10 +407,14 @@ export async function getAnnualSummary(params: {
       $group: {
         _id: { $month: "$purchaseDate" },
         totalPurchases: { $sum: "$subtotal" },
-        totalDeliveryIn: { $sum: "$deliveryIn" },
+        totalDeliveryIn: {
+          $sum: {
+            $add: ["$deliveryOut", "$deliveryIn"],
+          },
+        },
         totalServiceFee: {
           $sum: {
-            $add: ["$deliveryOut", "$serviceFee", "$shippingFee"],
+            $add: ["$serviceFee", "$shippingFee"],
           },
         },
       },
@@ -481,10 +485,10 @@ export async function getAnnualSummary(params: {
     summaryMap.set(index + 1, {
       month,
       sale: 0,
-      purchase: 0,
-      serviceFee: 0,
+      cost: 0,
+      service: 0,
       expense: 0,
-      grossProfit: 0,
+      delivery: 0,
       profit: 0,
     });
   });
@@ -495,9 +499,9 @@ export async function getAnnualSummary(params: {
 
   purchasesData.forEach(
     ({ _id, totalPurchases, totalServiceFee, totalDeliveryIn }) => {
-      summaryMap.get(_id)!.purchase = totalPurchases;
-      summaryMap.get(_id)!.serviceFee = totalServiceFee;
-      summaryMap.get(_id)!.grossProfit = totalDeliveryIn;
+      summaryMap.get(_id)!.cost = totalPurchases;
+      summaryMap.get(_id)!.service = totalServiceFee;
+      summaryMap.get(_id)!.delivery = totalDeliveryIn;
     }
   );
 
@@ -517,7 +521,7 @@ export async function getAnnualSummary(params: {
     ...entry,
     profit:
       entry.sale -
-      (entry.purchase + entry.expense + entry.serviceFee + entry.grossProfit),
+      (entry.cost + entry.expense + entry.service + entry.delivery),
   }));
   return {
     success: true,
@@ -557,10 +561,14 @@ export async function getAnnualSummaryByear(): Promise<
       $group: {
         _id: { $year: "$purchaseDate" },
         totalPurchases: { $sum: "$subtotal" },
-        totalDeliveryIn: { $sum: "$deliveryIn" },
+        totalDeliveryIn: {
+          $sum: {
+            $add: ["$deliveryOut", "$deliveryIn"],
+          },
+        },
         totalServiceFee: {
           $sum: {
-            $add: ["$deliveryOut", "$serviceFee", "$shippingFee"],
+            $add: ["$serviceFee", "$shippingFee"],
           },
         },
       },
@@ -616,10 +624,10 @@ export async function getAnnualSummaryByear(): Promise<
     summaryMap.set(year, {
       year,
       sale: 0,
-      purchase: 0,
-      serviceFee: 0,
+      cost: 0,
+      service: 0,
       expense: 0,
-      grossProfit: 0,
+      delivery: 0,
       profit: 0,
     });
   }
@@ -630,9 +638,9 @@ export async function getAnnualSummaryByear(): Promise<
 
   purchasesData.forEach(
     ({ _id, totalPurchases, totalServiceFee, totalDeliveryIn }) => {
-      summaryMap.get(_id)!.purchase = totalPurchases;
-      summaryMap.get(_id)!.serviceFee = totalServiceFee;
-      summaryMap.get(_id)!.grossProfit = totalDeliveryIn;
+      summaryMap.get(_id)!.cost = totalPurchases;
+      summaryMap.get(_id)!.service = totalServiceFee;
+      summaryMap.get(_id)!.delivery = totalDeliveryIn;
     }
   );
 
@@ -650,10 +658,9 @@ export async function getAnnualSummaryByear(): Promise<
 
   const result = Array.from(summaryMap.values()).map((entry) => ({
     ...entry,
-    grossProfit: entry.sale - entry.purchase,
     profit:
       entry.sale -
-      (entry.purchase + entry.expense + entry.serviceFee + entry.grossProfit),
+      (entry.cost + entry.expense + entry.service + entry.delivery),
   }));
   return {
     success: true,
