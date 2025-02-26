@@ -25,8 +25,9 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
     <div className="card80  pb-0">
       <div className="printable-area card80-container pb-0">
         <div className="sm:flex flex-row justify-between invoice-header my-0 py-0 px-0">
-          <div className="flex flex-col ">
-            {invoice.isLogo !== "false" && (
+
+          {invoice.isLogo !== "false" && (
+            <div className="flex flex-col ">
               <Image
                 src={`/` + setting.companyLogo}
                 alt="Company Logo"
@@ -34,16 +35,17 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 height={100}
                 className="w-auto sm:w-[100] h-20 object-contain logo"
               />
-            )}
-            <p className="text-[12px] pt-0 pb-0 mx-auto sm:mx-0 font-bold">{setting.companyName}</p>
-            <p className="text-[12px] pb-0 mx-auto sm:mx-0 bold">{setting.companyNameEnglish}</p>
-            <p className="text-[9px] mx-auto sm:mx-0 address">
-              {setting.address}
-            </p>
-            <p className="text-[9px] mx-auto sm:mx-0">
-              {setting.phone}
-            </p>
-          </div>
+              <p className="text-[12px] pt-0 pb-0 mx-auto sm:mx-0 font-bold">{setting.companyName}</p>
+              <p className="text-[12px] pb-0 mx-auto sm:mx-0 bold">{setting.companyNameEnglish}</p>
+              <p className="text-[9px] mx-auto sm:mx-0 address">
+                {setting.address}
+              </p>
+              <p className="text-[9px] mx-auto sm:mx-0">
+                {setting.phone}
+              </p>
+            </div>
+          )}
+
           <div className="flex flex-col px-0 my-0 py-0">
             <h1 className="font-bold text-[11px] pt-1 mx-auto sm:mx-0 pb-3 invoice-ref" ># {invoice.referenceNo}</h1>
             <p className="text-[11px] pt-2">
@@ -85,9 +87,9 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
         <div className="sale-details bg-white rounded-lg shadow-sm ">
           <div className="flex gap-2 border-b pb-1 px-2 text-[11px]   ">
             <p className="w-2/6 font-bold  pl-2 pr-1 data-for-print print-h1">ទំនិញ</p>
-            <p className="w-2/6 font-bold px-1 data-for-print print-h2">តម្លៃ</p>
+            <p className="w-1/6 font-bold px-1 data-for-print print-h2">តម្លៃ</p>
             <p className="w-1/6 font-bold px-1 data-for-print print-h3">ចំនួន</p>
-            <p className="w-1/6 font-bold pl-1 pr-2 data-for-print print-h4">សរុប</p>
+            <p className="w-2/6 font-bold pl-1 pr-2 data-for-print print-h4">សរុប</p>
           </div>
           {invoice.saleDetails.map((detail, index) => (
             <div
@@ -95,7 +97,7 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
               className="flex gap-2 border-b pt-1 last:border-b-0 px-2 text-[11px] "
             >
               <p className="w-2/6 pl-2 pr-1 data-for-print print-d1">{detail.selectedProduct?.title}</p>
-              <p className="w-2/6 px-1 data-for-print print-d2">
+              <p className="w-1/6 px-1 data-for-print print-d2">
                 {detail.price !== undefined
                   ? formatCurrency(detail.price)
                   : "N/A"}
@@ -104,7 +106,7 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                 {detail.qty}{" "}
                 {detail.selectedUnit ? detail.selectedUnit.title : "N/A"}
               </p>
-              <p className="w-1/6  pl-1 pr-2 data-for-print print-d4">
+              <p className="w-2/6  pl-1 pr-2 data-for-print print-d4">
                 {detail.price !== undefined && detail.qty !== undefined
                   ? formatCurrency(detail.price * detail.qty)
                   : "N/A"}
@@ -113,7 +115,7 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
           ))}
         </div>
         <div className="flex gap-2 invoice-body">
-          <div className="pt-0 invoice-note text-left">
+          <div className="pt-0 invoice-note text-left ">
             {invoice.isLogo !== "false" && (
               <div className="flex flex-col ">
                 <Image
@@ -121,31 +123,44 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                   alt="Company Telegram QR"
                   width={100}
                   height={100}
-                  className="w-[50] h-20 object-contain pt-2 grayscale ml-12"
+                  className="w-[50] h-20 object-contain pt-1 grayscale ml-12"
                 />
                 <span className="text-[10px] mt-0 ml-12">Telegram</span>
-                <div className=" ml-0 w-[50px] text-center" style={{marginTop:"1px"}}> {/* Add margin here if needed for spacing */}
+                <br />
+                <div className=" ml-0 w-[50px]  min-h-[100px]" > {/* Add margin here if needed for spacing */}
                   <p className="pb-1 w-full text-[10px]  ">អ្នកទទួល: </p>
                   <p className="pb-7 w-full text-[10px] whitespace-nowrap ">
-                    {invoice.customer.title} 
+                    {invoice.customer.title}
                   </p>
+                  <p></p>
+                  <p></p>
+                  <p></p>
+                  <p className="text-[4px] py-5">.</p>
+                </div>
+              </div>
+
+            )}
+            {invoice.isLogo == "false" && (
+              
+              <div className="flex flex-col min-h-[100px]">
+                
+                <div
+                  className="w-[100px] h-[100px] min-h-[77px] text-left pt-1 grayscale"
+                />
+
+                <div className="mt-3"> {/* Add margin here if needed for spacing */}
+                  <p className="pb-1 w-full text-[10px]  ">អ្នកទទួល: </p>
+                  <p className="pb-7 w-full text-[10px] h-[50px]">
+                    {invoice.customer.title}
+                  </p>
+                  <p></p>
+
+                  <p></p>
+                  <p className="text-[4px] py-5">.</p>
                 </div>
               </div>
             )}
-             {invoice.isLogo == "false" && (
-               <div className="flex flex-col px-5">
-               <div
-                 className="w-[100px] h-[100px] min-h-[77px] text-left pt-1 grayscale"
-               />
-            
-               <div className="mt-1"> {/* Add margin here if needed for spacing */}
-                 <p className="pb-1 w-full text-[10px]  ">អ្នកទទួល: </p>
-                 <p className="pb-7 w-full text-[10px]">
-                   {invoice.customer.title}
-                 </p>
-               </div>
-             </div>
-             )}
+
           </div>
 
           <div className=" invoice-total mt-1 text-[11px] pr-1" >
