@@ -205,6 +205,7 @@ export function RevenueByProvincePieChart({
               dataKey="revenue"
               nameKey="province"
               label={renderCustomLabel}
+              innerRadius={60}
               cx="50%"
               cy="50%"
               outerRadius={100}

@@ -252,7 +252,7 @@ const ProfitLoss = ({
               >
                 <div className="w-full sm:w-3/5 py-1 item-center flex px-3">
                   <p className="font-bold text-left sm:text-right">
-                    Net Profit / (Loss):
+                    {netProfit < 0 ? "Loss" : "Net Profit"} :
                   </p>
                 </div>
                 <div className="w-full sm:w-1/5"></div>

@@ -8,7 +8,6 @@ import {
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
 import { getUniqueRandomColors } from "@/lib/url";
 import { useTranslations } from "use-intl";
@@ -21,6 +20,7 @@ import {
 } from "../ui/select";
 import { useEffect, useState } from "react";
 import { getAnnualSummary } from "@/lib/actions/dashboard.action";
+import CustomTooltip from "./CustomTooltip";
 
 export function MonthlyProfit({ annualSummary }: { annualSummary: any }) {
   const t = useTranslations("erp");
@@ -142,10 +142,7 @@ export function MonthlyProfit({ annualSummary }: { annualSummary: any }) {
                   tickFormatter={(value) => value.slice(0, 3)}
                 />
                 <YAxis tickFormatter={formatNumber} />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent indicator="dashed" />}
-                />
+                <ChartTooltip cursor={false} content={<CustomTooltip />} />
                 <Bar dataKey="sale" fill="var(--color-sale)" radius={4} />
                 <Bar
                   dataKey="purchase"
