@@ -3,9 +3,15 @@ import "../invoice.css";
 import { format } from "date-fns";
 import Currency from "@/components/Currency";
 import Image from "next/image";
+import { getSetting } from "@/lib/actions/setting.action";
+import { notFound } from "next/navigation";
 
-const PurchaseDetailInfo =  ({ purchase }: { purchase: Purchase }) => {
-
+const PurchaseDetailInfo = async ({ purchase }: { purchase: Purchase }) => {
+  const { success, data: setting } = await getSetting({
+    settingId: process.env.SETTING_ID as string,
+  });
+  if (!success) return notFound();
+  if (!setting) return notFound();
 
   return (
     <div className="card80 ">
@@ -14,15 +20,26 @@ const PurchaseDetailInfo =  ({ purchase }: { purchase: Purchase }) => {
           <div className="flex flex-col">
 
             <Image
-              src={`/images/logo.png`}
+              src={`/` + setting.companyLogo}
               alt="Company Logo"
               width={100}
               height={100}
               className="w-auto sm:w-[100] h-20 object-contain logo"
             />
+            <div>
+                 <p className="text-[12px] pt-0 pb-0 mx-auto sm:mx-0 font-bold">{setting.companyName}</p>
+            <p className="text-[12px] pb-0 mx-auto sm:mx-0 bold">{setting.companyNameEnglish}</p>
+            <p className="text-[9px] mx-auto sm:mx-0 address">
+              {setting.address}
+            </p>
+            <p className="text-[9px] mx-auto sm:mx-0">
+              {setting.phone}
+            </p>
+          </div>
             <h1
               className={`font-bold text-lg sm:pt-0 pt-5 mx-auto sm:mx-0`}
             >
+              
               # {purchase.referenceNo}
             </h1>
 
@@ -64,32 +81,32 @@ const PurchaseDetailInfo =  ({ purchase }: { purchase: Purchase }) => {
 
         <div className="sale-details bg-white rounded-lg shadow-sm ">
           <div className="flex gap-2 border-b pb-1 px-2 text-[11px]    ">
-            <p className="w-2/6 font-bold  pl-2 pr-1 data-for-print print-h1">ទំនិញ</p>
-            <p className="w-2/6 font-bold px-1 data-for-print print-h2">ថ្លៃ</p>
-            <p className="w-1/6 font-bold px-1 data-for-print print-h3">ចំនួន</p>
-            <p className="w-1/6 font-bold pl-1 pr-2 data-for-print print-h4">សរុប</p>
+            <p className="w-2/6 font-bold  pl-2 pr-1 data-for-print print-h1 text-center">ទំនិញ</p>
+            <p className="w-1/6 font-bold px-1 data-for-print print-h2 text-center">ថ្លៃ</p>
+            <p className="w-1/6 font-bold px-1 data-for-print print-h3 text-center">ចំនួន</p>
+            <p className="w-2/6 font-bold pl-1 pr-2 data-for-print print-h4 text-center">សរុប</p>
           </div>
           {purchase.purchaseDetails.map((detail, index) => (
             <div
               key={index}
               className="flex gap-2 border-b pt-1 last:border-b-0 px-2 text-[11px]"
             >
-              <p className="w-2/6 pl-2 pr-1 data-for-print print-d1">{detail.selectedProduct?.title}</p>
-              <p className="w-2/6 px-1 data-for-print print-d2" suppressHydrationWarning>
+              <p className="w-2/6 pl-1 pr-1 data-for-print print-d1 whitespace-nowrap">{detail.selectedProduct?.title}</p>
+              <p className="w-1/6 px-1 data-for-print print-d2 whitespace-nowrap" suppressHydrationWarning>
                 {detail.cost !== undefined ? (
                   <Currency amount={detail.cost} />
                 ) : (
                   "N/A"
                 )}
               </p>
-              <p className="w-1/6 px-1 data-for-print print-d3">
+              <p className="w-1/6 px-1 data-for-print print-d3 whitespace-nowrap">
                 {detail.qty}{" "}
                 {detail.selectedUnit ? detail.selectedUnit.title : "N/A"}
               </p>
-              <p className="w-1/6  pl-1 pr-2 data-for-print print-d4">
+              <p className="w-2/6 pl-1 mr-2 data-for-print print-d4 text-right">
                 {detail.cost !== undefined && detail.qty !== undefined ? (
-                  <Currency amount={detail.cost * detail.qty} />
-                ) : (
+                  <Currency amount={detail.cost * detail.qty+10000000} />
+                ): (
                   "N/A"
                 )}
               </p>
