@@ -73,7 +73,7 @@ export const getFirstRowDashboard = async () => {
         {
           $match: {
             orderStatus: "completed",
-            orderDate: { $gte: start, $lte: end },
+            invoicedDate: { $gte: start, $lte: end },
           },
         },
         {
