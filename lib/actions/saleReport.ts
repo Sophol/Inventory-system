@@ -433,7 +433,7 @@ export async function getProfitAndLossReport(params: SaleSearchParams): Promise<
         {
           $group: {
             _id: null,
-            totalCost: { $sum: "$grandtotal" },
+            totalCost: { $sum: "$subtotal" },
             totalServiceFee: { $sum: "$serviceFee" },
             totalShippingFee: { $sum: "$shippingFee" },
             totalDelivery: {

@@ -1,10 +1,12 @@
-import { endOfMonth, format, startOfMonth } from "date-fns";
+// components/ProfitLoss.tsx
+import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { formatCurrency } from "@/lib/utils";
 import { DatePickerWithRange } from "../components/search/DatePickerWithRange";
-import { DateRange } from "react-day-picker";
 
 interface ProfitLossProps {
+  from: Date;
+  to: Date;
   salesIncome: number;
   totalCOGS: number;
   totalExpenses: number;
@@ -36,6 +38,8 @@ interface ProfitLossProps {
 }
 
 const ProfitLoss = ({
+  from,
+  to,
   salesIncome,
   totalCOGS,
   totalExpenses,
@@ -46,32 +50,27 @@ const ProfitLoss = ({
   totalCost,
   details,
 }: ProfitLossProps) => {
-  const startDate = startOfMonth(new Date());
-  const endDate = endOfMonth(new Date());
-  const handleDateRangeChange = (date: DateRange | undefined) => {
-    console.log(date);
-  };
   return (
     <section className="max-w-3xl mx-auto py-0">
       <div className="flex-wrap space-y-2 p-5 px-0 sm:px-4 md:px-8">
         <DatePickerWithRange
-          onDateChange={handleDateRangeChange}
+          initialDate={{ from, to }}
           className="w-full px-2 sm:px-0"
         />
         <Card className="py-0 my-0">
-          <CardHeader className="flex flex-col md:flex-row items-center profit-loss-header-container ">
+          <CardHeader className="flex flex-col md:flex-row items-center profit-loss-header-container">
             <CardTitle className="text-xl sm:flex w-full">
               <h2 className="pf-card-title justify-center sm:justify-start w-full md:w-3/4 items-center flex text-sm md:text-xl">
                 Profit/Loss Statement
               </h2>
-              <div className="pf-header-date w-full md:w-1/4 mt-2 md:mt-0 text-sm md:text-base ">
-                <h6 className=" text-right">
-                  from: <span>{format(startDate, "yyyy-MM-dd")}</span>
+              <div className="pf-header-date w-full md:w-1/4 mt-2 md:mt-0 text-sm md:text-base">
+                <h6 className="text-right">
+                  from: <span>{format(from, "yyyy-MM-dd")}</span>
                 </h6>
-                <h6 className=" text-right">
+                <h6 className="text-right">
                   To:{" "}
                   <span className="ml-2 sm:ml-3">
-                    {format(endDate, "yyyy-MM-dd")}
+                    {format(to, "yyyy-MM-dd")}
                   </span>
                 </h6>
               </div>
@@ -79,7 +78,7 @@ const ProfitLoss = ({
           </CardHeader>
           <CardContent>
             <div className="container mx-auto py-1 sm:py-1 px-0">
-              <div className=" hidden sm:flex">
+              <div className="hidden sm:flex">
                 <div className="w-4/5"></div>
                 <div
                   className="w-1/5 text-right px-4 py-1"
@@ -98,8 +97,7 @@ const ProfitLoss = ({
                   <div className="flex-1 w-full sm:w-3/5 whitespace-nowrap py-2">
                     <p className="text-sm text-left sm:text-right">
                       {sale.category}
-                    </p>{" "}
-                    {/* Left-align on mobile */}
+                    </p>
                   </div>
                   <div className="w-full sm:w-1/5"></div>
                   <div className="w-full sm:w-1/5 bg-value py-2 px-3 text-right">
@@ -114,8 +112,7 @@ const ProfitLoss = ({
                 <div className="w-full sm:w-3/5 sm:justify-end item-center flex px-0">
                   <p className="text-sm font-bold py-2 text-left sm:text-right">
                     Sales Income
-                  </p>{" "}
-                  {/* Left-align on mobile */}
+                  </p>
                 </div>
                 <div className="w-full sm:w-1/5"></div>
                 <div className="w-full sm:w-1/5 py-2 px-2 bg-value item-center flex justify-end">
@@ -136,8 +133,7 @@ const ProfitLoss = ({
                   <div className="w-full sm:w-3/5 whitespace-nowrap py-2">
                     <p className="text-sm text-left sm:text-right">
                       {purchase.category}
-                    </p>{" "}
-                    {/* Left-align on mobile */}
+                    </p>
                   </div>
                   <div className="w-full sm:w-1/5"></div>
                   <div className="w-full sm:w-1/5 bg-value py-2 px-3 text-right">
@@ -147,18 +143,29 @@ const ProfitLoss = ({
                   </div>
                 </div>
               ))}
-
+              <div className="flex flex-col sm:flex-row my-0 b-item">
+                <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
+                  <p className="text-sm font-bold text-left sm:text-right">
+                    Total Cost
+                  </p>
+                </div>
+                <div className="w-full sm:w-1/5"></div>
+                <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
+                  <p className="text-sm font-bold">
+                    {formatCurrency(totalCost ?? 0)}
+                  </p>
+                </div>
+              </div>
               <div className="flex flex-col sm:flex-row my-0 b-item">
                 <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm text-left sm:text-right">
                     Delivery Fee
-                  </p>{" "}
-                  {/* Left-align on mobile */}
+                  </p>
                 </div>
                 <div className="w-full sm:w-1/5"></div>
                 <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
                   <p className="text-sm">
-                    {formatCurrency(totalShippingFee ?? 0)}
+                    {formatCurrency(totalDelivery ?? 0)}
                   </p>
                 </div>
               </div>
@@ -167,8 +174,7 @@ const ProfitLoss = ({
                 <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm text-left sm:text-right">
                     Shipping Fee
-                  </p>{" "}
-                  {/* Left-align on mobile */}
+                  </p>
                 </div>
                 <div className="w-full sm:w-1/5"></div>
                 <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
@@ -180,8 +186,7 @@ const ProfitLoss = ({
 
               <div className="flex flex-col sm:flex-row my-0 b-item">
                 <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
-                  <p className="text-sm text-left sm:text-right">Service Fee</p>{" "}
-                  {/* Left-align on mobile */}
+                  <p className="text-sm text-left sm:text-right">Service Fee</p>
                 </div>
                 <div className="w-full sm:w-1/5"></div>
                 <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
@@ -195,8 +200,7 @@ const ProfitLoss = ({
                 <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm font-bold text-left sm:text-right">
                     Total COGS
-                  </p>{" "}
-                  {/* Left-align on mobile */}
+                  </p>
                 </div>
                 <div className="w-full sm:w-1/5"></div>
                 <div className="w-full sm:w-1/5 px-3 bg-value py-2 item-center flex justify-end">
@@ -209,7 +213,6 @@ const ProfitLoss = ({
               <h1 className="text-center sm:text-left pf-title b-item">
                 Expense
               </h1>
-              {/* Expense Rows */}
               {[
                 { label: "Salary Expense", value: details?.salaryExpenses },
                 { label: "Mission Expense", value: details?.missionExpenses },
@@ -220,8 +223,7 @@ const ProfitLoss = ({
                   className="flex flex-col sm:flex-row my-0 b-item"
                 >
                   <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
-                    <p className="text-sm text-left sm:text-right">{label}</p>{" "}
-                    {/* Left-align on mobile */}
+                    <p className="text-sm text-left sm:text-right">{label}</p>
                   </div>
                   <div className="w-full sm:w-1/5"></div>
                   <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
@@ -234,8 +236,7 @@ const ProfitLoss = ({
                 <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm font-bold text-left sm:text-right">
                     Total Expense
-                  </p>{" "}
-                  {/* Left-align on mobile */}
+                  </p>
                 </div>
                 <div className="w-full sm:w-1/5"></div>
                 <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
@@ -252,8 +253,7 @@ const ProfitLoss = ({
                 <div className="w-full sm:w-3/5 py-1 item-center flex px-3">
                   <p className="font-bold text-left sm:text-right">
                     Net Profit / (Loss):
-                  </p>{" "}
-                  {/* Left-align on mobile */}
+                  </p>
                 </div>
                 <div className="w-full sm:w-1/5"></div>
                 <div className="w-full sm:w-1/5 py-1 px-3 item-center flex justify-end">

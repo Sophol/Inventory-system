@@ -4,7 +4,7 @@ import * as React from "react";
 import { format, startOfMonth, endOfMonth } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
-
+import { useRouter } from "next/navigation"; // Import useRouter for URL updates
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -17,19 +17,24 @@ import { useTranslations } from "use-intl";
 
 interface DatePickerWithRangeProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  onDateChange: (date: DateRange | undefined) => void;
+  onDateChange?: (date: DateRange | undefined) => void; // Optional callback
   reset?: boolean;
+  initialDate?: DateRange; // Optional initial date range from parent
 }
 
 export function DatePickerWithRange({
   className,
   onDateChange,
   reset,
+  initialDate,
 }: DatePickerWithRangeProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: startOfMonth(new Date()),
-    to: endOfMonth(new Date()),
-  });
+  const router = useRouter(); // Initialize router for URL manipulation
+  const [date, setDate] = React.useState<DateRange | undefined>(
+    initialDate || {
+      from: startOfMonth(new Date()),
+      to: endOfMonth(new Date()),
+    }
+  );
   const defaultDateRange = React.useMemo(
     () => ({
       from: startOfMonth(new Date()),
@@ -39,18 +44,33 @@ export function DatePickerWithRange({
   );
 
   const handleDateChange = (selectedDate: DateRange | undefined) => {
-    setDate(selectedDate);
-    onDateChange(selectedDate);
+    setDate(selectedDate); // Update local state
+
+    // Update the URL with the selected date range
+    if (selectedDate?.from && selectedDate?.to) {
+      const dateRange = `${format(selectedDate.from, "yyyy-MM-dd")}_${format(selectedDate.to, "yyyy-MM-dd")}`;
+      router.push(`?dateRange=${dateRange}`);
+    } else {
+      router.push("?"); // Clear the query if no range is selected
+    }
+
+    // Call the optional onDateChange callback if provided
+    if (onDateChange) {
+      onDateChange(selectedDate);
+    }
   };
+
   React.useEffect(() => {
     if (reset) {
-      setDate(defaultDateRange);
+      setDate(defaultDateRange); // Reset to default range if reset is triggered
     }
   }, [reset, defaultDateRange]);
+
   const t = useTranslations("erp");
+
   return (
     <div className={cn("grid gap-0", className)}>
-      <span className="text-[11px]  text-dark400_light800 mb-1">
+      <span className="text-[11px] text-dark400_light800 mb-1">
         {t("dateRange")}
       </span>
       <Popover>
@@ -59,7 +79,7 @@ export function DatePickerWithRange({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-full md:w-[250] lg:w-[250] xl:w-[280] justify-start text-left text-[11px]  min-h-[28px] h-[28px]",
+              "w-full md:w-[250] lg:w-[250] xl:w-[280] justify-start text-left text-[11px] min-h-[28px] h-[28px]",
               !date && "text-muted-foreground"
             )}
           >
@@ -84,7 +104,7 @@ export function DatePickerWithRange({
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={handleDateChange}
+            onSelect={handleDateChange} // Call handleDateChange on selection
           />
         </PopoverContent>
       </Popover>
