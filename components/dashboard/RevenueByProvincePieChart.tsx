@@ -76,7 +76,7 @@ export function RevenueByProvincePieChart({
       ) => {
         if (province !== null && province !== undefined) {
           acc[province] = {
-            label: province,
+            label: t(province),
             color: fill,
           };
         }
