@@ -123,9 +123,9 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                   alt="Company Telegram QR"
                   width={100}
                   height={100}
-                  className="w-[50] h-20 object-contain pt-1 grayscale ml-12"
+                  className="w-[70] h-20 object-contain pt-1 grayscale ml-9"
                 />
-                <span className="text-[10px] mt-0 ml-12">Telegram</span>
+                <span className="text-[10px] mt-0 ml-[49px]">Telegram</span>
                 <br />
                 <div className=" ml-0 w-[50px]  min-h-[100px]" > {/* Add margin here if needed for spacing */}
                   <p className="pb-1 w-full text-[10px]  ">អ្នកទទួល: </p>

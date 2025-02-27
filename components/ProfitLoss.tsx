@@ -94,13 +94,13 @@ const ProfitLoss = ({
                   key={sale.category}
                   className="flex flex-col sm:flex-row my-0 b-item"
                 >
-                  <div className="flex-1 w-full sm:w-3/5 whitespace-nowrap py-2">
+                  <div className="flex-1 w-1/2 sm:w-3/5 whitespace-nowrap py-2">
                     <p className="text-sm text-left sm:text-right">
                       {sale.category}
                     </p>
                   </div>
                   <div className="w-full sm:w-1/5"></div>
-                  <div className="w-full sm:w-1/5 bg-value py-2 px-3 text-right">
+                  <div className="w-1/2 sm:w-1/5 bg-value py-2 px-3 text-right">
                     <p className="text-sm">
                       {formatCurrency(sale.salesIncome)}
                     </p>
