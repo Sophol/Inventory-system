@@ -39,19 +39,23 @@ const formatNumber = (value: number): string => {
   const absValue = Math.abs(value);
   const sign = value < 0 ? "-" : "";
   if (absValue >= 1000000) {
-    let formatted = (absValue / 1000000).toFixed(1);
-    if (formatted.endsWith(".0")) {
-      formatted = formatted.slice(0, -2);
-    }
-    return sign + formatted + "M";
+    return (
+      sign +
+      (absValue / 1000000).toLocaleString(undefined, {
+        maximumFractionDigits: 4,
+      }) +
+      "M"
+    );
   } else if (absValue >= 1000) {
-    let formatted = (absValue / 1000).toFixed(1);
-    if (formatted.endsWith(".0")) {
-      formatted = formatted.slice(0, -2);
-    }
-    return sign + formatted + "K";
+    return (
+      sign +
+      (absValue / 1000).toLocaleString(undefined, {
+        maximumFractionDigits: 4,
+      }) +
+      "K"
+    );
   } else {
-    return sign + absValue.toString();
+    return sign + absValue.toLocaleString();
   }
 };
 export function RevenueByProvincePieChart({
