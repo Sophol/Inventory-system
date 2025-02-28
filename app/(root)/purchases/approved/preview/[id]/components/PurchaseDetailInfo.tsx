@@ -18,25 +18,25 @@ const PurchaseDetailInfo = ({
         <div className="sm:flex flex-row justify-between invoice-header">
           <div className="flex flex-col justify-center w-full">
             <div className="flex flex-col justify-center logo">
-            <Image
-              src={`/` + setting.companyLogo}
-              alt="Company Logo"
-              width={100}
-              height={100}
-              className="w-auto sm:w-[100] h-20 object-contain text-center mx-auto"
-            />
-            <div className="flex flex-col">
-              <p className="text-[12px] pt-0 pb-0 mx-auto sm:mx-0 font-bold text-center">
-                {setting.companyName}
-              </p>
-              <p className="text-[12px] pb-0 mx-auto sm:mx-0 bold text-center">
-                {setting.companyNameEnglish}
-              </p>
-              <p className="text-[9px] mx-auto sm:mx-0 address text-center">
-                {setting.address}
-              </p>
-              <p className="text-[9px] mx-auto sm:mx-0 text-center">{setting.phone}</p>
-            </div>
+              <Image
+                src={`/` + setting.companyLogo}
+                alt="Company Logo"
+                width={100}
+                height={100}
+                className="w-auto sm:w-[100] h-20 object-contain text-center mx-auto"
+              />
+              <div className="flex flex-col">
+                <p className="text-[12px] pt-0 pb-0 mx-auto sm:mx-0 font-bold text-center">
+                  {setting.companyName}
+                </p>
+                <p className="text-[12px] pb-0 mx-auto sm:mx-0 bold text-center">
+                  {setting.companyNameEnglish}
+                </p>
+                <p className="text-[9px] mx-auto sm:mx-0 address text-center">
+                  {setting.address}
+                </p>
+                <p className="text-[9px] mx-auto sm:mx-0 text-center">{setting.phone}</p>
+              </div>
             </div>
             <h1 className={`font-bold text-[12px] sm:pt-0 pt-2 mx-auto sm:mx-0`}>
               # {purchase.referenceNo}
@@ -54,10 +54,7 @@ const PurchaseDetailInfo = ({
             className="bill-to sub-info text-[11px] my-0 py-0"
             style={{ color: "black" }}
           >
-            <div className="flex gap-2 flex-nowrap w-full">
-              <p className="pb-1">អ្នកផ្គត់ផ្គង់: </p>
-              <p className="pb-1">{purchase.supplier.title}</p>
-            </div>
+
             <div className="flex gap-2 flex-nowrap w-full">
               <p className="pb-1 whitespace-nowrap">
                 លេខទូរស័ព្ទអ្នកផ្គត់ផ្គង់:{" "}
@@ -71,32 +68,21 @@ const PurchaseDetailInfo = ({
               <p className="pb-1 ">{purchase.branch.title}</p>
             </div>
           </div>
-          <div className="sub-info  text-[11px] my-0 py-0">
-            <div className="flex gap-2 flex-nowrap w-full">
-              <p className="pb-1">សរុបចំនួន: </p>
-              <p className="pb-1">
-                <Currency amount={purchase.grandtotal} />
-              </p>
-            </div>
-            <div className="flex gap-2 flex-nowrap w-full">
-              <p className="pb-1">បង់ប្រាក់ដោយ: </p>
-              <p className="pb-1 ">{purchase.paidBy}</p>
-            </div>
-          </div>
+         
         </div>
 
         <div className="sale-details bg-white rounded-lg shadow-sm ">
           <div className="flex gap-2 border-b pb-1 px-2 text-[11px]    ">
-            <p className="w-2/6 font-bold  pl-2 pr-1 data-for-print print-h1 ">
+            <p className="w-1/4 font-bold  pl-2 pr-1 data-for-print print-h1 ">
               ទំនិញ
             </p>
-            <p className="w-1/6 font-bold px-1 data-for-print print-h2 ">
+            <p className="w-1/4 font-bold px-1 data-for-print print-h2 ">
               ថ្លៃ
             </p>
-            <p className="w-1/6 font-bold px-1 data-for-print print-h3">
+            <p className="w-1/4 font-bold px-1 data-for-print print-h3">
               ចំនួន
             </p>
-            <p className="w-2/6 font-bold pl-1 pr-2 data-for-print print-h4 text-center">
+            <p className="w-1/4 font-bold pl-1 pr-2 data-for-print print-h4 text-center">
               សរុប
             </p>
           </div>
@@ -105,11 +91,11 @@ const PurchaseDetailInfo = ({
               key={index}
               className="flex gap-2 border-b pt-1 last:border-b-0 px-2 text-[11px]"
             >
-              <p className="w-2/6 pl-1 pr-1 data-for-print print-d1 whitespace-nowrap">
+              <p className="w-1/4 px-1 data-for-print print-d1">
                 {detail.selectedProduct?.title}
               </p>
               <p
-                className="w-1/6 px-1 data-for-print print-d2 whitespace-nowrap"
+                className="w-1/4 px-1 data-for-print print-d2"
                 suppressHydrationWarning
               >
                 {detail.cost !== undefined ? (
@@ -118,11 +104,11 @@ const PurchaseDetailInfo = ({
                   "N/A"
                 )}
               </p>
-              <p className="w-1/6 px-1 data-for-print print-d3 whitespace-nowrap">
+              <p className="w-1/4 px-1 data-for-print print-d3 ">
                 {detail.qty}{" "}
                 {detail.selectedUnit ? detail.selectedUnit.title : "N/A"}
               </p>
-              <p className="w-2/6 pl-1 mr-2 data-for-print print-d4 text-right">
+              <p className="w-1/4 pl-1 mr-2 data-for-print print-d4 text-right">
                 {detail.cost !== undefined && detail.qty !== undefined ? (
                   <Currency amount={detail.cost * detail.qty + 10000000} />
                 ) : (
@@ -133,7 +119,7 @@ const PurchaseDetailInfo = ({
           ))}
         </div>
         <div className="flex gap-2 invoice-body font-bold pt-2 mt-0">
-          <div className="pt-0 invoice-note text-left w-[100px] h-[130px] min-h-[130px]">
+          <div className="pt-0 purchase-note text-left w-[100px] h-[130px] min-h-[130px]">
             <div className="flex flex-col telegramlogo ">
               <br />
               <Image
@@ -164,7 +150,7 @@ const PurchaseDetailInfo = ({
               </div>
               <div className="flex gap-2">
                 <p className="sub-info pb-1 w-1/3 whitespace-nowrap text-[11px]">
-                  ថ្លៃដឹកចូល:
+                  ថ្លៃដឹកក្នុងប្រទេស:
                 </p>
                 <p className="pb-1 w-2/3 text-right font-bold  text-[11px]">
                   {" "}
@@ -177,7 +163,7 @@ const PurchaseDetailInfo = ({
               </div>
               <div className="flex gap-2">
                 <p className="sub-info pb-1 w-1/3 whitespace-nowrap">
-                  ថ្លៃដឹកចេញ:
+                ថ្លៃដឹកក្រៅប្រទេស:
                 </p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
@@ -203,7 +189,7 @@ const PurchaseDetailInfo = ({
               </div>
               <div className="flex gap-2">
                 <p className="sub-info pb-1 w-1/3 whitespace-nowrap  text-[11px]">
-                  ថ្លៃដឹក:
+                  ថ្លៃឯកសារ:
                 </p>
                 <p className="pb-1 w-2/3 text-right font-bold  text-[11px]">
                   {" "}
@@ -229,16 +215,24 @@ const PurchaseDetailInfo = ({
           </div>
 
         </div>
-        <div className="  " >
-                <p className="pb-1 w-full text-[10px]  ">អ្នកទទួល: </p>
-                <p className="pb-7 w-full text-[10px] whitespace-nowrap ">
-                  {purchase.customer?.title}
-                </p>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p className="text-[4px] py-5">.</p>
-              </div>
+        <div className="flex row gap-4 mt-3">
+          <div className=" w-1/2 text-[10px] ">
+            <p className="pb-0 text-center">អ្នកផ្គត់ផ្គង់: </p>
+            <p className="pb-9 text-center">{purchase.supplier.title}</p>
+          </div>
+          <div className=" w-1/2 text-[10px]  " >
+            <p className="pb-0   text-center">អ្នកទទួល: </p>
+            <p className="pb-9  whitespace-nowrap text-center ">
+              {purchase.customer?.title}
+            </p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p className="text-[4px] py-7">.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   );

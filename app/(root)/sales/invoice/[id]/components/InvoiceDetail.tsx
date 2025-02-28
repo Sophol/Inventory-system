@@ -46,7 +46,7 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
             </div>
           )}
 
-          <div className="flex flex-col px-0 my-0 py-0">
+          <div className="flex flex-col px-0 mt-0  py-0">
             <h1 className="font-bold text-[11px] pt-1 mx-auto sm:mx-0 pb-3 invoice-ref" ># {invoice.referenceNo}</h1>
             <p className="text-[11px] pt-2">
               <span className="pr-2">ថ្ងៃចេញ:</span>
@@ -58,55 +58,30 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
             </p>
           </div>
         </div>
-        <div className="md:flex px-0 my-0 py-0 mb-1 invoice-body">
-          <div className="bill-to  my-0 py-0">
 
-            <div className="sub-info text-[11px]" style={{ color: "black" }}>
-              <div className="flex gap-2" style={{ marginBottom: "1px" }}>
-                <p className=" w-1/3">អ្នកប្រគល់: </p>
-                <p className=" w-2/3">
-                  {invoice.sellerName}
-                </p>
-              </div>
-              <div className="flex gap-2" style={{ marginBottom: "1px" }}>
-                <p className=" w-1/3">ប្រាក់ដែលត្រូវបង់: </p>
-                <p className=" w-2/3">
-                  {invoice.balance ? formatCurrency(invoice.balance) : 0.0}
-                </p>
-              </div>
-
-              <div className="flex gap-2" style={{ color: "black" }}>
-                <p className=" w-1/3">បង់ថ្លៃទំនិញដោយ: </p>
-                <p className=" w-2/3">
-                  {invoice.paid === 0 ? "N/A" : invoice.paidBy}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="sale-details bg-white rounded-lg shadow-sm ">
+        <div className="sale-details bg-white rounded-lg shadow-sm mt-2">
           <div className="flex gap-2 border-b pb-1 px-2 text-[11px]   ">
-            <p className="w-2/6 font-bold  pl-2 pr-1 data-for-print print-h1">ទំនិញ</p>
-            <p className="w-1/6 font-bold px-1 data-for-print print-h2">តម្លៃ</p>
-            <p className="w-1/6 font-bold px-1 data-for-print print-h3">ចំនួន</p>
-            <p className="w-2/6 font-bold pl-1 pr-2 data-for-print print-h4">សរុប</p>
+            <p className="w-1/4 font-bold  pl-2 pr-1 data-for-print print-h1">ទំនិញ</p>
+            <p className="w-1/4 font-bold px-1 data-for-print print-h2">តម្លៃ</p>
+            <p className="w-1/4 font-bold px-1 data-for-print print-h3">ចំនួន</p>
+            <p className="w-1/4 font-bold pl-1 pr-2 data-for-print print-h4 text-center">សរុប</p>
           </div>
           {invoice.saleDetails.map((detail, index) => (
             <div
               key={index}
               className="flex gap-2 border-b pt-1 last:border-b-0 px-2 text-[11px] "
             >
-              <p className="w-2/6 pl-2 pr-1 data-for-print print-d1">{detail.selectedProduct?.title}</p>
-              <p className="w-1/6 px-1 data-for-print print-d2">
+              <p className="w-1/4 pl-2 pr-1 data-for-print print-d1">{detail.selectedProduct?.title}</p>
+              <p className="w-1/4 px-1 data-for-print print-d2">
                 {detail.price !== undefined
                   ? formatCurrency(detail.price)
                   : "N/A"}
               </p>
-              <p className="w-1/6 px-1 data-for-print print-d3">
+              <p className="w-1/4 px-1 data-for-print print-d3">
                 {detail.qty}{" "}
                 {detail.selectedUnit ? detail.selectedUnit.title : "N/A"}
               </p>
-              <p className="w-2/6  pl-1 pr-2 data-for-print print-d4">
+              <p className="w-1/4 pl-1 pr-2 data-for-print print-d4 text-right">
                 {detail.price !== undefined && detail.qty !== undefined
                   ? formatCurrency(detail.price * detail.qty)
                   : "N/A"}
@@ -126,44 +101,13 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                   className="w-[70] h-20 object-contain pt-1 grayscale ml-9"
                 />
                 <span className="text-[10px] mt-0 ml-[49px]">Telegram</span>
-                <br />
-                <div className=" ml-0 w-[50px]  min-h-[100px]" > {/* Add margin here if needed for spacing */}
-                  <p className="pb-1 w-full text-[10px]  ">អ្នកទទួល: </p>
-                  <p className="pb-7 w-full text-[10px] whitespace-nowrap ">
-                    {invoice.customer.title}
-                  </p>
-                  <p></p>
-                  <p></p>
-                  <p></p>
-                  <p className="text-[4px] py-5">.</p>
-                </div>
               </div>
 
-            )}
-            {invoice.isLogo == "false" && (
-              
-              <div className="flex flex-col min-h-[100px]">
-                
-                <div
-                  className="w-[100px] h-[100px] min-h-[77px] text-left pt-1 grayscale"
-                />
-
-                <div className="mt-3"> {/* Add margin here if needed for spacing */}
-                  <p className="pb-1 w-full text-[10px]  ">អ្នកទទួល: </p>
-                  <p className="pb-7 w-full text-[10px] h-[50px]">
-                    {invoice.customer.title}
-                  </p>
-                  <p></p>
-
-                  <p></p>
-                  <p className="text-[4px] py-5">.</p>
-                </div>
-              </div>
             )}
 
           </div>
 
-          <div className=" invoice-total mt-1 text-[11px] pr-1" >
+          <div className=" invoice-total mt-2 text-[11px] pr-1" >
             <div className="sub-info" style={{ color: "black" }}>
               <div className="flex gap-2">
                 <p className="pb-1 w-1/3" style={{ color: "black" }}>ថ្លៃទំនិញ:</p>
@@ -197,8 +141,32 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
 
             <div></div>
           </div>
+        
+
 
         </div>
+
+<div className="flex w-full">
+
+  <div className="flex row gap-4 mt-3 w-full">
+    <div className=" w-1/2 text-[10px] ">
+      <p className="pb-0 text-center">អ្នកប្រគល់: </p>
+      <p className="pb-9 text-center">{invoice.seller?.title}</p>
+    </div>
+    <div className=" w-1/2 text-[10px]  " >
+      <p className="pb-0   text-center">អ្នកទទួល: </p>
+      <p className="pb-9  whitespace-nowrap text-center ">
+        {invoice.customer?.title}
+      </p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <p className="text-[4px] py-7">.</p>
+    </div>
+  </div>
+
+</div>
 
       </div>
     </div>
