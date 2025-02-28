@@ -231,7 +231,7 @@ export function ExpensePieChart({
       <CardContent className="flex-1 pb-0 mt-5">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[330px] [&_.recharts-text]:fill-background"
+          className="mx-auto aspect-square max-h-[300px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
             <ChartTooltip content={<CustomTooltip />} />

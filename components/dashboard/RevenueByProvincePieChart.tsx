@@ -215,7 +215,7 @@ export function RevenueByProvincePieChart({
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={convertedData}
-          className="mx-auto aspect-square max-h-[330px] [&_.recharts-text]:fill-background"
+          className="mx-auto aspect-square max-h-[300px] [&_.recharts-text]:fill-background"
         >
           <PieChart>
             <ChartTooltip content={<CustomTooltip />} />
