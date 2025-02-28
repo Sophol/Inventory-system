@@ -35,7 +35,25 @@ interface ChartRevenueData {
   revenue: number;
   fill: string;
 }
-
+const formatNumber = (value: number): string => {
+  const absValue = Math.abs(value);
+  const sign = value < 0 ? "-" : "";
+  if (absValue >= 1000000) {
+    let formatted = (absValue / 1000000).toFixed(1);
+    if (formatted.endsWith(".0")) {
+      formatted = formatted.slice(0, -2);
+    }
+    return sign + formatted + "M";
+  } else if (absValue >= 1000) {
+    let formatted = (absValue / 1000).toFixed(1);
+    if (formatted.endsWith(".0")) {
+      formatted = formatted.slice(0, -2);
+    }
+    return sign + formatted + "K";
+  } else {
+    return sign + absValue.toString();
+  }
+};
 export function RevenueByProvincePieChart({
   initialChartData,
 }: {
@@ -93,7 +111,7 @@ export function RevenueByProvincePieChart({
     value: number;
   }) => {
     console.log(name);
-    return ` ${value.toLocaleString()}`;
+    return ` ${formatNumber(value).toLocaleString()}`;
   };
   useEffect(() => {
     const fetchRevenueData = async () => {
