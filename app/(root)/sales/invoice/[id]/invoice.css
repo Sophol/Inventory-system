@@ -59,7 +59,8 @@
     width:75%;
     display: flex; 
     /* align-items: center;   */
-    height: 80px; 
+    height: 200px; 
+    min-height: 200px;
 
   }
   .invoice-total{
@@ -289,4 +290,11 @@
   .print-d4{
     max-width: 25mm;
   }
+  .printable-area {
+    padding-bottom: 20mm; /* Adjust the space as needed for your POS printer */
+    margin-bottom: 20mm;
+  }
+
+  /* You can also adjust other elements like font size or margins for print */
+
 }
