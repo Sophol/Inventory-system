@@ -44,7 +44,7 @@ const formatNumber = (value: number): string => {
     return (
       sign +
       (absValue / 1000).toLocaleString(undefined, {
-        maximumFractionDigits: 4,
+        maximumFractionDigits: 0,
       }) +
       "K"
     );
