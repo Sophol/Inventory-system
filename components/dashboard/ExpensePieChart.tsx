@@ -40,15 +40,7 @@ interface ChartExpenseData {
 const formatNumber = (value: number): string => {
   const absValue = Math.abs(value);
   const sign = value < 0 ? "-" : "";
-  if (absValue >= 1000000) {
-    return (
-      sign +
-      (absValue / 1000000).toLocaleString(undefined, {
-        maximumFractionDigits: 4,
-      }) +
-      "M"
-    );
-  } else if (absValue >= 1000) {
+  if (absValue >= 1000) {
     return (
       sign +
       (absValue / 1000).toLocaleString(undefined, {
