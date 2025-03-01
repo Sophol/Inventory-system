@@ -14,10 +14,23 @@ const PurchaseAction = () => {
 
   const handlePrintWithoutLogo = () => {
     const logo = document.querySelector(".logo") as HTMLElement;
-    if (logo) logo.style.display = "none"; // Hide logo
+    const telegramQR = document.querySelector(".telegramlogo") as HTMLElement;
+    const custmerMargn = document.querySelector(".print-customer-margin") as HTMLElement;
+
+    // Hide logo and Telegram QR
+    if (logo) logo.style.display = "none";
+    if (custmerMargn) custmerMargn.style.paddingTop = "block";
+    if (telegramQR) telegramQR.style.display = "none";
+  
+    // Print the document
     window.print();
-    if (logo) logo.style.display = "block"; // Restore logo after printing
+  
+    // Restore logo and Telegram QR after printing
+    if (logo) logo.style.display = "block";
+    if (custmerMargn) custmerMargn.style.marginTop = "none";
+    if (telegramQR) telegramQR.style.display = "block";
   };
+  
 
   const handlePrintWithLogo = () => {
     window.print(); // Simply print the document with the logo visible

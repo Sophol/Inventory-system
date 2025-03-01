@@ -92,30 +92,30 @@ const ProfitLoss = ({
               {details?.saleDetails.map((sale) => (
                 <div
                   key={sale.category}
-                  className="flex flex-col sm:flex-row my-0 b-item"
+                  className="flex flex-row my-0 b-item"
                 >
-                  <div className="flex-1 w-full sm:w-3/5 whitespace-nowrap py-2">
+                  <div className=" w-1/2 sm:w-3/5 whitespace-nowrap py-2">
                     <p className="text-sm text-left sm:text-right">
                       {sale.category}
                     </p>
                   </div>
-                  <div className="w-full sm:w-1/5"></div>
-                  <div className="w-full sm:w-1/5 bg-value py-2 px-3 text-right">
+                  <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                  <div className="w-1/2 sm:w-1/5 bg-value py-2 px-3 text-right">
                     <p className="text-sm">
-                      {formatCurrency(sale.salesIncome)}
+                      {formatCurrency(sale.salesIncome)} 
                     </p>
                   </div>
                 </div>
               ))}
 
-              <div className="flex flex-col sm:flex-row my-0 b-item">
-                <div className="w-full sm:w-3/5 sm:justify-end item-center flex px-0">
+              <div className="flex sm:flex-row my-0 b-item">
+                <div className="w-1/2 sm:w-3/5 sm:justify-end item-center flex px-0">
                   <p className="text-sm font-bold py-2 text-left sm:text-right">
                     Sales Income
                   </p>
                 </div>
-                <div className="w-full sm:w-1/5"></div>
-                <div className="w-full sm:w-1/5 py-2 px-2 bg-value item-center flex justify-end">
+                <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                <div className="w-1/2 sm:w-1/5 py-2 px-2 bg-value item-center flex justify-end">
                   <p className="text-sm font-bold">
                     {formatCurrency(salesIncome)}
                   </p>
@@ -128,82 +128,82 @@ const ProfitLoss = ({
               {details?.purchaseDetails.map((purchase) => (
                 <div
                   key={purchase.category}
-                  className="flex flex-col sm:flex-row my-0 b-item"
+                  className="flex sm:flex-row my-0 b-item"
                 >
-                  <div className="w-full sm:w-3/5 whitespace-nowrap py-2">
+                  <div className="w-1/2 sm:w-3/5 whitespace-nowrap py-2">
                     <p className="text-sm text-left sm:text-right">
                       {purchase.category}
                     </p>
                   </div>
-                  <div className="w-full sm:w-1/5"></div>
-                  <div className="w-full sm:w-1/5 bg-value py-2 px-3 text-right">
+                  <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                  <div className="w-1/2 sm:w-1/5 bg-value py-2 px-3 text-right">
                     <p className="text-sm">
                       {formatCurrency(purchase.totalCOGS)}
                     </p>
                   </div>
                 </div>
               ))}
-              <div className="flex flex-col sm:flex-row my-0 b-item">
-                <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
+              <div className="flex  sm:flex-row my-0 b-item">
+                <div className="w-1/2 sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm font-bold text-left sm:text-right">
                     Total Cost
                   </p>
                 </div>
-                <div className="w-full sm:w-1/5"></div>
-                <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
+                <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                <div className="w-1/2 sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
                   <p className="text-sm font-bold">
                     {formatCurrency(totalCost ?? 0)}
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row my-0 b-item">
-                <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
+              <div className="flex  sm:flex-row my-0 b-item">
+                <div className="w-1/2 sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm text-left sm:text-right">
                     Delivery Fee
                   </p>
                 </div>
-                <div className="w-full sm:w-1/5"></div>
-                <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
+                <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                <div className="w-1/2 sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
                   <p className="text-sm">
                     {formatCurrency(totalDelivery ?? 0)}
                   </p>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row my-0 b-item">
-                <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
+              <div className="flex sm:flex-row my-0 b-item">
+                <div className="w-1/2 sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm text-left sm:text-right">
                     Shipping Fee
                   </p>
                 </div>
-                <div className="w-full sm:w-1/5"></div>
-                <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
+                <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                <div className="w-1/2 sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
                   <p className="text-sm">
                     {formatCurrency(totalShippingFee ?? 0)}
                   </p>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row my-0 b-item">
-                <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
+              <div className="flex  sm:flex-row my-0 b-item">
+                <div className="w-1/2 sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm text-left sm:text-right">Service Fee</p>
                 </div>
-                <div className="w-full sm:w-1/5"></div>
-                <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
+                <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                <div className="w-1/2 sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
                   <p className="text-sm">
                     {formatCurrency(totalServiceFee ?? 0)}
                   </p>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row my-0 b-item">
-                <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
+              <div className="flex sm:flex-row my-0 b-item">
+                <div className="w-1/2 sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm font-bold text-left sm:text-right">
                     Total COGS
                   </p>
                 </div>
-                <div className="w-full sm:w-1/5"></div>
-                <div className="w-full sm:w-1/5 px-3 bg-value py-2 item-center flex justify-end">
+                <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                <div className="w-1/2 sm:w-1/5 px-3 bg-value py-2 item-center flex justify-end">
                   <p className="text-sm font-bold">
                     {formatCurrency(totalCOGS)}
                   </p>
@@ -220,26 +220,26 @@ const ProfitLoss = ({
               ].map(({ label, value }) => (
                 <div
                   key={label}
-                  className="flex flex-col sm:flex-row my-0 b-item"
+                  className="flex sm:flex-row my-0 b-item"
                 >
-                  <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
+                  <div className="w-1/2 sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                     <p className="text-sm text-left sm:text-right">{label}</p>
                   </div>
-                  <div className="w-full sm:w-1/5"></div>
-                  <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
+                  <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                  <div className="w-1/2 sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
                     <p className="text-sm">{formatCurrency(value ?? 0)}</p>
                   </div>
                 </div>
               ))}
 
-              <div className="flex flex-col sm:flex-row my-0 b-item">
-                <div className="w-full sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
+              <div className="flex  sm:flex-row my-0 b-item">
+                <div className="w-1/2 sm:w-3/5 py-2 sm:justify-end item-center flex px-0">
                   <p className="text-sm font-bold text-left sm:text-right">
                     Total Expense
                   </p>
                 </div>
-                <div className="w-full sm:w-1/5"></div>
-                <div className="w-full sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
+                <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                <div className="w-1/2 sm:w-1/5 py-2 px-3 bg-value item-center flex justify-end">
                   <p className="text-sm font-bold">
                     {formatCurrency(totalExpenses ?? 0)}
                   </p>
@@ -247,16 +247,16 @@ const ProfitLoss = ({
               </div>
 
               <div
-                className="flex flex-col sm:flex-row my-0 py-2"
+                className="flex sm:flex-row my-0 py-2"
                 style={{ backgroundColor: "#2c4375", color: "white" }}
               >
-                <div className="w-full sm:w-3/5 py-1 item-center flex px-3">
+                <div className="w-1/2 sm:w-3/5 py-1 item-center flex px-3">
                   <p className="font-bold text-left sm:text-right">
                     {netProfit < 0 ? "Loss" : "Net Profit"} :
                   </p>
                 </div>
-                <div className="w-full sm:w-1/5"></div>
-                <div className="w-full sm:w-1/5 py-1 px-3 item-center flex justify-end">
+                <div className="w-full sm:w-1/5 hidden sm:block"></div>
+                <div className="w-1/2 sm:w-1/5 py-1 px-3 item-center flex justify-end">
                   <p className="font-bold">{formatCurrency(netProfit ?? 0)}</p>
                 </div>
               </div>

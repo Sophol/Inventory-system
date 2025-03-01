@@ -36,7 +36,7 @@
     border-radius: 5px;
   }
  
-  .invoice-note{
+  .purchase-note{
     width:70%;
   }
   .invoice-total{
@@ -125,7 +125,7 @@
   .invoice-to, .bill-to{
     width:100%;
   }
-  .invoice-note {
+  .purchase-note {
     width: 100%;
 }  .invoice-total {
     width:100%;

@@ -59,8 +59,8 @@
     width:75%;
     display: flex; 
     /* align-items: center;   */
-    height: 200px; 
-    min-height: 200px;
+    height: 90px; 
+    min-height: 90px;
 
   }
   .invoice-total{
