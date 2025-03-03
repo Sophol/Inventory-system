@@ -341,3 +341,11 @@ interface UserParams {
 interface DeleteUserParams {
   userId: string;
 }
+
+interface ProfileParams {
+  userId: string;
+  name: string;
+  password: string;
+  email: string;
+  image?: string;
+}

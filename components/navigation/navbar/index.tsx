@@ -10,7 +10,7 @@ const NavBar = async () => {
     <div className="flex h-16 items-center gap-4 border-b px-4">
       <SidebarTrigger />
       <div className="flex-1">
-        <Input placeholder="Search products..." className="max-w-sm" />
+        <Input placeholder="Search products..." className="max-w-sm hidden" />
       </div>
       {/* <Theme /> */}
       <Language />

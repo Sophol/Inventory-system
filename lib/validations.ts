@@ -75,6 +75,27 @@ export const SignUpSchema = z.object({
   //   message: "Password must contain at least one special character.",
   // }),
 });
+export const ProfileSchema = z.object({
+  userId: z.string().min(1, { message: "User ID is required." }),
+  name: z
+    .string()
+    .min(1, { message: "Name is required." })
+    .max(50, { message: "Name cannot exceed 50 characters." })
+    .regex(/^[a-zA-Z\s]+$/, {
+      message: "Name can only contain letters and spaces.",
+    }),
+
+  email: z
+    .string()
+    .min(1, { message: "Email is required." })
+    .email({ message: "Please provide a valid email address." }),
+
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long." })
+    .max(100, { message: "Password cannot exceed 100 characters." }),
+  image: z.string().optional(),
+});
 export const UserSchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
   username: z

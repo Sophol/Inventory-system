@@ -5,9 +5,12 @@ import handleError from "../handlers/error";
 import {
   DeleteUserParamSchema,
   PaginatedSearchParamsSchema,
+  ProfileSchema,
 } from "../validations";
 import { Account, Salary, Sale, User } from "@/database";
 import { auth } from "@/auth";
+import { NotFoundError } from "../http-errors";
+import bcrypt from "bcryptjs";
 
 export async function getUsers(
   params: PaginatedSearchParams
@@ -158,5 +161,83 @@ export async function deleteUser(
     return handleError(error) as ErrorResponse;
   } finally {
     await session.endSession();
+  }
+}
+export async function updateProfile(
+  params: ProfileParams
+): Promise<ActionResponse<User>> {
+  const validatedData = await action({
+    params,
+    schema: ProfileSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { userId, name, email, password, image } = validatedData.params!;
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const existingUser = await User.findById(userId).session(session);
+
+    if (!existingUser) {
+      throw new NotFoundError("User");
+    }
+    const updatedData: {
+      name?: string;
+      email?: string;
+      image?: string;
+    } = {};
+
+    if (existingUser.name !== name) updatedData.name = name;
+    if (existingUser.image !== image) updatedData.image = image;
+    if (existingUser.email !== email) updatedData.email = email;
+
+    if (Object.keys(updatedData).length > 0) {
+      await User.updateOne(
+        { _id: existingUser._id },
+        { $set: updatedData }
+      ).session(session);
+    }
+
+    const existingAccount = await Account.findOne({
+      userId: existingUser._id,
+      provider: "credentials",
+      providerAccountId: email,
+    }).session(session);
+
+    if (!existingAccount) {
+      await Account.create(
+        [
+          {
+            userId: existingUser._id,
+            name,
+            image,
+            provider: "credentials",
+            providerAccountId: email,
+          },
+        ],
+        { session }
+      );
+    } else {
+      if (password !== undefined || password !== null || password !== "") {
+        const hashPassword = await bcrypt.hash(password, 12);
+        await Account.updateOne(
+          { _id: existingAccount._id },
+          { $set: { password: hashPassword } }
+        ).session(session);
+      }
+    }
+    await session.commitTransaction();
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(existingUser)),
+    };
+  } catch (error: unknown) {
+    await session.abortTransaction();
+    return handleError(error, "api") as APIErrorResponse;
+  } finally {
+    session.endSession();
   }
 }
