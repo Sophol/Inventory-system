@@ -24,7 +24,6 @@ import FormPurchaseDetail from "../formInputs/FormPurchaseDetail";
 import { getProduct, getProducts } from "@/lib/actions/product.action";
 import { getUnits } from "@/lib/actions/unit.action";
 import { generateUniqueReference } from "@/lib/utils";
-import { getCustomers } from "@/lib/actions/customer.action";
 import { useTranslations } from "next-intl";
 
 interface Params {
@@ -48,7 +47,6 @@ const PurchaseForm = ({
     defaultValues: {
       supplier: purchase?.supplier._id || "",
       branch: purchase?.branch._id || "",
-      customer: purchase?.customer?._id || "",
       referenceNo:
         purchase?.referenceNo || generateUniqueReference({ prefix: "PO" }),
       description: purchase?.description || "",
@@ -70,7 +68,7 @@ const PurchaseForm = ({
       orderStatus: purchase?.orderStatus || "pending",
       paymentStatus: purchase?.paymentStatus || "completed",
       purchaseDetails: purchase?.purchaseDetails || [
-        { product: "", unit: "", qty: 0, cost: 0, total: 0 },
+        { product: "", unit: "", qty: 1, cost: 0, total: 0 },
       ],
     },
   });
@@ -242,29 +240,6 @@ const PurchaseForm = ({
     }
     return { data: [], isNext: false };
   };
-  const fetchCustomers = async ({
-    page,
-    query,
-  }: {
-    page: number;
-    query: string;
-  }) => {
-    const { success, data } = await getCustomers({
-      page: Number(page) || 1,
-      pageSize: 10,
-      query: query || "",
-      isDepo: true,
-    });
-    if (success) {
-      const customers =
-        data?.customers.map((customer) => ({
-          _id: customer._id,
-          title: customer.name, // Assuming 'name' is the correct field for title
-        })) || [];
-      return { data: customers, isNext: data?.isNext || false };
-    }
-    return { data: [], isNext: false };
-  };
   return (
     <Form {...form}>
       <form
@@ -316,27 +291,13 @@ const PurchaseForm = ({
             type="number"
           />
         </div>
-        <div className="grid grid-cols-3 gap-2 md:grid-cols-3">
-          <FormCombobox
+        <div className="grid grid-cols-1">
+          <FormInput
+            name="description"
+            label={t("description")}
             control={form.control}
-            name="customer"
-            label={t("customer")}
-            // placeholder="Select Branch"
-            fetchSingleItem={
-              purchase && purchase.customer ? purchase.customer : null
-            }
             isRequired={false}
-            fetchData={fetchCustomers}
-            setValue={form.setValue} // Replace with actual branch data
           />
-          <div className="col-span-2">
-            <FormInput
-              name="description"
-              label={t("description")}
-              control={form.control}
-              isRequired={false}
-            />
-          </div>
         </div>
         <div className="grid grid-cols-1">
           <Card className="text-[12px]">

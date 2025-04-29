@@ -56,10 +56,15 @@ const ROUTES = {
   SALARYEXPS: "/expenses/salary",
   ADDSALARYEXP: "/expenses/salary/form",
   SALARYEXP: (_id: string) => `/expenses/salary/${_id}`,
+  PRODUCTBYCATID: (categoryId: string) =>
+    `/product/category?categoryId=${categoryId}`,
 
   PRODUCTREPORT: "/reports/product",
   PURCHASEREPORT: "/reports/purchase",
   SALEREPORT: "/reports/sale",
   PROFITREPORT: "/reports/profit",
+
+  //client
+  CLIENTPRODUCT: (_id: string) => `/product/${_id}`,
 };
 export default ROUTES;

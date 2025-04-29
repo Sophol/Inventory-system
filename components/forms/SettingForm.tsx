@@ -42,6 +42,15 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
       bankName: setting?.bankName || "",
       bankAccount: setting?.bankAccount || "",
       bankNumber: setting?.bankNumber || "",
+      phone1: setting?.phone1 || "",
+      email: setting?.email || "",
+      website: setting?.website || "",
+      facebook: setting?.facebook || "",
+      instagram: setting?.instagram || "",
+      telegram: setting?.telegram || "",
+      tiktok: setting?.tiktok || "",
+      lat: setting?.lat || 0,
+      lng: setting?.lng || 0,
     },
   });
   const handleEditSetting = async (data: z.infer<typeof EditSettingSchema>) => {
@@ -88,28 +97,54 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
             label={t("companyLogo")}
             control={form.control}
           />
+          <FormInput name="email" label={t("email")} control={form.control} />
         </div>
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <FormInput
-            name="bankName"
-            label={t("bankName")}
+            name="facebook"
+            label={t("facebook")}
             control={form.control}
+            isRequired={false}
           />
           <FormInput
-            name="bankAccount"
-            label={t("bankAccount")}
+            name="instagram"
+            label={t("instagram")}
             control={form.control}
+            isRequired={false}
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          <FormInput
+            name="telegram"
+            label={t("telegram")}
+            control={form.control}
+            isRequired={false}
           />
           <FormInput
-            name="bankNumber"
-            label={t("bankNumber")}
+            name="website"
+            label={t("website")}
             control={form.control}
+            isRequired={false}
           />
         </div>
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <FormInput
             name="phone"
             label={t("companyPhone")}
+            control={form.control}
+          />
+          <FormInput
+            name="phone1"
+            label={t("phone1")}
+            isRequired={false}
+            control={form.control}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          <FormInput
+            name="companyOwner"
+            label={t("companyOwner")}
             control={form.control}
           />
           <FormInput
@@ -120,17 +155,20 @@ const SettingForm = ({ setting, isEdit = false }: Params) => {
         </div>
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <FormInput
-            name="companyOwner"
-            label={t("companyOwner")}
+            name="lat"
+            label={t("lat")}
+            type="number"
+            isRequired={false}
             control={form.control}
           />
           <FormInput
-            name="vat_number"
-            label={t("vat/gstNumber")}
+            name="lng"
+            label={t("lng")}
+            type="number"
             control={form.control}
+            isRequired={false}
           />
         </div>
-
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <FormInput
             name="exchangeRateD"

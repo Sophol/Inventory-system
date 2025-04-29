@@ -53,6 +53,7 @@ interface CreateProductParams {
   qtyOnHand: number;
   alertQty: number;
   status: "active" | "inactive";
+  product_images?: string[];
 }
 interface EditProductParams extends CreateProductParams {
   productId: string;
@@ -181,9 +182,18 @@ interface EditSettingParams {
   vat_number: string;
   exchangeRateD: number;
   exchangeRateT: number;
-  bankName: string;
-  bankAccount: string;
-  bankNumber: string;
+  bankName?: string;
+  bankAccount?: string;
+  bankNumber?: string;
+  phone1?: string;
+  email: string;
+  website?: string;
+  facebook?: string;
+  instagram?: string;
+  telegram?: string;
+  tiktok?: string;
+  lat?: number;
+  lng?: number;
 }
 
 interface SaleDetailParams {

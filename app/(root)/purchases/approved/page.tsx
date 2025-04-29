@@ -52,7 +52,7 @@ const PurchaseReport = async ({ searchParams }: SearchParams) => {
 
   const summaryRow = (
     <TableRow className="bg-blue-200 dark:bg-slate-800">
-      <TableCell colSpan={7} className="text-right">
+      <TableCell colSpan={6} className="text-right">
         <strong className="px-4">Total:</strong>
       </TableCell>
       <TableCell className="text-right">

@@ -52,6 +52,14 @@ export async function editSetting(
     bankName,
     bankAccount,
     bankNumber,
+    phone1,
+    email,
+    website,
+    facebook,
+    instagram,
+    telegram,
+    lat,
+    lng,
   } = validatedData.params!;
   try {
     const setting = await Setting.findById(settingId);
@@ -70,7 +78,14 @@ export async function editSetting(
       setting.vat_number !== vat_number ||
       setting.bankName !== bankName ||
       setting.bankAccount !== bankAccount ||
-      setting.bankNumber !== bankNumber
+      setting.phone1 !== phone1 ||
+      setting.email !== email ||
+      setting.website !== website ||
+      setting.facebook !== facebook ||
+      setting.instagram !== instagram ||
+      setting.telegram !== telegram ||
+      setting.lat !== lat ||
+      setting.lng !== lng
     ) {
       setting.companyName = companyName;
       setting.companyNameEnglish = companyNameEnglish;
@@ -84,6 +99,14 @@ export async function editSetting(
       setting.bankName = bankName;
       setting.bankAccount = bankAccount;
       setting.bankNumber = bankNumber;
+      setting.phone1 = phone1;
+      setting.email = email;
+      setting.website = website;
+      setting.facebook = facebook;
+      setting.instagram = instagram;
+      setting.telegram = telegram;
+      setting.lat = lat;
+      setting.lng = lng;
       await setting.save();
     }
     return { success: true, data: JSON.parse(JSON.stringify(setting)) };

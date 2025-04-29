@@ -109,6 +109,7 @@ interface Product {
   status: "active" | "inactive";
   categoryTitle?: string;
   qtySmallUnit?: number;
+  product_images?: string[];
 }
 
 interface Branch {
@@ -294,6 +295,15 @@ interface Setting {
   bankName: string;
   bankAccount: string;
   bankNumber: string;
+  phone1: string;
+  email: string;
+  website: string;
+  facebook: string;
+  instagram: string;
+  telegram: string;
+  tiktok: string;
+  lat: number;
+  lng: number;
 }
 interface User {
   _id: string;

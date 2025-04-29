@@ -207,6 +207,23 @@
     "preahsihanouk": "Preah Sihanouk",
     "preyveng": "Prey Veng",
     "svayrieng": "Svay Rieng",
-    "takéo": "Takéo"
+    "takéo": "Takéo",
+    "scanBarcode": "Scan Barcode",
+    "scanBarcodeHere": "Scan Barcode Here",
+    "scanBarcodeInstruction": "Please scan the barcode of the product",
+    "scanBarcodeInstructionHere": "Please scan the barcode of the product here",
+    "scanOrEnterProduct": "Scan or Enter Product",
+    "scan": "Scan",
+    "scanning": "Scanning",
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "focusBarcodeInput": "Focus Barcode Input",
+    "addNewRow": "Add New Row",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "website": "Website",
+    "telegram": "Telegram",
+    "phone1": "Phone 1",
+    "lat": "Latitude",
+    "lng": "Longtitude"
   }
 }

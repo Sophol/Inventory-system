@@ -58,7 +58,9 @@ function FormCombobox<T extends FieldValues>({
   const [isNext, setIsNext] = useState(false);
   const [query, setQuery] = useState("");
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [popoverWidth, setPopoverWidth] = useState<string | undefined>(undefined);
+  const [popoverWidth, setPopoverWidth] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (buttonRef.current) {
@@ -92,14 +94,15 @@ function FormCombobox<T extends FieldValues>({
     setPage(newPage);
     handleFetchData(newPage, query, parentId);
   };
-
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
         <FormItem className="text-[11px] flex w-full flex-col ">
-          <FormLabel className={`text-[11px] text-dark400_light800 mb-1 ${labelClass}`}>
+          <FormLabel
+            className={`text-[11px] text-dark400_light800 mb-1 ${labelClass}`}
+          >
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Popover>
@@ -126,11 +129,16 @@ function FormCombobox<T extends FieldValues>({
                     )}
                   >
                     <div className="flex justify-between items-center w-full ">
-                      <span className=" text-[10px]">{field.value ? data.find((item) => item._id === field.value)?.title : ''}</span>
-                      <ChevronDown className={`opacity-50 text-[10px]  ${!field.value ? 'ml-auto' : ''}`} />
+                      <span className=" text-[10px]">
+                        {field.value
+                          ? data.find((item) => item._id === field.value)?.title
+                          : ""}
+                      </span>
+                      <ChevronDown
+                        className={`opacity-50 text-[10px]  ${!field.value ? "ml-auto" : ""}`}
+                      />
                     </div>
                   </Button>
-
                 )}
               </FormControl>
             </PopoverTrigger>
@@ -150,7 +158,7 @@ function FormCombobox<T extends FieldValues>({
                   <CommandGroup>
                     {data.map((item) => (
                       <CommandItem
-                      className="text-[11px]"
+                        className="text-[11px]"
                         value={item.title}
                         key={item._id}
                         onSelect={() => {

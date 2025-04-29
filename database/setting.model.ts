@@ -10,9 +10,18 @@ export interface ISetting {
   vat_number: string;
   exchangeRateD: number;
   exchangeRateT: number;
-  bankName: string;
-  bankAccount: string;
-  bankNumber: string;
+  bankName?: string;
+  bankAccount?: string;
+  bankNumber?: string;
+  phone1?: string;
+  email: string;
+  website?: string;
+  facebook?: string;
+  instagram?: string;
+  telegram?: string;
+  tiktok?: string;
+  lat?: number;
+  lng?: number;
 }
 export interface ISettingDoc extends ISetting, Document {}
 const AccountSchema = new Schema<ISetting>(
@@ -29,6 +38,15 @@ const AccountSchema = new Schema<ISetting>(
     bankNumber: { type: String },
     exchangeRateD: { type: Number, required: true, default: 0 },
     exchangeRateT: { type: Number, required: true, default: 0 },
+    phone1: { type: String },
+    email: { type: String, required: true, unique: true },
+    facebook: { type: String },
+    website: { type: String },
+    instagram: { type: String },
+    tiktok: { type: String },
+    telegram: { type: String },
+    lat: { type: Number },
+    lng: { type: Number },
   },
   { timestamps: true }
 );

@@ -10,6 +10,7 @@ export interface IProduct {
   qtyOnHand: number;
   alertQty: number;
   status: "active" | "inactive";
+  product_images: string[];
 }
 export interface IProductDoc extends IProduct, Document {}
 const ProductSchema = new Schema<IProduct>(
@@ -22,6 +23,7 @@ const ProductSchema = new Schema<IProduct>(
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     qtyOnHand: { type: Number, default: 0 },
     alertQty: { type: Number, default: 0 },
+    product_images: { type: [String] },
     status: {
       type: String,
       enum: ["active", "inactive"],

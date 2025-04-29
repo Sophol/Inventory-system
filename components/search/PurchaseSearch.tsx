@@ -12,7 +12,6 @@ import { Button } from "../ui/button";
 import { getSuppliers } from "@/lib/actions/supplier.action";
 import { DatePickerWithRange } from "./DatePickerWithRange";
 import { DateRange } from "react-day-picker";
-import { getCustomers } from "@/lib/actions/customer.action";
 import { useTranslations } from "next-intl";
 
 interface ProductSearchProps {
@@ -181,30 +180,6 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
       isNext: data?.isNext || false,
     };
   };
-  const handleFetchCustomers = async ({
-    page,
-    query,
-  }: {
-    page: number;
-    query: string;
-    parentId?: string;
-  }) => {
-    const { success, data } = await getCustomers({
-      page,
-      pageSize: 10,
-      query,
-      isDepo: true,
-    });
-    return {
-      data: success
-        ? data?.customers.map((customer: Customer) => ({
-            _id: customer._id,
-            title: customer.name,
-          })) || []
-        : [],
-      isNext: data?.isNext || false,
-    };
-  };
 
   const handleFetchBranches = async ({
     page,
@@ -224,10 +199,6 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const handleSupplierChange = (value: string) => {
     form.setValue("supplier", value);
     setSearchSupplier(value);
-  };
-  const handleCustomerChange = (value: string) => {
-    form.setValue("customer", value);
-    setSearchCustomer(value);
   };
 
   const handleBranchChange = (value: string) => {
@@ -308,18 +279,6 @@ const PurchaseSearch = ({ route, otherClasses }: ProductSearchProps) => {
             setValue={(name, value) => {
               form.setValue(name, value);
               handleBranchChange(value);
-            }}
-          />
-          <FormCombobox
-            control={form.control}
-            name="customer"
-            label={t("customer")}
-            fetchSingleItem={null}
-            isRequired={false}
-            fetchData={handleFetchCustomers}
-            setValue={(name, value) => {
-              form.setValue(name, value);
-              handleCustomerChange(value);
             }}
           />
         </div>

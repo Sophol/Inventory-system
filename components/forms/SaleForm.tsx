@@ -79,7 +79,7 @@ const SaleForm = ({
         {
           product: "",
           unit: "",
-          qty: 0,
+          qty: 1,
           cost: 0,
           price: 0,
           totalCost: 0,
@@ -144,7 +144,7 @@ const SaleForm = ({
             {
               product: "",
               unit: "",
-              qty: 0,
+              qty: 1,
               cost: 0,
               price: 0,
               totalCost: 0,

@@ -208,6 +208,23 @@
     "preahsihanouk": "ព្រះសីហនុ",
     "preyveng": "ព្រៃវែង",
     "svayrieng": "ស្វាយរៀង",
-    "takéo": "តាកែវ"
+    "takéo": "តាកែវ",
+    "scanBarcode": "ស្វែងរកលេខកូដ",
+    "scanBarcodeHere": "ស្វែងរកលេខកូដនៅទីនេះ",
+    "scanBarcodeInstruction": "សូមស្វែងរកលេខកូដផលិតផល",
+    "scanBarcodeInstructionHere": "សូមស្វែងរកលេខកូដផលិតផលនៅទីនេះ",
+    "scanOrEnterProduct": "ស្វែងរកឬបញ្ចូលផលិតផល",
+    "scan": "ស្វែងរក",
+    "scanning": "ការស្វែងរក",
+    "keyboardShortcuts": "Short Cuts",
+    "focusBarcodeInput": "focusBarcodeInput",
+    "addNewRow": "បន្ថែមជួរថ្មី",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "website": "Website",
+    "telegram": "Telegram",
+    "phone1": "លេខទូរស័ព្ទ 1",
+    "lat": "Latitude",
+    "lng": "Longtitude"
   }
 }

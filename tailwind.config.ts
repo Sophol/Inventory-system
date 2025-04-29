@@ -1,21 +1,18 @@
 import type { Config } from "tailwindcss";
-import tailwindcssAnimate from "tailwindcss-animate";
-import tailwindTypography from "@tailwindcss/typography";
 
 const config: Config = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./columns/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
         primary: {
-          "100": "#E6FFE6",
-          "500": "#006400",
+          "100": "#FFF1E6",
+          "500": "#FF7000",
         },
         dark: {
           "100": "#000000",
@@ -27,21 +24,10 @@ const config: Config = {
         light: {
           "400": "#858EAD",
           "500": "#7B8EC8",
-          "600": "#dfe2eb",
           "700": "#F4F6F8",
           "800": "#F4F6F8",
           "850": "#FDFDFD",
           "900": "#FFFFFF",
-        },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
         },
       },
       borderRadius: {
@@ -69,10 +55,9 @@ const config: Config = {
       fontFamily: {
         inter: ["var(--font-inter)"],
         "space-grotesk": ["var(--font-space-grotesk)"],
-        moul: "var(--font-moulregular)",
       },
     },
   },
-  plugins: [tailwindcssAnimate, tailwindTypography],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 };
 export default config;

@@ -205,6 +205,7 @@ export const CreateProductSchema = z.object({
   qtyOnHand: z.number().default(0),
   alertQty: z.number().default(0),
   status: z.enum(["active", "inactive"]).default("active"),
+  product_images: z.array(z.string()).optional(),
 });
 export const EditProductSchema = CreateProductSchema.extend({
   productId: z.string().min(1, { message: "Unit ID is required." }),
@@ -285,7 +286,7 @@ export const CreatePurchaseSchema = z.object({
   supplier: z.string().min(1, "Supplier is required"),
   branch: z.string().min(1, "Branch is required"),
   referenceNo: z.string().min(1, "Reference number is required"),
-  customer: z.string().optional(),
+  //customer: z.string().optional(),
   description: z.string().optional(),
   purchaseDate: z.date(),
   discount: z.number().min(0).default(0),
@@ -328,13 +329,22 @@ export const EditSettingSchema = z.object({
   companyLogo: z.string().min(1, "Company Logo is required"),
   address: z.string().min(1, "Address is required"),
   phone: z.string().min(1, "Phone is required"),
+  phone1: z.string().optional(),
+  email: z.string().email("Invalid email"),
+  website: z.string().optional(),
+  facebook: z.string().optional(),
+  instagram: z.string().optional(),
+  telegram: z.string().optional(),
+  tiktok: z.string().optional(),
+  lat: z.number().optional(),
+  lng: z.number().optional(),
   companyOwner: z.string().min(1, "companyOwner is required"),
   vat_number: z.string().min(1, "vat_number is required"),
   exchangeRateD: z.number().min(0).default(0),
   exchangeRateT: z.number().min(0).default(0),
-  bankAccount: z.string().min(1, "bankAccount is required"),
-  bankName: z.string().min(1, "bankName is required"),
-  bankNumber: z.string().min(1, "bankNumber is required"),
+  bankAccount: z.string().optional(),
+  bankName: z.string().optional(),
+  bankNumber: z.string().optional(),
 });
 
 export const SaleDetailSchema = z.object({

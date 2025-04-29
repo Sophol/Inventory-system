@@ -73,20 +73,6 @@ export const PurchaseColumn: ColumnDef<Purchase>[] = [
     },
   },
   {
-    accessorKey: "customer",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Depo"
-        className="flex justify-center"
-      />
-    ),
-    cell: ({ row }) => {
-      const purchase = row.original;
-      return purchase.customer ? purchase.customer.title : "";
-    },
-  },
-  {
     accessorKey: "purchaseDate",
     header: ({ column }) => (
       <DataTableColumnHeader

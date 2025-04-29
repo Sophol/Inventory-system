@@ -44,7 +44,7 @@ function FormUnitVariant<T extends FieldValues>({
   const t = useTranslations("erp");
   return (
     <div className="flex flex-col gap-2 justify-start">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
         {fields.map((field, index) => {
           const selectedData = {
             _id: (field as any).unit,
@@ -79,12 +79,12 @@ function FormUnitVariant<T extends FieldValues>({
                 label={t("price")}
                 control={control}
               />
-              <FormInput
+              {/* <FormInput
                 type="number"
                 name={`${name}.${index}.wholeSalePrice` as Path<T>}
                 label={t("wholeSalePrice")}
                 control={control}
-              />
+              /> */}
               <Button
                 type="button"
                 variant="ghost"
