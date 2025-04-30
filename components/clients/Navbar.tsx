@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
@@ -29,37 +28,37 @@ const NavBar = async () => {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
-                <Link href="/" legacyBehavior passHref>
-                  <NavigationMenuLink className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-primary-100 hover:text-primary-500 focus:bg-primary-100 focus:text-primary-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary-100 data-[state=open]:bg-primary-100">
-                    Home
-                  </NavigationMenuLink>
+                <Link
+                  href="/"
+                  className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-primary-100 hover:text-primary-500 focus:bg-primary-100 focus:text-primary-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary-100 data-[state=open]:bg-primary-100"
+                >
+                  Home
                 </Link>
               </NavigationMenuItem>
               {categories.map((category) => (
                 <NavigationMenuItem key={category._id}>
                   <Link
                     href={ROUTES.PRODUCTBYCATID(category._id)}
-                    legacyBehavior
-                    passHref
+                    className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-primary-100 hover:text-primary-500 focus:bg-primary-100 focus:text-primary-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary-100 data-[state=open]:bg-primary-100"
                   >
-                    <NavigationMenuLink className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-primary-100 hover:text-primary-500 focus:bg-primary-100 focus:text-primary-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary-100 data-[state=open]:bg-primary-100">
-                      {category.title}
-                    </NavigationMenuLink>
+                    {category.title}
                   </Link>
                 </NavigationMenuItem>
               ))}
               <NavigationMenuItem>
-                <Link href="/contact " legacyBehavior passHref>
-                  <NavigationMenuLink className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-primary-100 hover:text-primary-500 focus:bg-primary-100 focus:text-primary-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary-100 data-[state=open]:bg-primary-100">
-                    Contact Us
-                  </NavigationMenuLink>
+                <Link
+                  href="/contact"
+                  className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-primary-100 hover:text-primary-500 focus:bg-primary-100 focus:text-primary-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary-100 data-[state=open]:bg-primary-100"
+                >
+                  Contact Us
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/about" legacyBehavior passHref>
-                  <NavigationMenuLink className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-primary-100 hover:text-primary-500 focus:bg-primary-100 focus:text-primary-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary-100 data-[state=open]:bg-primary-100">
-                    About Us
-                  </NavigationMenuLink>
+                <Link
+                  href="/about"
+                  className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-primary-100 hover:text-primary-500 focus:bg-primary-100 focus:text-primary-500 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary-100 data-[state=open]:bg-primary-100"
+                >
+                  About Us
                 </Link>
               </NavigationMenuItem>
             </NavigationMenuList>

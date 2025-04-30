@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import logo_new from "./logo_new.png";
 import search_icon from "./search_icon.svg";
 import user_icon from "./user_icon.svg";
@@ -15,28 +14,13 @@ import arrow_icon from "./arrow_icon.svg";
 import increase_arrow from "./increase_arrow.svg";
 import decrease_arrow from "./decrease_arrow.svg";
 import arrow_right_icon_colored from "./arrow_right_icon_colored.svg";
-import my_location_image from "./my_location_image.svg";
 import arrow_icon_white from "./arrow_icon_white.svg";
 import heart_icon from "./heart_icon.svg";
 import star_icon from "./star_icon.svg";
 import redirect_icon from "./redirect_icon.svg";
 import star_dull_icon from "./star_dull_icon.svg";
-import header_headphone_image from "./header_headphone_image.png";
-import header_playstation_image from "./header_playstation_image.png";
-import header_macbook_image from "./header_macbook_image.png";
-import macbook_image from "./macbook_image.png";
-import bose_headphone_image from "./bose_headphone_image.png";
-import samsung_s23phone_image from "./samsung_s23phone_image.png";
-import venu_watch_image from "./venu_watch_image.png";
-import upload_area from "./upload_area.png";
-import projector_image from "./projector_image.png";
-import playstation_image from "./playstation_image.png";
-import girl_with_headphone_image from "./girl_with_headphone_image.png";
-import girl_with_earphone_image from "./girl_with_earphone_image.png";
-import checkmark from "./checkmark.png";
 
 export const assets = {
-  logo,
   search_icon,
   user_icon,
   cart_icon,
@@ -52,25 +36,11 @@ export const assets = {
   increase_arrow,
   decrease_arrow,
   arrow_right_icon_colored,
-  my_location_image,
   arrow_icon_white,
   heart_icon,
   star_icon,
   redirect_icon,
   star_dull_icon,
-  header_headphone_image,
-  header_playstation_image,
-  header_macbook_image,
-  macbook_image,
-  bose_headphone_image,
-  samsung_s23phone_image,
-  venu_watch_image,
-  upload_area,
-  projector_image,
-  playstation_image,
-  girl_with_headphone_image,
-  girl_with_earphone_image,
-  checkmark,
   logo_new,
 };
 
