@@ -1,38 +1,42 @@
-import { assets } from "@/assets/assets";
 import Image from "next/image";
 
 const About = () => {
+  const image1 = "/uploads/homeSlides/baby_clothes.png";
+  const image2 = "/uploads/homeSlides/kirkland.png";
+  const image3 = "/uploads/homeSlides/smooth_lotion.jpg";
   return (
     <section className="py-10 md:py-20">
       <div className="container mx-auto px-4">
         <div className="flex flex-col xl:flex-row gap-8 items-center">
           {/* Image Column - Using Flexbox */}
           <div className="w-full xl:w-1/2">
-            <div className="relative flex flex-wrap h-[500px]">
+            <div className="relative flex flex-wrap xl:h-[500px] h-[300px]">
               {/* Main vertical image (v-img) */}
-              <div className="w-[70%] h-full relative">
+              <div className="w-[60%] h-full relative">
                 <Image
-                  src="https://images.unsplash.com/photo-1612839629080-4f2a1b5c3d7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
-                  className="w-full h-full object-cover rounded-lg shadow-lg"
+                  width={500}
+                  height={500}
+                  src={image1}
+                  className="w-full h-full object-contain rounded-lg shadow-lg"
                   alt="about"
                 />
               </div>
 
               {/* Right side images container */}
-              <div className="w-[50%] h-full absolute right-0 flex flex-col justify-between py-8">
+              <div className="w-[40%] h-full absolute right-0 flex flex-col justify-between px-2">
                 {/* First horizontal image (h-img) */}
-                <div className="w-full h-[48%]">
+                <div className="w-full grid grid-rows-2 gap-2">
                   <Image
-                    src="https://images.unsplash.com/photo-1612839629080-4f2a1b5c3d7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+                    src={image2}
+                    width={500}
+                    height={500}
                     className="w-full h-full object-cover rounded-lg shadow-lg"
                     alt="about details"
                   />
-                </div>
-
-                {/* Second horizontal image (h-img) */}
-                <div className="w-full h-[48%]">
                   <Image
-                    src="https://images.unsplash.com/photo-1612839629080-4f2a1b5c3d7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+                    src={image3}
+                    width={500}
+                    height={500}
                     className="w-full h-full object-cover rounded-lg shadow-lg"
                     alt="about team"
                   />

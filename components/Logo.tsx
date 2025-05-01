@@ -11,7 +11,7 @@ const Logo = () => {
           <Image className="w-10" src={assets.logo_new} alt="logo" />
         </span>
       </div>
-      <span className="font-bold text-xl">Mommy & Me</span>
+      <span className="font-bold text-xl min-xl:hidden">Mommy&Me</span>
     </Link>
   );
 };
