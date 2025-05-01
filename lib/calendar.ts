@@ -32,7 +32,7 @@ export const generateDisabledDates = (
   disabledDays.forEach((range) => {
     if (!range.from || !range.to) return;
 
-    let currentDate = new Date(range.from);
+    const currentDate = new Date(range.from);
     const endDate = new Date(range.to);
 
     while (currentDate <= endDate) {

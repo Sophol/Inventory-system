@@ -12,7 +12,7 @@ const About = () => {
               {/* Main vertical image (v-img) */}
               <div className="w-[70%] h-full relative">
                 <Image
-                  src={assets.girl_with_earphone_image}
+                  src="https://images.unsplash.com/photo-1612839629080-4f2a1b5c3d7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
                   className="w-full h-full object-cover rounded-lg shadow-lg"
                   alt="about"
                 />
@@ -23,7 +23,7 @@ const About = () => {
                 {/* First horizontal image (h-img) */}
                 <div className="w-full h-[48%]">
                   <Image
-                    src={assets.header_playstation_image}
+                    src="https://images.unsplash.com/photo-1612839629080-4f2a1b5c3d7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
                     className="w-full h-full object-cover rounded-lg shadow-lg"
                     alt="about details"
                   />
@@ -32,7 +32,7 @@ const About = () => {
                 {/* Second horizontal image (h-img) */}
                 <div className="w-full h-[48%]">
                   <Image
-                    src={assets.girl_with_headphone_image}
+                    src="https://images.unsplash.com/photo-1612839629080-4f2a1b5c3d7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
                     className="w-full h-full object-cover rounded-lg shadow-lg"
                     alt="about team"
                   />

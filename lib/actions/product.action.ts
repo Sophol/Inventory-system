@@ -385,7 +385,10 @@ export async function editProduct(
 
       const unitsToRemove = product.units.filter(
         (unit: Unit) =>
-          !units.some((u) => u.unit.toString() === unit._id.toString())
+          !units.some(
+            (u: { unit: mongoose.Types.ObjectId }) =>
+              u.unit.toString() === unit._id.toString()
+          )
       );
 
       if (unitsToRemove.length > 0) {

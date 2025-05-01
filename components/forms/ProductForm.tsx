@@ -24,29 +24,6 @@ import FormUnitVariant from "../formInputs/FormUnitVariant";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useTranslations } from "use-intl";
 import Image from "next/image";
-import { assets } from "@/assets/assets";
-
-interface Product {
-  _id: string;
-  title: string;
-  status: string;
-  code: string;
-  description: string;
-  image: string;
-  units: {
-    unit: string;
-    qty: number;
-    cost: number;
-    price: number;
-    wholeSalePrice: number;
-    level: number;
-  }[];
-  category: string;
-  categoryTitle: string;
-  qtyOnHand: number;
-  alertQty: number;
-  product_images: string[];
-}
 
 interface SelectData {
   _id: string;
@@ -339,7 +316,7 @@ const ProductForm = ({ product, isEdit = false }: Params) => {
                       ) : (
                         <Image
                           className="w-16 h-16 object-contain"
-                          src={assets.upload_area || "/placeholder.svg"}
+                          src="/placeholder.svg"
                           alt="Upload"
                           width={64}
                           height={64}

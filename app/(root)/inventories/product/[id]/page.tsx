@@ -6,7 +6,7 @@ import { checkAuthorization } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 import { IoCaretBackOutline } from "react-icons/io5";
 
-const EditCatgory = async ({ params }: RouteParams) => {
+const EditProduct = async ({ params }: RouteParams) => {
   const isAuthorized = await checkAuthorization(["admin", "branch", "stock"]);
   if (!isAuthorized) {
     return redirect("/unauthorized");
@@ -28,4 +28,4 @@ const EditCatgory = async ({ params }: RouteParams) => {
     </CardContainer>
   );
 };
-export default EditCatgory;
+export default EditProduct;
