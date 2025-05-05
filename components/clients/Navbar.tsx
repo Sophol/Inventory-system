@@ -7,13 +7,13 @@ import {
 } from "@/components/ui/navigation-menu";
 
 import Logo from "@/components/Logo";
-import { getCategories } from "@/lib/actions/category.action";
+import { getCategoryCleint } from "@/lib/actions/category.action";
 import { notFound } from "next/navigation";
 import ROUTES from "@/constants/routes";
 import MobileNavigation from "./MobileNavigation";
 
 const NavBar = async () => {
-  const { success, data } = await getCategories({
+  const { success, data } = await getCategoryCleint({
     page: 1,
     pageSize: 5,
     query: "",
