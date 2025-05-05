@@ -168,3 +168,64 @@ export async function deleteCategory(
     return handleError(error) as ErrorResponse;
   }
 }
+export async function getCategoryCleint(params: PaginatedSearchParams): Promise<
+  ActionResponse<{
+    categories: Category[];
+    totalCount: number;
+    isNext: boolean;
+  }>
+> {
+  const validatedData = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+    authorize: false,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { page = 1, pageSize = 10, query, filter } = params;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+  const filterQuery: FilterQuery<typeof Category> = {};
+  if (query) {
+    filterQuery.$or = [
+      { title: { $regex: new RegExp(query, "i") } },
+      { status: { $regex: new RegExp(query, "i") } },
+    ];
+  }
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "title":
+      sortCriteria = { title: -1 };
+      break;
+    case "status":
+      sortCriteria = { status: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+      break;
+  }
+  try {
+    const [totalCategories, categories] = await Promise.all([
+      Category.countDocuments(filterQuery),
+      Category.find(filterQuery)
+        .lean()
+        .sort(sortCriteria)
+        .skip(skip)
+        .limit(limit),
+    ]);
+    const isNext = totalCategories > skip + categories.length;
+
+    return {
+      success: true,
+      data: {
+        categories: JSON.parse(JSON.stringify(categories)),
+        totalCount: totalCategories,
+        isNext,
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}

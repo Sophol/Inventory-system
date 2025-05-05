@@ -11,7 +11,7 @@ export async function getSetting(
   const validatedData = await action({
     params,
     schema: GetSettingSchema,
-    authorize: true,
+    authorize: false,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;

@@ -2,7 +2,7 @@ import ProductCard from "@/components/clients/ProductCard";
 import DataRenderer from "@/components/DataRenderer";
 import Pagination from "@/components/Pagination";
 import { PRODUCT_EMPTY } from "@/constants/states";
-import { getProducts } from "@/lib/actions/product.action";
+import { getProductClients } from "@/lib/actions/product.action";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -10,7 +10,7 @@ interface SearchParams {
 
 const ProductByCategory = async ({ searchParams }: SearchParams) => {
   const { page, pageSize, query, filter, categoryId } = await searchParams;
-  const { success, data, error } = await getProducts({
+  const { success, data, error } = await getProductClients({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query || "",

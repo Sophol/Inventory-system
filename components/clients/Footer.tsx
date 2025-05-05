@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../Logo";
-import { getCategories } from "@/lib/actions/category.action";
+import { getCategoryCleint } from "@/lib/actions/category.action";
 import ROUTES from "@/constants/routes";
 import { FaEnvelope, FaMapMarkerAlt, FaMobileAlt } from "react-icons/fa";
 import { notFound } from "next/navigation";
@@ -8,7 +8,7 @@ import { getSetting } from "@/lib/actions/setting.action";
 
 const Footer = async () => {
   const year = new Date().getFullYear();
-  const { success, data } = await getCategories({
+  const { success, data } = await getCategoryCleint({
     page: 1,
     pageSize: 5,
     query: "",

@@ -1,7 +1,10 @@
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import React from "react";
-import { getProduct, getProducts } from "@/lib/actions/product.action";
+import {
+  getProductClient,
+  getProductClients,
+} from "@/lib/actions/product.action";
 import { redirect } from "next/navigation";
 import DataRenderer from "@/components/DataRenderer";
 import ProductCard from "@/components/clients/ProductCard";
@@ -9,7 +12,7 @@ import { PRODUCT_EMPTY } from "@/constants/states";
 
 const ProductDetail = async ({ params }: RouteParams) => {
   const { id } = await params;
-  const { data: product, success } = await getProduct({ productId: id });
+  const { data: product, success } = await getProductClient({ productId: id });
 
   if (!success || !product) return redirect("/404");
   const mainImage = product.product_images?.[0] ?? "/default-image.png";
@@ -17,7 +20,7 @@ const ProductDetail = async ({ params }: RouteParams) => {
     success: relatedProductSuccess,
     data,
     error: relatedProductError,
-  } = await getProducts({
+  } = await getProductClients({
     page: 1,
     pageSize: 10,
     categoryId: product.category || "",
