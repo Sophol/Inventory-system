@@ -55,7 +55,7 @@ const AuthForm = <T extends FieldValues>({
             ? "Sign in Successfully"
             : "Sign up Successfully",
       });
-      router.push(ROUTES.HOME);
+      router.push(ROUTES.PRODUCTS);
     } else {
       toast({
         title: `Error ${result?.status}`,

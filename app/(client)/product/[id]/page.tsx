@@ -5,10 +5,13 @@ import {
   getProductClient,
   getProductClients,
 } from "@/lib/actions/product.action";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import DataRenderer from "@/components/DataRenderer";
 import ProductCard from "@/components/clients/ProductCard";
 import { PRODUCT_EMPTY } from "@/constants/states";
+import { getSetting } from "@/lib/actions/setting.action";
+import { FaFacebookSquare, FaMapMarkerAlt, FaMobileAlt } from "react-icons/fa";
+import Link from "next/link";
 
 const ProductDetail = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -26,6 +29,11 @@ const ProductDetail = async ({ params }: RouteParams) => {
     categoryId: product.category || "",
   });
   const { products } = data || {};
+  const { success: successSetting, data: setting } = await getSetting({
+    settingId: process.env.SETTING_ID as string,
+  });
+  if (!successSetting) return notFound();
+  if (!setting) return notFound();
   return (
     <div className="px-6 md:px-16 lg:px-32 pt-14 space-y-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
@@ -101,31 +109,48 @@ const ProductDetail = async ({ params }: RouteParams) => {
           </p>
           <hr className="bg-gray-600 my-6" />
           <div className="overflow-x-auto">
-            <table className="table-auto border-collapse w-full max-w-72">
+            {/* <table className="table-auto border-collapse w-full max-w-72">
               <tbody>
-                {/* <tr>
-                  <td className="text-gray-600 font-medium">Brand</td>
+                <tr>
+                  <td className="text-gray-600 font-medium">Phone 1</td>
                   <td className="text-gray-800/50 ">Generic</td>
                 </tr>
                 <tr>
                   <td className="text-gray-600 font-medium">Color</td>
                   <td className="text-gray-800/50 ">Multi</td>
-                </tr> */}
+                </tr>
                 <tr>
                   <td className="text-gray-600 font-medium">Category</td>
                   <td className="text-gray-800/50">{product.categoryTitle}</td>
                 </tr>
               </tbody>
-            </table>
+            </table> */}
+            <div className="text-sm space-y-2">
+              <p className="flex items-start text-gray-600">
+                <FaMapMarkerAlt className="mr-2 mt-1 flex-shrink-0" />
+                {setting.address}
+              </p>
+              <p className="flex items-center text-gray-600">
+                <FaMobileAlt className="mr-2" /> {setting.phone}
+              </p>
+              <p className="flex items-center text-gray-600">
+                <FaMobileAlt className="mr-2" /> {setting.phone1}
+              </p>
+            </div>
           </div>
-
-          <div className="flex items-center mt-10 gap-4">
-            <button className="w-full py-3.5 bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
-              Add to Cart
-            </button>
-            <button className="w-full py-3.5 bg-orange-500 text-white hover:bg-orange-600 transition">
-              Buy now
-            </button>
+          <div className="flex items-center gap-2 mt-6">
+            <div className="text-sm flex flex-row gap-2">
+              <Link target="_blank" href={setting.facebook}>
+                <FaFacebookSquare className="text-blue-600 size-11" />
+              </Link>
+              <Link target="_blank" href={setting.telegram}>
+                <Image
+                  className="h-10 w-10"
+                  src={assets.telegram}
+                  alt="star_icon"
+                />
+              </Link>
+            </div>
           </div>
         </div>
       </div>

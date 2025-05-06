@@ -11,7 +11,7 @@ async function Home({ searchParams }: SearchParams) {
   const { page, pageSize, query, filter } = await searchParams;
   const { success, data, error } = await getProductClients({
     page: Number(page) || 1,
-    pageSize: Number(pageSize) || 10,
+    pageSize: Number(pageSize) || 50,
     query: query || "",
     filter: filter || "",
   });

@@ -224,6 +224,8 @@
     "telegram": "Telegram",
     "phone1": "Phone 1",
     "lat": "Latitude",
-    "lng": "Longtitude"
+    "lng": "Longtitude",
+    "productimage": "Product Image",
+    "productImage": "Product Image"
   }
 }

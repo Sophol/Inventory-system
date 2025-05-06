@@ -881,7 +881,7 @@ export async function getProductClient(
   const validatedData = await action({
     params,
     schema: GetProductSchema,
-    authorize: true,
+    authorize: false,
   });
   if (validatedData instanceof Error) {
     return handleError(validatedData) as ErrorResponse;

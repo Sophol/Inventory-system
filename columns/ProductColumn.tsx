@@ -12,6 +12,7 @@ import { convertFromSmallUnitQty } from "@/lib/utils";
 import ButtonDelete from "@/components/formInputs/ButtonDelete";
 import { deleteProduct } from "@/lib/actions/product.action";
 import { toast } from "@/hooks/use-toast";
+import Image from "next/image";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -25,10 +26,32 @@ export const ProductColumn: ColumnDef<Product>[] = [
       const status = row.getValue("status") as string;
       return (
         <div className="flex justify-center whitespace-nowrap ">
-        <Badge className={`${status === "active" ? "bg-green-500  text-[10px]" : "bg-red-500  text-[10px]" } uppercase`}>
-          {status}
-        </Badge>
-      </div>
+          <Badge
+            className={`${status === "active" ? "bg-green-500  text-[10px]" : "bg-red-500  text-[10px]"} uppercase`}
+          >
+            {status}
+          </Badge>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "productImage",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="productImage" />
+    ),
+    cell: ({ row }) => {
+      const product = row.original;
+      return (
+        <div className="flex justify-center whitespace-nowrap ">
+          <Image
+            alt="product"
+            src={product.product_images?.[0] || "/placeholder.png"}
+            width={50}
+            height={50}
+            className="rounded-md object-cover"
+          />
+        </div>
       );
     },
   },
@@ -41,7 +64,9 @@ export const ProductColumn: ColumnDef<Product>[] = [
       const code = row.getValue("code") as string;
       return (
         <div className="flex justify-center whitespace-nowrap ">
-          <span className="flex justify-center whitespace-nowrap px-4">{code}</span>
+          <span className="flex justify-center whitespace-nowrap px-4">
+            {code}
+          </span>
         </div>
       );
     },
@@ -54,10 +79,10 @@ export const ProductColumn: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const category = row.original;
       return (
-      
-        <span className="flex whitespace-nowrap px-4">{ category.categoryTitle}</span>
-
-      )
+        <span className="flex whitespace-nowrap px-4">
+          {category.categoryTitle}
+        </span>
+      );
     },
   },
   {
@@ -67,9 +92,7 @@ export const ProductColumn: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => {
       const title = row.getValue("title") as string;
-      return (
-        <span className="flex whitespace-nowrap px-4">{title}</span>
-      );
+      return <span className="flex whitespace-nowrap px-4">{title}</span>;
     },
   },
   {
@@ -84,7 +107,9 @@ export const ProductColumn: ColumnDef<Product>[] = [
         product.units
       );
       return (
-        <span className="flex justify-center whitespace-nowrap px-4">{qty}</span>
+        <span className="flex justify-center whitespace-nowrap px-4">
+          {qty}
+        </span>
       );
     },
   },
@@ -97,14 +122,20 @@ export const ProductColumn: ColumnDef<Product>[] = [
       const product = row.original;
       const qty = convertFromSmallUnitQty(product.alertQty ?? 0, product.units);
       return (
-        <span className="flex justify-center whitespace-nowrap px-4">{qty}</span>
+        <span className="flex justify-center whitespace-nowrap px-4">
+          {qty}
+        </span>
       );
     },
   },
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Action"  className="flex justify-center  whitespace-nowrap" />
+      <DataTableColumnHeader
+        column={column}
+        title="Action"
+        className="flex justify-center  whitespace-nowrap"
+      />
     ),
     cell: ({ row }) => {
       const product = row.original;

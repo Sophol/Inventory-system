@@ -19,6 +19,7 @@ import heart_icon from "./heart_icon.svg";
 import star_icon from "./star_icon.svg";
 import redirect_icon from "./redirect_icon.svg";
 import star_dull_icon from "./star_dull_icon.svg";
+import telegram from "./telegram.svg";
 
 export const assets = {
   search_icon,
@@ -42,6 +43,7 @@ export const assets = {
   redirect_icon,
   star_dull_icon,
   logo_new,
+  telegram,
 };
 
 export const BagIcon = () => {

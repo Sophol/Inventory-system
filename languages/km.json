@@ -225,6 +225,8 @@
     "telegram": "Telegram",
     "phone1": "លេខទូរស័ព្ទ 1",
     "lat": "Latitude",
-    "lng": "Longtitude"
+    "lng": "Longtitude",
+    "productimage": "រូបភាពផលិតផល",
+    "productImage": "រូបភាពផលិតផល"
   }
 }
