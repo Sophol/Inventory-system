@@ -228,7 +228,7 @@ function FormSaleDetail<T extends FieldValues>({
           <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-2 sm:col-span-1 md:col-span-2 text-left">
-          {t("qty")}
+          {t("price")}
           <span className="text-primary-500 pl-1">*</span>
         </div>
         <div className="col-span-2 sm:col-span-1 md:col-span-2">
@@ -329,7 +329,7 @@ function FormSaleDetail<T extends FieldValues>({
       })}
 
       {/* Total Calculation Fields */}
-      
+
       <div className="flex items-center gap-2 flex-wrap pt-3">
         <div className="grow text-right">
           <label className="text-[11px]">{t("subtotal")}</label>
