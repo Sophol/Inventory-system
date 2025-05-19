@@ -1,7 +1,14 @@
 "use server";
 import mongoose, { FilterQuery } from "mongoose";
 
-import { ProductUnit, Sale, SaleDetail, Stock, User } from "@/database";
+import {
+  Payment,
+  ProductUnit,
+  Sale,
+  SaleDetail,
+  Stock,
+  User,
+} from "@/database";
 import { ISaleDetailDoc } from "@/database/sale-detail.model";
 import { ISaleDoc } from "@/database/sale.model";
 
@@ -259,6 +266,7 @@ export async function voidInvoice(
       invoice.orderStatus = "void";
       await invoice.save({ session });
     }
+    await Payment.deleteMany({ sale: invoice._id }, { session });
     await session.commitTransaction();
     return { success: true, data: JSON.parse(JSON.stringify(invoice)) };
   } catch (error) {
