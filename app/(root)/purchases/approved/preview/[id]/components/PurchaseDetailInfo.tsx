@@ -35,10 +35,14 @@ const PurchaseDetailInfo = ({
                 <p className="text-[9px] mx-auto sm:mx-0 address text-center">
                   {setting.address}
                 </p>
-                <p className="text-[9px] mx-auto sm:mx-0 text-center">{setting.phone}</p>
+                <p className="text-[9px] mx-auto sm:mx-0 text-center">
+                  {setting.phone}
+                </p>
               </div>
             </div>
-            <h1 className={`font-bold text-[12px] sm:pt-0 pt-2 mx-auto sm:mx-0`}>
+            <h1
+              className={`font-bold text-[12px] sm:pt-0 pt-2 mx-auto sm:mx-0`}
+            >
               # {purchase.referenceNo}
             </h1>
 
@@ -54,7 +58,6 @@ const PurchaseDetailInfo = ({
             className="bill-to sub-info text-[11px] my-0 py-0"
             style={{ color: "black" }}
           >
-
             <div className="flex gap-2 flex-nowrap w-full">
               <p className="pb-1 whitespace-nowrap">
                 លេខទូរស័ព្ទអ្នកផ្គត់ផ្គង់:{" "}
@@ -68,7 +71,6 @@ const PurchaseDetailInfo = ({
               <p className="pb-1 ">{purchase.branch.title}</p>
             </div>
           </div>
-         
         </div>
 
         <div className="sale-details bg-white rounded-lg shadow-sm ">
@@ -110,7 +112,7 @@ const PurchaseDetailInfo = ({
               </p>
               <p className="w-1/4 pl-1 mr-2 data-for-print print-d4 text-right">
                 {detail.cost !== undefined && detail.qty !== undefined ? (
-                  <Currency amount={detail.cost * detail.qty + 10000000} />
+                  <Currency amount={detail.cost * detail.qty} />
                 ) : (
                   "N/A"
                 )}
@@ -163,7 +165,7 @@ const PurchaseDetailInfo = ({
               </div>
               <div className="flex gap-2">
                 <p className="sub-info pb-1 w-1/3 whitespace-nowrap">
-                ថ្លៃដឹកក្រៅប្រទេស:
+                  ថ្លៃដឹកក្រៅប្រទេស:
                 </p>
                 <p className="pb-1 w-2/3 text-right font-bold">
                   {" "}
@@ -213,14 +215,13 @@ const PurchaseDetailInfo = ({
               </div>
             </div>
           </div>
-
         </div>
         <div className="flex row gap-4 mt-3">
           <div className=" w-1/2 text-[10px] ">
             <p className="pb-0 text-center">អ្នកផ្គត់ផ្គង់: </p>
             <p className="pb-9 text-center">{purchase.supplier.title}</p>
           </div>
-          <div className=" w-1/2 text-[10px]  " >
+          <div className=" w-1/2 text-[10px]  ">
             <p className="pb-0   text-center">អ្នកទទួល: </p>
             <p className="pb-9  whitespace-nowrap text-center ">
               {purchase.customer?.title}
@@ -232,7 +233,6 @@ const PurchaseDetailInfo = ({
             <p className="text-[4px] py-7">.</p>
           </div>
         </div>
-
       </div>
     </div>
   );
