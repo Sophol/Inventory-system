@@ -37,9 +37,7 @@ const Customer = async ({ searchParams }: SearchParams) => {
         <strong>Total:</strong>
       </TableCell>
       <TableCell className="text-right">
-        <strong className="px-4">
-          {formatCurrency(summary?.totalBalance ?? 0)}
-        </strong>
+        <strong>{formatCurrency(summary?.totalBalance ?? 0)}</strong>
       </TableCell>
       <TableCell></TableCell>
     </TableRow>
