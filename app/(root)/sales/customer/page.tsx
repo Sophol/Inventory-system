@@ -11,6 +11,8 @@ import { CUSTOMER_EMPTY } from "@/constants/states";
 import { getCustomers } from "@/lib/actions/customer.action";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { formatCurrency } from "@/lib/utils";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -28,7 +30,20 @@ const Customer = async ({ searchParams }: SearchParams) => {
     query: query || "",
     filter: filter || "",
   });
-  const { customers, totalCount, isNext } = data || {};
+  const { customers, summary, isNext } = data || {};
+  const summaryRow = (
+    <TableRow className="bg-blue-200 dark:bg-slate-800">
+      <TableCell colSpan={4} className="text-right">
+        <strong>Total:</strong>
+      </TableCell>
+      <TableCell className="text-right">
+        <strong className="px-4">
+          {formatCurrency(summary?.totalBalance ?? 0)}
+        </strong>
+      </TableCell>
+      <TableCell></TableCell>
+    </TableRow>
+  );
   return (
     <CardContainer
       title="customer"
@@ -50,8 +65,9 @@ const Customer = async ({ searchParams }: SearchParams) => {
             <DataTable
               columns={CustomerColumn}
               data={customers!}
+              summaryRow={summaryRow}
               isNext={isNext}
-              totalCount={totalCount}
+              totalCount={summary?.count}
             />
           )}
         />

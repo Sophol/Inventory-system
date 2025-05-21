@@ -141,10 +141,12 @@ export async function getCustomer(
   }
 }
 
-export async function getCustomers(
-  params: CustomerSearchParams
-): Promise<
-  ActionResponse<{ customers: Customer[]; totalCount: number; isNext: boolean }>
+export async function getCustomers(params: CustomerSearchParams): Promise<
+  ActionResponse<{
+    customers: Customer[];
+    summary: { totalBalance: number; count: number };
+    isNext: boolean;
+  }>
 > {
   const validatedData = await action({
     params,
@@ -176,13 +178,15 @@ export async function getCustomers(
     case "status":
       sortCriteria = { status: -1 };
       break;
+    case "balance":
+      sortCriteria = { balance: -1 }; // New case for sorting by balance
+      break;
     default:
       sortCriteria = { createdAt: -1 };
       break;
   }
   try {
-    const [totalCustomers, customers] = await Promise.all([
-      Customer.countDocuments(filterQuery),
+    const [customers, balanceStats] = await Promise.all([
       Customer.aggregate([
         { $match: filterQuery },
         {
@@ -230,14 +234,53 @@ export async function getCustomers(
         { $skip: skip },
         { $limit: limit },
       ]),
+      // New aggregation to calculate total balance and count
+      Customer.aggregate([
+        { $match: filterQuery },
+        {
+          $lookup: {
+            from: "sales",
+            localField: "_id",
+            foreignField: "customer",
+            as: "sales",
+          },
+        },
+        {
+          $addFields: {
+            balance: {
+              $sum: {
+                $map: {
+                  input: {
+                    $filter: {
+                      input: "$sales",
+                      as: "sale",
+                      cond: { $eq: ["$$sale.orderStatus", "completed"] },
+                    },
+                  },
+                  as: "completedSale",
+                  in: "$$completedSale.balance",
+                },
+              },
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalBalance: { $sum: "$balance" },
+            count: { $sum: 1 },
+          },
+        },
+      ]),
     ]);
-    const isNext = totalCustomers > skip + customers.length;
+    const balanceStatistics = balanceStats[0] || { totalBalance: 0, count: 0 };
+    const isNext = balanceStatistics.count > skip + customers.length;
 
     return {
       success: true,
       data: {
         customers: JSON.parse(JSON.stringify(customers)),
-        totalCount: totalCustomers,
+        summary: balanceStatistics,
         isNext,
       },
     };
