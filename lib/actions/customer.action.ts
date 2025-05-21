@@ -231,6 +231,7 @@ export async function getCustomers(params: CustomerSearchParams): Promise<
           },
         },
         { $sort: sortCriteria },
+        { $sort: { balance: -1 } },
         { $skip: skip },
         { $limit: limit },
       ]),
