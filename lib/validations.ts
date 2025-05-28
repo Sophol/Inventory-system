@@ -500,3 +500,9 @@ export const SearchAllExpenseSchema = z.object({
 export const SearchAnnualSummarySchema = z.object({
   searchYear: z.number().min(1, { message: "Year is required." }),
 });
+export const generateSerialNumberSchema = z.object({
+  companyCode: z.string().min(2, { message: "Company code is required." }),
+  productCode: z.string().min(2, { message: "Product code is required." }),
+  productName: z.string().min(1, { message: "Product name is required." }),
+  count: z.number().min(1, { message: "Count must be at least 1." }),
+});

@@ -17,6 +17,9 @@ import Setting from "./setting.model";
 import Salary from "./salary.model";
 import GeneralExp from "./generalExp.model";
 import Mission from "./mission.model";
+import ProductQR from "./product-qr.model";
+import ProductQRProgress from "./product-qr-progress.model";
+import ScanQRLog from "./scan-qr-log.model";
 
 export {
   Account,
@@ -38,4 +41,7 @@ export {
   Salary,
   GeneralExp,
   Mission,
+  ProductQR,
+  ProductQRProgress,
+  ScanQRLog,
 };

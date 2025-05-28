@@ -377,3 +377,8 @@ interface AnnualSummaryByYear {
   purchase: number;
   profit: number;
 }
+interface generateSerialNumbers {
+  serialNumbers: string[];
+  range: { start: string; end: string };
+  savedCount: number;
+}

@@ -349,3 +349,10 @@ interface ProfileParams {
   email: string;
   image?: string;
 }
+
+interface GenerateSerialNumberParams {
+  companyCode: string;
+  productCode: string;
+  productName: string;
+  count: number;
+}

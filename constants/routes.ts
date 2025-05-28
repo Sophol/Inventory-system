@@ -12,6 +12,7 @@ const ROUTES = {
   PRODUCTS: "/inventories/product",
   ADDPRODUCT: "/inventories/product/form",
   PRODUCT: (_id: string) => `/inventories/product/${_id}`,
+  QRCODE: (_id: string) => `/inventories/product/qr/${_id}`,
   PRODUCTDETAIL: (_id: string) => `/inventories/product/detail/${_id}`,
   CUSTOMERS: "/sales/customer",
   ADDCUSTOMER: "/sales/customer/form",
