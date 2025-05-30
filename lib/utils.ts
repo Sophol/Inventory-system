@@ -121,3 +121,18 @@ export function toCamelCase(str: string, t: (key: string) => string): string {
     .join("");
   return t(camelCased);
 }
+export function getYearOptions(): { _id: string; title: string }[] {
+  const currentYear = new Date().getFullYear();
+  const startYear = currentYear - 2;
+  const endYear = currentYear + 2;
+
+  const yearOptions = [];
+  for (let year = startYear; year <= endYear; year++) {
+    yearOptions.push({
+      _id: year.toString(),
+      title: year.toString(),
+    });
+  }
+
+  return yearOptions;
+}

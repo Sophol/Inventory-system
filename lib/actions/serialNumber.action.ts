@@ -1,9 +1,12 @@
 "use server";
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 import { ProductQR, ProductQRProgress } from "@/database";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
-import { generateSerialNumberSchema } from "../validations";
+import {
+  generateSerialNumberSchema,
+  ProductQRSearchParamsSchema,
+} from "../validations";
 import { encrypt } from "../encryption";
 
 export async function generateSerialNumbersAdvanced(
@@ -258,4 +261,88 @@ export async function getQRCodeStats() {
     printed: printedCount,
     currentYear: currentYearCount,
   };
+}
+export async function getProductQRs(params: ProductQRSearchParams): Promise<
+  ActionResponse<{
+    productQrs: ProductQR[];
+    totalCount: number;
+    isNext: boolean;
+  }>
+> {
+  const validatedData = await action({
+    params,
+    schema: ProductQRSearchParamsSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const {
+    page = 1,
+    pageSize = 10,
+    query,
+    filter,
+    is_printed,
+    status,
+    generated_year,
+  } = validatedData.params!;
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+  const filterQuery: FilterQuery<typeof ProductQR> = {};
+  if (query) {
+    filterQuery.$or = [
+      { product_code: { $regex: new RegExp(query, "i") } },
+      { product_name: { $regex: new RegExp(query, "i") } },
+      { raw_serial: { $regex: new RegExp(query, "i") } },
+      { encrypt_serial: { $regex: new RegExp(query, "i") } },
+    ];
+  }
+  let sortCriteria = {};
+  switch (filter) {
+    case "product_code":
+      sortCriteria = { product_code: -1 };
+      break;
+    case "product_name":
+      sortCriteria = { product_name: -1 };
+      break;
+    case "raw_serial":
+      sortCriteria = { raw_serial: -1 };
+      break;
+    case "encrypt_serial":
+      sortCriteria = { encrypt_serial: -1 };
+      break;
+    default:
+      sortCriteria = { raw_serial: -1, generated_year: -1 };
+      break;
+  }
+  if (is_printed) {
+    filterQuery.is_printed = is_printed;
+  }
+  if (status === 0 || status === 1) {
+    filterQuery.status = status;
+  }
+  if (generated_year) {
+    filterQuery.generated_year = generated_year;
+  }
+  try {
+    const [totalProductQrs, productQrs] = await Promise.all([
+      ProductQR.countDocuments(filterQuery),
+      ProductQR.find(filterQuery)
+        .sort(sortCriteria)
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+    ]);
+    const isNext = totalProductQrs > skip + productQrs.length;
+    return {
+      success: true,
+      data: {
+        productQrs: JSON.parse(JSON.stringify(productQrs)),
+        totalCount: totalProductQrs,
+        isNext,
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
 }

@@ -10,6 +10,7 @@ const ROUTES = {
   ADDUNIT: "/inventories/unit/form",
   UNIT: (_id: string) => `/inventories/unit/${_id}`,
   PRODUCTS: "/inventories/product",
+  PRODUCTQRS: "/inventories/productQR",
   ADDPRODUCT: "/inventories/product/form",
   PRODUCT: (_id: string) => `/inventories/product/${_id}`,
   QRCODE: (_id: string) => `/inventories/product/qr/${_id}`,

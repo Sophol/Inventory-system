@@ -27,8 +27,7 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
   const [openItem, setOpenItem] = useState<string | null>(null);
   const t = useTranslations("erp");
   const isActiveRoute = useCallback(
-    (route: string) =>
-      (pathname.includes(route) && route.length > 1) || pathname === route,
+    (route: string) => pathname === route,
     [pathname]
   );
 
@@ -90,6 +89,7 @@ const NavLinks = ({ userId, role }: { userId?: string; role: string }) => {
                     <SidebarMenuSub className="text-xs">
                       {item.items.map((subItem) => {
                         const isSubActive = isActiveRoute(subItem.url);
+
                         return (
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton asChild>

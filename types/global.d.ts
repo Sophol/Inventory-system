@@ -49,7 +49,11 @@ interface ExpenseSearchParams extends PaginatedSearchParams {
   branchId?: string;
   dateRange?: string;
 }
-
+interface ProductQRSearchParams extends PaginatedSearchParams {
+  is_printed?: boolean;
+  status?: number;
+  generated_year?: number;
+}
 interface PaginatedSearchParamsInvoice {
   orderStatus?: "pending" | "approved" | "completed";
   page?: number;
@@ -381,4 +385,17 @@ interface generateSerialNumbers {
   serialNumbers: string[];
   range: { start: string; end: string };
   savedCount: number;
+}
+interface ProductQR {
+  _id: string;
+  raw_serial: string;
+  encrypt_serial: string;
+  product_code: string;
+  product_name: string;
+  generated_year: string;
+  invalid_date: Date;
+  end_number: number;
+  view_count?: number;
+  status?: 0 | 1;
+  is_printed?: boolean;
 }

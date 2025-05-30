@@ -54,13 +54,13 @@ function FormSelect<T extends FieldValues>({
             {label} {isRequired && <span className="text-primary-500">*</span>}
           </FormLabel>
           <Select
+            value={field.value || ""}
             onValueChange={(value) => {
               field.onChange(value);
               if (onChange) {
                 onChange(value); // Call onChange prop if provided
               }
             }}
-            defaultValue={field.value as string | undefined}
           >
             <FormControl>
               <SelectTrigger className="text-[12px] light-border-3 text-dark300_light700 no-focus h-[28px] min-h-[28px] border">

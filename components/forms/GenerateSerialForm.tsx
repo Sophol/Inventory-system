@@ -5,7 +5,7 @@ import { generateSerialNumbersAdvanced } from "@/lib/actions/serialNumber.action
 import { generateSerialNumberSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import {
@@ -20,6 +20,7 @@ import FormInput from "../formInputs/FormInput";
 import { Form } from "../ui/form";
 import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
+import { QRStats } from "../qr-stats";
 
 const GenerateSerialForm = ({ product }: { product: Product }) => {
   const router = useRouter();
@@ -71,6 +72,9 @@ const GenerateSerialForm = ({ product }: { product: Product }) => {
         onSubmit={form.handleSubmit(handleGenerateSerial)}
       >
         <Card className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
+          <Suspense fallback={<div>Loading...</div>}>
+            <QRStats />
+          </Suspense>
           <CardHeader>
             <CardTitle>Batch Serial Number Generator</CardTitle>
             <CardDescription>

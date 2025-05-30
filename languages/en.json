@@ -207,6 +207,15 @@
     "preahsihanouk": "Preah Sihanouk",
     "preyveng": "Prey Veng",
     "svayrieng": "Svay Rieng",
-    "takéo": "Takéo"
+    "takéo": "Takéo",
+    "product-qr": "Product QR Code",
+    "product_code": "Product Code",
+    "product_name": "Product Name",
+    "raw_serial": "Raw Serial",
+    "encrypt_serial": "Encrypted Serial",
+    "generated_year": "Generated Year",
+    "expired_date": "Expired Date",
+    "remarks": "Remarks",
+    "is_print": "Is Print"
   }
 }

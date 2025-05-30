@@ -506,3 +506,9 @@ export const generateSerialNumberSchema = z.object({
   productName: z.string().min(1, { message: "Product name is required." }),
   count: z.number().min(1, { message: "Count must be at least 1." }),
 });
+
+export const ProductQRSearchParamsSchema = PaginatedSearchParamsSchema.extend({
+  is_print: z.boolean().optional(),
+  status: z.number().optional(),
+  generated_year: z.number().optional(),
+});

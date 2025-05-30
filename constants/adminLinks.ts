@@ -158,6 +158,12 @@ export const adminLinks: Link[] = [
         icon: AiOutlineProduct,
         permissions: ["admin", "stock", "seller"],
       },
+      {
+        title: "product-qr",
+        url: ROUTES.PRODUCTQRS,
+        icon: AiOutlineProduct,
+        permissions: ["admin", "stock", "seller"],
+      },
     ],
   },
   {
