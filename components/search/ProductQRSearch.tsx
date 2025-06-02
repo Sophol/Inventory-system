@@ -177,51 +177,62 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
       <div
         className={`flex flex-wrap sm:flex-nowrap items-center gap-2 min-h-[36px] rounded-[10px] ${otherClasses}`}
       >
-        <FormInput
-          name="search"
-          label={t("search")}
-          control={form.control}
-          isRequired={false}
-          onChange={() => {
-            setSearchQuery(form.getValues("search"));
-          }}
-        />
-        <div className="flex flex-col sm:flex-row gap-2 w-full">
-          <FormSelect
-            name="status"
-            label={t("status")}
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-grow">
+          <FormInput
+            name="search"
+            label={t("search")}
             control={form.control}
-            items={statusData}
-            onChange={(value: string) => {
-              setSearchStatus(value);
+            isRequired={false}
+            onChange={() => {
+              setSearchQuery(form.getValues("search"));
             }}
           />
-          <FormSelect
-            name="isPrint"
-            label={t("is_print")}
-            control={form.control}
-            items={isPrintData}
-            onChange={(value: string) => {
-              setSearchIsPrint(value);
-            }}
-          />
-          <FormSelect
-            name="generatedYear"
-            label={t("generated_year")}
-            control={form.control}
-            items={generatedYearData}
-            onChange={(value: string) => {
-              setSearchGeneratedYear(value);
-            }}
-          />
-        </div>
+          <div className="flex flex-col sm:flex-row gap-2 w-full">
+            <FormSelect
+              name="status"
+              label={t("status")}
+              control={form.control}
+              items={statusData}
+              onChange={(value: string) => {
+                setSearchStatus(value);
+              }}
+            />
+            <FormSelect
+              name="isPrint"
+              label={t("is_print")}
+              control={form.control}
+              items={isPrintData}
+              onChange={(value: string) => {
+                setSearchIsPrint(value);
+              }}
+            />
+            <FormSelect
+              name="generatedYear"
+              label={t("generated_year")}
+              control={form.control}
+              items={generatedYearData}
+              onChange={(value: string) => {
+                setSearchGeneratedYear(value);
+              }}
+            />
+          </div>
 
-        <Button
-          onClick={handleClearSearch}
-          className="w-full sm:w-auto bg-red-600 mt-1 sm:mt-4 text-[11px]  min-h-[26px] h-[26px]"
-        >
-          {t("clearSearch")}
-        </Button>
+          <Button
+            onClick={handleClearSearch}
+            className="w-full sm:w-auto bg-red-600 mt-1 sm:mt-4 text-[11px]  min-h-[26px] h-[26px]"
+          >
+            {t("clearSearch")}
+          </Button>
+        </div>
+        {/* Export Button */}
+        <form action="/api/export-product-qrs" method="GET" className="mt-2 sm:mt-0">
+          <Button
+            type="submit"
+            className="w-full sm:w-auto bg-green-600 mt-1 sm:mt-4 text-[11px]  min-h-[26px] h-[26px] "
+          >
+            Export to Excel
+          </Button>
+        </form>
       </div>
     </FormProvider>
   );
