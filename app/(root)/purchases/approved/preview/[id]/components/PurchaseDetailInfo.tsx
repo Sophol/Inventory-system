@@ -133,8 +133,15 @@ const PurchaseDetailInfo = ({
               />
               <span className="text-[10px] mt-0 ml-[49px] logo">Telegram</span>
               <br />
+              <span
+                className="text-[10px] mt-0 ml-[5px] print:hidden block break-words"
+                style={{ width: "200px", wordWrap: "break-word", overflowWrap: "break-word" }}
+              >
+                {purchase.description}
+              </span>
             </div>
           </div>
+
           <div className="pt-1 invoice-total">
             <div className="sub-info text-[11px]">
               <div className="flex gap-2">
