@@ -27,23 +27,24 @@ export default async function QRVerifyProductPage({
             : "rgba(244,114,182,0.9)",
         }}
       >
-        <h1 className="text-2xl font-extrabold mb-8 tracking-wide uppercase drop-shadow-md">
-          Product Verification
+        <h1 className="text-xl font-extrabold mb-4 tracking-wide uppercase drop-shadow-md">
+          ការផ្ទៀងផ្ទាត់ផលិតផល
         </h1>
 
         {code ? (
           success ? (
             <div className="inline-flex flex-col items-center bg-green-900 rounded-xl px-6 py-6 shadow-lg text-green-200 select-none">
-              <span className="text-4xl mb-4 animate-pulse drop-shadow-lg">
+              <span className="text-2xl mb-4 animate-pulse drop-shadow-lg">
                 ✅
               </span>
-              <p className="text-xl font-extrabold mb-2 drop-shadow-md">
-                Verified Successfully
+              <p className="text-sm font-extrabold mb-2 drop-shadow-md">
+                ផលិតផលពិតប្រាកដ
               </p>
-              <code className="text-[50%] font-mono bg-green-800 rounded px-4 py-2 max-w-full shadow-md mb-4 overflow-x-auto break-all whitespace-break-spaces">
+
+              <code className="text-sm font-mono bg-green-800 rounded px-4 py-2 max-w-full shadow-md mb-4 overflow-x-auto break-all whitespace-break-spaces">
                 {data?.raw_serial}
               </code>
-              <h2 className="text-[50%] font-bold text-green-100 break-all">
+              <h2 className="text-sm font-bold text-green-100 break-all">
                 {data?.product_name}
               </h2>
             </div>
@@ -52,13 +53,13 @@ export default async function QRVerifyProductPage({
               <span className="text-7xl mb-5 animate-pulse drop-shadow-lg">
                 ❌
               </span>
-              <p className="text-xl font-extrabold mb-2 drop-shadow-md">
-                Verification Failed
+              <p className="text-sm font-extrabold mb-2 drop-shadow-md">
+                ផលិតផលក្លែងក្លាយ ឬ កូដមិនត្រឹមត្រូវ
               </p>
             </div>
           )
         ) : (
-          <p className="text-white font-medium">No code provided</p>
+          <p className="text-white font-medium">មិនបានបញ្ចូលកូដ</p>
         )}
       </div>
     </div>
