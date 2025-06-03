@@ -5,6 +5,7 @@ import action from "../handlers/action";
 import handleError from "../handlers/error";
 import {
   generateSerialNumberSchema,
+  IncrementViewsSchema,
   ProductQRSearchParamsSchema,
   VerifyQRProductSchema,
 } from "../validations";
@@ -378,6 +379,32 @@ export async function verifyProductQr(
       success: true,
       data: JSON.parse(JSON.stringify(productQr)),
     };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function incrementViews(
+  params: IncrementViewsParams
+): Promise<ActionResponse<{ views: number }>> {
+  const validationResult = await action({
+    params,
+    schema: IncrementViewsSchema,
+  });
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+  const { serial } = validationResult.params!;
+  try {
+    const product = await ProductQR.findOneAndUpdate(
+      { encrypt_serial: serial },
+      { $inc: { viewer_count: 1 } },
+      { new: true }
+    );
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    return { success: true, data: { views: product.viewer_count } };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }

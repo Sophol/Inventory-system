@@ -515,3 +515,6 @@ export const ProductQRSearchParamsSchema = PaginatedSearchParamsSchema.extend({
 export const VerifyQRProductSchema = z.object({
   serial: z.string().min(2, { message: "Serial number is required." }),
 });
+export const IncrementViewsSchema = z.object({
+  serial: z.string().min(1, { message: "Serial number is required." }),
+});

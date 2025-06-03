@@ -87,7 +87,16 @@ export const ProductQRColumn: ColumnDef<ProductQR>[] = [
       return <span className="flex whitespace-nowrap px-4">{year}</span>;
     },
   },
-
+  {
+    accessorKey: "viewer_count",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Viewer Count" />
+    ),
+    cell: ({ row }) => {
+      const count = row.getValue("viewer_count") as number;
+      return <span className="flex whitespace-nowrap px-4">{count}</span>;
+    },
+  },
   {
     accessorKey: "expired_date",
     header: ({ column }) => (
