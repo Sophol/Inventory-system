@@ -512,3 +512,6 @@ export const ProductQRSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   status: z.number().optional(),
   generated_year: z.number().optional(),
 });
+export const VerifyQRProductSchema = z.object({
+  serial: z.string().min(2, { message: "Serial number is required." }),
+});

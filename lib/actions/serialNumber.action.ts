@@ -6,8 +6,9 @@ import handleError from "../handlers/error";
 import {
   generateSerialNumberSchema,
   ProductQRSearchParamsSchema,
+  VerifyQRProductSchema,
 } from "../validations";
-import { encrypt } from "../encryption";
+import { decrypt, encrypt } from "../encryption";
 
 export async function generateSerialNumbersAdvanced(
   params: GenerateSerialNumberParams,
@@ -247,16 +248,16 @@ export async function generateSerialNumbersBatch(
 export async function getQRCodeStats() {
   const currentYear = new Date().getFullYear();
 
-  const [totalCount, activeCount, printedCount, currentYearCount] =
+  const [inactiveCount, activeCount, printedCount, currentYearCount] =
     await Promise.all([
-      ProductQR.countDocuments({}),
-      ProductQR.countDocuments({ status: 1 }),
-      ProductQR.countDocuments({ is_print: true }),
+      ProductQR.countDocuments({ status: 0, generated_year: currentYear }),
+      ProductQR.countDocuments({ status: 1, generated_year: currentYear }),
+      ProductQR.countDocuments({ is_print: true, generated_year: currentYear }),
       ProductQR.countDocuments({ generated_year: currentYear }),
     ]);
 
   return {
-    total: totalCount,
+    inactive: inactiveCount,
     active: activeCount,
     printed: printedCount,
     currentYear: currentYearCount,
@@ -341,6 +342,41 @@ export async function getProductQRs(params: ProductQRSearchParams): Promise<
         totalCount: totalProductQrs,
         isNext,
       },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+export async function verifyProductQr(
+  params: VerifyQRProductParams
+): Promise<ActionResponse<ProductQR>> {
+  const validatedData = await action({
+    params,
+    schema: VerifyQRProductSchema,
+    authorize: false,
+  });
+
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { serial } = validatedData.params!;
+  try {
+    const decryptedSerial = decrypt(serial);
+    const productQr = await ProductQR.findOne({
+      encrypt_serial: serial,
+      raw_serial: decryptedSerial,
+    }).lean();
+    if (!productQr) {
+      return {
+        success: false,
+        error: {
+          message: "Invalid QR code or serial number.",
+        },
+      };
+    }
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(productQr)),
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

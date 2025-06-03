@@ -356,3 +356,6 @@ interface GenerateSerialNumberParams {
   productName: string;
   count: number;
 }
+interface VerifyQRProductParams {
+  serial: string;
+}

@@ -11,7 +11,7 @@ import {
 import { getQRCodeStats } from "@/lib/actions/serialNumber.action";
 
 interface QRStats {
-  total: number;
+  inactive: number;
   active: number;
   printed: number;
   currentYear: number;
@@ -65,12 +65,12 @@ export function QRStats() {
       <CardContent>
         <div className="grid grid-cols-4 gap-4">
           <div className="text-center">
-            <p className="text-xl font-bold">{stats.total}</p>
-            <p className="text-sm text-muted-foreground">Total Generated</p>
-          </div>
-          <div className="text-center">
             <p className="text-xl font-bold text-green-600">{stats.active}</p>
             <p className="text-sm text-muted-foreground">Active</p>
+          </div>
+          <div className="text-center">
+            <p className="text-xl font-bold">{stats.inactive}</p>
+            <p className="text-sm text-muted-foreground">Inactive</p>
           </div>
           <div className="text-center">
             <p className="text-xl font-bold text-blue-600">{stats.printed}</p>

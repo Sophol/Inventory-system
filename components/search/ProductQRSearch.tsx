@@ -29,7 +29,7 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const [searchStatus, setSearchStatus] = useState(status);
   const [searchIsPrint, setSearchIsPrint] = useState(isPrint);
   const [searchGeneratedYear, setSearchGeneratedYear] = useState(generatedYear);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchQuery) {
@@ -171,6 +171,43 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
     });
     router.push(newUrl, { scroll: false });
   };
+  const handleExportExcel = async () => {
+    const params = {
+      pageNumber: 100000, // Export all records
+      query: query,
+      status: status === "" ? undefined : Number(status),
+      isPrint: isPrint,
+      generatedYear: generatedYear,
+    };
+
+    setLoading(true);
+    try {
+      const response = await fetch("/api/export-product-qrs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      });
+
+      if (!response.ok) throw new Error("Failed to export Excel");
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "product_qrs.xlsx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Export failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <FormProvider {...form}>
@@ -225,14 +262,13 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
           </Button>
         </div>
         {/* Export Button */}
-        <form action="/api/export-product-qrs" method="GET" className="mt-2 sm:mt-0">
-          <Button
-            type="submit"
-            className="w-full sm:w-auto bg-green-600 mt-1 sm:mt-4 text-[11px]  min-h-[26px] h-[26px] "
-          >
-            Export to Excel
-          </Button>
-        </form>
+        <Button
+          onClick={handleExportExcel}
+          disabled={loading}
+          className="w-full sm:w-auto bg-green-600 mt-1 sm:mt-4 text-[11px] min-h-[26px] h-[26px]"
+        >
+          {loading ? "Exporting..." : "Export to Excel"}
+        </Button>
       </div>
     </FormProvider>
   );

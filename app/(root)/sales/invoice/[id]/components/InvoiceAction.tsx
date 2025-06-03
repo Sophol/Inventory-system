@@ -12,6 +12,7 @@ import html2canvas from "html2canvas";
 import PaymentHistory from "../payment/PaymentHistory";
 import { useRouter } from "next/navigation";
 import ROUTES from "@/constants/routes";
+import { completedInvoice } from "@/lib/actions/invoice.action";
 
 const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -21,6 +22,22 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
     const { data: payments } = await getPayments({ sale: invoice._id });
     if (payments) {
       setIsDialogOpen(true);
+    } else {
+      toast({
+        title: "error",
+        description: "Something went wrong.",
+        variant: "destructive",
+      });
+    }
+  };
+  const handleCompleteInvoice = async () => {
+    const { data } = await completedInvoice({ saleId: invoice._id });
+    if (data) {
+      toast({
+        title: "success",
+        description: "Payment successful complete.",
+      });
+      router.push(ROUTES.INVOICES);
     } else {
       toast({
         title: "error",
@@ -174,8 +191,17 @@ const InvoiceAction = ({ invoice }: { invoice: Sale }) => {
             <FaPrint className="cursor-pointer text-xl" /> Print
           </Button>
         </div>
-
-        <PaymentDrawer sale={invoice} />
+        {invoice.grandtotal === 0 ? (
+          <Button
+            onClick={handleCompleteInvoice}
+            disabled={invoice.paymentStatus === "completed"}
+            className="w-full rounded bg-green-400 px-4 py-2 text-sm text-white hover:bg-green-500"
+          >
+            <span>Complete Payment</span>
+          </Button>
+        ) : (
+          <PaymentDrawer sale={invoice} />
+        )}
       </div>
     </div>
   );

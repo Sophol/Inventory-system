@@ -8,7 +8,6 @@ import { PRODUCT_EMPTY } from "@/constants/states";
 import { getProductQRs } from "@/lib/actions/serialNumber.action";
 import { checkAuthorization } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { boolean, number } from "zod";
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;

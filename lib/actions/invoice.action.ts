@@ -643,3 +643,29 @@ export async function getInvoices(params: SaleSearchParams): Promise<
     return handleError(error) as ErrorResponse;
   }
 }
+
+export async function completedInvoice(
+  params: GetSaleParams
+): Promise<ActionResponse<Sale>> {
+  const validatedData = await action({
+    params,
+    schema: GetSaleSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { saleId } = validatedData.params!;
+  try {
+    const invoice = await Sale.findById(saleId);
+    if (!invoice) {
+      throw new Error("Invoice not found");
+    }
+    invoice.orderStatus = "completed";
+    invoice.paymentStatus = "completed";
+    await invoice.save();
+    return { success: true, data: JSON.parse(JSON.stringify(invoice)) };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
