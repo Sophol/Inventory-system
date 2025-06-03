@@ -1,4 +1,7 @@
-import { verifyProductQr } from "@/lib/actions/serialNumber.action";
+import {
+  incrementViews,
+  verifyProductQr,
+} from "@/lib/actions/serialNumber.action";
 
 interface QRVerifyProductPageProps {
   searchParams: Promise<{
@@ -11,6 +14,7 @@ export default async function QRVerifyProductPage({
 }: QRVerifyProductPageProps) {
   const { p } = await searchParams;
   const code = p ?? "";
+  await incrementViews({ serial: code });
   const { data, success } = await verifyProductQr({ serial: code });
 
   return (

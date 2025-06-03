@@ -216,6 +216,7 @@
     "generated_year": "Generated Year",
     "expired_date": "Expired Date",
     "remarks": "Remarks",
-    "is_print": "Is Print"
+    "is_print": "Is Print",
+    "viewer_count": "Viewer Count"
   }
 }

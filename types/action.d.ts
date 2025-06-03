@@ -359,3 +359,6 @@ interface GenerateSerialNumberParams {
 interface VerifyQRProductParams {
   serial: string;
 }
+interface IncrementViewsParams {
+  serial: string;
+}
