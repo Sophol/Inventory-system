@@ -82,16 +82,9 @@ const InvoiceDetail = ({
                 className="w-auto sm:w-[100] h-20 object-contain mx-auto pt-2"
               />
             )}
-  <div className="flex flex-col ">
-            <span
-              className="text-[10px] mt-10  print:hidden block break-words text-center"
-              style={{ width: "200px", wordWrap: "break-word", overflowWrap: "break-word" }}
-            >
-              {invoice.description}
-            </span>
+
           </div>
-          </div>
-        
+
         </div>
 
         <div className="md:flex p-2 invoice-body mb-1">
@@ -144,7 +137,19 @@ const InvoiceDetail = ({
           ))}
         </div>
         <div className="flex gap-2 invoice-body">
-          <div className="pt-3 invoice-note"></div>
+          <div className="pt-3 invoice-note">
+            <div className="flex flex-col">
+              {invoice.description && (
+                <span
+                  className="text-[10px] mt-4 print:hidden block break-words"
+                  style={{ width: "250px", wordWrap: "break-word", overflowWrap: "break-word" }}
+                >
+                  <span className="text-red-500 font-bold">Remarked:</span> {invoice.description}
+                </span>
+              )}
+            </div>
+
+          </div>
           <div className="pt-3 invoice-total">
             <br />
             <div className="sub-info">

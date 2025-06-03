@@ -133,12 +133,14 @@ const PurchaseDetailInfo = ({
               />
               <span className="text-[10px] mt-0 ml-[49px] logo">Telegram</span>
               <br />
-              <span
-                className="text-[10px] mt-0 ml-[5px] print:hidden block break-words"
-                style={{ width: "200px", wordWrap: "break-word", overflowWrap: "break-word" }}
-              >
-                {purchase.description}
-              </span>
+              {purchase.description && (
+                <span
+                  className="text-[10px] mt-4 print:hidden block break-words"
+                  style={{ width: "250px", wordWrap: "break-word", overflowWrap: "break-word" }}
+                >
+                  <span className="text-red-500 font-bold">Remarked:</span> {purchase.description}
+                </span>
+              )}
             </div>
           </div>
 

@@ -91,8 +91,10 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
         </div>
         <div className="flex gap-2 invoice-body">
           <div className="pt-0 invoice-note text-left ">
-            {invoice.isLogo !== "false" && (
+         
               <div className="flex flex-col ">
+                   {invoice.isLogo !== "false" && (
+                    <div className="flex flex-col w-100">
                 <Image
                   src={`/images/company_telegram_qr.jpg`}
                   alt="Company Telegram QR"
@@ -101,17 +103,22 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
                   className="w-[70] h-20 object-contain pt-1 grayscale ml-9"
                 />
                 <span className="text-[10px] mt-0 ml-[49px]">Telegram</span>
-              </div>
-
-            )}
-            <div className="flex flex-col ">
-              <span
-                className="text-[10px] mt-10  print:hidden block break-words text-center"
-                style={{ width: "200px", wordWrap: "break-word", overflowWrap: "break-word" }}
-              >
-                {invoice.description}
-              </span>
+                </div>
+                   )}
+               {invoice.description && (
+                <span
+                  className="text-[10px] mt-4 print:hidden block break-words"
+                  style={{ width: "250px", wordWrap: "break-word", overflowWrap: "break-word" }}
+                >
+                  <span className="text-red-500 font-bold">Remarked:</span> {invoice.description}
+                </span>
+              )}
+              
             </div>
+       
+
+   
+            
           </div>
 
           <div className=" invoice-total mt-2 text-[11px] pr-1" >

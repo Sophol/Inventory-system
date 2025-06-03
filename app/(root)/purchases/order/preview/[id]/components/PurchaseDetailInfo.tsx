@@ -81,7 +81,19 @@ const PurchaseDetailInfo = ({ purchase }: { purchase: Purchase }) => {
           ))}
         </div>
         <div className="flex gap-2 invoice-body">
-          <div className="pt-3 invoice-note"></div>
+          <div className="pt-3 invoice-note">
+            <div className="flex flex-col">
+              {purchase.description && (
+                <span
+                  className="text-[10px] mt-4 print:hidden block break-words"
+                  style={{ width: "250px", wordWrap: "break-word", overflowWrap: "break-word" }}
+                >
+                  <span className="text-red-500 font-bold">Remarked:</span> {purchase.description}
+                </span>
+              )}
+            </div>
+
+          </div>
           <div className="pt-3 invoice-total">
             <br />
             <div className="sub-info">
