@@ -17,7 +17,7 @@ interface QRStats {
   currentYear: number;
 }
 
-export function QRStats() {
+export function QRStats({ productCode }: { productCode: string }) {
   const [stats, setStats] = useState<QRStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,7 +28,7 @@ export function QRStats() {
   const fetchStats = async () => {
     try {
       setIsLoading(true);
-      const data = await getQRCodeStats();
+      const data = await getQRCodeStats(productCode);
       if (data) {
         setStats(data);
       }

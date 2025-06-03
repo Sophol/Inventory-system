@@ -49,7 +49,8 @@ export async function POST(request: Request) {
     worksheet.columns = [
       { header: "Product Code", key: "product_code", width: 20 },
       { header: "Product Name", key: "product_name", width: 30 },
-      { header: "Encrypt Serial", key: "encrypt_serial", width: 50 },
+      { header: "Serial Number", key: "raw_serial", width: 30 },
+      { header: "QR Code", key: "encrypt_serial", width: 50 },
     ];
 
     // Fill rows & collect IDs
@@ -60,6 +61,7 @@ export async function POST(request: Request) {
       worksheet.addRow({
         product_code: item.product_code,
         product_name: item.product_name,
+        raw_serial: item.raw_serial,
         encrypt_serial: {
           text: url,
           hyperlink: url,

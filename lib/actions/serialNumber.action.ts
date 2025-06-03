@@ -248,7 +248,8 @@ export async function generateSerialNumbersBatch(
   };
 }
 
-export async function getQRCodeStats() {
+export async function getQRCodeStats(productCode: string) {
+  console.log("Fetching QR code stats for product:", productCode);
   const currentYear = new Date().getFullYear();
 
   const [inactiveCount, activeCount, printedCount, currentYearCount] =

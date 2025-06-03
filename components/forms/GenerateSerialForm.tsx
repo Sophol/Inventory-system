@@ -77,9 +77,7 @@ const GenerateSerialForm = ({ product }: { product: Product }) => {
           </Suspense>
           <CardHeader>
             <CardTitle>Batch Serial Number Generator</CardTitle>
-            <CardDescription>
-              Generate multiple serial numbers that continue from the last batch
-            </CardDescription>
+            <CardDescription>Generate multiple serial numbers</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">

@@ -41,13 +41,10 @@ export default async function QRVerifyProductPage({
                 Verified Successfully
               </p>
               <code className="text-[50%] font-mono bg-green-800 rounded px-4 py-2 max-w-full shadow-md mb-4 overflow-x-auto break-all whitespace-break-spaces">
-                {data?.product_code}
+                {data?.raw_serial}
               </code>
               <h2 className="text-[50%] font-bold text-green-100 break-all">
                 {data?.product_name}
-              </h2>
-              <h2 className="text-[50%] font-bold text-green-100 break-all">
-                {data?.encrypt_serial}
               </h2>
             </div>
           ) : (
@@ -58,9 +55,6 @@ export default async function QRVerifyProductPage({
               <p className="text-xl font-extrabold mb-2 drop-shadow-md">
                 Verification Failed
               </p>
-              <code className="text-[50%] font-mono bg-rose-800 rounded px-4 py-2 max-w-full shadow-md overflow-x-auto break-all whitespace-break-spaces">
-                {code}
-              </code>
             </div>
           )
         ) : (

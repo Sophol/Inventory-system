@@ -70,7 +70,7 @@ export const ProductQRColumn: ColumnDef<ProductQR>[] = [
   {
     accessorKey: "encrypt_serial",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Encrypt Serial" />
+      <DataTableColumnHeader column={column} title="QR Code" />
     ),
     cell: ({ row }) => {
       const serial = row.getValue("encrypt_serial") as string;
