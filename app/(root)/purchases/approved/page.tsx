@@ -13,6 +13,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { PurchaseReportColumn } from "@/columns/PurchaseReportColumn";
 import { formatCurrency } from "@/lib/utils";
 import { getPurchaseCompleted } from "@/lib/actions/purchase.action";
+
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }

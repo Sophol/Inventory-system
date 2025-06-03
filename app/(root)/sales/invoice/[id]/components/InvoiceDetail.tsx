@@ -104,7 +104,14 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
               </div>
 
             )}
-
+            <div className="flex flex-col ">
+              <span
+                className="text-[10px] mt-10  print:hidden block break-words text-center"
+                style={{ width: "200px", wordWrap: "break-word", overflowWrap: "break-word" }}
+              >
+                {invoice.description}
+              </span>
+            </div>
           </div>
 
           <div className=" invoice-total mt-2 text-[11px] pr-1" >
@@ -141,32 +148,32 @@ const InvoiceDetail = async ({ invoice }: { invoice: Sale }) => {
 
             <div></div>
           </div>
-        
+
 
 
         </div>
 
-<div className="flex w-full">
+        <div className="flex w-full">
 
-  <div className="flex row gap-4 mt-3 w-full">
-    <div className=" w-1/2 text-[10px] ">
-      <p className="pb-0 text-center">អ្នកប្រគល់: </p>
-      <p className="pb-9 text-center">{invoice.seller?.title}</p>
-    </div>
-    <div className=" w-1/2 text-[10px]  " >
-      <p className="pb-0   text-center">អ្នកទទួល: </p>
-      <p className="pb-9  whitespace-nowrap text-center ">
-        {invoice.customer?.title}
-      </p>
-      <p></p>
-      <p></p>
-      <p></p>
-      <p></p>
-      <p className="text-[4px] py-7">.</p>
-    </div>
-  </div>
+          <div className="flex row gap-4 mt-3 w-full">
+            <div className=" w-1/2 text-[10px] ">
+              <p className="pb-0 text-center">អ្នកប្រគល់: </p>
+              <p className="pb-9 text-center">{invoice.seller?.title}</p>
+            </div>
+            <div className=" w-1/2 text-[10px]  " >
+              <p className="pb-0   text-center">អ្នកទទួល: </p>
+              <p className="pb-9  whitespace-nowrap text-center ">
+                {invoice.customer?.title}
+              </p>
+              <p></p>
+              <p></p>
+              <p></p>
+              <p></p>
+              <p className="text-[4px] py-7">.</p>
+            </div>
+          </div>
 
-</div>
+        </div>
 
       </div>
     </div>

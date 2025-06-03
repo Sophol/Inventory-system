@@ -51,9 +51,8 @@ const InvoiceDetail = ({
           )}
           <div className="flex flex-col">
             <h1
-              className={`font-bold text-lg pb-3 ${
-                invoice.isLogo !== "false" ? "pt-0" : "sm:pt-0 pt-5"
-              } mx-auto sm:mx-0`}
+              className={`font-bold text-lg pb-3 ${invoice.isLogo !== "false" ? "pt-0" : "sm:pt-0 pt-5"
+                } mx-auto sm:mx-0`}
             >
               # {invoice.referenceNo}
             </h1>
@@ -83,7 +82,16 @@ const InvoiceDetail = ({
                 className="w-auto sm:w-[100] h-20 object-contain mx-auto pt-2"
               />
             )}
+  <div className="flex flex-col ">
+            <span
+              className="text-[10px] mt-10  print:hidden block break-words text-center"
+              style={{ width: "200px", wordWrap: "break-word", overflowWrap: "break-word" }}
+            >
+              {invoice.description}
+            </span>
           </div>
+          </div>
+        
         </div>
 
         <div className="md:flex p-2 invoice-body mb-1">
