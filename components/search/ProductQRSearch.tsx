@@ -176,8 +176,9 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
       pageNumber: 100000, // Export all records
       query: query,
       status: status === "" ? undefined : Number(status),
-      isPrint: isPrint,
-      generatedYear: generatedYear,
+      is_printed:
+        isPrint === "true" ? true : isPrint === "false" ? false : undefined,
+      generated_year: generatedYear ? Number(generatedYear) : undefined,
     };
 
     setLoading(true);

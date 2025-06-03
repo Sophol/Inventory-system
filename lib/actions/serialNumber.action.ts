@@ -4,7 +4,9 @@ import { ProductQR, ProductQRProgress } from "@/database";
 import action from "../handlers/action";
 import handleError from "../handlers/error";
 import {
+  EditProductQRSchema,
   generateSerialNumberSchema,
+  GetProductQRSchema,
   IncrementViewsSchema,
   ProductQRSearchParamsSchema,
   VerifyQRProductSchema,
@@ -317,8 +319,8 @@ export async function getProductQRs(params: ProductQRSearchParams): Promise<
       sortCriteria = { raw_serial: -1, generated_year: -1 };
       break;
   }
-  if (is_printed) {
-    filterQuery.is_printed = is_printed;
+  if (is_printed === true || is_printed === false) {
+    filterQuery.is_print = is_printed;
   }
   if (status === 0 || status === 1) {
     filterQuery.status = status;
@@ -367,11 +369,22 @@ export async function verifyProductQr(
       encrypt_serial: serial,
       raw_serial: decryptedSerial,
     }).lean();
-    if (!productQr) {
+    if (!productQr || Array.isArray(productQr)) {
       return {
         success: false,
         error: {
           message: "Invalid QR code or serial number.",
+        },
+      };
+    }
+    if (
+      productQr.status === 0 ||
+      (productQr.expired_date && productQr.expired_date < new Date())
+    ) {
+      return {
+        success: false,
+        error: {
+          message: "Product QR is inactive.",
         },
       };
     }
@@ -405,6 +418,72 @@ export async function incrementViews(
       throw new Error("Product not found");
     }
     return { success: true, data: { views: product.viewer_count } };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+export async function getProductQR(
+  params: GetProductQRParams
+): Promise<ActionResponse<ProductQR>> {
+  const validatedData = await action({
+    params,
+    schema: GetProductQRSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData) as ErrorResponse;
+  }
+  const { productQrId } = validatedData.params!;
+  try {
+    const productQr = await ProductQR.findById(productQrId).lean();
+    if (!productQr) {
+      return {
+        success: false,
+        error: {
+          message: "Product QR not found.",
+        },
+      };
+    }
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(productQr)),
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+export async function editProductQR(
+  params: EditProductQrParams
+): Promise<ActionResponse<ProductQR>> {
+  const validatedData = await action({
+    params,
+    schema: EditProductQRSchema,
+    authorize: true,
+  });
+  if (validatedData instanceof Error) {
+    return handleError(validatedData.message) as ErrorResponse;
+  }
+  try {
+    const { productQrId, expired_date, remarks, status } =
+      validatedData.params!;
+    const existingProductQr = await ProductQR.findById(productQrId);
+    if (!existingProductQr) {
+      return handleError("Product QR not found") as ErrorResponse;
+    }
+    if (existingProductQr.expired_date !== expired_date) {
+      existingProductQr.expired_date = expired_date;
+    }
+    if (existingProductQr.remarks !== remarks) {
+      existingProductQr.remarks = remarks;
+    }
+    if (status !== undefined && existingProductQr.status !== parseInt(status)) {
+      existingProductQr.status = parseInt(status);
+    }
+    await existingProductQr.save();
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(existingProductQr)),
+    };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }

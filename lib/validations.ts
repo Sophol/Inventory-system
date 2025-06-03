@@ -508,7 +508,7 @@ export const generateSerialNumberSchema = z.object({
 });
 
 export const ProductQRSearchParamsSchema = PaginatedSearchParamsSchema.extend({
-  is_print: z.boolean().optional(),
+  is_printed: z.boolean().optional(),
   status: z.number().optional(),
   generated_year: z.number().optional(),
 });
@@ -517,4 +517,13 @@ export const VerifyQRProductSchema = z.object({
 });
 export const IncrementViewsSchema = z.object({
   serial: z.string().min(1, { message: "Serial number is required." }),
+});
+export const GetProductQRSchema = z.object({
+  productQrId: z.string().min(1, { message: "Product QR ID is required." }),
+});
+export const EditProductQRSchema = z.object({
+  productQrId: z.string().min(1, { message: "Product QR ID is required." }),
+  expired_date: z.date().optional(),
+  remarks: z.string().optional(),
+  status: z.string().min(1, { message: "Status is required." }),
 });

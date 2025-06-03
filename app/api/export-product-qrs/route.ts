@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       pageNumber = 100000,
       query,
       filter,
-      is_print,
+      is_printed,
       status,
       generated_year,
     } = parsed.data;
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       pageSize: pageNumber,
       query,
       filter,
-      is_printed: is_print,
+      is_printed,
       status,
       generated_year,
     });

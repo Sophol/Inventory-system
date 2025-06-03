@@ -18,13 +18,13 @@ export const ProductQRColumn: ColumnDef<ProductQR>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
+      const status = row.getValue("status") as number;
       return (
         <div className="flex justify-center whitespace-nowrap ">
           <Badge
-            className={`${status === "1" ? "bg-green-500  text-[10px]" : "bg-red-500  text-[10px]"} uppercase`}
+            className={`${status === 1 ? "bg-green-500 text-[10px]" : "bg-red-500  text-[10px]"} uppercase`}
           >
-            {status === "1" ? "Active" : "Inactive"}
+            {status === 1 ? "Active" : "Inactive"}
           </Badge>
         </div>
       );
@@ -106,7 +106,7 @@ export const ProductQRColumn: ColumnDef<ProductQR>[] = [
       const date = row.getValue("expired_date") as Date | null;
       return (
         <span className="flex whitespace-nowrap px-4">
-          {date ? date.toLocaleDateString() : "N/A"}
+          {date ? new Date(date).toLocaleDateString() : "N/A"}
         </span>
       );
     },
@@ -133,12 +133,12 @@ export const ProductQRColumn: ColumnDef<ProductQR>[] = [
       />
     ),
     cell: ({ row }) => {
-      const product = row.original;
+      const productQR = row.original;
       return (
         <div className="flex items-center space-x-1 justify-center  whitespace-nowrap">
           <RedirectButton
             Icon={FaRegEdit}
-            href={ROUTES.PRODUCT(product._id)}
+            href={ROUTES.PRODUCTQR(productQR._id)}
             isIcon
             className="text-primary-500"
           />

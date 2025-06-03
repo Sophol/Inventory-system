@@ -398,4 +398,6 @@ interface ProductQR {
   view_count?: number;
   status?: 0 | 1;
   is_printed?: boolean;
+  expired_date?: Date;
+  remarks?: string;
 }

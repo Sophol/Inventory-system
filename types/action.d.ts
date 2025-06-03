@@ -362,3 +362,12 @@ interface VerifyQRProductParams {
 interface IncrementViewsParams {
   serial: string;
 }
+interface GetProductQRParams {
+  productQrId: string;
+}
+interface EditProductQrParams {
+  productQrId: string;
+  expired_date?: date;
+  status: string;
+  remarks?: string;
+}
