@@ -73,7 +73,7 @@ const GenerateSerialForm = ({ product }: { product: Product }) => {
       >
         <Card className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
           <Suspense fallback={<div>Loading...</div>}>
-            <QRStats />
+            <QRStats productCode={product.code} />
           </Suspense>
           <CardHeader>
             <CardTitle>Batch Serial Number Generator</CardTitle>

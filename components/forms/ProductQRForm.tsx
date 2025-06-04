@@ -17,6 +17,7 @@ import { useTranslations } from "use-intl";
 import { editProductQR } from "@/lib/actions/serialNumber.action";
 import { EditProductQRSchema } from "@/lib/validations";
 import FormSelect from "../formInputs/FormSelect";
+import QrCode from "../QrCode";
 
 interface Params {
   productQR?: ProductQR;
@@ -40,7 +41,9 @@ const ProductQRForm = ({ productQR, isEdit = false }: Params) => {
       remarks: productQR?.remarks || "",
     },
   });
-
+  const text =
+    process.env.NEXT_PUBLIC_BASE_URL + "/verify/p=" + productQR?.encrypt_serial;
+  const logo = "/images/logo-bg.png"; // Adjust the logo path as needed
   const handleEditProductQR = async (
     data: z.infer<typeof EditProductQRSchema>
   ) => {
@@ -105,6 +108,9 @@ const ProductQRForm = ({ productQR, isEdit = false }: Params) => {
             control={form.control}
             isRequired={false}
           />
+        </div>
+        <div className="mt-2 flex justify-center">
+          <QrCode text={text} logo={logo} />
         </div>
         <div className="mt-2 flex justify-end">
           <Button

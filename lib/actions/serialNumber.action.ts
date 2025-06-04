@@ -254,10 +254,25 @@ export async function getQRCodeStats(productCode: string) {
 
   const [inactiveCount, activeCount, printedCount, currentYearCount] =
     await Promise.all([
-      ProductQR.countDocuments({ status: 0, generated_year: currentYear }),
-      ProductQR.countDocuments({ status: 1, generated_year: currentYear }),
-      ProductQR.countDocuments({ is_print: true, generated_year: currentYear }),
-      ProductQR.countDocuments({ generated_year: currentYear }),
+      ProductQR.countDocuments({
+        product_code: productCode,
+        status: 0,
+        generated_year: currentYear,
+      }),
+      ProductQR.countDocuments({
+        product_code: productCode,
+        status: 1,
+        generated_year: currentYear,
+      }),
+      ProductQR.countDocuments({
+        product_code: productCode,
+        is_print: true,
+        generated_year: currentYear,
+      }),
+      ProductQR.countDocuments({
+        product_code: productCode,
+        generated_year: currentYear,
+      }),
     ]);
 
   return {
