@@ -35,11 +35,7 @@ export default async function QRVerifyProductPage({
               </span>
             </div>
           ) : (
-            <div className="pb-2">
-              <span className="text-2xl mb-4 animate-pulse drop-shadow-lg">
-                ❌
-              </span>
-            </div>
+            null
           )
         ) : null}
 
@@ -52,13 +48,17 @@ export default async function QRVerifyProductPage({
 
             <div className="inline-flex flex-col items-center bg-green-900 rounded-xl px-6 py-6 shadow-lg text-green-200 select-none">
 
-<div className="w-14 h-14 mb-4 shadow-xl bg-white rounded-full flex items-center justify-center ring-1 ring-gray-200">
-  <img
-    src="/_next/image?url=%2Fimages%2Flogo.png&w=96&q=75"
-    alt="Logo"
-    className="w-12 h-12 object-contain"
-  />
-</div>
+              <div className="w-14 h-14 mb-4 rounded-full flex items-center justify-center 
+                  bg-gradient-to-br from-white to-gray-100 
+                  ring-1 ring-black/40
+                  shadow-xl 
+                  drop-shadow-[0_0_20px_rgba(0,200,0,1)] ">
+                <img
+                  src="/images/logo.png"
+                  alt="Logo"
+                  className="w-12 h-12 object-contain  drop-shadow-[0_0_1px_rgba(0,0,0,0.3)] "
+                />
+              </div>
 
               <p className="text-sm font-extrabold mb-2 drop-shadow-md">
                 ផលិតផលពិតប្រាកដលេខសម្គាល់
@@ -73,14 +73,12 @@ export default async function QRVerifyProductPage({
             </div>
           ) : (
             <div className="inline-flex flex-col items-center bg-rose-900 rounded-xl px-10 py-8 shadow-lg text-rose-100 select-none">
- <div className="w-14 h-14 mb-4 shadow-xl bg-white rounded-full flex items-center justify-center ring-1 ring-gray-200">
-  <img
-    src="/_next/image?url=%2Fimages%2Flogo.png&w=96&q=75"
-    alt="Logo"
-    className="w-12 h-12 object-contain"
-  />
-</div>
 
+              <div className="pb-2">
+                <span className="text-2xl mb-4 animate-pulse drop-shadow-lg">
+                  ❌
+                </span>
+              </div>
               <p className="text-sm font-extrabold mb-2 drop-shadow-md">
                 ផលិតផលក្លែងក្លាយ ឬ កូដមិនត្រឹមត្រូវ
               </p>
