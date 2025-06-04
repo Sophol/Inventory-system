@@ -465,7 +465,7 @@ export async function editProductQR(
     return handleError(validatedData.message) as ErrorResponse;
   }
   try {
-    const { productQrId, expired_date, remarks, status } =
+    const { productQrId, expired_date, remarks, status, is_print } =
       validatedData.params!;
     const existingProductQr = await ProductQR.findById(productQrId);
     if (!existingProductQr) {
@@ -479,6 +479,9 @@ export async function editProductQR(
     }
     if (status !== undefined && existingProductQr.status !== parseInt(status)) {
       existingProductQr.status = parseInt(status);
+    }
+    if (is_print !== undefined && existingProductQr.is_print !== is_print) {
+      existingProductQr.is_print = is_print;
     }
     await existingProductQr.save();
     return {

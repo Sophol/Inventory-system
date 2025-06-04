@@ -367,7 +367,8 @@ interface GetProductQRParams {
 }
 interface EditProductQrParams {
   productQrId: string;
-  expired_date?: date;
+  expired_date?: Date;
   status: string;
+  is_print: string;
   remarks?: string;
 }

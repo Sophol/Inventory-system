@@ -98,6 +98,20 @@ export const ProductQRColumn: ColumnDef<ProductQR>[] = [
     },
   },
   {
+    accessorKey: "is_print",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Generated Year" />
+    ),
+    cell: ({ row }) => {
+      const is_print = row.getValue("is_print") as boolean;
+      return (
+        <span className="flex whitespace-nowrap px-4">
+          {is_print ? "Printed" : "Not Printed"}
+        </span>
+      );
+    },
+  },
+  {
     accessorKey: "expired_date",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Expired Date" />

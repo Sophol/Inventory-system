@@ -36,6 +36,7 @@ const ProductQRForm = ({ productQR, isEdit = false }: Params) => {
         : undefined,
       status:
         productQR?.status !== undefined ? productQR.status.toString() : "1",
+      is_print: productQR?.is_print ? "true" : "false",
       remarks: productQR?.remarks || "",
     },
   });
@@ -67,13 +68,17 @@ const ProductQRForm = ({ productQR, isEdit = false }: Params) => {
     { title: "Active", _id: "1" },
     { title: "Inactive", _id: "0" },
   ];
+  const isPrintedData: SelectData[] = [
+    { title: "True", _id: "true" },
+    { title: "False", _id: "false" },
+  ];
   return (
     <Form {...form}>
       <form
         className="flex flex-col gap-8"
         onSubmit={form.handleSubmit(handleEditProductQR)}
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormDatePicker
             name="expired_date"
             label={t("expired_date")}
@@ -85,6 +90,12 @@ const ProductQRForm = ({ productQR, isEdit = false }: Params) => {
             label={t("status")}
             control={form.control}
             items={statusData}
+          />
+          <FormSelect
+            name="is_print"
+            label={t("is_print")}
+            control={form.control}
+            items={isPrintedData}
           />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-1">

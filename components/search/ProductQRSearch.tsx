@@ -22,7 +22,7 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
   const status = searchParams.get("status") || "";
-  const isPrint = searchParams.get("isPrint") || "";
+  const isPrint = searchParams.get("isPrint") || "false";
   const generatedYear = searchParams.get("generatedYear") || "";
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState(query);
@@ -30,6 +30,7 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const [searchIsPrint, setSearchIsPrint] = useState(isPrint);
   const [searchGeneratedYear, setSearchGeneratedYear] = useState(generatedYear);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchQuery) {
@@ -132,7 +133,6 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
     form.setValue("status", value);
     setSearchStatus(value);
   };
-
   const handleIsPrintChange = (value: string) => {
     form.setValue("isPrint", value);
     setSearchIsPrint(value);
@@ -146,6 +146,7 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
     { _id: "0", title: "Inactive" },
   ];
   const isPrintData = [
+    { _id: "all", title: "All" },
     { _id: "true", title: "True" },
     { _id: "false", title: "False" },
   ];
@@ -159,15 +160,15 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
     });
     setSearchQuery("");
     setSearchStatus("");
-    setSearchIsPrint("");
+    setSearchIsPrint("all");
     setSearchGeneratedYear("");
 
     handleStatusChange("");
-    handleIsPrintChange("");
+    handleIsPrintChange("all");
     handleGeneratedYearChange("");
     const newUrl = removeKeyFromUrlQuery({
       params: searchParams.toString(),
-      keyToRemove: ["query", "status", "isPrint", "generatedYear"],
+      keyToRemove: ["query", "status", "generatedYear"],
     });
     router.push(newUrl, { scroll: false });
   };
@@ -203,6 +204,8 @@ const ProductQRSearch = ({ route, otherClasses }: ProductSearchProps) => {
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
+      // Revalidate the path to ensure the latest data is fetched
+      window.location.reload();
     } catch (error) {
       console.error("Export failed:", error);
     } finally {

@@ -397,7 +397,7 @@ interface ProductQR {
   end_number: number;
   view_count?: number;
   status?: 0 | 1;
-  is_printed?: boolean;
+  is_print?: boolean;
   expired_date?: Date;
   remarks?: string;
 }

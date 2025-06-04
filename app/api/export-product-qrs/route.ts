@@ -1,3 +1,4 @@
+"use server";
 import { getProductQRs } from "@/lib/actions/serialNumber.action";
 import ExcelJS from "exceljs";
 import { ProductQRSearchParamsSchema } from "@/lib/validations";
@@ -45,12 +46,40 @@ export async function POST(request: Request) {
     // Setup Excel workbook
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Product QRs");
+    worksheet.mergeCells("A1", "D1");
+    worksheet.getCell("A1").value = "Product QR Codes";
+    worksheet.getCell("A1").font = { size: 16, bold: true };
+    worksheet.getCell("A1").alignment = {
+      vertical: "middle",
+      horizontal: "center",
+    };
 
+    // Date row (Row 2)
+    const now = new Date();
+    worksheet.mergeCells("A2", "D2");
+    worksheet.getCell("A2").value =
+      `Generated on: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+    worksheet.getCell("A2").font = { size: 14 };
+    worksheet.getCell("A2").alignment = {
+      vertical: "middle",
+      horizontal: "center",
+    };
+    worksheet.addRow([]);
+
+    // Row 4: Column headers (manually)
+    worksheet.addRow([
+      "Product Code",
+      "Product Name",
+      "Serial Number",
+      "QR Code",
+    ]);
+
+    worksheet.getRow(4).font = { bold: true };
     worksheet.columns = [
-      { header: "Product Code", key: "product_code", width: 20 },
-      { header: "Product Name", key: "product_name", width: 30 },
-      { header: "Serial Number", key: "raw_serial", width: 30 },
-      { header: "QR Code", key: "encrypt_serial", width: 50 },
+      { key: "product_code", width: 20 },
+      { key: "product_name", width: 30 },
+      { key: "raw_serial", width: 30 },
+      { key: "encrypt_serial", width: 50 },
     ];
 
     // Fill rows & collect IDs
@@ -84,7 +113,6 @@ export async function POST(request: Request) {
     }
 
     const buffer = await workbook.xlsx.writeBuffer();
-
     return new Response(buffer, {
       status: 200,
       headers: {

@@ -31,7 +31,13 @@ const QR = async ({ searchParams }: SearchParams) => {
     filter,
     status: status ? Number(status) : undefined,
     is_printed:
-      isPrint === "true" ? true : isPrint === "false" ? false : undefined,
+      isPrint === "true"
+        ? true
+        : isPrint === "false"
+          ? false
+          : isPrint === "all"
+            ? undefined
+            : false,
     generated_year: generatedYear ? Number(generatedYear) : undefined,
   });
   const { productQrs, totalCount, isNext } = data || {

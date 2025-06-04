@@ -526,4 +526,5 @@ export const EditProductQRSchema = z.object({
   expired_date: z.date().optional(),
   remarks: z.string().optional(),
   status: z.string().min(1, { message: "Status is required." }),
+  is_print: z.string().min(1, { message: "Is Printed is required." }),
 });
