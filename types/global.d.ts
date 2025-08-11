@@ -43,6 +43,7 @@ interface SaleSearchParams extends PaginatedSearchParams {
   customerId?: string;
   branchId?: string;
   dateRange?: string;
+  customerType?: string;
 }
 interface ExpenseSearchParams extends PaginatedSearchParams {
   staffId?: string;
@@ -249,6 +250,12 @@ interface Sale {
   saleType?: "retail" | "wholesale";
   saleDetails: saleDetail[];
   sellerName?: string;
+  customerType?: "walk-in" | "online";
+  facebookName?: string;
+  senderPhone?: string;
+  recieverPhone?: string;
+  location?: string;
+  deliveryStatus?: "pending" | "delivered" | "canceled";
 }
 interface SaleComplete {
   _id: string;

@@ -218,6 +218,12 @@
     "expired_date": "Expired Date",
     "remarks": "Remarks",
     "is_print": "Is Print",
-    "viewer_count": "Viewer Count"
+    "viewer_count": "Viewer Count",
+    "customerType": "Customer Type",
+    "facebookName": "Facebook Name",
+    "senderPhone": "Sender Phone",
+    "recieverPhone": "Receiver Phone",
+    "deliveryStatus": "Delivery Status",
+    "deliverystatus": "Delivery Status"
   }
 }

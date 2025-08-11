@@ -13,6 +13,14 @@ import { DatePickerWithRange } from "./DatePickerWithRange";
 import { DateRange } from "react-day-picker";
 import { getCustomers } from "@/lib/actions/customer.action";
 import { useTranslations } from "next-intl";
+import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface ProductSearchProps {
   route: string;
@@ -26,10 +34,12 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
   const query = searchParams.get("query") || "";
   const customerId = searchParams.get("customerId") || "";
   const branchId = searchParams.get("branchId") || "";
+  const customerType = searchParams.get("customerType") || "";
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState(query);
   const [searchCustomer, setSearchCustomer] = useState(customerId);
   const [searchBranch, setSearchBranch] = useState(branchId);
+  const [searchCustomerType, setSearchCustomerType] = useState(customerType);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [resetData, setResetData] = useState(false);
 
@@ -123,12 +133,33 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
     }, 1000);
     return () => clearTimeout(delayDebounceFn);
   }, [dateRange, route, router, searchParams, pathname]);
-
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchCustomerType) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "customerType",
+          value: searchCustomerType,
+        });
+        router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeyFromUrlQuery({
+            params: searchParams.toString(),
+            keyToRemove: ["customerType"],
+          });
+          router.push(newUrl, { scroll: false });
+        }
+      }
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchCustomerType, route, router, searchParams, pathname]);
   const form = useForm({
     defaultValues: {
       search: query,
       customer: customerId,
       branch: branchId,
+      customerType: customerType,
     },
   });
 
@@ -191,15 +222,23 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
       search: "",
       customer: "",
       branch: "",
+      customerType: "",
     });
     setSearchQuery("");
     setSearchCustomer("");
     setSearchBranch("");
+    setSearchCustomerType("");
     setDateRange(undefined);
     setResetData(true);
     const newUrl = removeKeyFromUrlQuery({
       params: searchParams.toString(),
-      keyToRemove: ["query", "customerId", "branchId", "dateRange"],
+      keyToRemove: [
+        "query",
+        "customerId",
+        "branchId",
+        "dateRange",
+        "customerType",
+      ],
     });
     router.push(newUrl, { scroll: false });
   };
@@ -246,7 +285,25 @@ const SaleSearch = ({ route, otherClasses }: ProductSearchProps) => {
             }}
           />
         </div>
-
+        <div className="flex flex-col w-full sm:w-auto">
+          <Label className="text-[10px] text-slate-500">
+            {t("customerType")}
+          </Label>
+          <Select
+            value={searchCustomerType}
+            onValueChange={(value) => setSearchCustomerType(value)}
+          >
+            <SelectTrigger className="w-full sm:w-[180px] h-[26px] min-h-[26px] text-[11px]">
+              <SelectValue placeholder="selectCustomerType" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Types</SelectItem>
+              <SelectItem value="walk-in">Walk-In</SelectItem>
+              <SelectItem value="online">Online</SelectItem>
+              {/* Add other types as needed, e.g., 'reseller' */}
+            </SelectContent>
+          </Select>
+        </div>
         <DatePickerWithRange
           onDateChange={handleDateRangeChange}
           reset={resetData}

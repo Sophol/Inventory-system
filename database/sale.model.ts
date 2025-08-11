@@ -28,6 +28,12 @@ export interface ISale {
   orderStatus: "pending" | "approved" | "completed";
   paymentStatus: "pending" | "credit" | "completed";
   saleType: "retail" | "wholesale";
+  customerType?: "walk-in" | "online";
+  facebookName?: string;
+  senderPhone?: string;
+  recieverPhone?: string;
+  location?: string;
+  deliveryStatus?: "pending" | "delivered" | "canceled";
   isLogo: string;
 }
 export interface ISaleDoc extends ISale, Document {}
@@ -86,6 +92,20 @@ const SaleSchema = new Schema<ISale>(
       enum: ["retail", "wholesale"],
       required: true,
       default: "retail",
+    },
+    customerType: {
+      type: String,
+      enum: ["walk-in", "online"],
+      default: "walk-in",
+    },
+    facebookName: { type: String },
+    senderPhone: { type: String },
+    recieverPhone: { type: String },
+    location: { type: String },
+    deliveryStatus: {
+      type: String,
+      enum: ["pending", "delivered", "canceled"],
+      default: "pending",
     },
   },
   { timestamps: true }

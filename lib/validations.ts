@@ -25,6 +25,7 @@ export const SaleSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   customerId: z.string().optional(),
   branchId: z.string().optional(),
   dateRange: z.string().optional(),
+  customerType: z.string().optional(),
 });
 export const ExpenseSearchParamsSchema = PaginatedSearchParamsSchema.extend({
   staffId: z.string().optional(),
@@ -389,6 +390,14 @@ export const CreateSaleSchema = z.object({
     .array(SaleDetailSchema)
     .min(1, { message: "At least one Unit is required." }),
   isLogo: z.string().default("true"),
+  customerType: z.enum(["walk-in", "online"]).default("walk-in"),
+  facebookName: z.string().optional(),
+  senderPhone: z.string().optional(),
+  recieverPhone: z.string().optional(),
+  location: z.string().optional(),
+  deliveryStatus: z
+    .enum(["pending", "delivered", "canceled"])
+    .default("pending"),
 });
 
 export const EditSaleSchema = CreateSaleSchema.extend({

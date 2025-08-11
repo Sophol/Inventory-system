@@ -14,6 +14,7 @@ import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { voidInvoice } from "@/lib/actions/invoice.action";
 import { formatCurrency } from "@/lib/utils";
+import UpdateDeliveryStatus from "@/components/modals/UpdateDeliveryStatus";
 
 const reloadPage = () => {
   window.location.reload();
@@ -60,16 +61,14 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "customer.name",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Customer"
-
-      />
+      <DataTableColumnHeader column={column} title="Customer" />
     ),
     cell: ({ row }) => {
       const customer = row.original.customer.title as string;
       return (
-        <span className="text-[9px] whitespace-nowrap justify-center flex ">{customer}</span>
+        <span className="text-[9px] whitespace-nowrap justify-center flex ">
+          {customer}
+        </span>
       );
     },
   },
@@ -86,7 +85,9 @@ export const SaleColumn: ColumnDef<Sale>[] = [
     cell: ({ row }) => {
       const branch = row.original.branch.title as string;
       return (
-        <span className="text-[9px] whitespace-nowrap flex justify-center ">{branch}</span>
+        <span className="text-[9px] whitespace-nowrap flex justify-center ">
+          {branch}
+        </span>
       );
     },
   },
@@ -148,10 +149,7 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   {
     accessorKey: "paid",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Paid"
-      />
+      <DataTableColumnHeader column={column} title="Paid" />
     ),
     cell: ({ row }) => {
       const paid = row.getValue("paid") as number;
@@ -208,6 +206,20 @@ export const SaleColumn: ColumnDef<Sale>[] = [
           {status}
         </Badge>
       );
+    },
+  },
+  {
+    accessorKey: "deliveryStatus",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Delivery Status"
+        className="justify-center flex"
+      />
+    ),
+    cell: ({ row }) => {
+      const sale = row.original;
+      return <UpdateDeliveryStatus sale={sale} />;
     },
   },
   {

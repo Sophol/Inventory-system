@@ -88,8 +88,24 @@ const InvoiceForm = ({
           totalPrice: 0,
         },
       ],
+      customerType: sale?.customerType || "walk-in",
+      facebookName: sale?.facebookName || "",
+      senderPhone: sale?.senderPhone || "",
+      recieverPhone: sale?.recieverPhone || "",
+      location: sale?.location || "",
+      deliveryStatus: sale?.deliveryStatus || "pending",
     },
   });
+  const customerTypeData: SelectData[] = [
+    { _id: "walk-in", title: "Walk-in" },
+    { _id: "online", title: "Online" },
+  ];
+  const deliveryStatusData: SelectData[] = [
+    { _id: "pending", title: "Pending" },
+    { _id: "delivered", title: "Delivered" },
+    { _id: "canceled", title: "Canceled" },
+  ];
+
   const handleCreateSale = async (data: z.infer<typeof CreateSaleSchema>) => {
     startTransaction(async () => {
       const result = await createInvoice(data);
@@ -328,6 +344,48 @@ const InvoiceForm = ({
           />
         </div>
 
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          <FormSelect
+            name="customerType"
+            label={t("customerType")}
+            control={form.control}
+            items={customerTypeData}
+          />
+          <FormInput
+            name="facebookName"
+            label={t("facebookName")}
+            control={form.control}
+            isRequired={false}
+          />
+          <FormInput
+            name="senderPhone"
+            label={t("senderPhone")}
+            control={form.control}
+            isRequired={false}
+          />
+          <FormInput
+            name="recieverPhone"
+            label={t("recieverPhone")}
+            control={form.control}
+            isRequired={false}
+          />
+        </div>
+        <div className="grid grid-cols-3 gap-2 md:grid-cols-3">
+          <FormSelect
+            name="deliveryStatus"
+            label={t("deliveryStatus")}
+            control={form.control}
+            items={deliveryStatusData}
+          />
+          <div className="col-span-2">
+            <FormInput
+              name="location"
+              label={t("location")}
+              control={form.control}
+              isRequired={false}
+            />
+          </div>
+        </div>
         {isSeller && (
           <div className="grid grid-cols-1 gap-2 md:grid-cols-1">
             <FormInput

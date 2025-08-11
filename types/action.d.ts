@@ -233,6 +233,12 @@ interface CreateSaleParams {
   saleType?: "retail" | "wholesale";
   saleDetails: SaleDetailParams[];
   isLogo?: string;
+  customerType?: "walk-in" | "online";
+  facebookName?: string;
+  senderPhone?: string;
+  recieverPhone?: string;
+  location?: string;
+  deliveryStatus?: "pending" | "delivered" | "canceled";
 }
 
 interface EditSaleParams extends CreateSaleParams {

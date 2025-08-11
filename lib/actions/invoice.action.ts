@@ -21,6 +21,8 @@ import {
   GetSaleSchema,
   SaleSearchParamsSchema,
 } from "../validations";
+import { revalidatePath } from "next/cache";
+import ROUTES from "@/constants/routes";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -56,6 +58,12 @@ export async function createInvoice(
     isLogo,
     seller,
     invoicedDate,
+    customerType,
+    facebookName,
+    senderPhone,
+    recieverPhone,
+    location,
+    deliveryStatus,
   } = validatedData.params!;
   let sellerId = validatedData?.session?.user?.id;
   let sellerName = validatedData?.session?.user?.name;
@@ -94,6 +102,12 @@ export async function createInvoice(
           sellerName: sellerName,
           isLogo,
           invoicedDate,
+          customerType,
+          facebookName,
+          senderPhone,
+          recieverPhone,
+          location,
+          deliveryStatus,
         },
       ],
       { session }
@@ -483,6 +497,7 @@ export async function getInvoice(
           saleType: { $first: "$saleType" },
           orderStatus: { $first: "$orderStatus" },
           paymentStatus: { $first: "$paymentStatus" },
+          deliveryStatus: { $first: "$deliveryStatus" },
           createdAt: { $first: "$createdAt" },
           updatedAt: { $first: "$updatedAt" },
           saleDetails: { $push: "$details" },
@@ -528,6 +543,7 @@ export async function getInvoices(params: SaleSearchParams): Promise<
     customerId,
     branchId,
     dateRange,
+    customerType,
   } = params;
   const skip = (Number(page) - 1) * pageSize;
   const limit = Number(pageSize);
@@ -545,6 +561,9 @@ export async function getInvoices(params: SaleSearchParams): Promise<
 
   if (branchId) {
     filterQuery.branch = new ObjectId(branchId);
+  }
+  if (customerType && customerType !== "all") {
+    filterQuery.customerType = customerType;
   }
 
   if (dateRange) {
@@ -667,5 +686,32 @@ export async function completedInvoice(
     return { success: true, data: JSON.parse(JSON.stringify(invoice)) };
   } catch (error) {
     return handleError(error) as ErrorResponse;
+  }
+}
+export async function updateSaleDeliveryStatus({
+  saleId,
+  status,
+}: {
+  saleId: string;
+  status: string;
+}) {
+  try {
+    const updatedSale = await Sale.findByIdAndUpdate(
+      saleId,
+      { deliveryStatus: status }, // Make sure 'deliveryStatus' exists in your Invoice schema
+      { new: true }
+    );
+
+    if (!updatedSale) {
+      throw new Error("Sale not found");
+    }
+
+    // Revalidate the cache for the sales page to show the updated data
+    revalidatePath(ROUTES.INVOICES);
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error updating delivery status:", error);
+    return { success: false, error: error.message };
   }
 }

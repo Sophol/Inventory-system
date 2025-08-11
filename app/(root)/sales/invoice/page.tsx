@@ -22,8 +22,16 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
   if (!isAuthorized) {
     return redirect("/unauthorized");
   }
-  const { page, pageSize, query, filter, customerId, branchId, dateRange } =
-    await searchParams;
+  const {
+    page,
+    pageSize,
+    query,
+    filter,
+    customerId,
+    branchId,
+    dateRange,
+    customerType,
+  } = await searchParams;
   const { success, data, error } = await getInvoices({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
@@ -32,6 +40,7 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
     customerId: customerId || "",
     branchId: branchId || "",
     dateRange: dateRange || "",
+    customerType: customerType || "",
   });
   const { sales, summary, isNext } =
     data ||
@@ -76,6 +85,7 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
           {formatCurrency(summary?.totalBalance)}
         </strong>
       </TableCell>
+      <TableCell></TableCell>
       <TableCell></TableCell>
       <TableCell></TableCell>
     </TableRow>
