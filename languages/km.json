@@ -221,8 +221,10 @@
     "viewer_count": "Viewer Count",
     "customerType": "Customer Type",
     "facebookName": "Facebook Name",
+    "facebookname": "Facebook Name",
     "senderPhone": "Sender Phone",
     "recieverPhone": "Receiver Phone",
+    "recieverphone": "Receiver Phone",
     "deliveryStatus": "Delivery Status",
     "deliverystatus": "Delivery Status"
   }

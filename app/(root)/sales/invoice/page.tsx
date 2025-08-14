@@ -58,7 +58,7 @@ const CompleteOrder = async ({ searchParams }: SearchParams) => {
     });
   const summaryRow = (
     <TableRow className="bg-blue-200 dark:bg-slate-800">
-      <TableCell colSpan={4} className="text-right ">
+      <TableCell colSpan={6} className="text-right ">
         <strong>Total:</strong>
       </TableCell>
       <TableCell className="text-right  ">

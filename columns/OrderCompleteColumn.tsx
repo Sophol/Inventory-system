@@ -74,19 +74,55 @@ export const SaleColumn: ColumnDef<Sale>[] = [
   },
 
   {
-    accessorKey: "branch.title",
+    accessorKey: "facebookName",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Branch"
+        title="Facebook Name"
         className="justify-center flex flex-nowrap"
       />
     ),
     cell: ({ row }) => {
-      const branch = row.original.branch.title as string;
+      const facebookName = row.original.facebookName as string;
       return (
         <span className="text-[9px] whitespace-nowrap flex justify-center ">
-          {branch}
+          {facebookName}
+        </span>
+      );
+    },
+  },
+  {
+    accessorKey: "recieverPhone",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Facebook Name"
+        className="justify-center flex flex-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const recieverPhone = row.original.recieverPhone as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap flex justify-center ">
+          {recieverPhone}
+        </span>
+      );
+    },
+  },
+  {
+    accessorKey: "location",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Facebook Name"
+        className="justify-center flex flex-nowrap"
+      />
+    ),
+    cell: ({ row }) => {
+      const location = row.original.location as string;
+      return (
+        <span className="text-[9px] whitespace-nowrap flex justify-center ">
+          {location}
         </span>
       );
     },
