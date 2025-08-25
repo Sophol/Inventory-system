@@ -239,6 +239,7 @@ interface CreateSaleParams {
   recieverPhone?: string;
   location?: string;
   deliveryStatus?: "pending" | "delivered" | "canceled";
+  deliveryType?: "Non-COD" | "COD";
 }
 
 interface EditSaleParams extends CreateSaleParams {

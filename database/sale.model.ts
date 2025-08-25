@@ -34,6 +34,7 @@ export interface ISale {
   recieverPhone?: string;
   location?: string;
   deliveryStatus?: "pending" | "delivered" | "canceled";
+  deliveryType?: "Non-COD" | "COD";
   isLogo: string;
 }
 export interface ISaleDoc extends ISale, Document {}
@@ -106,6 +107,11 @@ const SaleSchema = new Schema<ISale>(
       type: String,
       enum: ["pending", "delivered", "canceled"],
       default: "pending",
+    },
+    deliveryType: {
+      type: String,
+      enum: ["Non-COD", "COD"],
+      default: "Non-COD",
     },
   },
   { timestamps: true }

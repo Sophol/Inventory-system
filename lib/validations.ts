@@ -398,6 +398,7 @@ export const CreateSaleSchema = z.object({
   deliveryStatus: z
     .enum(["pending", "delivered", "canceled"])
     .default("pending"),
+  deliveryType: z.enum(["Non-COD", "COD"]).default("Non-COD"),
 });
 
 export const EditSaleSchema = CreateSaleSchema.extend({

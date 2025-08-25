@@ -225,6 +225,7 @@
     "recieverPhone": "Receiver Phone",
     "recieverphone": "Receiver Phone",
     "deliveryStatus": "Delivery Status",
-    "deliverystatus": "Delivery Status"
+    "deliverystatus": "Delivery Status",
+    "deliveryType": "Delivery Type"
   }
 }

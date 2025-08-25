@@ -94,6 +94,7 @@ const InvoiceForm = ({
       recieverPhone: sale?.recieverPhone || "",
       location: sale?.location || "",
       deliveryStatus: sale?.deliveryStatus || "pending",
+      deliveryType: sale?.deliveryType || "Non-COD",
     },
   });
   const customerTypeData: SelectData[] = [
@@ -104,6 +105,10 @@ const InvoiceForm = ({
     { _id: "pending", title: "Pending" },
     { _id: "delivered", title: "Delivered" },
     { _id: "canceled", title: "Canceled" },
+  ];
+  const deliveryTypes: SelectData[] = [
+    { _id: "Non-COD", title: "Non-COD" },
+    { _id: "COD", title: "COD" },
   ];
 
   const handleCreateSale = async (data: z.infer<typeof CreateSaleSchema>) => {
@@ -370,12 +375,18 @@ const InvoiceForm = ({
             isRequired={false}
           />
         </div>
-        <div className="grid grid-cols-3 gap-2 md:grid-cols-3">
+        <div className="grid grid-cols-4 gap-2 md:grid-cols-4">
           <FormSelect
             name="deliveryStatus"
             label={t("deliveryStatus")}
             control={form.control}
             items={deliveryStatusData}
+          />
+          <FormSelect
+            name="deliveryType"
+            label={t("deliveryType")}
+            control={form.control}
+            items={deliveryTypes}
           />
           <div className="col-span-2">
             <FormInput

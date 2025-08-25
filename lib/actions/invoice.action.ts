@@ -64,6 +64,7 @@ export async function createInvoice(
     recieverPhone,
     location,
     deliveryStatus,
+    deliveryType,
   } = validatedData.params!;
   let sellerId = validatedData?.session?.user?.id;
   let sellerName = validatedData?.session?.user?.name;
@@ -108,6 +109,7 @@ export async function createInvoice(
           recieverPhone,
           location,
           deliveryStatus,
+          deliveryType,
         },
       ],
       { session }
@@ -498,6 +500,7 @@ export async function getInvoice(
           orderStatus: { $first: "$orderStatus" },
           paymentStatus: { $first: "$paymentStatus" },
           deliveryStatus: { $first: "$deliveryStatus" },
+          deliveryType: { $first: "$deliveryType" },
           createdAt: { $first: "$createdAt" },
           updatedAt: { $first: "$updatedAt" },
           saleDetails: { $push: "$details" },

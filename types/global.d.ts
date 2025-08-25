@@ -256,6 +256,7 @@ interface Sale {
   recieverPhone?: string;
   location?: string;
   deliveryStatus?: "pending" | "delivered" | "canceled";
+  deliveryType?: "Non-COD" | "COD";
 }
 interface SaleComplete {
   _id: string;
